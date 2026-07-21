@@ -325,7 +325,7 @@ Expected: `cycle_features.csv` and `.parquet` both contain 2,205 rows and 176 co
 - Generate: `data/synthetic/fault_cases.json`
 - Generate: `data/synthetic/work_orders.json`
 
-- [ ] **Step 1: Write a failing fixed-seed and provenance test**
+- [x] **Step 1: Write a failing fixed-seed and provenance test**
 
 ```python
 def test_every_synthetic_entity_is_labeled_and_non_executing(tmp_path):
@@ -341,11 +341,11 @@ def test_every_synthetic_entity_is_labeled_and_non_executing(tmp_path):
 
 Expected RED: generator functions are missing.
 
-- [ ] **Step 2: Implement the smallest deterministic generator**
+- [x] **Step 2: Implement the smallest deterministic generator**
 
 Generate only the five agreed demo assets (`PUMP-001`, `PUMP-002`, `VALVE-001`, `COOLER-001`, `ACC-001`), stable alarm/case IDs, a generator version, and no real-company claim. Preserve `synthetic_demo` on every independent CSV row and JSON business object.
 
-- [ ] **Step 3: Generate, test, and commit**
+- [x] **Step 3: Generate, test, and commit**
 
 Run focused tests and `python scripts/generate_synthetic_data.py`; inspect the four output schemas, then commit as `feat: generate labeled synthetic demo data`.
 

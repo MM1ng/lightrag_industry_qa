@@ -1,0 +1,6 @@
+entity_id,equipment_id,equipment_name,equipment_type,demo_area,demo_state,data_type,generator_version,seed,provenance_note
+PUMP-001,PUMP-001,演示循环泵一,centrifugal_pump,DEMO-HYDRAULIC-LOOP,READY_FOR_DEMO,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+PUMP-002,PUMP-002,演示循环泵二,centrifugal_pump,DEMO-HYDRAULIC-LOOP,READY_FOR_DEMO,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+VALVE-001,VALVE-001,演示调节阀,control_valve,DEMO-HYDRAULIC-LOOP,READY_FOR_DEMO,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+COOLER-001,COOLER-001,演示冷却器,cooler,DEMO-HYDRAULIC-LOOP,READY_FOR_DEMO,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+ACC-001,ACC-001,演示蓄能器,hydraulic_accumulator,DEMO-HYDRAULIC-LOOP,READY_FOR_DEMO,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据

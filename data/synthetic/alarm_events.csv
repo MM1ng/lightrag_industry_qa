@@ -1,0 +1,6 @@
+entity_id,alarm_id,equipment_id,alarm_code,severity,observed_at,status,description,data_type,generator_version,seed,provenance_note
+ALARM-DEMO-001,ALARM-DEMO-001,PUMP-001,LOW_DISCHARGE_PRESSURE,WARNING,2026-07-21T08:00:00Z,DEMO_OPEN,演示现象: 出口压力偏低,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+ALARM-DEMO-002,ALARM-DEMO-002,PUMP-002,ELEVATED_VIBRATION,WARNING,2026-07-21T09:00:00Z,DEMO_OPEN,演示现象: 振动偏高,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+ALARM-DEMO-003,ALARM-DEMO-003,VALVE-001,POSITION_RESPONSE_DELAY,WARNING,2026-07-21T10:00:00Z,DEMO_OPEN,演示现象: 阀位响应延迟,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+ALARM-DEMO-004,ALARM-DEMO-004,COOLER-001,COOLING_PERFORMANCE_LOW,WARNING,2026-07-21T11:00:00Z,DEMO_OPEN,演示现象: 冷却表现下降,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
+ALARM-DEMO-005,ALARM-DEMO-005,ACC-001,ACCUMULATOR_PRESSURE_LOW,WARNING,2026-07-21T12:00:00Z,DEMO_OPEN,演示现象: 蓄能器压力偏低,synthetic_demo,synthetic-demo-v1,20260721,仅用于功能演示; 非现场数据
