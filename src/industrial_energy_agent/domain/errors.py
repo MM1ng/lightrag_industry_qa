@@ -79,6 +79,10 @@ class CitationValidationError(ValueError):
     """Raised when an untrusted or source-inconsistent citation is formatted."""
 
 
+class DomainValidationError(ValueError):
+    """Raised when a repository operation violates a domain lifecycle rule."""
+
+
 def sanitize_public_error_message(message: str) -> str:
     """Replace messages carrying stack, path, or credential markers."""
 

@@ -364,7 +364,7 @@ Run focused tests and `python scripts/generate_synthetic_data.py`; inspect the f
 - Create: `tests/integration/persistence/test_reviews.py`
 - Create: `tests/integration/persistence/test_ingest_jobs.py`
 
-- [ ] **Step 1: Write failing lifecycle tests**
+- [x] **Step 1: Write failing lifecycle tests**
 
 ```python
 def test_expired_running_job_is_reclaimed_but_reconcile_job_is_not(repository, clock):
@@ -383,15 +383,15 @@ def test_risk_review_cannot_reference_work_order(repository):
 
 Expected RED: repositories and migration are absent.
 
-- [ ] **Step 2: Implement database initialization and focused repositories**
+- [x] **Step 2: Implement database initialization and focused repositories**
 
 Enable foreign keys, WAL, and busy timeout. Use explicit transactions and parameterized SQL. Keep risk and work-order review tables/schemas distinct, allow only `PENDING_REVIEW → REVIEWED | REJECTED`, and preserve `DRAFT/executed=false` regardless of review outcome.
 
-- [ ] **Step 3: Implement atomic lease behavior**
+- [x] **Step 3: Implement atomic lease behavior**
 
 The ingest repository must atomically claim `PENDING` or expired `RUNNING`, store owner/expiry/attempt count, validate owner on heartbeat/finalization, and never let the ordinary worker claim `RECONCILE_REQUIRED`.
 
-- [ ] **Step 4: Run persistence tests and commit**
+- [x] **Step 4: Run persistence tests and commit**
 
 Run `python -m pytest tests/integration/persistence -q`; expected all SQLite lifecycle tests pass against temporary databases. Commit as `feat: add SQLite persistence boundaries`.
 
