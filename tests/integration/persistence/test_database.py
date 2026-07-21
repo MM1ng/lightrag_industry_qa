@@ -47,6 +47,7 @@ def test_database_initialization_is_idempotent_and_applies_exact_schema(
     assert [row[0] for row in migrations] == [
         "0001_initial.sql",
         "0002_ingest_reconciliation.sql",
+        "0003_work_order_review_integrity.sql",
     ]
 
 
@@ -169,3 +170,70 @@ def test_risk_review_hash_check_rejects_non_lowercase_hex_suffix(tmp_path: Path)
                     "2026-07-21T00:00:00Z",
                 ),
             )
+
+
+def test_review_integrity_migration_fails_closed_on_historical_duplicates(
+    tmp_path: Path,
+) -> None:
+    database = Database(tmp_path / "energyops.sqlite")
+    migrations = database._migrations_dir
+    with sqlite3.connect(database.path) as connection:
+        connection.execute(
+            """
+            CREATE TABLE schema_migrations (
+                version TEXT PRIMARY KEY,
+                applied_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
+        for version in ("0001_initial.sql", "0002_ingest_reconciliation.sql"):
+            connection.executescript((migrations / version).read_text(encoding="utf-8"))
+            connection.execute("INSERT INTO schema_migrations (version) VALUES (?)", (version,))
+        connection.execute(
+            """
+            INSERT INTO conversation_sessions (
+                conversation_id, selected_cycle_id, summary_json, created_at, updated_at
+            ) VALUES ('conv-legacy', NULL, '{}', '2026-07-22T00:00:00Z',
+                '2026-07-22T00:00:00Z')
+            """
+        )
+        connection.execute(
+            """
+            INSERT INTO diagnoses (
+                diagnosis_id, request_id, conversation_id, payload_json, created_at
+            ) VALUES ('diag-legacy', 'request-diag-legacy', 'conv-legacy', '{}',
+                '2026-07-22T00:00:00Z')
+            """
+        )
+        connection.execute(
+            """
+            INSERT INTO work_orders (
+                work_order_id, request_id, conversation_id, diagnosis_id,
+                payload_json, status, approval_status, executed, created_at
+            ) VALUES ('wo-legacy', 'request-wo-legacy', 'conv-legacy', 'diag-legacy',
+                '{}', 'DRAFT', 'PENDING_REVIEW', 0, '2026-07-22T00:00:00Z')
+            """
+        )
+        connection.executemany(
+            """
+            INSERT INTO work_order_reviews (
+                review_id, work_order_id, request_id, idempotency_key,
+                status, created_at
+            ) VALUES (?, 'wo-legacy', ?, ?, 'PENDING_REVIEW', '2026-07-22T00:00:00Z')
+            """,
+            (
+                ("review-legacy-one", "request-review-one", "legacy-key-one"),
+                ("review-legacy-two", "request-review-two", "legacy-key-two"),
+            ),
+        )
+
+    with pytest.raises(sqlite3.IntegrityError):
+        database.initialize()
+
+    with database.connection() as connection:
+        applied = {row[0] for row in connection.execute("SELECT version FROM schema_migrations")}
+        duplicate_count = connection.execute(
+            "SELECT COUNT(*) FROM work_order_reviews WHERE work_order_id = 'wo-legacy'"
+        ).fetchone()[0]
+    assert "0003_work_order_review_integrity.sql" not in applied
+    assert duplicate_count == 2

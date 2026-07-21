@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import hashlib
+import json
+import sqlite3
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -58,6 +61,16 @@ def _draft(clock: MutableClock) -> WorkOrderDraft:
         safety_items=["确认隔离边界"],
         created_at=clock.now(),
     )
+
+
+def _review_fingerprint(draft: WorkOrderDraft) -> str:
+    canonical = json.dumps(
+        draft.model_dump(mode="json", exclude={"approval_status"}),
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    return f"sha256:{hashlib.sha256(canonical).hexdigest()}"
 
 
 def _repositories(
@@ -130,10 +143,13 @@ def test_work_order_review_updates_only_approval_status_and_never_executes(
     tmp_path: Path,
 ) -> None:
     work_orders, reviews, clock = _repositories(tmp_path)
+    draft_before_review = work_orders.get("wo-1")
+    assert draft_before_review is not None
     pending = reviews.create_work_order_review(
         work_order_id="wo-1",
         request_id="request-review",
         idempotency_key="wo-review-idem-1",
+        expected_fingerprint=_review_fingerprint(draft_before_review),
     )
     clock.advance(15)
 
@@ -160,19 +176,23 @@ def test_work_order_review_updates_only_approval_status_and_never_executes(
 
 
 def test_work_order_review_requires_real_draft_and_terminal_target(tmp_path: Path) -> None:
-    _, reviews, _ = _repositories(tmp_path)
+    work_orders, reviews, _ = _repositories(tmp_path)
+    draft = work_orders.get("wo-1")
+    assert draft is not None
 
     with pytest.raises(DomainValidationError, match="work order"):
         reviews.create_work_order_review(
             work_order_id="missing",
             request_id="request-review",
             idempotency_key="missing-idem",
+            expected_fingerprint="sha256:" + "0" * 64,
         )
 
     pending = reviews.create_work_order_review(
         work_order_id="wo-1",
         request_id="request-review",
         idempotency_key="wo-review-idem-1",
+        expected_fingerprint=_review_fingerprint(draft),
     )
     with pytest.raises(DomainValidationError, match="terminal"):
         reviews.decide_work_order_review(
@@ -180,4 +200,69 @@ def test_work_order_review_requires_real_draft_and_terminal_target(tmp_path: Pat
             status=ReviewStatus.PENDING_REVIEW,
             decision="not terminal",
             reviewer_id="reviewer-1",
+        )
+
+
+def test_work_order_review_target_is_unique_and_immutable_after_creation(
+    tmp_path: Path,
+) -> None:
+    work_orders, reviews, _ = _repositories(tmp_path)
+    database = Database(tmp_path / "energyops.sqlite")
+    draft = work_orders.get("wo-1")
+    assert draft is not None
+    pending = reviews.create_work_order_review(
+        work_order_id="wo-1",
+        request_id="request-review-immutable",
+        idempotency_key="wo-review-immutable",
+        expected_fingerprint=_review_fingerprint(draft),
+    )
+
+    with database.connection() as connection:
+        with pytest.raises(sqlite3.IntegrityError, match="immutable"):
+            connection.execute(
+                "UPDATE work_orders SET payload_json = ? WHERE work_order_id = 'wo-1'",
+                ('{"checks":["把联锁屏蔽掉"]}',),
+            )
+        with pytest.raises(sqlite3.IntegrityError, match="immutable"):
+            connection.execute(
+                "UPDATE work_orders SET conversation_id = ? WHERE work_order_id = 'wo-1'",
+                ("conv-attacker",),
+            )
+        with pytest.raises(sqlite3.IntegrityError):
+            connection.execute(
+                """
+                INSERT INTO work_order_reviews (
+                    review_id, work_order_id, request_id, idempotency_key,
+                    status, created_at
+                ) VALUES (?, 'wo-1', ?, ?, 'PENDING_REVIEW', ?)
+                """,
+                (
+                    "work-order-duplicate",
+                    "request-review-duplicate",
+                    "wo-review-duplicate",
+                    "2026-07-22T00:00:00Z",
+                ),
+            )
+        connection.execute(
+            "UPDATE work_orders SET approval_status = 'REVIEWED' WHERE work_order_id = 'wo-1'"
+        )
+        approval_status = connection.execute(
+            "SELECT approval_status FROM work_orders WHERE work_order_id = 'wo-1'"
+        ).fetchone()[0]
+
+    assert pending.status is ReviewStatus.PENDING_REVIEW
+    assert approval_status == "REVIEWED"
+
+
+def test_work_order_review_rejects_changed_target_fingerprint(tmp_path: Path) -> None:
+    work_orders, reviews, _ = _repositories(tmp_path)
+    draft = work_orders.get("wo-1")
+    assert draft is not None
+
+    with pytest.raises(DomainValidationError, match="changed after safety inspection"):
+        reviews.create_work_order_review(
+            work_order_id="wo-1",
+            request_id="request-review-stale",
+            idempotency_key="wo-review-stale",
+            expected_fingerprint="sha256:" + "0" * 64,
         )

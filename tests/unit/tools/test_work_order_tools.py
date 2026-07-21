@@ -8,6 +8,7 @@ import pytest
 
 from industrial_energy_agent.domain.enums import EvidenceGrade, ReviewStatus, RiskLevel
 from industrial_energy_agent.domain.models import CandidateCause, DiagnosisRecord, WorkOrderDraft
+from industrial_energy_agent.domain.safety_rules import work_order_review_fingerprint
 from industrial_energy_agent.persistence.database import Database
 from industrial_energy_agent.persistence.review_repository import ReviewRepository
 from industrial_energy_agent.persistence.session_repository import SessionRepository
@@ -285,10 +286,13 @@ def test_work_order_retry_after_human_review_returns_existing_lifecycle_state(
 
     first = tool.invoke(payload)
     reviews = ReviewRepository(database)
+    persisted_draft = work_orders.get(first["work_order"]["work_order_id"])
+    assert persisted_draft is not None
     pending = reviews.create_work_order_review(
         work_order_id=first["work_order"]["work_order_id"],
         request_id="req-review-existing-draft",
         idempotency_key="review-existing-draft",
+        expected_fingerprint=work_order_review_fingerprint(persisted_draft),
     )
     reviews.decide_work_order_review(
         pending.review_id,
