@@ -271,7 +271,7 @@ Run `python scripts/inspect_dataset.py --compare-manifest data/processed/manifes
 - Create: `tests/unit/data_processing/test_feature_engineering.py`
 - Create: `tests/integration/data_processing/test_hydraulic_pipeline.py`
 
-- [ ] **Step 1: Write failing mathematical feature tests**
+- [x] **Step 1: Write failing mathematical feature tests**
 
 ```python
 def test_cycle_features_use_population_std_and_real_seconds():
@@ -290,19 +290,19 @@ def test_hundred_hz_slope_uses_seconds_not_sample_indices():
 
 Expected RED: `compute_cycle_features` is missing.
 
-- [ ] **Step 2: Implement streaming strict loading and the ten features**
+- [x] **Step 2: Implement streaming strict loading and the ten features**
 
 Load one cycle row at a time with `np.fromstring`, validate exact counts before computing `mean`, `std`, `min`, `max`, `median`, `range`, `first`, `last`, `trend`, and least-squares `slope`. Use `float64`; reject NaN/Inf and never interpolate.
 
-- [ ] **Step 3: Implement atomic CSV/Parquet/report/dictionary output**
+- [x] **Step 3: Implement atomic CSV/Parquet/report/dictionary output**
 
 The pipeline must produce exactly the four specified files under `data/processed/hydraulic`, write temporary siblings first, `replace` only after all validations pass, and generate a stable `artifact_version` from source and processing fingerprints.
 
-- [ ] **Step 4: Implement the read-only sensor repository**
+- [x] **Step 4: Implement the read-only sensor repository**
 
 `SensorRepository.get_cycle(1..2205)` returns one cycle summary and warns when `stable_flag=1`; `compare_cycles` accepts at least two unique IDs and returns deltas with units. It must read only processed Parquet and never load raw 6,000-point arrays during API requests.
 
-- [ ] **Step 5: Run RED/GREEN, the real pipeline, and commit**
+- [x] **Step 5: Run RED/GREEN, the real pipeline, and commit**
 
 Run:
 
