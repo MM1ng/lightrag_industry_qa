@@ -1,0 +1,65 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+.python-version
+
+# Python caches and build outputs
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Runtime state
+logs/**
+!logs/.gitkeep
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+.cache/
+tmp/
+
+# Model, vector, and LightRAG runtime artifacts
+models/
+model_cache/
+.model_cache/
+lightrag_data/
+lightrag_storage/
+rag_storage/
+vector_store/
+graph_storage/
+
+# Protected source data and generated processing outputs
+data/raw_dataset/**
+data/manuals/**
+data/processed/**
+
+# Notebook and editor state
+.ipynb_checkpoints/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
