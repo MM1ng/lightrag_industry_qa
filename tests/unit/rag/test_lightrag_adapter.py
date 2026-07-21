@@ -56,12 +56,17 @@ def _query_response(*, status: str = "success") -> dict[str, object]:
     }
 
 
-def _document_payload(file_path: str, *, metadata: object = None) -> dict[str, object]:
+def _document_payload(
+    file_path: str,
+    *,
+    metadata: object = None,
+    status: str = "PROCESSED",
+) -> dict[str, object]:
     return {
         "id": f"doc-{file_path}",
         "content_summary": "summary",
         "content_length": 7,
-        "status": "PROCESSED",
+        "status": status,
         "created_at": "2026-07-21T00:00:00+00:00",
         "updated_at": "2026-07-21T00:00:01+00:00",
         "track_id": "insert_test",
@@ -314,7 +319,11 @@ def test_reconciliation_uses_paginated_documents_and_references(
         json=_query_response(),
     )
 
-    result = adapter.reconcile_file_source("manual-marker.txt", track_id="insert_test")
+    result = adapter.reconcile_file_source(
+        "manual-marker.txt",
+        track_id="insert_test",
+        expected_marker="ENERGYOPS_INGEST_MANIFEST sha256:test",
+    )
 
     assert result.probes == frozenset({"track_status", "documents_paginated", "query_references"})
     assert result.confirmed is False
@@ -369,6 +378,7 @@ def test_reconciliation_scans_all_document_pages(
     )
     response = _query_response()
     assert isinstance(response["data"], dict)
+    response["data"]["chunks"] = [{"content": "ENERGYOPS_INGEST_MANIFEST sha256:test\nmanual body"}]
     response["data"]["references"] = [{"reference_id": "1", "file_path": "manual-marker.txt"}]
     httpx_mock.add_response(
         method="POST",
@@ -376,10 +386,66 @@ def test_reconciliation_scans_all_document_pages(
         json=response,
     )
 
-    result = adapter.reconcile_file_source("manual-marker.txt", track_id="insert_test")
+    result = adapter.reconcile_file_source(
+        "manual-marker.txt",
+        track_id="insert_test",
+        expected_marker="ENERGYOPS_INGEST_MANIFEST sha256:test",
+    )
 
     assert result.confirmed is True
     assert result.paginated_match is True
+    assert result.marker_match is True
+
+
+def test_reconciliation_does_not_confirm_a_track_that_is_still_processing(
+    httpx_mock: HTTPXMock,
+    adapter: LightRAGRestAdapter,
+) -> None:
+    target = _document_payload("manual-marker.txt", metadata={}, status="PROCESSING")
+    httpx_mock.add_response(
+        method="GET",
+        url="http://127.0.0.1:9621/documents/track_status/insert_test",
+        json={
+            "track_id": "insert_test",
+            "documents": [target],
+            "total_count": 1,
+            "status_summary": {"PROCESSING": 1},
+        },
+    )
+    httpx_mock.add_response(
+        method="POST",
+        url="http://127.0.0.1:9621/documents/paginated",
+        json={
+            "documents": [target],
+            "pagination": {
+                "page": 1,
+                "page_size": 50,
+                "total_count": 1,
+                "total_pages": 1,
+                "has_next": False,
+                "has_prev": False,
+            },
+            "status_counts": {"PROCESSING": 1},
+        },
+    )
+    response = _query_response()
+    assert isinstance(response["data"], dict)
+    response["data"]["chunks"] = [{"content": "ENERGYOPS_INGEST_MANIFEST sha256:test\nmanual body"}]
+    response["data"]["references"] = [{"reference_id": "1", "file_path": "manual-marker.txt"}]
+    httpx_mock.add_response(
+        method="POST",
+        url="http://127.0.0.1:9621/query/data",
+        json=response,
+    )
+
+    result = adapter.reconcile_file_source(
+        "manual-marker.txt",
+        track_id="insert_test",
+        expected_marker="ENERGYOPS_INGEST_MANIFEST sha256:test",
+    )
+
+    assert result.confirmed is None
+    assert result.track_match is False
 
 
 def test_get_sources_uses_local_manifest_without_remote_call(

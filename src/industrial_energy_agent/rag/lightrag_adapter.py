@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import time
 from collections.abc import Mapping, Sequence
 from typing import Any, cast
@@ -272,7 +273,15 @@ class LightRAGRestAdapter:
     def _matches_file_source(document: RAGTrackDocument, file_source: str) -> bool:
         return document.file_path.replace("\\", "/").rsplit("/", 1)[-1] == file_source
 
-    def reconcile_file_source(self, file_source: str, *, track_id: str) -> ReconciliationResult:
+    def reconcile_file_source(
+        self,
+        file_source: str,
+        *,
+        track_id: str,
+        expected_marker: str,
+    ) -> ReconciliationResult:
+        if not expected_marker.strip():
+            raise ValueError("expected_marker is required")
         track = self.track_status(track_id)
         document_pages: list[PaginatedDocuments] = []
         page_number = 1
@@ -284,9 +293,11 @@ class LightRAGRestAdapter:
             if page_number >= page.pagination.total_pages:
                 raise RAGResponseError("RAG returned inconsistent pagination metadata")
             page_number += 1
-        query_result = self.search(file_source, mode="naive", top_k=10)
+        query_result = self.search(expected_marker, mode="naive", top_k=10)
         track_match = any(
-            self._matches_file_source(document, file_source) for document in track.documents
+            self._matches_file_source(document, file_source)
+            and document.status.casefold() == "processed"
+            for document in track.documents
         )
         paginated_match = any(
             self._matches_file_source(document, file_source)
@@ -297,9 +308,16 @@ class LightRAGRestAdapter:
             str(reference.get("file_path", "")).replace("\\", "/").rsplit("/", 1)[-1] == file_source
             for reference in query_result.references
         )
-        if track_match and paginated_match and reference_match:
+        marker_match = expected_marker in json.dumps(
+            query_result.chunks,
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        if track_match and paginated_match and reference_match and marker_match:
             confirmed: bool | None = True
-        elif not track.documents and not paginated_match and not reference_match:
+        elif (
+            not track.documents and not paginated_match and not reference_match and not marker_match
+        ):
             confirmed = False
         else:
             confirmed = None
@@ -310,4 +328,5 @@ class LightRAGRestAdapter:
             track_match=track_match,
             paginated_match=paginated_match,
             reference_match=reference_match,
+            marker_match=marker_match,
         )

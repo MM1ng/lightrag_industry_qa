@@ -208,6 +208,7 @@ class ReconciliationResult(BaseModel):
     track_match: bool
     paginated_match: bool
     reference_match: bool
+    marker_match: bool = False
 
 
 class SourceResolver(Protocol):
@@ -224,6 +225,14 @@ class RAGAdapter(Protocol):
     def ingest_documents(self, documents: Sequence[RAGDocument]) -> IngestResult: ...
 
     def track_status(self, track_id: str) -> TrackStatus: ...
+
+    def reconcile_file_source(
+        self,
+        file_source: str,
+        *,
+        track_id: str,
+        expected_marker: str,
+    ) -> ReconciliationResult: ...
 
     def search(
         self,

@@ -12,6 +12,7 @@ from industrial_energy_agent.rag.base import (
     RAGCapabilityError,
     RAGConfiguration,
     RAGDocument,
+    ReconciliationResult,
     SearchResult,
     TrackStatus,
     VerifiedSearchMode,
@@ -27,6 +28,7 @@ class FakeRAGAdapter:
         self._sources = dict(sources or {})
         self._call_summaries: list[RAGCallSummary] = []
         self._ingest_counts: dict[str, int] = {}
+        self._ingest_sources: dict[str, tuple[str, ...]] = {}
 
     @property
     def call_summaries(self) -> tuple[RAGCallSummary, ...]:
@@ -53,6 +55,7 @@ class FakeRAGAdapter:
             raise ValueError("At least one RAG document is required")
         track_id = f"fake-insert-{len(self._ingest_counts) + 1:04d}"
         self._ingest_counts[track_id] = count
+        self._ingest_sources[track_id] = tuple(document.file_source for document in documents)
         self._call_summaries.append(RAGCallSummary(operation="ingest_documents", input_count=count))
         return IngestResult(status="success", message="accepted", track_id=track_id)
 
@@ -65,6 +68,29 @@ class FakeRAGAdapter:
             documents=(),
             total_count=self._ingest_counts[track_id],
             status_summary={"PROCESSED": self._ingest_counts[track_id]},
+        )
+
+    def reconcile_file_source(
+        self,
+        file_source: str,
+        *,
+        track_id: str,
+        expected_marker: str,
+    ) -> ReconciliationResult:
+        matched = (
+            track_id in self._ingest_sources
+            and file_source in self._ingest_sources[track_id]
+            and bool(expected_marker.strip())
+        )
+        self._call_summaries.append(RAGCallSummary(operation="reconcile_file_source"))
+        return ReconciliationResult(
+            file_source=file_source,
+            confirmed=matched,
+            probes=frozenset({"track_status", "documents_paginated", "query_references"}),
+            track_match=matched,
+            paginated_match=matched,
+            reference_match=matched,
+            marker_match=matched,
         )
 
     def search(

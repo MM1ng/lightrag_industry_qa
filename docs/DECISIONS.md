@@ -137,7 +137,7 @@
 - 决策：`POST /api/v1/ingest` 是唯一远程摄取入口，只接受已登记的文档 ID，不接受任意 URL 或任意本机路径；管理 CLI 必须调用该 API，或在同一进程复用相同摄取应用服务，禁止直连 LightRAG。接口返回作业 ID，由单进程持久化作业消费者处理。
 - 原因：避免长 HTTP 超时、SSRF、路径穿越和重复收费式导入。
 - 后果：MVP 不引入 Redis/Celery；摄取作业、内容哈希、状态、有限尝试次数和脱敏错误保存在 SQLite。作业使用 `PENDING | RUNNING | SUCCEEDED | FAILED | RECONCILE_REQUIRED` 状态与 `lease_expires_at` 租约；启动时恢复 `PENDING` 并回收租约过期的 `RUNNING`。
-- 远端一致性：以来源哈希和处理指纹生成确定性业务 `remote_document_id`，将其编码到全局唯一的 `file_source` basename 和文本头并由本地清单反查。LightRAG 1.5.4 不接受客户端 ID、没有幂等 upsert 或按路径直接 GET；若远端可能已成功而本地未提交，必须结合 track、分页和 references 对账，无法判断时进入 `RECONCILE_REQUIRED` 且禁止自动重放。MVP 不宣称 SQLite 与 LightRAG 之间具备分布式“恰好一次”事务。
+- 远端一致性：以来源哈希、解析器/分块版本、Embedding 模型/维度、命名空间和块内容哈希生成确定性业务指纹，将其编码到全局唯一的 `file_source` basename 和 `ENERGYOPS_INGEST_MANIFEST` 文本头并由本地清单反查。LightRAG 1.5.4 不接受客户端 ID、没有幂等 upsert 或按路径直接 GET；异步提交必须保存 `track_id` 并确认 track 完成后才能标记 `SUCCEEDED`。运行中通过独立心跳续租；若远端可能已成功而本地未提交，必须同时验证 track、全部文档分页、query references 和文本头 marker，无法判断时进入 `RECONCILE_REQUIRED` 且禁止自动重放。该状态可由对账命令再次探测，MVP 不宣称 SQLite 与 LightRAG 之间具备分布式“恰好一次”事务。
 
 ## ADR-016：Agent Trace 不包含隐藏推理
 

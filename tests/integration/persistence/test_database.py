@@ -44,7 +44,10 @@ def test_database_initialization_is_idempotent_and_applies_exact_schema(
         assert connection.execute("PRAGMA busy_timeout").fetchone()[0] == 2_500
 
     assert tables == EXPECTED_TABLES
-    assert [row[0] for row in migrations] == ["0001_initial.sql"]
+    assert [row[0] for row in migrations] == [
+        "0001_initial.sql",
+        "0002_ingest_reconciliation.sql",
+    ]
 
 
 def test_explicit_transaction_rolls_back_the_whole_unit_of_work(tmp_path: Path) -> None:

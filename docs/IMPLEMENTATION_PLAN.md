@@ -591,7 +591,7 @@ Verify both PDFs and hydraulic files match the before-manifest, run unit/integra
 - Create: `scripts/reconcile_ingest.py`
 - Create: `tests/integration/rag/test_ingestion_jobs.py`
 
-- [ ] **Step 1: Write failing registration, idempotency, and crash-window tests**
+- [x] **Step 1: Write failing registration, idempotency, and crash-window tests**
 
 ```python
 def test_ingest_rejects_unregistered_path(service):
@@ -610,19 +610,19 @@ def test_remote_success_before_local_commit_requires_reconciliation(service, fak
 
 Expected RED: ingestion application service is missing.
 
-- [ ] **Step 2: Implement the internal document registry and idempotency fingerprint**
+- [x] **Step 2: Implement the internal document registry and idempotency fingerprint**
 
 Only scan configured `data/manuals` files. Register stable local `document_id`, source SHA-256, parser/chunking version, embedding model/dimension, and namespace. Compute the idempotency key and deterministic `file_source` from those values; never accept a URL or caller-provided local path.
 
-- [ ] **Step 3: Implement the worker and LightRAG 1.5.4-specific recovery rule**
+- [x] **Step 3: Implement the worker and LightRAG 1.5.4-specific recovery rule**
 
 Insert through `/documents/text(s)` and persist `track_id`. Because 1.5.4 does not provide client document IDs or reliable path lookup, treat a crash after request dispatch but before confirmed local commit as ambiguous. Reconcile by combining the saved track state, `POST /documents/paginated`, and `/query/data` references with the local manifest marker. A duplicate `file_source` 409 may confirm prior insertion only after those probes verify the matching marker; otherwise set `RECONCILE_REQUIRED` and do not replay.
 
-- [ ] **Step 4: Implement API/shared-service-only CLI paths**
+- [x] **Step 4: Implement API/shared-service-only CLI paths**
 
 `scripts/ingest_lightrag.py` must call `POST /api/v1/ingest`; `energyops ingest-worker` may reuse the same application service in-process. A source scan test must prove no script constructs raw LightRAG HTTP requests.
 
-- [ ] **Step 5: Run fault-injection tests and commit**
+- [x] **Step 5: Run fault-injection tests and commit**
 
 Run `python -m pytest tests/integration/rag/test_ingestion_jobs.py -q`; expected all duplicate, lease, crash, and reconciliation cases pass. Commit as `feat: add recoverable idempotent ingestion jobs`.
 

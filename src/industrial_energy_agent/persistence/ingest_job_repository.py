@@ -42,6 +42,8 @@ class IngestJob:
     job_id: str
     document_id: str
     idempotency_key: str
+    remote_file_source: str
+    track_id: str | None
     status: IngestJobStatus
     attempt_count: int
     max_attempts: int
@@ -73,6 +75,8 @@ class IngestJobRepository:
             job_id=row["job_id"],
             document_id=row["document_id"],
             idempotency_key=row["idempotency_key"],
+            remote_file_source=row["remote_file_source"] or f"{row['document_id']}.txt",
+            track_id=row["track_id"],
             status=IngestJobStatus(row["status"]),
             attempt_count=row["attempt_count"],
             max_attempts=row["max_attempts"],
@@ -92,17 +96,40 @@ class IngestJobRepository:
             ).fetchone()
         return None if row is None else self._from_row(row)
 
+    def get_next_expired_remote_call(self) -> IngestJob | None:
+        now = _timestamp(self._clock())
+        with self._database.connection() as connection:
+            row = connection.execute(
+                """
+                SELECT * FROM ingest_jobs
+                WHERE status = 'RUNNING' AND remote_call_started = 1
+                    AND lease_expires_at <= ?
+                ORDER BY updated_at, job_id LIMIT 1
+                """,
+                (now,),
+            ).fetchone()
+        return None if row is None else self._from_row(row)
+
     def create_pending(
         self,
         document_id: str,
         idempotency_key: str,
         *,
+        remote_file_source: str | None = None,
         max_attempts: int = 3,
     ) -> IngestJob:
         if not document_id.strip() or not idempotency_key.strip():
             raise DomainValidationError("document and idempotency identifiers are required")
         if max_attempts <= 0:
             raise DomainValidationError("max_attempts must be positive")
+        resolved_file_source = remote_file_source or f"{document_id}.txt"
+        if (
+            not resolved_file_source.strip()
+            or resolved_file_source in {".", ".."}
+            or "/" in resolved_file_source
+            or "\\" in resolved_file_source
+        ):
+            raise DomainValidationError("remote file source must be a non-empty basename")
         with self._database.connection() as connection:
             existing = connection.execute(
                 "SELECT * FROM ingest_jobs WHERE idempotency_key = ?",
@@ -110,7 +137,11 @@ class IngestJobRepository:
             ).fetchone()
         if existing is not None:
             job = self._from_row(existing)
-            if job.document_id != document_id or job.max_attempts != max_attempts:
+            if (
+                job.document_id != document_id
+                or job.max_attempts != max_attempts
+                or job.remote_file_source != resolved_file_source
+            ):
                 raise DomainValidationError("ingest idempotency key conflicts")
             return job
 
@@ -121,11 +152,19 @@ class IngestJobRepository:
                 connection.execute(
                     """
                     INSERT INTO ingest_jobs (
-                        job_id, document_id, idempotency_key, status,
+                        job_id, document_id, idempotency_key, remote_file_source, status,
                         attempt_count, max_attempts, created_at, updated_at
-                    ) VALUES (?, ?, ?, 'PENDING', 0, ?, ?, ?)
+                    ) VALUES (?, ?, ?, ?, 'PENDING', 0, ?, ?, ?)
                     """,
-                    (job_id, document_id, idempotency_key, max_attempts, now, now),
+                    (
+                        job_id,
+                        document_id,
+                        idempotency_key,
+                        resolved_file_source,
+                        max_attempts,
+                        now,
+                        now,
+                    ),
                 )
         except sqlite3.IntegrityError:
             with self._database.connection() as connection:
@@ -136,7 +175,11 @@ class IngestJobRepository:
             if concurrent is None:
                 raise
             job = self._from_row(concurrent)
-            if job.document_id != document_id or job.max_attempts != max_attempts:
+            if (
+                job.document_id != document_id
+                or job.max_attempts != max_attempts
+                or job.remote_file_source != resolved_file_source
+            ):
                 raise DomainValidationError("ingest idempotency key conflicts") from None
             return job
         created = self.get(job_id)
@@ -268,6 +311,23 @@ class IngestJobRepository:
             error_message="lease owner does not match or lease expired",
         )
 
+    def mark_remote_accepted(
+        self,
+        job_id: str,
+        *,
+        owner: str,
+        track_id: str,
+    ) -> IngestJob:
+        if not track_id.strip():
+            raise DomainValidationError("track_id must be non-empty")
+        return self._owned_running_update(
+            job_id,
+            owner,
+            "track_id = ?",
+            parameters=(track_id,),
+            error_message="lease owner does not match or lease expired",
+        )
+
     def mark_succeeded(self, job_id: str, *, owner: str) -> IngestJob:
         return self._owned_running_update(
             job_id,
@@ -334,6 +394,46 @@ class IngestJobRepository:
                 """,
                 (_safe_error(error), _timestamp(self._clock()), job_id),
             )
+        return self._required(job_id)
+
+    def mark_reconciled_succeeded(self, job_id: str) -> IngestJob:
+        now = _timestamp(self._clock())
+        with self._database.transaction() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE ingest_jobs
+                SET status = 'SUCCEEDED', lease_owner = NULL,
+                    lease_expires_at = NULL, last_error = NULL, updated_at = ?
+                WHERE job_id = ? AND remote_call_started = 1 AND track_id IS NOT NULL
+                    AND (
+                        status = 'RECONCILE_REQUIRED'
+                        OR (status = 'RUNNING' AND lease_expires_at <= ?)
+                    )
+                """,
+                (now, job_id, now),
+            )
+            if cursor.rowcount != 1:
+                raise DomainValidationError("ingest job is not an expired tracked remote call")
+        return self._required(job_id)
+
+    def requeue_after_confirmed_absent(self, job_id: str) -> IngestJob:
+        now = _timestamp(self._clock())
+        with self._database.transaction() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE ingest_jobs
+                SET status = 'PENDING', lease_owner = NULL, lease_expires_at = NULL,
+                    remote_call_started = 0, track_id = NULL, last_error = NULL, updated_at = ?
+                WHERE job_id = ? AND remote_call_started = 1 AND track_id IS NOT NULL
+                    AND attempt_count < max_attempts AND (
+                        status = 'RECONCILE_REQUIRED'
+                        OR (status = 'RUNNING' AND lease_expires_at <= ?)
+                    )
+                """,
+                (now, job_id, now),
+            )
+            if cursor.rowcount != 1:
+                raise DomainValidationError("ingest job cannot be safely requeued")
         return self._required(job_id)
 
     def retry_failed(self, job_id: str) -> IngestJob:
