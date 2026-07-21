@@ -1,0 +1,117 @@
+{
+  "contract_name": "lightrag-server-rest",
+  "captured_at": "2026-07-21",
+  "package": "lightrag-hku[api]",
+  "package_version": "1.5.4",
+  "core_version": "1.5.4",
+  "binding": {
+    "llm": "openai/qwen3.7-plus",
+    "embedding": "openai/text-embedding-v4",
+    "embedding_dimension": 1024,
+    "embedding_send_dimensions": true
+  },
+  "authentication": {
+    "enabled": true,
+    "header": "X-API-Key",
+    "authorization_header_used": false,
+    "unauthenticated_status": 403,
+    "health_auth_mode_observed": "disabled",
+    "health_auth_mode_semantics": "JWT account authentication only",
+    "service_key_must_differ_from_model_key": true
+  },
+  "endpoints": {
+    "health": {
+      "method": "GET",
+      "path": "/health",
+      "response_fields": [
+        "status",
+        "webui_available",
+        "working_directory",
+        "input_directory",
+        "configuration",
+        "auth_mode",
+        "server_mode",
+        "workers",
+        "pipeline_busy",
+        "pipeline_active",
+        "pipeline_scanning",
+        "pipeline_destructive_busy",
+        "pipeline_pending_enqueues",
+        "keyed_locks",
+        "llm_queue_status",
+        "embedding_queue_status",
+        "rerank_queue_status",
+        "core_version",
+        "api_version",
+        "webui_title",
+        "webui_description"
+      ]
+    },
+    "insert_text": {
+      "method": "POST",
+      "path": "/documents/text",
+      "request_fields": ["text", "file_source"],
+      "response_fields": ["status", "message", "track_id"]
+    },
+    "insert_texts": {
+      "method": "POST",
+      "path": "/documents/texts",
+      "request_fields": ["texts", "file_sources"],
+      "response_fields": ["status", "message", "track_id"]
+    },
+    "track_status": {
+      "method": "GET",
+      "path": "/documents/track_status/{track_id}",
+      "response_fields": ["track_id", "documents", "total_count", "status_summary"],
+      "document_fields": [
+        "id",
+        "content_summary",
+        "content_length",
+        "status",
+        "created_at",
+        "updated_at",
+        "track_id",
+        "chunks_count",
+        "error_msg",
+        "metadata",
+        "file_path"
+      ]
+    },
+    "paginated_documents": {
+      "method": "POST",
+      "path": "/documents/paginated",
+      "response_fields": ["documents", "pagination", "status_counts"],
+      "pagination_fields": [
+        "page",
+        "page_size",
+        "total_count",
+        "total_pages",
+        "has_next",
+        "has_prev"
+      ]
+    },
+    "query_data": {
+      "method": "POST",
+      "path": "/query/data",
+      "response_fields": ["status", "message", "data", "metadata"],
+      "data_fields": ["entities", "relationships", "chunks", "references"]
+    }
+  },
+  "public_query_modes": ["local", "global", "hybrid", "naive", "mix"],
+  "server_schema_modes_not_exposed": ["bypass"],
+  "verified_limitations": [
+    "no arbitrary metadata filter",
+    "no client-defined document id",
+    "no idempotent upsert",
+    "no path-based document get",
+    "no independent sources endpoint"
+  ],
+  "probe": {
+    "host": "127.0.0.1",
+    "port": 19621,
+    "working_directory_isolated": true,
+    "single_insert": "success",
+    "batch_insert": "success",
+    "all_public_query_modes": "success"
+  }
+}

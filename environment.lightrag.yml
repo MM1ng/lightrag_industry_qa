@@ -1,0 +1,8 @@
+name: energyops-lightrag
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - lightrag-hku[api]==1.5.4

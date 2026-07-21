@@ -468,11 +468,11 @@ Expected: four `PASS` summaries with model IDs and dimensions but no key/token c
 - Create: `tests/smoke/test_lightrag_server.py`
 - Create: `docs/compatibility/LIGHTRAG_REST.md`
 
-- [ ] **Step 1: Create an isolated LightRAG service environment and probe before coding the adapter**
+- [x] **Step 1: Create an isolated LightRAG service environment and probe before coding the adapter**
 
 Create `energyops-lightrag` from `environment.lightrag.yml` with Python 3.11 and `lightrag-hku[api]==1.5.4`; do not install the release candidate or an unpinned `latest` image. Record package/version/CLI help, start the server on `127.0.0.1` in a hidden process, and probe `GET /health`, `POST /documents/text`, `POST /documents/texts`, `GET /documents/track_status/{track_id}`, `POST /documents/paginated`, and `POST /query/data`. Configure a dedicated `LIGHTRAG_API_KEY` that is not the BaiLian key and send it only through `X-API-Key` on protected routes. Record exact response fields in `config/lightrag_contract.json`; do not infer them from historical examples.
 
-- [ ] **Step 2: Write failing adapter contract tests from the captured contract**
+- [x] **Step 2: Write failing adapter contract tests from the captured contract**
 
 ```python
 @pytest.mark.parametrize("mode", ["local", "global", "hybrid", "naive", "mix"])
@@ -522,15 +522,15 @@ def test_business_package_never_imports_lightrag():
 
 Expected RED: adapter and verified mapping are missing.
 
-- [ ] **Step 3: Implement the stable REST adapter and fake**
+- [x] **Step 3: Implement the stable REST adapter and fake**
 
 Expose `health_check`, `ingest_documents`, `track_status`, `search`, and `get_sources`. Send the dedicated internal token as `X-API-Key` and never reuse or log `DASHSCOPE_API_KEY`. Use `/query/data` so retrieval returns chunks/references without a second generated answer, and parse its real nested shape under `data.entities`, `data.relationships`, `data.chunks`, and `data.references` rather than assuming flat top-level arrays. Treat HTTP 200 with `status="failure"` as an application failure. `get_sources` must resolve LightRAG references through the local manifest because 1.5.4 has no independent sources endpoint. Normalize empty result, unavailable, invalid request, duplicate `file_source` 409, unauthorized, rate limit, and timeout errors. Do not silently map an unsupported public mode to another mode.
 
-- [ ] **Step 4: Verify all required modes against the locked server**
+- [x] **Step 4: Verify all required modes against the locked server**
 
 Run `python scripts/probe_lightrag_contract.py --require-all-modes`; verify `local`, `global`, `hybrid`, `naive`, and `mix` are accepted by `/query/data`. Record that 1.5.4 has no arbitrary metadata filter, client-defined document ID, idempotent upsert, path GET, or independent sources endpoint; the adapter must never pretend those capabilities exist.
 
-- [ ] **Step 5: Commit the verified boundary**
+- [x] **Step 5: Commit the verified boundary**
 
 Run unit and marked smoke tests; commit package pin, contract, adapter, script, and compatibility note as `feat: integrate locked LightRAG REST contract`.
 

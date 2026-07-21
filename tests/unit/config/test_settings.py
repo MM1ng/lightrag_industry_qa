@@ -22,6 +22,8 @@ def clear_relevant_environment(monkeypatch: pytest.MonkeyPatch) -> None:
         "LLM_MAX_OUTPUT_TOKENS",
         "LIGHTRAG_BASE_URL",
         "LIGHTRAG_API_KEY",
+        "LIGHTRAG_TIMEOUT_SECONDS",
+        "LIGHTRAG_MAX_RETRIES",
         "STREAMLIT_API_BASE_URL",
         "CORS_ALLOWED_ORIGINS",
         "DATABASE_URL",
@@ -223,6 +225,26 @@ def test_bailian_defaults_are_locked() -> None:
     assert settings.llm_max_concurrency == 4
     assert settings.llm_max_input_tokens == 32768
     assert settings.llm_max_output_tokens == 4096
+
+
+def test_lightrag_rest_defaults_are_bounded() -> None:
+    settings = Settings(_env_file=None)
+
+    assert str(settings.lightrag_base_url).rstrip("/") == "http://127.0.0.1:9621"
+    assert settings.lightrag_timeout_seconds == 60
+    assert settings.lightrag_max_retries == 2
+
+
+def test_lightrag_service_key_must_differ_from_model_key(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("LLM_API_KEY", "test-only-shared-secret")
+    monkeypatch.setenv("LIGHTRAG_API_KEY", "test-only-shared-secret")
+
+    with pytest.raises(ValidationError, match="must differ") as error:
+        Settings(_env_file=None)
+
+    assert "test-only-shared-secret" not in str(error.value)
 
 
 @pytest.mark.parametrize(

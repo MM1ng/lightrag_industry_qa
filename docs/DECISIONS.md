@@ -22,9 +22,9 @@
 
 ## ADR-002：LightRAG 使用独立 REST 服务
 
-- 状态：Accepted with validation gate
+- 状态：Accepted（2026-07-21 已通过 Windows/Python 3.11 真实 REST Smoke）
 - 决策：MVP 的真实 RAG 后端只支持 LightRAG Server REST API，不同时实现本地库运行模式。
-- 目标版本：`lightrag-hku[api]==1.5.4`；开发时必须通过 Python 3.11/Windows 安装与 REST Smoke 后才视为最终锁定。业务环境不安装或导入 LightRAG，服务使用独立 Conda 环境。
+- 锁定版本：`lightrag-hku[api]==1.5.4`；已通过 Python 3.11/Windows 安装、独立端口启动、认证、单/批量导入、track、paginated 和五种查询模式 Smoke。业务环境不安装或导入 LightRAG，服务使用独立 Conda 环境。
 - 原因：更接近生产边界，可独立管理索引、健康状态、超时和扩展。
 - 后果：FastAPI 只能通过 `LightRAGRestAdapter` 调用；业务代码不得直接 `import lightrag` 或修改其工作目录。
 - 验证门：开发开始后先锁定当前版本，核验真实启动命令、健康检查、导入、查询模式和来源返回结构，再实现适配器。

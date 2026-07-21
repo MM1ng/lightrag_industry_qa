@@ -6,7 +6,7 @@ import re
 from typing import Annotated, Literal
 from urllib.parse import urlsplit
 
-from pydantic import AnyHttpUrl, Field, SecretStr, field_validator
+from pydantic import AnyHttpUrl, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 BEIJING_SHARED_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
@@ -84,6 +84,7 @@ class Settings(BaseSettings):
     lightrag_base_url: AnyHttpUrl = AnyHttpUrl("http://127.0.0.1:9621")
     lightrag_api_key: SecretStr | None = Field(default=None, repr=False)
     lightrag_timeout_seconds: float = Field(default=60.0, gt=0, le=600)
+    lightrag_max_retries: int = Field(default=2, ge=0, le=10)
 
     database_url: str = Field(
         default="sqlite:///data/processed/energyops.sqlite3",
@@ -206,3 +207,16 @@ class Settings(BaseSettings):
         if "llm_base_url" in self.model_fields_set:
             return "explicit"
         return "beijing_shared_fallback"
+
+    @model_validator(mode="after")
+    def require_distinct_lightrag_service_key(self) -> Settings:
+        """Prevent reuse of the external model credential as an internal service token."""
+
+        model_key = self.llm_api_key
+        if (
+            self.lightrag_api_key is not None
+            and model_key is not None
+            and self.lightrag_api_key.get_secret_value() == model_key.get_secret_value()
+        ):
+            raise ValueError("LIGHTRAG_API_KEY must differ from the BaiLian model key")
+        return self
