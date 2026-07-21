@@ -217,7 +217,7 @@ Expected GREEN: all domain/citation tests pass.
 - Create: `tests/unit/data_processing/test_hydraulic_schema.py`
 - Create: `tests/integration/data_processing/test_real_input_contract.py`
 
-- [ ] **Step 1: Write failing manifest and schema tests**
+- [x] **Step 1: Write failing manifest and schema tests**
 
 ```python
 def test_manifest_records_relative_path_size_and_sha256(tmp_path):
@@ -239,11 +239,11 @@ def test_sensor_registry_contains_exactly_seventeen_matrices():
 
 Expected RED: manifest and sensor registry modules are missing.
 
-- [ ] **Step 2: Implement immutable manifests and strict file inspection**
+- [x] **Step 2: Implement immutable manifests and strict file inspection**
 
 `build_manifest` must traverse files only, use normalized relative paths, stream SHA-256 reads, and never write under the source. `inspect_hydraulic_dataset` must inspect the 17 named matrices and `profile.txt`, explicitly exclude `description.txt` and `documentation.txt`, and return structured errors with file/cycle/column locations for nonnumeric, nonfinite, short, long, or inconsistent rows.
 
-- [ ] **Step 3: Run unit tests, then the real-data contract test**
+- [x] **Step 3: Run unit tests, then the real-data contract test**
 
 Run:
 
@@ -255,7 +255,7 @@ D:\anaconda\Scripts\conda.exe run -n energyops-copilot python scripts/inspect_da
 
 Expected: the report confirms 17 matrices, 2,205 cycles, 100/10/1 Hz point counts, five profile labels, and writes `data/processed/manifests/source_before.json` atomically.
 
-- [ ] **Step 4: Verify protected files are unchanged and commit**
+- [x] **Step 4: Verify protected files are unchanged and commit**
 
 Run `python scripts/inspect_dataset.py --compare-manifest data/processed/manifests/source_before.json`; expect zero changes. Commit as `feat: add immutable source data inspection`.
 
