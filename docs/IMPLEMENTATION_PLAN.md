@@ -547,7 +547,7 @@ Run unit and marked smoke tests; commit package pin, contract, adapter, script, 
 - Create: `tests/unit/rag/test_chunking.py`
 - Create: `tests/integration/rag/test_real_manuals.py`
 
-- [ ] **Step 1: Write failing fallback and metadata tests**
+- [x] **Step 1: Write failing fallback and metadata tests**
 
 ```python
 def test_auto_parser_falls_back_for_entire_document(mineru_failure, pymupdf_parser, pdf_path):
@@ -564,19 +564,19 @@ def test_chunks_never_cross_physical_pages(parsed_document):
 
 Expected RED: parser interfaces do not exist.
 
-- [ ] **Step 2: Implement parser protocol, optional MinerU adapter, and PyMuPDF parser**
+- [x] **Step 2: Implement parser protocol, optional MinerU adapter, and PyMuPDF parser**
 
 Detect MinerU availability without importing it during ordinary startup. If unavailable or parsing fails, invoke PyMuPDF once for the complete PDF. Preserve all required metadata and page statuses; use `null` section title and empty limitation/warning lists rather than omitting fields.
 
-- [ ] **Step 3: Implement deterministic within-page chunking**
+- [x] **Step 3: Implement deterministic within-page chunking**
 
 Normalize whitespace, split only within a physical page, retain nearby table context without inventing cell structure, and compute `<doc_id>:p<page>:c<ordinal>:<text_hash8>` from stable inputs. Treat extracted PDF text as untrusted evidence, never instructions.
 
-- [ ] **Step 4: Parse the real manuals and verify reports**
+- [x] **Step 4: Parse the real manuals and verify reports**
 
 Run `python scripts/parse_manuals.py --parser auto`. Expected: reports cover exactly 55 and 62 physical pages; every chunk has the full schema and a source hash; blank/image/table limitations are explicit.
 
-- [ ] **Step 5: Recompare source manifests and commit**
+- [x] **Step 5: Recompare source manifests and commit**
 
 Verify both PDFs and hydraulic files match the before-manifest, run unit/integration parser tests, and commit as `feat: parse manuals with traceable fallback`.
 

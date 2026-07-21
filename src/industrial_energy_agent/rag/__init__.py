@@ -18,11 +18,23 @@ from industrial_energy_agent.rag.citations import (
     format_synthetic_citation,
     validate_citation,
 )
+from industrial_energy_agent.rag.document_parser import (
+    AutoDocumentParser,
+    DocumentChunk,
+    DocumentParser,
+    PageStatus,
+    ParsedDocument,
+)
 
 __all__ = [
+    "AutoDocumentParser",
     "CitationSource",
+    "DocumentChunk",
+    "DocumentParser",
     "HealthStatus",
     "IngestResult",
+    "PageStatus",
+    "ParsedDocument",
     "RAGAdapter",
     "RAGDocument",
     "SearchResult",
