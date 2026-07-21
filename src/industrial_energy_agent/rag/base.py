@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Literal, Protocol, TypeAlias
 
-from pydantic import BaseModel, ConfigDict, Field, JsonValue, field_validator
+from pydantic import BaseModel, ConfigDict, Field, JsonValue, field_validator, model_validator
 
 VerifiedSearchMode: TypeAlias = Literal["local", "global", "hybrid", "naive", "mix"]
 JsonObject: TypeAlias = dict[str, JsonValue]
@@ -176,6 +176,19 @@ class SearchResult(BaseModel):
     metadata: JsonObject
 
 
+class CitationChunkSource(BaseModel):
+    """Authoritative local manifest metadata for one physical-page chunk."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, str_strip_whitespace=True)
+
+    chunk_id: str = Field(min_length=1, max_length=512)
+    source_file: str = Field(min_length=1, max_length=512)
+    document_title: str = Field(min_length=1, max_length=512)
+    page_number: int = Field(ge=1)
+    section_title: str | None = Field(default=None, min_length=1, max_length=512)
+    text: str = Field(min_length=1)
+
+
 class CitationSource(BaseModel):
     """Locally resolved source metadata for a LightRAG reference."""
 
@@ -185,6 +198,16 @@ class CitationSource(BaseModel):
     file_source: str = Field(min_length=1)
     document_id: str | None = None
     chunk_ids: tuple[str, ...] = ()
+    chunks: tuple[CitationChunkSource, ...] = ()
+
+    @model_validator(mode="after")
+    def chunk_index_is_consistent(self) -> CitationSource:
+        authoritative_ids = tuple(chunk.chunk_id for chunk in self.chunks)
+        if self.chunks and self.chunk_ids != authoritative_ids:
+            raise ValueError("citation source chunk index is inconsistent")
+        if len(set(self.chunk_ids)) != len(self.chunk_ids):
+            raise ValueError("citation source chunk IDs must be unique")
+        return self
 
 
 class RAGCallSummary(BaseModel):

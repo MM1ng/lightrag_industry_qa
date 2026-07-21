@@ -18,7 +18,10 @@ from industrial_energy_agent.data_processing.hydraulic_pipeline import (
     run_hydraulic_pipeline,
 )
 from industrial_energy_agent.data_processing.hydraulic_schema import SensorSpec
-from industrial_energy_agent.data_processing.sensor_repository import SensorRepository
+from industrial_energy_agent.data_processing.sensor_repository import (
+    CycleNotFoundError,
+    SensorRepository,
+)
 
 TEST_SENSOR_SPECS = MappingProxyType(
     {
@@ -232,8 +235,8 @@ def test_sensor_repository_returns_summaries_warnings_and_unit_deltas(
     assert comparison.warnings == ("周期2可能尚未达到稳态",)
 
 
-@pytest.mark.parametrize("cycle_id", [0, 3, True])
-def test_sensor_repository_rejects_out_of_range_cycle_id(
+@pytest.mark.parametrize("cycle_id", [0, 3])
+def test_sensor_repository_reports_missing_cycle_id(
     tmp_path: Path,
     cycle_id: object,
 ) -> None:
@@ -248,8 +251,24 @@ def test_sensor_repository_rejects_out_of_range_cycle_id(
     )
     repository = SensorRepository(output / "cycle_features.parquet")
 
-    with pytest.raises(ValueError, match="cycle_id"):
+    with pytest.raises(CycleNotFoundError, match="cycle_id"):
         repository.get_cycle(cycle_id)  # type: ignore[arg-type]
+
+
+def test_sensor_repository_rejects_non_integer_cycle_id(tmp_path: Path) -> None:
+    source = tmp_path / "source"
+    output = tmp_path / "processed"
+    _write_valid_source(source)
+    run_hydraulic_pipeline(
+        source,
+        output,
+        sensor_specs=TEST_SENSOR_SPECS,
+        expected_cycles=2,
+    )
+    repository = SensorRepository(output / "cycle_features.parquet")
+
+    with pytest.raises(ValueError, match="cycle_id"):
+        repository.get_cycle(True)
 
 
 def test_sensor_repository_comparison_requires_two_unique_cycles(tmp_path: Path) -> None:

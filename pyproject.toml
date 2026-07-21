@@ -48,6 +48,9 @@ energyops = "industrial_energy_agent.cli:main"
 [tool.hatch.build.targets.wheel]
 packages = ["src/industrial_energy_agent"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"data/synthetic/fault_cases.json" = "industrial_energy_agent/resources/fault_cases.json"
+
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"
 testpaths = ["tests"]

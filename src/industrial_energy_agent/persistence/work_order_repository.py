@@ -11,6 +11,15 @@ from industrial_energy_agent.domain.models import WorkOrderDraft
 from industrial_energy_agent.persistence.database import Database
 
 
+class WorkOrderConflictError(DomainValidationError):
+    """An idempotency identity was reused with a different immutable payload."""
+
+
+def same_idempotent_payload(first: WorkOrderDraft, second: WorkOrderDraft) -> bool:
+    mutable_fields = {"request_id", "created_at", "status", "approval_status", "executed"}
+    return first.model_dump(exclude=mutable_fields) == second.model_dump(exclude=mutable_fields)
+
+
 class WorkOrderRepository:
     def __init__(self, database: Database) -> None:
         self._database = database
@@ -50,11 +59,32 @@ class WorkOrderRepository:
                     ),
                 )
             except sqlite3.IntegrityError as error:
-                raise DomainValidationError("work order could not be persisted") from error
-        persisted = self.get(draft.work_order_id)
-        if persisted is None:
-            raise RuntimeError("work order insert did not persist a row")
-        return persisted
+                row = connection.execute(
+                    """
+                    SELECT payload_json, status, approval_status, executed
+                    FROM work_orders WHERE work_order_id = ?
+                    """,
+                    (draft.work_order_id,),
+                ).fetchone()
+                if row is None:
+                    raise DomainValidationError("work order could not be persisted") from error
+                existing = self._from_row(row)
+                if not same_idempotent_payload(existing, draft):
+                    raise WorkOrderConflictError(
+                        "work order idempotency identity conflicts with existing payload"
+                    ) from error
+                return existing
+        return draft
+
+    @staticmethod
+    def _from_row(row: sqlite3.Row) -> WorkOrderDraft:
+        payload = json.loads(row["payload_json"])
+        payload.update(
+            status=row["status"],
+            approval_status=row["approval_status"],
+            executed=bool(row["executed"]),
+        )
+        return WorkOrderDraft.model_validate(payload)
 
     def get(self, work_order_id: str) -> WorkOrderDraft | None:
         with self._database.connection() as connection:
@@ -67,10 +97,4 @@ class WorkOrderRepository:
             ).fetchone()
         if row is None:
             return None
-        payload = json.loads(row["payload_json"])
-        payload.update(
-            status=row["status"],
-            approval_status=row["approval_status"],
-            executed=bool(row["executed"]),
-        )
-        return WorkOrderDraft.model_validate(payload)
+        return self._from_row(row)

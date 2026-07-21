@@ -1,6 +1,7 @@
 """Retrieval boundary helpers."""
 
 from industrial_energy_agent.rag.base import (
+    CitationChunkSource,
     CitationSource,
     HealthStatus,
     IngestResult,
@@ -28,6 +29,7 @@ from industrial_energy_agent.rag.document_parser import (
 
 __all__ = [
     "AutoDocumentParser",
+    "CitationChunkSource",
     "CitationSource",
     "DocumentChunk",
     "DocumentParser",

@@ -20,6 +20,14 @@ from industrial_energy_agent.data_processing.hydraulic_schema import (
 _UNSTABLE_WARNING = "可能尚未达到稳态"
 
 
+class CycleNotFoundError(LookupError):
+    """A requested cycle is absent from the validated processed artifact."""
+
+
+class SensorArtifactError(RuntimeError):
+    """The processed sensor artifact violates its validated read contract."""
+
+
 @dataclass(frozen=True, slots=True)
 class CycleSummary:
     cycle_id: int
@@ -38,6 +46,7 @@ class CycleComparison:
     deltas: Mapping[int, Mapping[str, float]]
     units: Mapping[str, str]
     warnings: tuple[str, ...]
+    summaries: tuple[CycleSummary, ...]
 
 
 class SensorRepository:
@@ -84,7 +93,7 @@ class SensorRepository:
         if isinstance(cycle_id, bool) or not isinstance(cycle_id, int):
             raise ValueError("cycle_id must be an integer in the processed range")
         if cycle_id not in self._cycle_ids:
-            raise ValueError("cycle_id is outside the processed range")
+            raise CycleNotFoundError("cycle_id is outside the processed range")
 
     def _feature_units(self, feature_names: Sequence[str]) -> dict[str, str]:
         units: dict[str, str] = {}
@@ -92,7 +101,7 @@ class SensorRepository:
             sensor_name, separator, statistic = feature_name.partition("__")
             spec = self._sensor_specs.get(sensor_name)
             if not separator or spec is None or statistic not in FEATURE_NAMES:
-                raise ValueError(f"unknown processed feature column: {feature_name}")
+                raise SensorArtifactError("processed artifact has an unknown feature column")
             units[feature_name] = f"{spec.unit}/s" if statistic == "slope" else spec.unit
         return units
 
@@ -100,12 +109,15 @@ class SensorRepository:
         """Return one 1-based cycle summary from the processed artifact."""
 
         self._validate_cycle_id(cycle_id)
-        frame = pd.read_parquet(
-            self._parquet_path,
-            filters=[("cycle_id", "=", cycle_id)],
-        )
+        try:
+            frame = pd.read_parquet(
+                self._parquet_path,
+                filters=[("cycle_id", "=", cycle_id)],
+            )
+        except Exception as error:
+            raise SensorArtifactError("processed sensor artifact could not be read") from error
         if len(frame) != 1:
-            raise RuntimeError("processed artifact did not return exactly one cycle")
+            raise SensorArtifactError("processed artifact did not return exactly one cycle")
         row = frame.iloc[0]
         labels = {
             label.name: int(row[label.name])
@@ -113,7 +125,7 @@ class SensorRepository:
             if label.name in frame.columns
         }
         if len(labels) != len(PROFILE_LABELS):
-            raise ValueError("processed sensor artifact is missing profile labels")
+            raise SensorArtifactError("processed sensor artifact is missing profile labels")
         feature_names = [name for name in self._columns if "__" in name]
         features = {name: float(row[name]) for name in feature_names}
         warnings = (_UNSTABLE_WARNING,) if labels["stable_flag"] == 1 else ()
@@ -152,4 +164,5 @@ class SensorRepository:
             deltas=deltas,
             units=baseline.units,
             warnings=warnings,
+            summaries=summaries,
         )

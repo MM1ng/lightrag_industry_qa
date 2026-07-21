@@ -20,6 +20,7 @@ from industrial_energy_agent.persistence.ingest_job_repository import (
     IngestJobRepository,
 )
 from industrial_energy_agent.rag.base import (
+    CitationChunkSource,
     CitationSource,
     IngestResult,
     RAGConflictError,
@@ -84,6 +85,7 @@ class RegisteredDocument(BaseModel):
     idempotency_key: str = Field(min_length=1)
     remote_file_source: str = Field(min_length=1, max_length=255)
     chunk_ids: tuple[str, ...]
+    citation_chunks: tuple[CitationChunkSource, ...]
     manifest_marker: str = Field(min_length=1, repr=False)
     rag_text: str = Field(min_length=1, repr=False)
 
@@ -290,6 +292,17 @@ class DocumentRegistry:
             idempotency_key=f"ingest:sha256:{fingerprint}",
             remote_file_source=remote_file_source,
             chunk_ids=tuple(chunk.chunk_id for chunk in chunks),
+            citation_chunks=tuple(
+                CitationChunkSource(
+                    chunk_id=chunk.chunk_id,
+                    source_file=chunk.source_file,
+                    document_title=chunk.document_title,
+                    page_number=chunk.page_number,
+                    section_title=chunk.section_title,
+                    text=chunk.text,
+                )
+                for chunk in chunks
+            ),
             manifest_marker=manifest_marker,
             rag_text=rag_text,
         )
@@ -314,6 +327,7 @@ class DocumentRegistry:
                         file_source=document.remote_file_source,
                         document_id=document.document_id,
                         chunk_ids=document.chunk_ids,
+                        chunks=document.citation_chunks,
                     )
                 )
         return resolved
