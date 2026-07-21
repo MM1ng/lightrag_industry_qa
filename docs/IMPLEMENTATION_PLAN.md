@@ -408,7 +408,7 @@ Run `python -m pytest tests/integration/persistence -q`; expected all SQLite lif
 - Create: `tests/smoke/test_bailian_provider.py`
 - Create: `docs/compatibility/BAILIAN_OPENAI_COMPATIBLE.md`
 
-- [ ] **Step 1: Write failing request-shape and validation tests**
+- [x] **Step 1: Write failing request-shape and validation tests**
 
 ```python
 def test_embedding_uses_confirmed_openai_compatible_parameters(fake_client):
@@ -429,19 +429,19 @@ def test_json_mode_is_non_thinking_and_pydantic_validated(fake_client):
 
 Expected RED: providers are missing.
 
-- [ ] **Step 2: Implement dependency-injected chat and embedding providers**
+- [x] **Step 2: Implement dependency-injected chat and embedding providers**
 
 Support text, JSON Mode, and tool calls; validate every structured result with Pydantic; apply bounded timeout/retry for retryable transport/429/5xx failures only; never log prompts containing secrets or authorization headers. Do not claim strict JSON Schema support.
 
-- [ ] **Step 3: Add deterministic fakes and offline tests**
+- [x] **Step 3: Add deterministic fakes and offline tests**
 
 Fakes return configured Pydantic objects and record sanitized call summaries. Default pytest must never instantiate the real client.
 
-- [ ] **Step 4: Add an explicit real smoke command**
+- [x] **Step 4: Add an explicit real smoke command**
 
 `smoke_bailian.py` must read `LLM_API_KEY` or `DASHSCOPE_API_KEY` without printing it and exercise text Chat, non-thinking JSON Mode, one harmless Function Calling decision, and a 1024-dimensional embedding only when flags request them.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 Run unit tests first. Then, after all offline checks pass, run:
 
