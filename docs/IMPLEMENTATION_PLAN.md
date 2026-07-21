@@ -159,7 +159,7 @@ Expected: all three sensitive paths are reported as ignored; the initial commit 
 - Create: `tests/unit/domain/test_models.py`
 - Create: `tests/unit/rag/test_citations.py`
 
-- [ ] **Step 1: Write failing discriminated-union and invariant tests**
+- [x] **Step 1: Write failing discriminated-union and invariant tests**
 
 ```python
 def test_sensor_citation_requires_artifact_and_units():
@@ -181,11 +181,11 @@ def test_work_order_cannot_be_executed():
 
 Expected RED: imports fail because the models are absent.
 
-- [ ] **Step 2: Implement exact enums and Pydantic v2 models**
+- [x] **Step 2: Implement exact enums and Pydantic v2 models**
 
 Create `Intent`, `SourceType`, `RiskLevel`, `ActionMode`, `EvidenceGrade`, `ReviewType`, `ReviewStatus`, `WorkOrderStatus`, and `IngestJobStatus`. Define manual, sensor, and synthetic citations as a `source_type` discriminated union. Define `TraceEvent`, `StructuredError`, `DiagnosisRecord`, `WorkOrderDraft`, `RiskReview`, and `WorkOrderReview`; enforce `DRAFT`, `PENDING_REVIEW`, and `executed=false` in validators.
 
-- [ ] **Step 3: Implement server-side citation formatting and validation hooks**
+- [x] **Step 3: Implement server-side citation formatting and validation hooks**
 
 ```python
 def format_manual_citation(value: ManualCitation) -> str:
@@ -194,7 +194,7 @@ def format_manual_citation(value: ManualCitation) -> str:
 
 The formatter must not accept free-form model strings. Invalid source-specific fields must raise `CitationValidationError`.
 
-- [ ] **Step 4: Run focused tests and commit**
+- [x] **Step 4: Run focused tests and commit**
 
 Run:
 
