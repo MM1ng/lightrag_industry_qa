@@ -1,68 +1,37 @@
-"""Print a sanitized, non-network environment readiness report."""
+"""Inspect the minimal MVP environment without printing secret values."""
 
 from __future__ import annotations
 
-import platform
+import importlib.metadata
+import os
 import sys
-from importlib import metadata
+from pathlib import Path
 
-from pydantic import SecretStr, ValidationError
+from dotenv import load_dotenv
 
-from industrial_energy_agent.config.settings import Settings
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-SECRET_VARIABLES = (
-    "LLM_API_KEY",
-    "DASHSCOPE_API_KEY",
-    "LIGHTRAG_API_KEY",
-    "SERVICE_TOKEN",
-    "LANGFUSE_PUBLIC_KEY",
-    "LANGFUSE_SECRET_KEY",
-)
-
-
-def _secret_status(secret: SecretStr | None) -> str:
-    # Empty placeholders are normalized to ``None`` by Settings. Presence can
-    # therefore be reported without ever unwrapping the secret value.
-    return "SET" if secret is not None else "UNSET"
-
-
-def _distribution_version(distribution: str) -> str:
-    try:
-        return metadata.version(distribution)
-    except metadata.PackageNotFoundError:
-        return "NOT INSTALLED"
+from industrial_rag.config import DEFAULT_BAILIAN_BASE_URL  # noqa: E402
+from industrial_rag.document_parser import scan_pdf_files  # noqa: E402
 
 
 def main() -> int:
-    compatible_python = sys.version_info[:2] == (3, 11)
-    try:
-        settings = Settings()
-    except ValidationError:
-        print("EnergyOps Copilot environment")
-        print(f"Executable: {sys.executable}")
-        print("Settings: INVALID (details suppressed)")
-        return 1
-
-    secret_statuses = {
-        "LLM_API_KEY": _secret_status(settings.explicit_llm_api_key),
-        "DASHSCOPE_API_KEY": _secret_status(settings.dashscope_api_key),
-        "LIGHTRAG_API_KEY": _secret_status(settings.lightrag_api_key),
-        "SERVICE_TOKEN": _secret_status(settings.service_token),
-        "LANGFUSE_PUBLIC_KEY": _secret_status(settings.langfuse_public_key),
-        "LANGFUSE_SECRET_KEY": _secret_status(settings.langfuse_secret_key),
+    load_dotenv(PROJECT_ROOT / ".env", override=False)
+    checks = {
+        "python_3_11": sys.version_info[:2] == (3, 11),
+        "lightrag_1_5_4": importlib.metadata.version("lightrag-hku") == "1.5.4",
+        "two_pdf_manuals": len(scan_pdf_files(PROJECT_ROOT / "data" / "manuals")) == 2,
+        "beijing_endpoint": os.getenv("LLM_BASE_URL", DEFAULT_BAILIAN_BASE_URL).rstrip("/")
+        == DEFAULT_BAILIAN_BASE_URL,
+        "llm_model": os.getenv("LLM_MODEL", "qwen3.7-plus") == "qwen3.7-plus",
+        "embedding_model": os.getenv("EMBEDDING_MODEL", "text-embedding-v4") == "text-embedding-v4",
+        "embedding_dimension": os.getenv("EMBEDDING_DIM", "1024") == "1024",
     }
-
-    print("EnergyOps Copilot environment")
-    print(f"Executable: {sys.executable}")
-    print(f"Python: {platform.python_version()}")
-    print(f"Python 3.11 compatible: {'YES' if compatible_python else 'NO'}")
-    print(f"Project package: {_distribution_version('energyops-copilot')}")
-    print(f"Pydantic: {_distribution_version('pydantic')}")
-    print(f"LLM base URL source: {settings.llm_base_url_source.upper()}")
-    print("Secret configuration (values are never printed):")
-    for variable_name in SECRET_VARIABLES:
-        print(f"  {variable_name}: {secret_statuses[variable_name]}")
-    return 0 if compatible_python else 1
+    for name, passed in checks.items():
+        print(f"{'PASS' if passed else 'FAIL'} {name}")
+    print(f"{'PASS' if os.getenv('DASHSCOPE_API_KEY') else 'WARN'} dashscope_api_key_present")
+    return 0 if all(checks.values()) else 1
 
 
 if __name__ == "__main__":

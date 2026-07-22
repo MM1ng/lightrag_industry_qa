@@ -3,78 +3,61 @@ requires = ["hatchling>=1.27,<2"]
 build-backend = "hatchling.build"
 
 [project]
-name = "energyops-copilot"
+name = "industrial-rag"
 version = "0.1.0"
-description = "Safety-first industrial equipment operations knowledge and decision assistant"
+description = "LightRAG knowledge-base QA for industrial centrifugal-pump manuals"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
-license = { text = "Proprietary educational MVP" }
-authors = [{ name = "EnergyOps Copilot Team" }]
 dependencies = [
-  "fastapi>=0.116,<1",
-  "uvicorn[standard]>=0.35,<1",
-  "pydantic>=2.11,<3",
-  "pydantic-settings>=2.10,<3",
-  "httpx>=0.28,<1",
+  "lightrag-hku==1.5.4",
   "openai>=1.97,<3",
-  "langchain>=0.3,<2",
-  "langchain-core>=0.3,<2",
-  "langgraph>=0.4,<2",
-  "numpy>=1.26,<3",
-  "pandas>=2.2,<4",
-  "pyarrow>=17,<25",
   "PyMuPDF>=1.24,<2",
-  "streamlit>=1.46,<2",
-  "tenacity>=8.5,<10",
   "python-dotenv>=1.0,<2",
-  "structlog>=24,<27",
-  "typing-extensions>=4.12,<5",
+  "streamlit>=1.46,<2",
 ]
 
 [project.optional-dependencies]
 dev = [
-  "mypy>=1.16,<2",
   "pytest>=8.4,<10",
   "pytest-asyncio>=1.0,<2",
-  "pytest-cov>=6.2,<8",
-  "pytest-httpx>=0.35,<1",
-  "respx>=0.22,<1",
   "ruff>=0.12,<1",
 ]
 
-[project.scripts]
-energyops = "industrial_energy_agent.cli:main"
-
 [tool.hatch.build.targets.wheel]
-packages = ["src/industrial_energy_agent"]
-
-[tool.hatch.build.targets.wheel.force-include]
-"data/synthetic/fault_cases.json" = "industrial_energy_agent/resources/fault_cases.json"
+packages = ["src/industrial_rag"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"
-testpaths = ["tests"]
-markers = [
-  "external: requires an explicitly enabled external service or model API",
-  "smoke: live compatibility smoke test",
+testpaths = [
+  "tests/test_document_parser.py",
+  "tests/test_citation_formatter.py",
+  "tests/test_lightrag_service.py",
 ]
+pythonpath = ["src"]
+asyncio_mode = "strict"
 
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-src = ["src", "tests"]
+src = ["src/industrial_rag", "tests"]
+include = [
+  "src/industrial_rag/**/*.py",
+  "tests/test_document_parser.py",
+  "tests/test_citation_formatter.py",
+  "tests/test_lightrag_service.py",
+  "scripts/inspect_environment.py",
+  "scripts/parse_manuals.py",
+  "scripts/ingest_documents.py",
+  "scripts/smoke_test.py",
+  "app/streamlit_app.py",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
 ignore = ["E501"]
+allowed-confusables = ["，", "：", "；", "！", "？", "（", "）", "｜"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
-
-[tool.mypy]
-python_version = "3.11"
-strict = true
-packages = ["industrial_energy_agent"]
-warn_unused_configs = true

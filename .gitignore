@@ -42,7 +42,7 @@ models/
 model_cache/
 .model_cache/
 lightrag_data/
-lightrag_storage/
+lightrag_storage*/
 rag_storage/
 vector_store/
 graph_storage/

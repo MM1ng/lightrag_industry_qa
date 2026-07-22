@@ -1,0 +1,238 @@
+"""Small service around the verified official LightRAG 1.5.4 async API."""
+
+from __future__ import annotations
+
+import hashlib
+from collections.abc import Sequence
+from dataclasses import dataclass
+from functools import partial
+from typing import Any, Literal, Protocol, cast
+
+from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
+from industrial_rag.config import (
+    SUPPORTED_QUERY_MODES,
+    Settings,
+    check_storage_compatibility,
+    write_storage_metadata,
+)
+from industrial_rag.document_parser import DocumentChunk
+
+QueryMode = Literal["mix", "local", "global", "naive"]
+INSUFFICIENT_EVIDENCE_MESSAGE = "手册中未检索到充分依据，无法可靠回答该问题。"
+_SYSTEM_PROMPT = (
+    "你是工业离心泵手册问答助手。只能依据检索到的手册内容回答；"
+    f"依据不足时必须原样回答：{INSUFFICIENT_EVIDENCE_MESSAGE} "
+    "不要猜测、补写或编造文件名和页码。"
+)
+_CHUNK_BOUNDARY = "\n\n<<<INDUSTRIAL_RAG_CHUNK_BOUNDARY>>>\n\n"
+
+
+@dataclass(frozen=True, slots=True)
+class QueryOptions:
+    mode: QueryMode
+    top_k: int = 12
+    chunk_top_k: int = 8
+    enable_rerank: bool = False
+
+
+@dataclass(frozen=True, slots=True)
+class QueryResult:
+    answer: str
+    citations: tuple[Citation, ...]
+    mode: QueryMode
+
+
+class LightRAGBackend(Protocol):
+    async def initialize_storages(self) -> None: ...
+
+    async def finalize_storages(self) -> None: ...
+
+    async def ainsert(self, input: list[str], **kwargs: object) -> str: ...
+
+    async def get_track_status(self, track_id: str) -> dict[str, str]: ...
+
+    async def aquery_data(self, query: str, param: QueryOptions) -> dict[str, object]: ...
+
+    async def aquery(self, query: str, param: QueryOptions, system_prompt: str) -> str: ...
+
+
+class _OfficialBackend:
+    def __init__(self, rag: Any, query_param_type: type[Any]) -> None:
+        self._rag = rag
+        self._query_param_type = query_param_type
+
+    def _param(self, value: QueryOptions) -> Any:
+        return self._query_param_type(
+            mode=value.mode,
+            top_k=value.top_k,
+            chunk_top_k=value.chunk_top_k,
+            enable_rerank=value.enable_rerank,
+        )
+
+    async def initialize_storages(self) -> None:
+        await self._rag.initialize_storages()
+
+    async def finalize_storages(self) -> None:
+        await self._rag.finalize_storages()
+
+    async def ainsert(self, input: list[str], **kwargs: object) -> str:
+        return cast(str, await self._rag.ainsert(input=input, **kwargs))
+
+    async def get_track_status(self, track_id: str) -> dict[str, str]:
+        documents = await self._rag.aget_docs_by_track_id(track_id)
+        return {
+            doc_id: str(getattr(document.status, "value", document.status)).casefold()
+            for doc_id, document in documents.items()
+        }
+
+    async def aquery_data(self, query: str, param: QueryOptions) -> dict[str, object]:
+        return cast(dict[str, object], await self._rag.aquery_data(query, self._param(param)))
+
+    async def aquery(self, query: str, param: QueryOptions, system_prompt: str) -> str:
+        result = await self._rag.aquery(
+            query,
+            self._param(param),
+            system_prompt=system_prompt,
+        )
+        if not isinstance(result, str):
+            raise RuntimeError("LightRAG returned a streaming response unexpectedly")
+        return result
+
+
+def build_official_backend(settings: Settings) -> LightRAGBackend:
+    """Build against the locally installed HKUDS LightRAG API, with explicit 1024 dimensions."""
+
+    try:
+        from lightrag import LightRAG, QueryParam
+        from lightrag.llm.openai import openai_complete_if_cache, openai_embed
+        from lightrag.utils import EmbeddingFunc
+    except ImportError as error:
+        raise RuntimeError("未安装官方 lightrag-hku；请按 requirements.txt 安装依赖") from error
+
+    async def llm_model_func(
+        prompt: str,
+        system_prompt: str | None = None,
+        history_messages: list[dict[str, Any]] | None = None,
+        **kwargs: Any,
+    ) -> str:
+        kwargs.pop("model", None)
+        return await openai_complete_if_cache(
+            model=settings.llm_model,
+            prompt=prompt,
+            system_prompt=system_prompt,
+            history_messages=history_messages or [],
+            base_url=settings.llm_base_url,
+            api_key=settings.api_key,
+            **kwargs,
+        )
+
+    embedding_func = EmbeddingFunc(
+        embedding_dim=settings.embedding_dim,
+        max_token_size=8192,
+        func=partial(
+            openai_embed.func,
+            model=settings.embedding_model,
+            base_url=settings.llm_base_url,
+            api_key=settings.api_key,
+        ),
+        send_dimensions=True,
+        model_name=settings.embedding_model,
+        supports_asymmetric=True,
+    )
+    rag = LightRAG(
+        working_dir=str(settings.working_dir),
+        llm_model_func=llm_model_func,
+        llm_model_name=settings.llm_model,
+        embedding_func=embedding_func,
+        chunk_token_size=1600,
+        enable_content_headings=True,
+        entity_extract_max_gleaning=0,
+        entity_extract_max_records=12,
+        entity_extract_max_entities=12,
+        max_parallel_insert=1,
+    )
+    return _OfficialBackend(rag, QueryParam)
+
+
+class LightRAGService:
+    def __init__(self, settings: Settings, *, backend: LightRAGBackend | None = None) -> None:
+        self.settings = settings
+        self._backend = backend or build_official_backend(settings)
+        self._initialized = False
+
+    async def initialize(self) -> None:
+        check_storage_compatibility(
+            self.settings.working_dir,
+            self.settings.embedding_model,
+            self.settings.embedding_dim,
+        )
+        await self._backend.initialize_storages()
+        write_storage_metadata(
+            self.settings.working_dir,
+            self.settings.embedding_model,
+            self.settings.embedding_dim,
+        )
+        self._initialized = True
+
+    async def close(self) -> None:
+        if self._initialized:
+            await self._backend.finalize_storages()
+            self._initialized = False
+
+    async def ingest(self, chunks: Sequence[DocumentChunk]) -> str:
+        if not self._initialized:
+            raise RuntimeError("LightRAG 尚未初始化")
+        if not chunks:
+            raise ValueError("没有可导入的文档块")
+        by_source: dict[str, list[DocumentChunk]] = {}
+        for chunk in chunks:
+            by_source.setdefault(chunk.source_file, []).append(chunk)
+        last_track_id = ""
+        for source_file, source_chunks in by_source.items():
+            rendered_chunks: list[str] = []
+            for chunk in source_chunks:
+                section = chunk.section_title or "未识别章节"
+                citation = Citation(chunk.source_file, chunk.page_number, chunk.chunk_id)
+                rendered_chunks.append(
+                    f"{encode_chunk_header(citation)}\n"
+                    f"[来源：{chunk.source_file}，第{chunk.page_number}页，章节：{section}]\n"
+                    f"{chunk.text}"
+                )
+            identity = hashlib.sha256(
+                "\n".join(chunk.chunk_id for chunk in source_chunks).encode("utf-8")
+            ).hexdigest()[:20]
+            last_track_id = await self._backend.ainsert(
+                input=[_CHUNK_BOUNDARY.join(rendered_chunks)],
+                ids=[f"manual-{identity}"],
+                file_paths=[source_file],
+                split_by_character=_CHUNK_BOUNDARY,
+                split_by_character_only=True,
+            )
+            statuses = await self._backend.get_track_status(last_track_id)
+            if not statuses or set(statuses.values()) != {"processed"}:
+                raise RuntimeError(
+                    f"手册 {source_file} 导入失败，LightRAG 状态: {statuses or 'missing'}"
+                )
+        return last_track_id
+
+    async def query(self, question: str, *, mode: QueryMode = "mix") -> QueryResult:
+        if not self._initialized:
+            raise RuntimeError("LightRAG 尚未初始化")
+        if mode not in SUPPORTED_QUERY_MODES:
+            raise ValueError(f"不支持的查询模式: {mode}")
+        if not question.strip():
+            raise ValueError("问题不能为空")
+        options = QueryOptions(mode=mode)
+        evidence = await self._backend.aquery_data(question.strip(), options)
+        citations = collect_citations(evidence)
+        data = evidence.get("data") if isinstance(evidence, dict) else None
+        has_evidence = isinstance(data, dict) and any(
+            isinstance(data.get(field), list) and bool(data[field])
+            for field in ("chunks", "entities", "relationships")
+        )
+        if not has_evidence or not citations:
+            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), mode)
+        answer = (await self._backend.aquery(question.strip(), options, _SYSTEM_PROMPT)).strip()
+        if not answer:
+            answer = INSUFFICIENT_EVIDENCE_MESSAGE
+        return QueryResult(answer, citations, mode)
