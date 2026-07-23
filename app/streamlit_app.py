@@ -1,13 +1,29 @@
-"""Single-page Streamlit UI for the centrifugal-pump LightRAG knowledge base."""
+"""Single-page Streamlit UI for the centrifugal-pump LightRAG knowledge base.
+
+IMPORTANT – Windows event loop policy
+=====================================
+Windows defaults to ``ProactorEventLoop``, which is incompatible with
+``asyncio.Lock`` objects shared across event loops.  LightRAG uses internal
+locks inside its storage managers.  We **must** force ``SelectorEventLoop``
+on Windows **before** importing ``streamlit`` (which imports ``uvicorn``
+and creates the default event loop).
+
+See: https://github.com/HKUDS/LightRAG/pull/2704
+"""
 
 from __future__ import annotations
 
 import asyncio
+import platform
 import sys
-import time
-from pathlib import Path
 
-import streamlit as st
+if platform.system() == "Windows":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+import time  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+import streamlit as st  # noqa: E402
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
@@ -17,7 +33,20 @@ from industrial_rag.config import (  # noqa: E402
     SUPPORTED_QUERY_MODES,
     Settings,
 )
-from industrial_rag.lightrag_service import LightRAGService, QueryMode, QueryResult  # noqa: E402
+from industrial_rag.lightrag_service import (  # noqa: E402
+    LightRAGService,
+    QueryMode,
+    QueryResult,
+)
+
+# ---------------------------------------------------------------------------
+# Lazy-singleton service + event loop
+# ---------------------------------------------------------------------------
+# With ``SelectorEventLoop`` active, a module-level cached service on a single
+# event loop is sufficient.  ``sys.modules[__name__]`` attributes survive
+# Streamlit script reruns without deep-copying (unlike ``st.session_state``).
+
+_MODULE = sys.modules[__name__]
 
 EXAMPLE_QUESTIONS = (
     "离心泵启动前需要检查什么？",
@@ -28,56 +57,41 @@ EXAMPLE_QUESTIONS = (
     "机械密封失效有哪些可能原因？",
 )
 
-# LightRAG internally creates asyncio.Lock objects bound to a specific event loop.
-# Streamlit can serve concurrent requests across different threads, and even
-# module-level globals get lost across script reruns. The only robust fix is a
-# dedicated background thread that owns both the event loop and the service.
-# All LightRAG operations are submitted to that thread via run_coroutine_threadsafe,
-# guaranteeing locks and loop stay in the same thread forever.
 
-import threading
-
-_MODULE = sys.modules[__name__]
-
-
-def _get_or_create_bg(settings: Settings) -> tuple[LightRAGService, asyncio.AbstractEventLoop]:
-    loop = getattr(_MODULE, "_bg_loop", None)
-    svc = getattr(_MODULE, "_bg_service", None)
-    if svc is not None and loop is not None and not loop.is_closed():
-        return svc, loop
-
-    loop = asyncio.new_event_loop()
-
-    def _run_forever():
-        asyncio.set_event_loop(loop)
-        loop.run_forever()
-
-    threading.Thread(target=_run_forever, daemon=True, name="lightrag-loop").start()
-
-    async def _init():
-        svc = LightRAGService(settings)
-        await svc.initialize()
-        return svc
-
-    future = asyncio.run_coroutine_threadsafe(_init(), loop)
-    svc = future.result(timeout=120)
-    _MODULE._bg_loop = loop
-    _MODULE._bg_service = svc
+def _get_service() -> tuple[LightRAGService, asyncio.AbstractEventLoop] | None:
+    svc = getattr(_MODULE, "_svc", None)
+    loop = getattr(_MODULE, "_loop", None)
+    if svc is None or loop is None or loop.is_closed():
+        return None
     return svc, loop
 
 
-def _ask_sync(settings: Settings, question: str, mode: QueryMode) -> tuple[QueryResult, float]:
-    svc, loop = _get_or_create_bg(settings)
+def _ensure_service(settings: Settings) -> tuple[LightRAGService, asyncio.AbstractEventLoop]:
+    cached = _get_service()
+    if cached is not None:
+        return cached
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    svc = LightRAGService(settings)
+    loop.run_until_complete(svc.initialize())
+    _MODULE._svc = svc
+    _MODULE._loop = loop
+    return svc, loop
 
-    async def _query():
-        return await svc.query(question, mode=mode)
 
+def _ask_sync(
+    settings: Settings, question: str, mode: QueryMode
+) -> tuple[QueryResult, float]:
+    svc, loop = _ensure_service(settings)
     start = time.perf_counter()
-    future = asyncio.run_coroutine_threadsafe(_query(), loop)
-    result = future.result(timeout=180)
+    result = loop.run_until_complete(svc.query(question, mode=mode))
     elapsed = time.perf_counter() - start
     return result, elapsed
 
+
+# ---------------------------------------------------------------------------
+# UI
+# ---------------------------------------------------------------------------
 
 st.set_page_config(page_title="工业离心泵知识库问答", page_icon="🔧", layout="centered")
 st.title("基于 LightRAG 的工业离心泵知识库问答系统")
@@ -100,7 +114,9 @@ mode = st.selectbox("查询模式", SUPPORTED_QUERY_MODES, index=0)
 st.write("示例问题")
 columns = st.columns(2)
 for index, example in enumerate(EXAMPLE_QUESTIONS):
-    if columns[index % 2].button(example, key=f"example-{index}", use_container_width=True):
+    if columns[index % 2].button(
+        example, key=f"example-{index}", use_container_width=True
+    ):
         st.session_state["question"] = example
 
 question = st.text_area(
