@@ -80,7 +80,7 @@ def _get_bg_state() -> dict | None:
 
 
 def _ensure_bg_state(settings: Settings) -> dict:
-    """Create (if needed) a daemon thread that runs `loop.run_forever()`,
+    """Create (if needed) a daemon thread that runs ``loop.run_forever()``,
     initialize LightRAG on it, and cache everything on the module."""
     existing = _get_bg_state()
     if existing is not None:
@@ -88,30 +88,32 @@ def _ensure_bg_state(settings: Settings) -> dict:
 
     loop = asyncio.new_event_loop()
 
-    # Communicate between threads via a simple future.
-    ready: asyncio.Future[LightRAGService] = asyncio.Future(loop=loop)
+    # Barrier: the bg thread signals the main thread once init is done.
+    init_done = threading.Event()
+    # Container for the service object, filled by the bg thread.
+    svc_box: list[LightRAGService] = []
 
     def _bg_thread():
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(ready)  # blocks until _init_service completes
-        loop.run_forever()  # never returns
+        loop.run_until_complete(_do_init())
+        # _do_init returns once the service is ready.
+        # From this point on, loop.run_forever() owns the event loop.
+        loop.run_forever()
+
+    async def _do_init():
+        svc = LightRAGService(settings)
+        await svc.initialize()
+        svc_box.append(svc)
+        init_done.set()  # tell main thread we're ready
 
     threading.Thread(target=_bg_thread, daemon=True, name="lightrag-loop").start()
 
-    async def _init_service() -> LightRAGService:
-        svc = LightRAGService(settings)
-        await svc.initialize()
-        return svc
-
-    init_coro = _init_service()
-    future = asyncio.run_coroutine_threadsafe(init_coro, loop)
-    svc = future.result(timeout=180)  # wait for init to finish on bg thread
+    if not init_done.wait(timeout=180):
+        raise RuntimeError("LightRAG background thread failed to start")
+    svc = svc_box[0]
 
     state = {"loop": loop, "svc": svc}
     _MODULE._bg_state = state
-    # Signal the bg thread that init is done (the `ready` future is internal only,
-    # we already have the result so it's fine to just let gg collect it).
-    ready.set_result(svc)
     return state
 
 
