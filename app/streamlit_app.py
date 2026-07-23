@@ -1,6 +1,6 @@
 """Single-page Streamlit UI for the centrifugal-pump LightRAG knowledge base.
 
-IMPORTANT – Windows event loop policy
+IMPORTANT - Windows event loop policy
 =====================================
 Windows defaults to ``ProactorEventLoop``, which is incompatible with
 ``asyncio.Lock`` objects shared across event loops.  LightRAG uses internal
@@ -11,16 +11,12 @@ and creates the default event loop).
 See: https://github.com/HKUDS/LightRAG/pull/2704
 
 
-IMPORTANT – persistent background event loop
-=============================================
-LightRAG initializes persistent worker coroutines (embedding, LLM, health-check)
-that must live on a single event loop for the entire server lifetime.  Using
-``run_until_complete`` repeatedly creates/destroys temporary async contexts,
-which corrupts the internal locks and triggers "locked to a different event
-loop" on every query after the first.
-
-Fix: a daemon thread runs ``loop.run_forever()``; all LightRAG work is
-submitted via ``asyncio.run_coroutine_threadsafe``.  The loop never stops.
+IMPORTANT - single event loop runtime
+=====================================
+All LightRAG async operations run on one daemon background thread with
+one persistent event loop.  The ``LightRAGRuntime`` class (see
+``src/industrial_rag/runtime.py``) owns the thread, loop, and service.
+``st.cache_resource`` caches exactly ONE runtime per Streamlit process.
 """
 
 from __future__ import annotations
@@ -28,15 +24,13 @@ from __future__ import annotations
 import asyncio
 import platform
 import sys
-import threading
 
 if platform.system() == "Windows":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-import time  # noqa: E402
-from pathlib import Path  # noqa: E402
+from pathlib import Path
 
-import streamlit as st  # noqa: E402
+import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
@@ -47,16 +41,14 @@ from industrial_rag.config import (  # noqa: E402
     Settings,
 )
 from industrial_rag.lightrag_service import (  # noqa: E402
-    LightRAGService,
     QueryMode,
     QueryResult,
 )
+from industrial_rag.runtime import LightRAGRuntime  # noqa: E402
 
 # ---------------------------------------------------------------------------
-# Persistent  background  event-loop  singleton
+# Cached runtime — one bg thread + one event loop per Streamlit process
 # ---------------------------------------------------------------------------
-
-_MODULE = sys.modules[__name__]
 
 EXAMPLE_QUESTIONS = (
     "离心泵启动前需要检查什么？",
@@ -68,70 +60,21 @@ EXAMPLE_QUESTIONS = (
 )
 
 
-def _get_bg_state() -> dict | None:
-    """Return the module-level state dict or None if not yet created."""
-    state: dict | None = getattr(_MODULE, "_bg_state", None)
-    if state is None:
-        return None
-    loop: asyncio.AbstractEventLoop = state["loop"]
-    if loop.is_closed():
-        return None
-    return state
+@st.cache_resource(show_spinner=False)
+def _get_runtime(_settings: Settings) -> LightRAGRuntime:
+    """Cache exactly ONE LightRAGRuntime per Streamlit process.
+
+    ``_settings`` is prefixed with ``_`` so Streamlit does NOT hash it
+    for the cache key.  The cache returns the same runtime instance for
+    the entire process lifetime.  Config changes require a Streamlit restart.
+    """
+    return LightRAGRuntime(_settings)
 
 
-def _ensure_bg_state(settings: Settings) -> dict:
-    """Create (if needed) a daemon thread that runs ``loop.run_forever()``,
-    initialize LightRAG on it, and cache everything on the module."""
-    existing = _get_bg_state()
-    if existing is not None:
-        return existing
-
-    loop = asyncio.new_event_loop()
-
-    # Barrier: the bg thread signals the main thread once init is done.
-    init_done = threading.Event()
-    # Container for the service object, filled by the bg thread.
-    svc_box: list[LightRAGService] = []
-
-    def _bg_thread():
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(_do_init())
-        # _do_init returns once the service is ready.
-        # From this point on, loop.run_forever() owns the event loop.
-        loop.run_forever()
-
-    async def _do_init():
-        svc = LightRAGService(settings)
-        await svc.initialize()
-        svc_box.append(svc)
-        init_done.set()  # tell main thread we're ready
-
-    threading.Thread(target=_bg_thread, daemon=True, name="lightrag-loop").start()
-
-    if not init_done.wait(timeout=180):
-        raise RuntimeError("LightRAG background thread failed to start")
-    svc = svc_box[0]
-
-    state = {"loop": loop, "svc": svc}
-    _MODULE._bg_state = state
-    return state
-
-
-def _ask_sync(
-    settings: Settings, question: str, mode: QueryMode
-) -> tuple[QueryResult, float]:
-    state = _ensure_bg_state(settings)
-    loop: asyncio.AbstractEventLoop = state["loop"]
-    svc: LightRAGService = state["svc"]
-
-    async def _query():
-        return await svc.query(question, mode=mode)
-
-    start = time.perf_counter()
-    future = asyncio.run_coroutine_threadsafe(_query(), loop)
-    result = future.result(timeout=180)
-    elapsed = time.perf_counter() - start
-    return result, elapsed
+def _ask_sync(settings: Settings, question: str, mode: QueryMode) -> tuple[QueryResult, float]:
+    """Execute a LightRAG query through the cached runtime."""
+    runtime = _get_runtime(settings)
+    return runtime.query(question, mode=mode)
 
 
 # ---------------------------------------------------------------------------
@@ -159,9 +102,7 @@ mode = st.selectbox("查询模式", SUPPORTED_QUERY_MODES, index=0)
 st.write("示例问题")
 columns = st.columns(2)
 for index, example in enumerate(EXAMPLE_QUESTIONS):
-    if columns[index % 2].button(
-        example, key=f"example-{index}", use_container_width=True
-    ):
+    if columns[index % 2].button(example, key=f"example-{index}", use_container_width=True):
         st.session_state["question"] = example
 
 question = st.text_area(
