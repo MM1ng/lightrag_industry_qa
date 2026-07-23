@@ -9,6 +9,18 @@ on Windows **before** importing ``streamlit`` (which imports ``uvicorn``
 and creates the default event loop).
 
 See: https://github.com/HKUDS/LightRAG/pull/2704
+
+
+IMPORTANT – persistent background event loop
+=============================================
+LightRAG initializes persistent worker coroutines (embedding, LLM, health-check)
+that must live on a single event loop for the entire server lifetime.  Using
+``run_until_complete`` repeatedly creates/destroys temporary async contexts,
+which corrupts the internal locks and triggers "locked to a different event
+loop" on every query after the first.
+
+Fix: a daemon thread runs ``loop.run_forever()``; all LightRAG work is
+submitted via ``asyncio.run_coroutine_threadsafe``.  The loop never stops.
 """
 
 from __future__ import annotations
@@ -16,6 +28,7 @@ from __future__ import annotations
 import asyncio
 import platform
 import sys
+import threading
 
 if platform.system() == "Windows":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -40,11 +53,8 @@ from industrial_rag.lightrag_service import (  # noqa: E402
 )
 
 # ---------------------------------------------------------------------------
-# Lazy-singleton service + event loop
+# Persistent  background  event-loop  singleton
 # ---------------------------------------------------------------------------
-# With ``SelectorEventLoop`` active, a module-level cached service on a single
-# event loop is sufficient.  ``sys.modules[__name__]`` attributes survive
-# Streamlit script reruns without deep-copying (unlike ``st.session_state``).
 
 _MODULE = sys.modules[__name__]
 
@@ -58,33 +68,66 @@ EXAMPLE_QUESTIONS = (
 )
 
 
-def _get_service() -> tuple[LightRAGService, asyncio.AbstractEventLoop] | None:
-    svc = getattr(_MODULE, "_svc", None)
-    loop = getattr(_MODULE, "_loop", None)
-    if svc is None or loop is None or loop.is_closed():
+def _get_bg_state() -> dict | None:
+    """Return the module-level state dict or None if not yet created."""
+    state: dict | None = getattr(_MODULE, "_bg_state", None)
+    if state is None:
         return None
-    return svc, loop
+    loop: asyncio.AbstractEventLoop = state["loop"]
+    if loop.is_closed():
+        return None
+    return state
 
 
-def _ensure_service(settings: Settings) -> tuple[LightRAGService, asyncio.AbstractEventLoop]:
-    cached = _get_service()
-    if cached is not None:
-        return cached
+def _ensure_bg_state(settings: Settings) -> dict:
+    """Create (if needed) a daemon thread that runs `loop.run_forever()`,
+    initialize LightRAG on it, and cache everything on the module."""
+    existing = _get_bg_state()
+    if existing is not None:
+        return existing
+
     loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    svc = LightRAGService(settings)
-    loop.run_until_complete(svc.initialize())
-    _MODULE._svc = svc
-    _MODULE._loop = loop
-    return svc, loop
+
+    # Communicate between threads via a simple future.
+    ready: asyncio.Future[LightRAGService] = asyncio.Future(loop=loop)
+
+    def _bg_thread():
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(ready)  # blocks until _init_service completes
+        loop.run_forever()  # never returns
+
+    threading.Thread(target=_bg_thread, daemon=True, name="lightrag-loop").start()
+
+    async def _init_service() -> LightRAGService:
+        svc = LightRAGService(settings)
+        await svc.initialize()
+        return svc
+
+    init_coro = _init_service()
+    future = asyncio.run_coroutine_threadsafe(init_coro, loop)
+    svc = future.result(timeout=180)  # wait for init to finish on bg thread
+
+    state = {"loop": loop, "svc": svc}
+    _MODULE._bg_state = state
+    # Signal the bg thread that init is done (the `ready` future is internal only,
+    # we already have the result so it's fine to just let gg collect it).
+    ready.set_result(svc)
+    return state
 
 
 def _ask_sync(
     settings: Settings, question: str, mode: QueryMode
 ) -> tuple[QueryResult, float]:
-    svc, loop = _ensure_service(settings)
+    state = _ensure_bg_state(settings)
+    loop: asyncio.AbstractEventLoop = state["loop"]
+    svc: LightRAGService = state["svc"]
+
+    async def _query():
+        return await svc.query(question, mode=mode)
+
     start = time.perf_counter()
-    result = loop.run_until_complete(svc.query(question, mode=mode))
+    future = asyncio.run_coroutine_threadsafe(_query(), loop)
+    result = future.result(timeout=180)
     elapsed = time.perf_counter() - start
     return result, elapsed
 
