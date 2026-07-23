@@ -19,11 +19,13 @@ from industrial_rag.document_parser import DocumentChunk
 
 QueryMode = Literal["mix", "local", "global", "naive"]
 INSUFFICIENT_EVIDENCE_MESSAGE = "手册中未检索到充分依据，无法可靠回答该问题。"
-_SYSTEM_PROMPT = (
+_SYSTEM_PROMPT_BASE = (
     "你是工业离心泵手册问答助手。只能依据检索到的手册内容回答；"
     f"依据不足时必须原样回答：{INSUFFICIENT_EVIDENCE_MESSAGE} "
-    "不要猜测、补写或编造文件名和页码。"
+    "不要猜测、补写或编造文件名和页码。\n\n"
 )
+_KG_SYSTEM_PROMPT = _SYSTEM_PROMPT_BASE + "以下是检索到的手册上下文：\n{context_data}"
+_NAIVE_SYSTEM_PROMPT = _SYSTEM_PROMPT_BASE + "以下是检索到的手册上下文：\n{content_data}"
 _CHUNK_BOUNDARY = "\n\n<<<INDUSTRIAL_RAG_CHUNK_BOUNDARY>>>\n\n"
 
 
@@ -157,7 +159,7 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
 class LightRAGService:
     def __init__(self, settings: Settings, *, backend: LightRAGBackend | None = None) -> None:
         self.settings = settings
-        self._backend = backend or build_official_backend(settings)
+        self._backend: LightRAGBackend | None = backend
         self._initialized = False
 
     async def initialize(self) -> None:
@@ -166,6 +168,8 @@ class LightRAGService:
             self.settings.embedding_model,
             self.settings.embedding_dim,
         )
+        if self._backend is None:
+            self._backend = build_official_backend(self.settings)
         await self._backend.initialize_storages()
         write_storage_metadata(
             self.settings.working_dir,
@@ -209,7 +213,10 @@ class LightRAGService:
                 split_by_character_only=True,
             )
             statuses = await self._backend.get_track_status(last_track_id)
-            if not statuses or set(statuses.values()) != {"processed"}:
+            if not statuses or not all(
+                s == "processed" or doc_id.startswith("dup-")
+                for doc_id, s in statuses.items()
+            ):
                 raise RuntimeError(
                     f"手册 {source_file} 导入失败，LightRAG 状态: {statuses or 'missing'}"
                 )
@@ -232,7 +239,8 @@ class LightRAGService:
         )
         if not has_evidence or not citations:
             return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), mode)
-        answer = (await self._backend.aquery(question.strip(), options, _SYSTEM_PROMPT)).strip()
+        system_prompt = _NAIVE_SYSTEM_PROMPT if mode == "naive" else _KG_SYSTEM_PROMPT
+        answer = (await self._backend.aquery(question.strip(), options, system_prompt)).strip()
         if not answer:
             answer = INSUFFICIENT_EVIDENCE_MESSAGE
         return QueryResult(answer, citations, mode)

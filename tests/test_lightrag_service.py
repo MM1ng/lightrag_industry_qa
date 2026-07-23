@@ -181,6 +181,22 @@ async def test_ingest_raises_when_lightrag_marks_a_manual_failed(tmp_path: Path)
 
 
 @pytest.mark.asyncio
+async def test_ingest_accepts_dup_status_from_lightrag(tmp_path: Path) -> None:
+    backend = FakeLightRAGBackend()
+
+    async def dup_status(track_id: str) -> dict[str, str]:
+        return {"dup-ddoc123": "processed", track_id: "processed"}
+
+    backend.get_track_status = dup_status  # type: ignore[method-assign]
+    service = LightRAGService(_settings(tmp_path), backend=backend)
+    await service.initialize()
+    chunk = DocumentChunk("pump-p1-c1", "正文", "pump.pdf", 1, "章节")
+
+    track_id = await service.ingest([chunk])
+    assert track_id == "track-test-1"
+
+
+@pytest.mark.asyncio
 async def test_fake_service_returns_fixed_message_without_evidence(tmp_path: Path) -> None:
     backend = FakeLightRAGBackend(has_evidence=False)
     service = LightRAGService(_settings(tmp_path), backend=backend)
@@ -190,6 +206,56 @@ async def test_fake_service_returns_fixed_message_without_evidence(tmp_path: Pat
 
     assert result.answer == INSUFFICIENT_EVIDENCE_MESSAGE
     assert result.citations == ()
+
+
+@pytest.mark.asyncio
+async def test_query_prompt_preserves_lightrag_retrieval_context(tmp_path: Path) -> None:
+    backend = FakeLightRAGBackend()
+
+    async def format_like_official_lightrag(
+        query: str, param: object, system_prompt: str
+    ) -> str:
+        rendered = system_prompt.format(
+            response_type="Multiple Paragraphs",
+            user_prompt="n/a",
+            context_data="检索到的手册证据",
+        )
+        assert "检索到的手册证据" in rendered
+        return "依据检索证据回答。"
+
+    backend.aquery = format_like_official_lightrag  # type: ignore[method-assign]
+    service = LightRAGService(_settings(tmp_path), backend=backend)
+    await service.initialize()
+
+    result = await service.query("离心泵启动前需要检查什么？", mode="mix")
+
+    assert result.answer == "依据检索证据回答。"
+
+
+@pytest.mark.asyncio
+async def test_naive_query_prompt_preserves_lightrag_retrieval_context(
+    tmp_path: Path,
+) -> None:
+    backend = FakeLightRAGBackend()
+
+    async def format_like_official_naive_lightrag(
+        query: str, param: object, system_prompt: str
+    ) -> str:
+        rendered = system_prompt.format(
+            response_type="Multiple Paragraphs",
+            user_prompt="n/a",
+            content_data="朴素检索到的手册证据",
+        )
+        assert "朴素检索到的手册证据" in rendered
+        return "依据朴素检索证据回答。"
+
+    backend.aquery = format_like_official_naive_lightrag  # type: ignore[method-assign]
+    service = LightRAGService(_settings(tmp_path), backend=backend)
+    await service.initialize()
+
+    result = await service.query("离心泵启动前需要检查什么？", mode="naive")
+
+    assert result.answer == "依据朴素检索证据回答。"
 
 
 @pytest.mark.asyncio

@@ -27,14 +27,32 @@ EXAMPLE_QUESTIONS = (
     "机械密封失效有哪些可能原因？",
 )
 
+# Persistent event loop and service — LightRAG has module-level asyncio locks that
+# must stay on the same loop across Streamlit reruns.
+_loop: asyncio.AbstractEventLoop | None = None
+_service: LightRAGService | None = None
 
-async def _ask(settings: Settings, question: str, mode: QueryMode):
-    service = LightRAGService(settings)
-    try:
-        await service.initialize()
-        return await service.query(question, mode=mode)
-    finally:
-        await service.close()
+
+def _get_or_create_loop() -> asyncio.AbstractEventLoop:
+    global _loop
+    if _loop is None or _loop.is_closed():
+        _loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(_loop)
+    return _loop
+
+
+async def _ensure_service(settings: Settings) -> LightRAGService:
+    global _service
+    if _service is None:
+        _service = LightRAGService(settings)
+        await _service.initialize()
+    return _service
+
+
+def _ask_sync(settings: Settings, question: str, mode: QueryMode):
+    loop = _get_or_create_loop()
+    service = loop.run_until_complete(_ensure_service(settings))
+    return loop.run_until_complete(service.query(question, mode=mode))
 
 
 st.set_page_config(page_title="工业离心泵知识库问答", page_icon="🔧", layout="centered")
@@ -76,7 +94,7 @@ if st.button("提交问题", type="primary", use_container_width=True):
     else:
         try:
             with st.spinner("正在检索两份离心泵手册……"):
-                result = asyncio.run(_ask(settings, question.strip(), mode))
+                result = _ask_sync(settings, question.strip(), mode)
             st.subheader("回答")
             st.write(result.answer)
             st.subheader("引用来源")
