@@ -27,12 +27,16 @@ dev = [
 packages = ["src/industrial_rag"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --strict-config --strict-markers"
-testpaths = [
-  "tests/test_document_parser.py",
-  "tests/test_citation_formatter.py",
-  "tests/test_lightrag_service.py",
+addopts = [
+  "-ra",
+  "--strict-config",
+  "--strict-markers",
+  # Legacy agent/workflow suites live under these dirs and need extra deps.
+  "--ignore=tests/unit",
+  "--ignore=tests/integration",
+  "--ignore=tests/smoke",
 ]
+testpaths = ["tests"]
 pythonpath = ["src"]
 asyncio_mode = "strict"
 

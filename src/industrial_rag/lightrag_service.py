@@ -17,7 +17,7 @@ from industrial_rag.config import (
 )
 from industrial_rag.document_parser import DocumentChunk
 
-QueryMode = Literal["mix", "local", "global", "naive"]
+QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
 INSUFFICIENT_EVIDENCE_MESSAGE = "手册中未检索到充分依据，无法可靠回答该问题。"
 _SYSTEM_PROMPT_BASE = (
     "你是工业离心泵手册问答助手。只能依据检索到的手册内容回答；"
@@ -214,8 +214,7 @@ class LightRAGService:
             )
             statuses = await self._backend.get_track_status(last_track_id)
             if not statuses or not all(
-                s == "processed" or doc_id.startswith("dup-")
-                for doc_id, s in statuses.items()
+                s == "processed" or doc_id.startswith("dup-") for doc_id, s in statuses.items()
             ):
                 raise RuntimeError(
                     f"手册 {source_file} 导入失败，LightRAG 状态: {statuses or 'missing'}"

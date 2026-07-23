@@ -41,7 +41,15 @@ python scripts\ingest_documents.py
 streamlit run app\streamlit_app.py
 ```
 
-浏览器默认打开 `http://localhost:8501`。页面支持 `mix`、`local`、`global`、`naive`，默认使用 `mix`。引用来自 LightRAG 检索结果中由解析器写入的元数据，显示为 `[文档名称，第X页]`，页码不由模型生成。
+浏览器默认打开 `http://localhost:8501`。支持以下知识库检索模式，默认使用 `mix`：
+
+- `mix`：知识图谱和向量检索综合模式，默认
+- `hybrid`：结合 local 和 global 检索
+- `local`：面向具体实体及局部关系
+- `global`：面向整体主题和全局关系
+- `naive`：普通文本块向量检索
+
+本项目不提供 `bypass` 模式，因为 bypass 不会检索手册，无法满足基于证据回答和页码引用要求。引用来自 LightRAG 检索结果中由解析器写入的元数据，显示为 `[文档名称，第X页]`，页码不由模型生成。
 
 ## 测试与 Smoke Test
 

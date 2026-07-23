@@ -21,7 +21,7 @@ async def main():
     await service.initialize()
     print("[OK] service initialized\n")
 
-    modes: list[QueryMode] = ["mix", "local", "global", "naive"]
+    modes: list[QueryMode] = ["mix", "hybrid", "local", "global", "naive"]
     questions = ["离心泵启动前需要检查什么？", "机械密封失效有哪些可能原因？"]
 
     for q in questions:
