@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import sys
+import time
 from pathlib import Path
 
 import streamlit as st
@@ -16,7 +17,7 @@ from industrial_rag.config import (  # noqa: E402
     SUPPORTED_QUERY_MODES,
     Settings,
 )
-from industrial_rag.lightrag_service import LightRAGService, QueryMode  # noqa: E402
+from industrial_rag.lightrag_service import LightRAGService, QueryMode, QueryResult  # noqa: E402
 
 EXAMPLE_QUESTIONS = (
     "离心泵启动前需要检查什么？",
@@ -27,32 +28,55 @@ EXAMPLE_QUESTIONS = (
     "机械密封失效有哪些可能原因？",
 )
 
-# Persistent event loop and service — LightRAG has module-level asyncio locks that
-# must stay on the same loop across Streamlit reruns.
-_loop: asyncio.AbstractEventLoop | None = None
-_service: LightRAGService | None = None
+# LightRAG internally creates asyncio.Lock objects bound to a specific event loop.
+# Streamlit can serve concurrent requests across different threads, and even
+# module-level globals get lost across script reruns. The only robust fix is a
+# dedicated background thread that owns both the event loop and the service.
+# All LightRAG operations are submitted to that thread via run_coroutine_threadsafe,
+# guaranteeing locks and loop stay in the same thread forever.
+
+import threading
+
+_MODULE = sys.modules[__name__]
 
 
-def _get_or_create_loop() -> asyncio.AbstractEventLoop:
-    global _loop
-    if _loop is None or _loop.is_closed():
-        _loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(_loop)
-    return _loop
+def _get_or_create_bg(settings: Settings) -> tuple[LightRAGService, asyncio.AbstractEventLoop]:
+    loop = getattr(_MODULE, "_bg_loop", None)
+    svc = getattr(_MODULE, "_bg_service", None)
+    if svc is not None and loop is not None and not loop.is_closed():
+        return svc, loop
+
+    loop = asyncio.new_event_loop()
+
+    def _run_forever():
+        asyncio.set_event_loop(loop)
+        loop.run_forever()
+
+    threading.Thread(target=_run_forever, daemon=True, name="lightrag-loop").start()
+
+    async def _init():
+        svc = LightRAGService(settings)
+        await svc.initialize()
+        return svc
+
+    future = asyncio.run_coroutine_threadsafe(_init(), loop)
+    svc = future.result(timeout=120)
+    _MODULE._bg_loop = loop
+    _MODULE._bg_service = svc
+    return svc, loop
 
 
-async def _ensure_service(settings: Settings) -> LightRAGService:
-    global _service
-    if _service is None:
-        _service = LightRAGService(settings)
-        await _service.initialize()
-    return _service
+def _ask_sync(settings: Settings, question: str, mode: QueryMode) -> tuple[QueryResult, float]:
+    svc, loop = _get_or_create_bg(settings)
 
+    async def _query():
+        return await svc.query(question, mode=mode)
 
-def _ask_sync(settings: Settings, question: str, mode: QueryMode):
-    loop = _get_or_create_loop()
-    service = loop.run_until_complete(_ensure_service(settings))
-    return loop.run_until_complete(service.query(question, mode=mode))
+    start = time.perf_counter()
+    future = asyncio.run_coroutine_threadsafe(_query(), loop)
+    result = future.result(timeout=180)
+    elapsed = time.perf_counter() - start
+    return result, elapsed
 
 
 st.set_page_config(page_title="工业离心泵知识库问答", page_icon="🔧", layout="centered")
@@ -94,7 +118,8 @@ if st.button("提交问题", type="primary", use_container_width=True):
     else:
         try:
             with st.spinner("正在检索两份离心泵手册……"):
-                result = _ask_sync(settings, question.strip(), mode)
+                result, elapsed = _ask_sync(settings, question.strip(), mode)
+            st.caption(f"⏱ 查询耗时：{elapsed:.2f} 秒")
             st.subheader("回答")
             st.write(result.answer)
             st.subheader("引用来源")
