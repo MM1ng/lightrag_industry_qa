@@ -310,8 +310,8 @@ class TestSameLoopAndThread:
         finally:
             rt.close()
 
-    def test_four_modes_same_loop(self) -> None:
-        """Switching across mix/local/global/naive must not change the loop."""
+    def test_five_modes_same_loop_and_thread(self) -> None:
+        """Switching mix→hybrid→local→global→naive must keep one loop/thread."""
         factory_calls: list[FakeLightRAGService] = []
 
         def factory(_s: Settings) -> FakeLightRAGService:
@@ -322,14 +322,21 @@ class TestSameLoopAndThread:
         rt = _make_runtime(service_factory=factory)
         try:
             svc = factory_calls[0]
-            modes: list[QueryMode] = ["mix", "local", "global", "naive"]
+            modes: list[QueryMode] = ["mix", "hybrid", "local", "global", "naive"]
             for mode in modes:
                 rt.query("test question", mode=mode)
 
             init_loop = svc.initialize_loop_id
+            init_thread = svc.initialize_thread_id
+            assert svc.initialize_count == 1
+            assert [call["mode"] for call in svc.query_calls] == modes
             for idx, call in enumerate(svc.query_calls):
                 assert call["loop_id"] == init_loop, (
                     f"Mode {modes[idx]}: loop_id {call['loop_id']} != init_loop {init_loop}"
+                )
+                assert call["thread_id"] == init_thread, (
+                    f"Mode {modes[idx]}: thread_id {call['thread_id']} != "
+                    f"init_thread {init_thread}"
                 )
         finally:
             rt.close()

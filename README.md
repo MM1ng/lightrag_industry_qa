@@ -41,7 +41,32 @@ python scripts\ingest_documents.py
 streamlit run app\streamlit_app.py
 ```
 
-浏览器默认打开 `http://localhost:8501`。页面支持 `mix`、`local`、`global`、`naive`，默认使用 `mix`。引用来自 LightRAG 检索结果中由解析器写入的元数据，显示为 `[文档名称，第X页]`，页码不由模型生成。
+浏览器默认打开 `http://localhost:8501`。支持以下知识库检索模式，默认使用 `mix`：
+
+- `mix`：知识图谱和向量检索综合模式，默认
+- `hybrid`：结合 local 和 global 检索
+- `local`：面向具体实体及局部关系
+- `global`：面向整体主题和全局关系
+- `naive`：普通文本块向量检索
+
+本项目不提供 `bypass` 模式，因为 bypass 不会检索手册，无法满足基于证据回答和页码引用要求。引用来自 LightRAG 检索结果中由解析器写入的元数据，显示为 `[文档名称，第X页]`，页码不由模型生成。
+
+## 知识图谱可视化
+
+应用包含「智能问答」与「知识图谱」两个页签。图谱由 LightRAG 文档导入时自动生成，文件位于：
+
+`lightrag_storage/graph_chunk_entity_relation.graphml`
+
+说明：
+
+1. 页面只显示图谱子集，避免浏览器卡顿；全局概览默认按节点 degree 选取约 50 个节点。
+2. 可搜索实体并展示 1 跳或 2 跳邻居子图。
+3. 默认仅显示 degree 最高的约 15 个节点名称，可用「显示全部节点名称」切换；悬停可看完整中英文与来源信息。
+4. 点击节点会高亮其邻居并弱化无关节点；稳定布局后自动居中 fit，拖拽后保持位置。
+5. 「重新加载图谱」只重新读取 GraphML，不会清理问答 Runtime，也不会调用百炼 API。
+6. GraphML 不存在时，请先执行 `python scripts/ingest_documents.py`。
+7. 修改 `.env` 后需要重启 Streamlit。
+8. 当前不支持图谱编辑和写回（展示层中文映射不影响实体 ID 与 GraphML）。
 
 ## 测试与 Smoke Test
 

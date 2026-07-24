@@ -12,7 +12,13 @@ from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_BAILIAN_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-SUPPORTED_QUERY_MODES = ("mix", "local", "global", "naive")
+SUPPORTED_QUERY_MODES = (
+    "mix",
+    "hybrid",
+    "local",
+    "global",
+    "naive",
+)
 INDEX_METADATA_FILENAME = "industrial_rag_index.json"
 
 

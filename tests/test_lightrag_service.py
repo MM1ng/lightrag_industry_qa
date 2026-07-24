@@ -81,7 +81,8 @@ def _settings(tmp_path: Path) -> Settings:
 def test_settings_lock_required_bailian_contract(tmp_path: Path) -> None:
     settings = _settings(tmp_path)
 
-    assert SUPPORTED_QUERY_MODES == ("mix", "local", "global", "naive")
+    assert SUPPORTED_QUERY_MODES == ("mix", "hybrid", "local", "global", "naive")
+    assert "bypass" not in SUPPORTED_QUERY_MODES
     assert settings.llm_model == "qwen3.7-plus"
     assert settings.embedding_model == "text-embedding-v4"
     assert settings.embedding_dim == 1024
@@ -212,9 +213,7 @@ async def test_fake_service_returns_fixed_message_without_evidence(tmp_path: Pat
 async def test_query_prompt_preserves_lightrag_retrieval_context(tmp_path: Path) -> None:
     backend = FakeLightRAGBackend()
 
-    async def format_like_official_lightrag(
-        query: str, param: object, system_prompt: str
-    ) -> str:
+    async def format_like_official_lightrag(query: str, param: object, system_prompt: str) -> str:
         rendered = system_prompt.format(
             response_type="Multiple Paragraphs",
             user_prompt="n/a",
@@ -259,9 +258,58 @@ async def test_naive_query_prompt_preserves_lightrag_retrieval_context(
 
 
 @pytest.mark.asyncio
-async def test_service_rejects_modes_outside_the_scoped_four(tmp_path: Path) -> None:
+async def test_hybrid_query_passes_mode_and_uses_kg_system_prompt(tmp_path: Path) -> None:
+    backend = FakeLightRAGBackend()
+    captured: dict[str, object] = {}
+
+    async def capture_hybrid_prompt(query: str, param: object, system_prompt: str) -> str:
+        captured["mode"] = param.mode  # type: ignore[attr-defined]
+        captured["system_prompt"] = system_prompt
+        rendered = system_prompt.format(
+            response_type="Multiple Paragraphs",
+            user_prompt="n/a",
+            context_data="hybrid 检索到的手册证据",
+        )
+        assert "hybrid 检索到的手册证据" in rendered
+        assert "{content_data}" not in system_prompt
+        return "依据 hybrid 检索证据回答。"
+
+    backend.aquery = capture_hybrid_prompt  # type: ignore[method-assign]
+    service = LightRAGService(_settings(tmp_path), backend=backend)
+    await service.initialize()
+
+    result = await service.query("轴承温度过高的原因和对应处理方法是什么？", mode="hybrid")
+
+    assert result.mode == "hybrid"
+    assert result.answer == "依据 hybrid 检索证据回答。"
+    assert result.citations
+    assert backend.query_modes == ["hybrid"]
+    assert captured["mode"] == "hybrid"
+    assert "{context_data}" in str(captured["system_prompt"])
+    assert "{content_data}" not in str(captured["system_prompt"])
+
+
+@pytest.mark.asyncio
+async def test_all_five_supported_modes_are_accepted(tmp_path: Path) -> None:
+    expected_modes = ("mix", "hybrid", "local", "global", "naive")
+    assert expected_modes == SUPPORTED_QUERY_MODES
+    assert "bypass" not in SUPPORTED_QUERY_MODES
+
+    backend = FakeLightRAGBackend()
+    service = LightRAGService(_settings(tmp_path), backend=backend)
+    await service.initialize()
+
+    for mode in expected_modes:
+        result = await service.query("离心泵启动前需要检查什么？", mode=mode)
+        assert result.mode == mode
+
+    assert backend.query_modes == list(expected_modes)
+
+
+@pytest.mark.asyncio
+async def test_service_rejects_modes_outside_the_scoped_five(tmp_path: Path) -> None:
     service = LightRAGService(_settings(tmp_path), backend=FakeLightRAGBackend())
     await service.initialize()
 
     with pytest.raises(ValueError, match="查询模式"):
-        await service.query("测试问题", mode="hybrid")  # type: ignore[arg-type]
+        await service.query("测试问题", mode="bypass")  # type: ignore[arg-type]
