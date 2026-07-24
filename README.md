@@ -51,6 +51,21 @@ streamlit run app\streamlit_app.py
 
 本项目不提供 `bypass` 模式，因为 bypass 不会检索手册，无法满足基于证据回答和页码引用要求。引用来自 LightRAG 检索结果中由解析器写入的元数据，显示为 `[文档名称，第X页]`，页码不由模型生成。
 
+## 知识图谱可视化
+
+应用包含「智能问答」与「知识图谱」两个页签。图谱由 LightRAG 文档导入时自动生成，文件位于：
+
+`lightrag_storage/graph_chunk_entity_relation.graphml`
+
+说明：
+
+1. 页面只显示图谱子集，避免浏览器卡顿；全局概览默认按节点 degree 选取约 50 个节点。
+2. 可搜索实体并展示 1 跳或 2 跳邻居子图。
+3. 「重新加载图谱」只重新读取 GraphML，不会清理问答 Runtime，也不会调用百炼 API。
+4. GraphML 不存在时，请先执行 `python scripts/ingest_documents.py`。
+5. 修改 `.env` 后需要重启 Streamlit。
+6. 当前不支持图谱编辑和写回。
+
 ## 测试与 Smoke Test
 
 离线命令不会调用真实百炼 API：
