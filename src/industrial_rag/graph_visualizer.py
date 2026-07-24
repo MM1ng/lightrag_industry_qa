@@ -12,6 +12,12 @@ from typing import Any
 
 import networkx as nx
 
+from industrial_rag.graph_display_mapping import (
+    bilingual_entity_label,
+    map_entity_zh,
+    map_type_zh,
+)
+
 _TAG_RE = re.compile(r"<[^>]+>")
 _SEP_RE = re.compile(r"(?i)<\s*SEP\s*>")
 _WS_RE = re.compile(r"\s+")
@@ -22,6 +28,7 @@ MAX_OVERVIEW_LIMIT = 150
 MAX_NEIGHBORHOOD_NODES = 100
 MIN_NODE_SIZE = 12
 MAX_NODE_SIZE = 48
+DEFAULT_LABEL_TOP_N = 15
 UNKNOWN_COLOR = "#9AA0A6"
 _PALETTE = (
     "#1F77B4",
@@ -173,24 +180,65 @@ def _tooltip_row(label: str, value: str) -> str:
     return f"{clean_label}：{clean_value}"
 
 
+def format_provenance_lines(attrs: Mapping[str, Any] | None = None) -> list[str]:
+    """Build user-friendly provenance rows (file / page / section / chunk)."""
+    data = dict(attrs or {})
+    rows: list[str] = []
+
+    file_raw = normalize_attribute_value(data.get("file_path"), max_length=300)
+    if file_raw:
+        # LightRAG may join multiple paths with ； after strip_markup
+        files = [part.strip() for part in re.split(r"[;；|]", file_raw) if part.strip()]
+        if len(files) == 1:
+            rows.append(_tooltip_row("文件", files[0]))
+        elif files:
+            rows.append(_tooltip_row("文件", "；".join(files[:3])))
+
+    page = ""
+    for key in ("page", "page_number", "page_no", "page_num"):
+        page = normalize_attribute_value(data.get(key), max_length=40)
+        if page:
+            break
+    if page:
+        rows.append(_tooltip_row("页码", page))
+
+    section = ""
+    for key in ("section", "chapter", "heading", "title"):
+        # Avoid reusing entity title fields that are not sections
+        if key == "title" and data.get("entity_id"):
+            continue
+        section = normalize_attribute_value(data.get(key), max_length=120)
+        if section:
+            break
+    if section:
+        rows.append(_tooltip_row("章节", section))
+
+    source = normalize_attribute_value(data.get("source_id"), max_length=200)
+    if source:
+        chunks = [part.strip() for part in re.split(r"[;；|]", source) if part.strip()]
+        chunk_text = "；".join(chunks[:2]) if chunks else source
+        rows.append(_tooltip_row("chunk", chunk_text))
+
+    return rows
+
+
 def build_node_tooltip(node_id: str, attrs: Mapping[str, Any] | None = None) -> str:
     data = dict(attrs or {})
     name = get_node_display_name(node_id, data)
+    bilingual = bilingual_entity_label(name)
     entity_type = get_node_type(data)
+    type_label = map_type_zh(entity_type)
+    type_display = f"{type_label} ({entity_type})" if type_label != entity_type else entity_type
     description = get_node_description(data)
-    source = normalize_attribute_value(data.get("source_id"), max_length=200)
-    file_path = normalize_attribute_value(data.get("file_path"), max_length=200)
+
     rows = [
-        _tooltip_row("名称", name),
-        _tooltip_row("类型", entity_type),
+        _tooltip_row("名称", bilingual.replace("\n", " ")),
+        _tooltip_row("类型", type_display),
         _tooltip_row("ID", str(node_id)),
     ]
     if description:
         rows.append(_tooltip_row("描述", description))
-    if file_path:
-        rows.append(_tooltip_row("文件", file_path))
-    if source:
-        rows.append(_tooltip_row("来源", source))
+    rows.extend(format_provenance_lines(data))
     return "\n".join(rows)
 
 
@@ -199,19 +247,35 @@ def build_edge_tooltip(attrs: Mapping[str, Any] | None = None) -> str:
     relation = get_edge_relation(data)
     description = normalize_attribute_value(data.get("description"), max_length=300)
     weight = normalize_attribute_value(data.get("weight"))
-    file_path = normalize_attribute_value(data.get("file_path"), max_length=200)
     rows = [_tooltip_row("关系", relation)]
     if description and description != relation:
         rows.append(_tooltip_row("描述", description))
     if weight:
         rows.append(_tooltip_row("权重", weight))
-    if file_path:
-        rows.append(_tooltip_row("文件", file_path))
+    rows.extend(format_provenance_lines(data))
     return "\n".join(rows)
 
 
 def _degree_rank_key(graph: nx.Graph, node_id: str) -> tuple[int, str]:
     return (-int(graph.degree(node_id)), str(node_id))
+
+
+def select_labeled_nodes(
+    graph: nx.Graph,
+    *,
+    top_n: int = DEFAULT_LABEL_TOP_N,
+    show_all: bool = False,
+) -> set[str]:
+    """Return node IDs that should show permanent labels."""
+    if graph.number_of_nodes() == 0:
+        return set()
+    if show_all:
+        return {str(n) for n in graph.nodes()}
+    capped = max(0, int(top_n))
+    if capped <= 0:
+        return set()
+    ranked = sorted(graph.nodes(), key=lambda n: _degree_rank_key(graph, n))
+    return {str(n) for n in ranked[: min(capped, len(ranked))]}
 
 
 def build_overview_subgraph(graph: nx.Graph, *, limit: int = DEFAULT_OVERVIEW_LIMIT) -> nx.Graph:
@@ -229,9 +293,13 @@ def find_matching_nodes(graph: nx.Graph, query: str) -> list[str]:
         return []
     matches: list[str] = []
     for node_id, attrs in graph.nodes(data=True):
+        name = get_node_display_name(str(node_id), attrs)
+        zh = map_entity_zh(name) or ""
         candidates = [
             str(node_id),
-            get_node_display_name(str(node_id), attrs),
+            name,
+            zh,
+            bilingual_entity_label(name).replace("\n", " "),
             normalize_attribute_value(attrs.get("entity_id")),
             normalize_attribute_value(attrs.get("name")),
             normalize_attribute_value(attrs.get("label")),
@@ -299,10 +367,13 @@ def build_neighborhood_subgraph(
 def build_node_table(graph: nx.Graph) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for node_id, attrs in graph.nodes(data=True):
+        name = get_node_display_name(str(node_id), attrs)
+        bilingual = bilingual_entity_label(name).replace("\n", " ")
+        entity_type = get_node_type(attrs)
         rows.append(
             {
-                "name": get_node_display_name(str(node_id), attrs),
-                "type": get_node_type(attrs),
+                "name": bilingual,
+                "type": map_type_zh(entity_type),
                 "degree": int(graph.degree(node_id)),
                 "id": str(node_id),
             }
@@ -313,7 +384,16 @@ def build_node_table(graph: nx.Graph) -> list[dict[str, Any]]:
 
 def collect_type_legend(graph: nx.Graph) -> list[dict[str, str]]:
     types = sorted({get_node_type(attrs) for _, attrs in graph.nodes(data=True)})
-    return [{"type": entity_type, "color": color_for_type(entity_type)} for entity_type in types]
+    legend: list[dict[str, str]] = []
+    for entity_type in types:
+        legend.append(
+            {
+                "type": entity_type,
+                "label": map_type_zh(entity_type),
+                "color": color_for_type(entity_type),
+            }
+        )
+    return legend
 
 
 def _short_label(text: str, *, max_length: int = 24) -> str:
@@ -321,6 +401,21 @@ def _short_label(text: str, *, max_length: int = 24) -> str:
     if len(value) <= max_length:
         return value
     return value[: max_length - 1] + "…"
+
+
+def _node_canvas_label(english_name: str, *, show: bool) -> str:
+    # PyVis falls back to node id when label is empty/falsy; use a space so
+    # unlabeled nodes stay visually unlabeled while hover title still works.
+    if not show:
+        return " "
+    zh = map_entity_zh(english_name)
+    if zh:
+        # Compact canvas label: Chinese primary, English secondary when short
+        combined = f"{zh}\n({english_name})"
+        if len(combined) <= 28:
+            return combined
+        return _short_label(zh, max_length=16)
+    return _short_label(english_name)
 
 
 _TOOLTIP_CSS = """
@@ -355,11 +450,148 @@ _TOOLTIP_CSS = """
 </style>
 """
 
+# Neighbor focus: dim unrelated nodes/edges; keep drag/zoom/physics-off intact.
+_NEIGHBOR_HIGHLIGHT_SCRIPT = """
+<script type="text/javascript">
+  /* industrial-rag:node-click-highlight */
+  (function () {
+    if (typeof network === "undefined" || typeof nodes === "undefined") {
+      return;
+    }
+    var highlightActive = false;
+    var baseNodeColors = {};
+    var baseEdgeColors = {};
+
+    try {
+      nodes.forEach(function (node) {
+        baseNodeColors[node.id] = node.color;
+      });
+    } catch (e) {}
+    try {
+      if (typeof edges !== "undefined") {
+        edges.forEach(function (edge) {
+          baseEdgeColors[edge.id] = edge.color;
+        });
+      }
+    } catch (e) {}
+
+    function resetHighlight() {
+      if (!highlightActive) {
+        return;
+      }
+      var nodeUpdates = [];
+      nodes.forEach(function (node) {
+        nodeUpdates.push({
+          id: node.id,
+          color: baseNodeColors[node.id],
+          opacity: 1.0,
+          font: node.font
+        });
+      });
+      if (nodeUpdates.length) {
+        nodes.update(nodeUpdates);
+      }
+      if (typeof edges !== "undefined") {
+        var edgeUpdates = [];
+        edges.forEach(function (edge) {
+          edgeUpdates.push({
+            id: edge.id,
+            color: baseEdgeColors[edge.id] || { color: "#60A5FA", opacity: 1.0 },
+            opacity: 1.0
+          });
+        });
+        if (edgeUpdates.length) {
+          edges.update(edgeUpdates);
+        }
+      }
+      highlightActive = false;
+    }
+
+    network.on("click", function (params) {
+      if (!params.nodes || params.nodes.length === 0) {
+        resetHighlight();
+        return;
+      }
+      var selectedId = params.nodes[0];
+      var connected = network.getConnectedNodes(selectedId) || [];
+      var keep = {};
+      keep[selectedId] = true;
+      for (var i = 0; i < connected.length; i++) {
+        keep[connected[i]] = true;
+      }
+
+      var nodeUpdates = [];
+      nodes.forEach(function (node) {
+        var isKeep = !!keep[node.id];
+        var isCenter = node.id === selectedId;
+        var base = baseNodeColors[node.id];
+        var colorObj;
+        if (typeof base === "string") {
+          colorObj = { background: base, border: isCenter ? "#111827" : base };
+        } else if (base && typeof base === "object") {
+          colorObj = {
+            background: base.background || base,
+            border: isCenter ? "#111827" : (base.border || base.background || "#111827"),
+            highlight: base.highlight,
+            hover: base.hover
+          };
+        } else {
+          colorObj = { background: "#60A5FA", border: isCenter ? "#111827" : "#2563EB" };
+        }
+        nodeUpdates.push({
+          id: node.id,
+          color: colorObj,
+          opacity: isKeep ? 1.0 : 0.15,
+          borderWidth: isCenter ? 3 : 1
+        });
+      });
+      nodes.update(nodeUpdates);
+
+      if (typeof edges !== "undefined") {
+        var edgeUpdates = [];
+        edges.forEach(function (edge) {
+          var connectedEdge =
+            keep[edge.from] && keep[edge.to] &&
+            (edge.from === selectedId || edge.to === selectedId ||
+             keep[edge.from] && keep[edge.to]);
+          // Keep edges between selected neighborhood; dim others
+          var inNeighborhood = keep[edge.from] && keep[edge.to];
+          edgeUpdates.push({
+            id: edge.id,
+            color: {
+              color: inNeighborhood ? "#1D4ED8" : "#CBD5E1",
+              opacity: inNeighborhood ? 1.0 : 0.12
+            },
+            opacity: inNeighborhood ? 1.0 : 0.12
+          });
+        });
+        edges.update(edgeUpdates);
+      }
+      highlightActive = true;
+    });
+  })();
+</script>
+"""
+
+_STABILIZE_SCRIPT = """
+<script type="text/javascript">
+  /* industrial-rag:stable-layout */
+  network.once("stabilizationIterationsDone", function () {
+    network.setOptions({ physics: { enabled: false } });
+    try {
+      network.fit({ animation: false });
+    } catch (e) {}
+  });
+</script>
+"""
+
 
 def render_pyvis_html(
     graph: nx.Graph,
     *,
     show_edge_labels: bool = False,
+    show_all_labels: bool = False,
+    label_top_n: int = DEFAULT_LABEL_TOP_N,
     height: str = "700px",
     width: str = "100%",
 ) -> str:
@@ -375,6 +607,8 @@ def render_pyvis_html(
     except ImportError as error:
         raise RuntimeError("未安装 pyvis；请执行 pip install -r requirements.txt") from error
 
+    labeled = select_labeled_nodes(graph, top_n=label_top_n, show_all=show_all_labels)
+
     net = Network(
         height=height,
         width=width,
@@ -388,21 +622,24 @@ def render_pyvis_html(
         {
           "nodes": {
             "font": {
-              "size": 16,
+              "size": 15,
               "face": "Segoe UI, Microsoft YaHei, sans-serif",
               "color": "#111827",
               "strokeWidth": 3,
               "strokeColor": "#FFFFFF",
-              "background": "rgba(255,255,255,0.86)"
+              "background": "rgba(255,255,255,0.86)",
+              "multi": true,
+              "vadjust": 0
             },
             "borderWidth": 1,
             "borderWidthSelected": 3,
-            "shadow": true
+            "shadow": true,
+            "scaling": { "min": 12, "max": 48 }
           },
           "edges": {
             "color": {"color": "#60A5FA", "highlight": "#1D4ED8", "hover": "#2563EB"},
             "font": {
-              "size": 13,
+              "size": 12,
               "face": "Segoe UI, Microsoft YaHei, sans-serif",
               "color": "#1F2937",
               "strokeWidth": 2,
@@ -410,7 +647,7 @@ def render_pyvis_html(
               "background": "rgba(255,255,255,0.9)",
               "align": "middle"
             },
-            "smooth": {"type": "dynamic"}
+            "smooth": {"enabled": true, "type": "continuous", "roundness": 0.35}
           },
           "interaction": {
             "hover": true,
@@ -418,22 +655,26 @@ def render_pyvis_html(
             "navigationButtons": true,
             "keyboard": true,
             "multiselect": false,
-            "hideEdgesOnDrag": false
+            "hideEdgesOnDrag": false,
+            "dragNodes": true,
+            "dragView": true,
+            "zoomView": true
           },
           "physics": {
             "enabled": true,
             "stabilization": {
               "enabled": true,
-              "iterations": 120,
+              "iterations": 200,
               "updateInterval": 25,
               "fit": true
             },
             "barnesHut": {
-              "gravitationalConstant": -8000,
-              "centralGravity": 0.2,
-              "springLength": 120,
-              "springConstant": 0.04,
-              "damping": 0.5
+              "gravitationalConstant": -14000,
+              "centralGravity": 0.12,
+              "springLength": 170,
+              "springConstant": 0.03,
+              "damping": 0.55,
+              "avoidOverlap": 0.35
             }
           }
         }
@@ -444,9 +685,10 @@ def render_pyvis_html(
         name = get_node_display_name(str(node_id), attrs)
         entity_type = get_node_type(attrs)
         degree = int(graph.degree(node_id))
+        show_label = str(node_id) in labeled
         net.add_node(
             str(node_id),
-            label=_short_label(name),
+            label=_node_canvas_label(name, show=show_label),
             title=build_node_tooltip(str(node_id), attrs),
             group=entity_type,
             size=compute_node_size(degree),
@@ -477,23 +719,16 @@ def render_pyvis_html(
     content = net.generate_html(notebook=False)
     if not isinstance(content, str) or not content.strip():
         raise RuntimeError("PyVis 生成了空 HTML")
-    # Stop physics after stabilization so the graph settles instead of jittering.
-    stop_script = (
-        "<script type='text/javascript'>"
-        "network.once('stabilizationIterationsDone', function () {"
-        "  network.setOptions({physics: {enabled: false}});"
-        "});"
-        "</script>"
-    )
-    inject = _TOOLTIP_CSS + stop_script
+
+    body_scripts = _STABILIZE_SCRIPT + _NEIGHBOR_HIGHLIGHT_SCRIPT
     if "</head>" in content:
         content = content.replace("</head>", _TOOLTIP_CSS + "</head>")
         if "</body>" in content:
-            content = content.replace("</body>", stop_script + "</body>")
+            content = content.replace("</body>", body_scripts + "</body>")
         else:
-            content += stop_script
+            content += body_scripts
     elif "</body>" in content:
-        content = content.replace("</body>", inject + "</body>")
+        content = content.replace("</body>", _TOOLTIP_CSS + body_scripts + "</body>")
     else:
-        content = inject + content
+        content = _TOOLTIP_CSS + body_scripts + content
     return content

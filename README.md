@@ -61,10 +61,12 @@ streamlit run app\streamlit_app.py
 
 1. 页面只显示图谱子集，避免浏览器卡顿；全局概览默认按节点 degree 选取约 50 个节点。
 2. 可搜索实体并展示 1 跳或 2 跳邻居子图。
-3. 「重新加载图谱」只重新读取 GraphML，不会清理问答 Runtime，也不会调用百炼 API。
-4. GraphML 不存在时，请先执行 `python scripts/ingest_documents.py`。
-5. 修改 `.env` 后需要重启 Streamlit。
-6. 当前不支持图谱编辑和写回。
+3. 默认仅显示 degree 最高的约 15 个节点名称，可用「显示全部节点名称」切换；悬停可看完整中英文与来源信息。
+4. 点击节点会高亮其邻居并弱化无关节点；稳定布局后自动居中 fit，拖拽后保持位置。
+5. 「重新加载图谱」只重新读取 GraphML，不会清理问答 Runtime，也不会调用百炼 API。
+6. GraphML 不存在时，请先执行 `python scripts/ingest_documents.py`。
+7. 修改 `.env` 后需要重启 Streamlit。
+8. 当前不支持图谱编辑和写回（展示层中文映射不影响实体 ID 与 GraphML）。
 
 ## 测试与 Smoke Test
 

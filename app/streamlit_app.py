@@ -213,6 +213,11 @@ def _render_graph_tab(settings: Settings | None) -> None:
         key="graph_mode",
     )
     show_edge_labels = st.checkbox("显示关系标签", value=False, key="show_edge_labels")
+    show_all_labels = st.checkbox("显示全部节点名称", value=False, key="show_all_labels")
+    if not show_all_labels:
+        st.caption(
+            f"默认仅显示 degree 最高的 {gv.DEFAULT_LABEL_TOP_N} 个节点名称；悬停可查看全部信息。"
+        )
 
     subgraph = None
     if mode == "全局概览":
@@ -243,8 +248,8 @@ def _render_graph_tab(settings: Settings | None) -> None:
             return
         labels = {
             node_id: (
-                f"{gv.get_node_display_name(node_id, graph.nodes[node_id])} "
-                f"[{gv.get_node_type(graph.nodes[node_id])}]"
+                f"{gv.bilingual_entity_label(gv.get_node_display_name(node_id, graph.nodes[node_id])).replace(chr(10), ' ')} "
+                f"[{gv.map_type_zh(gv.get_node_type(graph.nodes[node_id]))}]"
             )
             for node_id in matches
         }
@@ -274,15 +279,18 @@ def _render_graph_tab(settings: Settings | None) -> None:
         legend_cols = st.columns(min(4, len(legend)))
         for index, item in enumerate(legend):
             with legend_cols[index % len(legend_cols)]:
+                legend_text = item.get("label") or item["type"]
                 st.markdown(
                     f"<span style='display:inline-block;width:12px;height:12px;"
                     f"background:{item['color']};border-radius:2px;margin-right:6px;'></span>"
-                    f"{item['type']}",
+                    f"{legend_text}",
                     unsafe_allow_html=True,
                 )
 
     try:
-        html = gv.render_pyvis_html(subgraph, show_edge_labels=show_edge_labels)
+        html = gv.render_pyvis_html(
+            subgraph, show_edge_labels=show_edge_labels, show_all_labels=show_all_labels
+        )
         components.html(html, height=720, scrolling=True)
     except Exception as error:
         st.error(f"图谱渲染失败：{error}")
