@@ -3,7 +3,91 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from industrial_rag.citation_formatter import Citation
 from industrial_rag.evaluation import load_golden_cases
+from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
+
+
+def test_evaluate_cases_reports_ranked_retrieval_and_safe_refusal() -> None:
+    """A relevant citation at rank two must affect recall and MRR predictably."""
+    from industrial_rag.evaluation import GoldenCase, evaluate_cases
+
+    expected = Citation("pump.pdf", 7, "pump-p7-c1")
+    cases = (
+        GoldenCase("answer", "轴承温度高怎么办？", True, (expected,)),
+        GoldenCase("refuse", "火星维护周期？", False, ()),
+    )
+
+    def query(question: str) -> tuple[QueryResult, float]:
+        if question == "火星维护周期？":
+            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), "mix"), 0.2
+        return (
+            QueryResult("检查润滑。", (Citation("pump.pdf", 2, "pump-p2-c1"), expected), "mix"),
+            0.1,
+        )
+
+    report = evaluate_cases(cases, query)
+
+    assert report.retrieval_recall_at_1 == 0.0
+    assert report.retrieval_recall_at_3 == 1.0
+    assert report.retrieval_recall_at_5 == 1.0
+    assert report.mean_reciprocal_rank == 0.5
+    assert report.citation_presence_rate == 1.0
+    assert report.citation_traceability_rate == 1.0
+    assert report.no_evidence_refusal_rate == 1.0
+    assert report.success_rate == 1.0
+    assert report.latency_p50_ms == 100.0
+    assert report.latency_p95_ms == 200.0
+
+
+def test_evaluate_cases_records_failed_queries_and_invalid_refusals() -> None:
+    """Failures and invented evidence must lower their own report metrics."""
+    from industrial_rag.evaluation import GoldenCase, evaluate_cases
+
+    expected = Citation("pump.pdf", 7, "pump-p7-c1")
+    cases = (
+        GoldenCase("missing", "手册问题", True, (expected,)),
+        GoldenCase("failed", "服务失败", True, (expected,)),
+        GoldenCase("unsafe-refusal", "火星问题", False, ()),
+    )
+
+    def query(question: str) -> tuple[QueryResult, float]:
+        if question == "服务失败":
+            raise RuntimeError("private upstream detail")
+        if question == "火星问题":
+            return QueryResult("我猜是每周维护。", (Citation("pump.pdf", 2, "pump-p2-c1"),), "mix"), 0.3
+        return QueryResult("检查。", (), "mix"), 0.1
+
+    report = evaluate_cases(cases, query)
+
+    assert report.retrieval_recall_at_5 == 0.0
+    assert report.citation_presence_rate == 0.0
+    assert report.citation_traceability_rate == 0.0
+    assert report.no_evidence_refusal_rate == 0.0
+    assert report.success_rate == pytest.approx(2 / 3)
+    assert report.cases[1].error_type == "RuntimeError"
+    assert report.cases[1].latency_ms is None
+
+
+def test_evaluate_cases_keeps_metrics_attached_to_the_originating_case() -> None:
+    """A no-evidence case before an evidence case must not shift metric results."""
+    from industrial_rag.evaluation import GoldenCase, evaluate_cases
+
+    expected = Citation("pump.pdf", 7, "pump-p7-c1")
+    cases = (
+        GoldenCase("refuse", "火星问题", False, ()),
+        GoldenCase("answer", "启动前检查什么？", True, (expected,)),
+    )
+
+    def query(question: str) -> tuple[QueryResult, float]:
+        if question == "火星问题":
+            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), "mix"), 0.1
+        return QueryResult("检查阀门。", (expected,), "mix"), 0.2
+
+    report = evaluate_cases(cases, query)
+
+    assert report.retrieval_recall_at_1 == 1.0
+    assert report.no_evidence_refusal_rate == 1.0
 
 
 def test_load_golden_cases_preserves_expected_citations(tmp_path: Path) -> None:
