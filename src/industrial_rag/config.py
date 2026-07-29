@@ -31,6 +31,7 @@ class Settings:
     """Validated runtime settings for the single LightRAG knowledge base."""
 
     api_key: str = field(repr=False)
+    service_api_key: str | None = field(default=None, repr=False)
     llm_base_url: str = DEFAULT_BAILIAN_BASE_URL
     llm_model: str = "qwen3.7-plus"
     embedding_model: str = "text-embedding-v4"
@@ -40,6 +41,7 @@ class Settings:
     @classmethod
     def from_mapping(cls, values: Mapping[str, str | None]) -> Settings:
         api_key = (values.get("DASHSCOPE_API_KEY") or "").strip()
+        service_api_key = (values.get("SERVICE_API_KEY") or "").strip() or None
         base_url = (values.get("LLM_BASE_URL") or DEFAULT_BAILIAN_BASE_URL).rstrip("/")
         llm_model = (values.get("LLM_MODEL") or "qwen3.7-plus").strip()
         embedding_model = (values.get("EMBEDDING_MODEL") or "text-embedding-v4").strip()
@@ -64,6 +66,7 @@ class Settings:
             raise ValueError("EMBEDDING_DIM 必须为 1024")
         return cls(
             api_key=api_key,
+            service_api_key=service_api_key,
             llm_base_url=base_url,
             llm_model=llm_model,
             embedding_model=embedding_model,
