@@ -19,9 +19,14 @@ def _valid_values() -> dict[str, str]:
 def test_service_api_key_is_optional_and_trimmed() -> None:
     settings = Settings.from_mapping({**_valid_values(), "SERVICE_API_KEY": "  local-key  "})
     assert settings.service_api_key == "local-key"
+    assert "local-key" not in repr(settings)
 
 
-def test_service_api_key_is_none_when_blank_and_never_in_repr() -> None:
+def test_service_api_key_is_none_when_absent() -> None:
+    settings = Settings.from_mapping(_valid_values())
+    assert settings.service_api_key is None
+
+
+def test_service_api_key_is_none_when_blank() -> None:
     settings = Settings.from_mapping({**_valid_values(), "SERVICE_API_KEY": "   "})
     assert settings.service_api_key is None
-    assert "SERVICE_API_KEY" not in repr(settings)
