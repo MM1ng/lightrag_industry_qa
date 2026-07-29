@@ -57,6 +57,7 @@ data/processed/**
 .idea/
 .vscode/
 .claude/
+.worktrees/
 *.swp
 *.swo
 
