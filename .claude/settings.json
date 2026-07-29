@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Read(//d/D/**)",
-      "Bash(python -m pytest tests/test_lightrag_service.py -v)",
-      "PowerShell(conda run -n industrial-rag python -m pytest tests/test_lightrag_service.py -v 2>&1)"
-    ]
-  }
-}

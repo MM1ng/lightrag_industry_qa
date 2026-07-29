@@ -56,6 +56,7 @@ data/processed/**
 .ipynb_checkpoints/
 .idea/
 .vscode/
+.claude/
 *.swp
 *.swo
 
