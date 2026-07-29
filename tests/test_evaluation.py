@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -88,6 +89,57 @@ def test_evaluate_cases_keeps_metrics_attached_to_the_originating_case() -> None
 
     assert report.retrieval_recall_at_1 == 1.0
     assert report.no_evidence_refusal_rate == 1.0
+
+
+def test_evaluate_main_requires_explicit_real_flag() -> None:
+    """The evaluator must never call a configured model by accident."""
+    from scripts import evaluate
+
+    with pytest.raises(SystemExit) as error:
+        evaluate.main(["--golden", "golden.jsonl", "--output", "report.json"])
+
+    assert error.value.code == 2
+
+
+def test_evaluate_main_writes_report_with_injected_runtime(tmp_path: Path) -> None:
+    """The CLI writes the real evaluator report without starting LightRAG in tests."""
+    from scripts import evaluate
+
+    golden = tmp_path / "golden.jsonl"
+    output = tmp_path / "report.json"
+    golden.write_text(
+        '{"id":"answer","question":"启动前检查什么？","expects_evidence":true,'
+        '"expected_citations":[{"source_file":"pump.pdf","page_number":7,'
+        '"chunk_id":"pump-p7-c1"}]}\n',
+        encoding="utf-8",
+    )
+    runtime = _FakeEvaluationRuntime()
+
+    exit_code = evaluate.main(
+        ["--real", "--golden", str(golden), "--output", str(output)],
+        runtime_factory=lambda: runtime,
+    )
+
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert exit_code == 0
+    assert report["success_rate"] == 1.0
+    assert report["retrieval_recall_at_1"] == 1.0
+    assert runtime.closed is True
+
+
+class _FakeEvaluationRuntime:
+    def __init__(self) -> None:
+        self.closed = False
+
+    def query(self, question: str, *, mode: str, timeout: float = 180.0) -> tuple[QueryResult, float]:
+        assert question == "启动前检查什么？"
+        assert mode == "mix"
+        assert timeout == 180.0
+        citation = Citation("pump.pdf", 7, "pump-p7-c1")
+        return QueryResult("检查阀门。", (citation,), "mix"), 0.1
+
+    def close(self) -> None:
+        self.closed = True
 
 
 def test_load_golden_cases_preserves_expected_citations(tmp_path: Path) -> None:

@@ -1,0 +1,2 @@
+{"id":"example-evidence","question":"示例问题：启动前检查什么？","expects_evidence":true,"expected_citations":[{"source_file":"example-manual.pdf","page_number":1,"chunk_id":"example-p1-c1"}]}
+{"id":"example-no-evidence","question":"示例问题：火星基地维护周期？","expects_evidence":false,"expected_citations":[]}
