@@ -181,6 +181,13 @@ def test_query_rejects_missing_or_invalid_bearer_key(header: str | None) -> None
     _assert_public_error(response, status_code=401, code="UNAUTHORIZED")
 
 
+@pytest.mark.parametrize("header", [None, "Bearer wrong"])
+def test_query_authenticates_before_validating_malformed_payload(header: str | None) -> None:
+    with TestClient(_app(FakeRuntime(), service_api_key="expected-key")) as client:
+        response = client.post("/v1/query", json={"query": ""}, headers=_headers(header))
+    _assert_public_error(response, status_code=401, code="UNAUTHORIZED")
+
+
 def test_query_allows_correct_bearer_key() -> None:
     with TestClient(_app(FakeRuntime(), service_api_key="expected-key")) as client:
         response = client.post(

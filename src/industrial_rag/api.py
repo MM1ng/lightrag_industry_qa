@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 from typing import Annotated, Literal, Protocol
 from uuid import uuid4
 
-from fastapi import FastAPI, Header, Request
+from fastapi import Depends, FastAPI, Header, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StringConstraints
@@ -78,6 +78,11 @@ class PublicError(BaseModel):
     retryable: bool
 
 
+class _AuthenticationError(Exception):
+    def __init__(self, request_id: str) -> None:
+        self.request_id = request_id
+
+
 _ERRORS: dict[str, tuple[int, str, bool]] = {
     "INVALID_REQUEST": (422, "请求内容不合法，请检查后重试。", False),
     "UNAUTHORIZED": (401, "未提供有效的服务凭据。", False),
@@ -89,6 +94,14 @@ _ERRORS: dict[str, tuple[int, str, bool]] = {
 
 def _request_id() -> str:
     return uuid4().hex
+
+
+def _request_id_for(request: Request) -> str:
+    request_id = getattr(request.state, "request_id", None)
+    if request_id is None:
+        request_id = _request_id()
+        request.state.request_id = request_id
+    return request_id
 
 
 def _error_response(code: str, *, request_id: str | None = None) -> JSONResponse:
@@ -122,6 +135,20 @@ def _log_result(*, request_id: str, status: str, latency_ms: int) -> None:
     )
 
 
+def _authenticate_query(
+    request: Request,
+    authorization: Annotated[str | None, Header()] = None,
+) -> None:
+    request_id = _request_id_for(request)
+    service_api_key: str | None = request.app.state.service_api_key
+    if service_api_key is None:
+        return
+    expected = f"Bearer {service_api_key}".encode()
+    supplied = (authorization or "").encode()
+    if not secrets.compare_digest(supplied, expected):
+        raise _AuthenticationError(request_id)
+
+
 def create_app(
     *,
     settings: Settings | None = None,
@@ -133,13 +160,14 @@ def create_app(
     async def lifespan(application: FastAPI):
         runtime: QueryRuntime | None = None
         application.state.runtime = None
+        application.state.service_api_key = None
         try:
             resolved_settings = settings or Settings.from_env()
+            application.state.service_api_key = resolved_settings.service_api_key
             runtime = runtime_factory(resolved_settings)
             application.state.runtime = runtime
-            application.state.service_api_key = resolved_settings.service_api_key
         except Exception:
-            application.state.service_api_key = None
+            pass
         try:
             yield
         finally:
@@ -149,12 +177,20 @@ def create_app(
 
     application = FastAPI(lifespan=lifespan)
 
+    @application.exception_handler(_AuthenticationError)
+    async def unauthorized_handler(
+        _request: Request,
+        error: _AuthenticationError,
+    ) -> JSONResponse:
+        _log_result(request_id=error.request_id, status="UNAUTHORIZED", latency_ms=0)
+        return _error_response("UNAUTHORIZED", request_id=error.request_id)
+
     @application.exception_handler(RequestValidationError)
     async def invalid_request_handler(
-        _request: Request,
+        request: Request,
         _error: RequestValidationError,
     ) -> JSONResponse:
-        return _error_response("INVALID_REQUEST")
+        return _error_response("INVALID_REQUEST", request_id=_request_id_for(request))
 
     @application.get("/readyz", response_model=None)
     def readyz(request: Request) -> dict[str, str] | JSONResponse:
@@ -162,27 +198,21 @@ def create_app(
             return _error_response("INDEX_NOT_READY")
         return {"status": "ready"}
 
-    @application.post("/v1/query", response_model=QueryResponse)
+    @application.post(
+        "/v1/query",
+        dependencies=[Depends(_authenticate_query)],
+        response_model=QueryResponse,
+    )
     def query(
         payload: QueryRequest,
         request: Request,
-        authorization: Annotated[str | None, Header()] = None,
     ) -> QueryResponse | JSONResponse:
-        request_id = _request_id()
+        request_id = _request_id_for(request)
         runtime: QueryRuntime | None = request.app.state.runtime
         if runtime is None:
             response = _error_response("INDEX_NOT_READY", request_id=request_id)
             _log_result(request_id=request_id, status="INDEX_NOT_READY", latency_ms=0)
             return response
-
-        service_api_key: str | None = request.app.state.service_api_key
-        if service_api_key is not None:
-            expected = f"Bearer {service_api_key}".encode()
-            supplied = (authorization or "").encode()
-            if not secrets.compare_digest(supplied, expected):
-                response = _error_response("UNAUTHORIZED", request_id=request_id)
-                _log_result(request_id=request_id, status="UNAUTHORIZED", latency_ms=0)
-                return response
 
         try:
             result, latency_seconds = runtime.query(
