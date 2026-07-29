@@ -128,11 +128,23 @@ def test_query_returns_insufficient_evidence_without_claims_or_citations() -> No
     assert body["claims"] == []
 
 
+def test_query_accepts_exact_request_boundaries() -> None:
+    runtime = FakeRuntime()
+    history = [{"role": "user", "content": "h" * 2000} for _ in range(10)]
+    query = "q" * 4000
+    with TestClient(_app(runtime)) as client:
+        response = client.post("/v1/query", json={"query": query, "history": history})
+    assert response.status_code == 200
+    assert runtime.calls == [(query, "mix")]
+
+
 @pytest.mark.parametrize(
     "payload",
     [
         {"query": ""},
         {"query": "x" * 4001},
+        {"query": "问题", "history": [{"role": "user", "content": "x"}] * 11},
+        {"query": "问题", "history": [{"role": "user", "content": "x" * 2001}]},
         {"query": "问题", "history": [{"role": "system", "content": "不允许"}]},
         {"query": "问题", "history": [{"role": "user", "content": ""}]},
     ],
@@ -147,6 +159,19 @@ def test_query_allows_requests_when_service_api_key_is_not_configured() -> None:
     with TestClient(_app(FakeRuntime())) as client:
         response = client.post("/v1/query", json={"query": "问题"})
     assert response.status_code == 200
+
+
+def test_history_is_neither_forwarded_nor_reused_between_requests() -> None:
+    runtime = FakeRuntime()
+    with TestClient(_app(runtime)) as client:
+        first = client.post(
+            "/v1/query",
+            json={"query": "第一问", "history": [{"role": "user", "content": "仅限第一轮"}]},
+        )
+        second = client.post("/v1/query", json={"query": "第二问"})
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert runtime.calls == [("第一问", "mix"), ("第二问", "mix")]
 
 
 @pytest.mark.parametrize("header", [None, "Bearer wrong", "Basic expected-key"])
@@ -167,9 +192,11 @@ def test_query_allows_correct_bearer_key() -> None:
 
 
 def test_query_timeout_maps_to_public_timeout_error() -> None:
-    with TestClient(_app(FakeRuntime(error=RuntimeError("Query timed out after 1.0s")))) as client:
+    raw_error = "Query timed out after 1.0s"
+    with TestClient(_app(FakeRuntime(error=RuntimeError(raw_error)))) as client:
         response = client.post("/v1/query", json={"query": "问题"})
     _assert_public_error(response, status_code=504, code="TIMEOUT")
+    assert raw_error not in response.text
 
 
 def test_other_runtime_error_hides_raw_exception_text() -> None:
