@@ -2,7 +2,15 @@
 
 这是一个收敛的单页知识库问答 MVP：使用 PyMuPDF 解析 `data\manuals` 中的两份离心泵 PDF，将带文件名、物理页码和章节信息的文本块导入 LightRAG，再通过阿里云百炼 `qwen3.7-plus` 与 `text-embedding-v4`（1024 维，北京端点）回答问题。
 
-项目只包含 `src\industrial_rag`、问答/图谱 Streamlit 界面及其配套脚本；不包含多 Agent、LangGraph、传感器、工单、审批或数据库业务流程。
+## 功能范围
+
+项目只包含 `src\industrial_rag`、问答/图谱 Streamlit 界面及其配套脚本，提供：
+
+- 基于工业手册证据的问答与物理页码、chunk ID 引用。
+- 只读知识图谱可视化与实体邻居查询。
+- 固定黄金集的检索、引用、拒答、可用性与延迟评测。
+
+不包含多 Agent、LangGraph、传感器分析、故障诊断、工单、审批或数据库业务流程。
 
 ## Windows Conda 安装
 
