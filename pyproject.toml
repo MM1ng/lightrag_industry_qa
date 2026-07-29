@@ -16,6 +16,7 @@ dependencies = [
   "streamlit>=1.46,<2",
   "networkx>=3.2,<4",
   "pyvis>=0.3.2,<0.4",
+  "httpx>=0.28,<1",
 ]
 
 [project.optional-dependencies]
@@ -33,10 +34,6 @@ addopts = [
   "-ra",
   "--strict-config",
   "--strict-markers",
-  # Legacy agent/workflow suites live under these dirs and need extra deps.
-  "--ignore=tests/unit",
-  "--ignore=tests/integration",
-  "--ignore=tests/smoke",
 ]
 testpaths = ["tests"]
 pythonpath = ["src"]
@@ -48,16 +45,12 @@ line-length = 100
 src = ["src/industrial_rag", "tests"]
 include = [
   "src/industrial_rag/**/*.py",
-  "tests/test_document_parser.py",
-  "tests/test_citation_formatter.py",
-  "tests/test_lightrag_service.py",
-  "tests/test_runtime.py",
-  "tests/test_graph_visualizer.py",
+  "app/**/*.py",
+  "tests/test_*.py",
   "scripts/inspect_environment.py",
   "scripts/parse_manuals.py",
   "scripts/ingest_documents.py",
   "scripts/smoke_test.py",
-  "app/streamlit_app.py",
 ]
 
 [tool.ruff.lint]
