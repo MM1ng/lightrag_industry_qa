@@ -56,7 +56,9 @@ def test_evaluate_cases_records_failed_queries_and_invalid_refusals() -> None:
         if question == "服务失败":
             raise RuntimeError("private upstream detail")
         if question == "火星问题":
-            return QueryResult("我猜是每周维护。", (Citation("pump.pdf", 2, "pump-p2-c1"),), "mix"), 0.3
+            return QueryResult(
+                "我猜是每周维护。", (Citation("pump.pdf", 2, "pump-p2-c1"),), "mix"
+            ), 0.3
         return QueryResult("检查。", (), "mix"), 0.1
 
     report = evaluate_cases(cases, query)
@@ -131,7 +133,9 @@ class _FakeEvaluationRuntime:
     def __init__(self) -> None:
         self.closed = False
 
-    def query(self, question: str, *, mode: str, timeout: float = 180.0) -> tuple[QueryResult, float]:
+    def query(
+        self, question: str, *, mode: str, timeout: float = 180.0
+    ) -> tuple[QueryResult, float]:
         assert question == "启动前检查什么？"
         assert mode == "mix"
         assert timeout == 180.0

@@ -86,6 +86,33 @@ python scripts\ingest_documents.py
 python scripts\smoke_test.py --real
 ```
 
+## 质量评测
+
+评测使用人工核验的黄金问题集，而不是由模型给自己打分。先复制格式样例：
+
+```powershell
+Copy-Item data\evaluation\golden_questions.example.jsonl data\evaluation\golden_questions.jsonl
+```
+
+逐行替换样例中的问题和 `expected_citations`。每个需要证据的问题必须填写实际解析/摄取产物中的 `source_file`、物理 `page_number` 和 `chunk_id`；无依据问题使用 `"expects_evidence": false` 和空引用数组。不要把示例文件中的 `example-manual.pdf` 当作真实评测证据。
+
+确认索引已就绪、`.env` 中已配置本机 API Key 后，显式执行真实评测：
+
+```powershell
+python scripts\evaluate.py --real --golden data\evaluation\golden_questions.jsonl --output dist\evaluation-report.json
+```
+
+该命令会调用已有 LightRAG 索引和模型，因此默认测试不会运行它。报告包含：
+
+- `retrieval_recall_at_1/3/5`：人工标注的目标 chunk 在前 K 个返回引用中出现的比例。
+- `mean_reciprocal_rank`：首个目标引用排名的倒数平均值，未命中记为 0。
+- `citation_presence_rate`：应有证据的问题中，实际返回引用的比例。
+- `citation_traceability_rate`：返回引用与黄金集完整 `文档名 + 页码 + chunk ID` 匹配的比例。
+- `no_evidence_refusal_rate`：无依据问题返回固定依据不足提示且没有引用的比例。
+- `success_rate`、`latency_p50_ms`、`latency_p95_ms`：可用性与响应延迟。
+
+第一版不安装 Ragas。上述确定性指标和人工抽查引用是否支持回答，是发布前的基础质量门；后续如需语义评分，可在同一黄金集上将 Ragas 作为可选离线工具加入。
+
 ## 安全重建索引
 
 Embedding 模型或维度不一致时，程序会停止并提示重建，不会自动删除旧索引。请先关闭 Streamlit，然后在 PowerShell 中备份现有目录：

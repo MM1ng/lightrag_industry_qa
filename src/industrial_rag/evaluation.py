@@ -182,9 +182,7 @@ def _build_report(
 ) -> EvaluationReport:
     paired_cases = tuple(zip(cases, results, strict=True))
     evidence = tuple((case, result) for case, result in paired_cases if case.expects_evidence)
-    no_evidence = tuple(
-        result for case, result in paired_cases if not case.expects_evidence
-    )
+    no_evidence = tuple(result for case, result in paired_cases if not case.expects_evidence)
 
     return EvaluationReport(
         cases=results,
@@ -192,7 +190,9 @@ def _build_report(
         retrieval_recall_at_3=_recall_at_k(evidence, 3),
         retrieval_recall_at_5=_recall_at_k(evidence, 5),
         mean_reciprocal_rank=_mean_reciprocal_rank(evidence),
-        citation_presence_rate=_rate(sum(bool(result.citations) for _, result in evidence), len(evidence)),
+        citation_presence_rate=_rate(
+            sum(bool(result.citations) for _, result in evidence), len(evidence)
+        ),
         citation_traceability_rate=_rate(
             sum(result.first_relevant_rank is not None for _, result in evidence), len(evidence)
         ),
@@ -221,7 +221,10 @@ def _mean_reciprocal_rank(
     evidence: tuple[tuple[GoldenCase, CaseResult], ...],
 ) -> float | None:
     return _rate(
-        sum(0.0 if result.first_relevant_rank is None else 1 / result.first_relevant_rank for _, result in evidence),
+        sum(
+            0.0 if result.first_relevant_rank is None else 1 / result.first_relevant_rank
+            for _, result in evidence
+        ),
         len(evidence),
     )
 
