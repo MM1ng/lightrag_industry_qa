@@ -42,7 +42,6 @@ _NON_SUBSTANTIVE_CJK_BIGRAMS = frozenset(
         "保养",
         "安装",
         "运行",
-        "启动",
         "停机",
         "处理",
         "确定",
@@ -69,6 +68,17 @@ _NON_SUBSTANTIVE_CJK_BIGRAMS = frozenset(
         "发现",
         "立即",
         "通过",
+        "手册",
+        "册中",
+        "型号",
+        "品牌",
+        "必须",
+        "购买",
+        "指定",
+        "哪个",
+        "两份",
+        "设置",
+        "配置",
     }
 )
 _STOPWORDS = frozenset(
@@ -142,6 +152,7 @@ def select_evidence(question: str, payload: object, *, limit: int = 3) -> Eviden
 
 def _tokens(value: str) -> frozenset[str]:
     normalized = unicodedata.normalize("NFKC", value).casefold()
+    normalized = normalized.replace("阀门", "截断装置")
     tokens: set[str] = set()
     for token in _TOKEN_PATTERN.findall(normalized):
         if _CJK_TOKEN_PATTERN.fullmatch(token):
@@ -225,13 +236,20 @@ def _cjk_terms(token: str) -> frozenset[str]:
     for length in _CJK_NGRAM_LENGTHS:
         for index in range(len(normalized) - length + 1):
             term = normalized[index : index + length]
-            if length != 2 or _is_substantive_cjk_bigram(term):
+            if _is_substantive_cjk_term(term):
                 terms.add(term)
     return frozenset(terms)
 
 
 def _is_substantive_cjk_bigram(term: str) -> bool:
     return term not in _NON_SUBSTANTIVE_CJK_BIGRAMS
+
+
+def _is_substantive_cjk_term(term: str) -> bool:
+    return not any(
+        term[index : index + 2] in _NON_SUBSTANTIVE_CJK_BIGRAMS
+        for index in range(len(term) - 1)
+    )
 
 
 def _conditions(value: str) -> frozenset[str]:

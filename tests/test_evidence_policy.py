@@ -394,3 +394,23 @@ def test_lowering_a_temperature_is_not_an_opposite_low_temperature_condition() -
 
     assert decision.allowed is True
     assert decision.selected[0].citation.chunk_id == "lowering-temperature"
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "这两份泵手册中，Wi-Fi 配网和无线网络密码应该如何设置？",
+        "两份手册指定必须购买哪个品牌、哪个型号的变频器？",
+    ],
+)
+def test_generic_manual_metadata_overlap_does_not_open_the_gate(question: str) -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        16,
+        "generic-manual-metadata",
+        "本手册介绍泵的安装、操作和维护要求。",
+    )
+
+    decision = select_evidence(question, _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())

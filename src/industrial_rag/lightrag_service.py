@@ -33,7 +33,7 @@ _CHUNK_BOUNDARY = "\n\n<<<INDUSTRIAL_RAG_CHUNK_BOUNDARY>>>\n\n"
 class QueryOptions:
     mode: QueryMode
     top_k: int = 12
-    chunk_top_k: int = 8
+    chunk_top_k: int = 20
     enable_rerank: bool = False
 
 
