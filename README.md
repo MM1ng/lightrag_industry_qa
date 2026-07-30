@@ -31,7 +31,7 @@ copy .env.example .env
 DASHSCOPE_API_KEY=你的百炼密钥
 LLM_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 LLM_MODEL=kimi-k2.6
-LLM_FALLBACK_MODELS=qwen-plus-2025-07-28,qwen3.6-plus,qwen3.6-flash,qwen-plus
+LLM_FALLBACK_MODELS=qwen3.6-plus,qwen3.6-flash,qwen-plus,qwen3.5-flash-2026-02-23
 EMBEDDING_MODEL=text-embedding-v4
 EMBEDDING_DIM=1024
 LIGHTRAG_WORKING_DIR=./lightrag_storage
@@ -39,7 +39,7 @@ LIGHTRAG_WORKING_DIR=./lightrag_storage
 
 `.env` 已被 Git 忽略。程序不会打印密钥，也不要把真实密钥写入 `.env.example`。
 
-`LLM_MODEL` 是首选生成模型；`LLM_FALLBACK_MODELS` 是可选的、以英文逗号分隔的后备链。留空时，默认依次尝试 `kimi-k2.6`、`qwen-plus-2025-07-28`、`qwen3.6-plus`、`qwen3.6-flash`、`qwen-plus`（如果首选模型已改为其中之一，会自动从默认后备项中排除）。仅在百炼返回额度耗尽、限流或模型不可用时才切换；其他异常会原样返回，避免掩盖配置和请求问题。一次切换成功后，进程后续请求继续使用该模型。Embedding 始终固定为 `text-embedding-v4`（1024 维），不会随生成模型切换。
+`LLM_MODEL` 是首选生成模型；`LLM_FALLBACK_MODELS` 是可选的、以英文逗号分隔的后备链。留空时，默认依次尝试 `kimi-k2.6`、`qwen3.6-plus`、`qwen3.6-flash`、`qwen-plus`、`qwen3.5-flash-2026-02-23`（如果首选模型已改为其中之一，会自动从默认后备项中排除）。仅在百炼返回额度耗尽、限流或模型不可用时才切换；其他异常会原样返回，避免掩盖配置和请求问题。一次切换成功后，进程后续请求继续使用该模型。Embedding 始终固定为 `text-embedding-v4`（1024 维），不会随生成模型切换。
 
 ## 首次运行
 

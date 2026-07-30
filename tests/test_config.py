@@ -38,10 +38,10 @@ def test_default_model_chain_starts_with_kimi_and_uses_free_fallbacks() -> None:
 
     assert settings.llm_models == (
         "kimi-k2.6",
-        "qwen-plus-2025-07-28",
         "qwen3.6-plus",
         "qwen3.6-flash",
         "qwen-plus",
+        "qwen3.5-flash-2026-02-23",
     )
 
 
@@ -51,9 +51,9 @@ def test_custom_primary_model_is_allowed_and_removed_from_default_fallbacks() ->
     assert settings.llm_models == (
         "qwen-plus",
         "kimi-k2.6",
-        "qwen-plus-2025-07-28",
         "qwen3.6-plus",
         "qwen3.6-flash",
+        "qwen3.5-flash-2026-02-23",
     )
 
 

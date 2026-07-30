@@ -22,10 +22,10 @@ SUPPORTED_QUERY_MODES = (
 INDEX_METADATA_FILENAME = "industrial_rag_index.json"
 DEFAULT_LLM_MODELS = (
     "kimi-k2.6",
-    "qwen-plus-2025-07-28",
     "qwen3.6-plus",
     "qwen3.6-flash",
     "qwen-plus",
+    "qwen3.5-flash-2026-02-23",
 )
 
 
