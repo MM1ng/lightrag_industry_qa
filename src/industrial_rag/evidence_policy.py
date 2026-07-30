@@ -18,36 +18,44 @@ _CJK_TOKEN_PATTERN = re.compile(r"[\u3400-\u9fff]+")
 _SOURCE_HEADER_PATTERN = re.compile(r"\[\[INDUSTRIAL_RAG_SOURCE\b[^\]]*\]\]")
 _PROVENANCE_LINE_PATTERN = re.compile(r"(?m)^\[来源：[^\r\n]*\][ \t]*\r?\n?")
 _MAX_SELECTED = 3
-_CJK_PHRASE_LENGTH = 4
-_CJK_IGNORED_PATTERN = re.compile(
-    "|".join(
-        re.escape(value)
-        for value in (
-            "设备维护",
-            "注意事项",
-            "为什么",
-            "怎么办",
-            "请问",
-            "如何",
-            "哪些",
-            "哪个",
-            "是否",
-            "相关",
-            "进行",
-            "要求",
-            "怎么",
-            "什么",
-            "问题",
-            "内容",
-            "情况",
-            "说明",
-            "有关",
-            "的",
-            "了",
-            "吗",
-            "呢",
-        )
-    )
+_GENERIC_CJK_PREFIX_PATTERN = re.compile(
+    r"^(?:具体操作步骤|具体操作|操作步骤|如何进行|请问|如何|怎么|怎么办)+"
+)
+_DOMAIN_CJK_NORMALIZATIONS = {
+    "机械密封": "机械密封",
+    "联轴器": "联轴器",
+    "轴承": "轴承",
+    "温度": "温度",
+    "过高": "高",
+    "高": "高",
+    "润滑": "润滑",
+    "密封": "密封",
+    "检查": "检查",
+    "更换": "更换",
+    "启动": "启动",
+    "停机": "停机",
+    "安装": "安装",
+    "运行": "运行",
+    "叶轮": "叶轮",
+    "阀门": "阀门",
+    "管路": "管路",
+    "入口": "入口",
+    "出口": "出口",
+    "吸入": "吸入",
+    "排出": "排出",
+    "压力": "压力",
+    "流量": "流量",
+    "振动": "振动",
+    "泄漏": "泄漏",
+    "电机": "电机",
+    "冷却": "冷却",
+    "防腐": "防腐",
+    "存放": "存放",
+    "故障": "故障",
+    "磨损": "磨损",
+}
+_DOMAIN_CJK_PATTERN = re.compile(
+    "|".join(re.escape(term) for term in sorted(_DOMAIN_CJK_NORMALIZATIONS, key=len, reverse=True))
 )
 _STOPWORDS = frozenset(
     {
@@ -121,7 +129,7 @@ def _tokens(value: str) -> frozenset[str]:
     tokens: set[str] = set()
     for token in _TOKEN_PATTERN.findall(normalized):
         if _CJK_TOKEN_PATTERN.fullmatch(token):
-            tokens.update(_cjk_phrase_tokens(token))
+            tokens.update(_cjk_domain_tokens(token))
             continue
         if token in _STOPWORDS:
             continue
@@ -184,13 +192,9 @@ def _candidate_text(content: object) -> str:
     return _PROVENANCE_LINE_PATTERN.sub("", without_headers).strip()
 
 
-def _cjk_phrase_tokens(token: str) -> frozenset[str]:
-    meaningful = _CJK_IGNORED_PATTERN.sub("", token)
-    if not meaningful:
-        return frozenset()
-    if len(meaningful) < _CJK_PHRASE_LENGTH:
-        return frozenset({meaningful})
+def _cjk_domain_tokens(token: str) -> frozenset[str]:
+    meaningful = _GENERIC_CJK_PREFIX_PATTERN.sub("", token)
     return frozenset(
-        meaningful[index : index + _CJK_PHRASE_LENGTH]
-        for index in range(len(meaningful) - _CJK_PHRASE_LENGTH + 1)
+        _DOMAIN_CJK_NORMALIZATIONS[match.group()]
+        for match in _DOMAIN_CJK_PATTERN.finditer(meaningful)
     )

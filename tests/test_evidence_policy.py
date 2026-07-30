@@ -295,3 +295,30 @@ def test_generic_unspaced_chinese_instruction_does_not_pass_the_evidence_gate() 
     decision = select_evidence("如何进行检查轴承", _payload(candidate))
 
     assert decision == EvidenceDecision(False, None, ())
+
+
+def test_generic_cjk_instruction_prefix_does_not_satisfy_overlap() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        9,
+        "generic-prefix",
+        "具体操作步骤更换密封",
+    )
+
+    decision = select_evidence("具体操作步骤检查轴承", _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())
+
+
+def test_domain_tokens_normalize_high_and_overhigh_for_near_chinese_phrasing() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        10,
+        "bearing-high-temperature",
+        "轴承温度过高时检查润滑。",
+    )
+
+    decision = select_evidence("轴承温度高怎么办？", _payload(candidate))
+
+    assert decision.allowed is True
+    assert decision.selected[0].citation.chunk_id == "bearing-high-temperature"
