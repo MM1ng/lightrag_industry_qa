@@ -6,7 +6,7 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
-from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
+from industrial_rag.citation_formatter import Citation, collect_citations
 
 DOCUMENT_ALIASES = {
     "2196-ANSI-Manual-Chinese.pdf": frozenset({"2196", "summit", "2196-ansi-manual-chinese.pdf"}),
@@ -14,8 +14,41 @@ DOCUMENT_ALIASES = {
 }
 
 _TOKEN_PATTERN = re.compile(r"[a-z0-9]+(?:[-_/.][a-z0-9]+)*|[\u3400-\u9fff]+")
+_CJK_TOKEN_PATTERN = re.compile(r"[\u3400-\u9fff]+")
+_SOURCE_HEADER_PATTERN = re.compile(r"\[\[INDUSTRIAL_RAG_SOURCE\b[^\]]*\]\]")
 _PROVENANCE_LINE_PATTERN = re.compile(r"(?m)^\[来源：[^\r\n]*\][ \t]*\r?\n?")
 _MAX_SELECTED = 3
+_CJK_PHRASE_LENGTH = 4
+_CJK_IGNORED_PATTERN = re.compile(
+    "|".join(
+        re.escape(value)
+        for value in (
+            "设备维护",
+            "注意事项",
+            "为什么",
+            "怎么办",
+            "请问",
+            "如何",
+            "哪些",
+            "哪个",
+            "是否",
+            "相关",
+            "进行",
+            "要求",
+            "怎么",
+            "什么",
+            "问题",
+            "内容",
+            "情况",
+            "说明",
+            "有关",
+            "的",
+            "了",
+            "吗",
+            "呢",
+        )
+    )
+)
 _STOPWORDS = frozenset(
     {
         "a",
@@ -87,6 +120,9 @@ def _tokens(value: str) -> frozenset[str]:
     normalized = unicodedata.normalize("NFKC", value).casefold()
     tokens: set[str] = set()
     for token in _TOKEN_PATTERN.findall(normalized):
+        if _CJK_TOKEN_PATTERN.fullmatch(token):
+            tokens.update(_cjk_phrase_tokens(token))
+            continue
         if token in _STOPWORDS:
             continue
         tokens.add(token)
@@ -94,6 +130,11 @@ def _tokens(value: str) -> frozenset[str]:
 
 
 def _matched_documents(tokens: frozenset[str]) -> frozenset[str]:
+    filename_matches = frozenset(
+        document for document in DOCUMENT_ALIASES if document.casefold() in tokens
+    )
+    if filename_matches:
+        return filename_matches
     return frozenset(document for document, aliases in DOCUMENT_ALIASES.items() if tokens & aliases)
 
 
@@ -114,7 +155,7 @@ def _extract_candidates(payload: object) -> list[EvidenceCandidate]:
             if not citations:
                 continue
             citation = citations[0]
-            candidate_text = _candidate_text(value.get("content"), citation)
+            candidate_text = _candidate_text(value.get("content"))
             identity = (citation.source_file, citation.page_number, citation.chunk_id)
             existing_index = identity_indexes.get(identity)
             if existing_index is None:
@@ -136,8 +177,20 @@ def _extract_candidates(payload: object) -> list[EvidenceCandidate]:
     return candidates
 
 
-def _candidate_text(content: object, citation: Citation) -> str:
+def _candidate_text(content: object) -> str:
     if not isinstance(content, str):
         return ""
-    without_header = content.replace(encode_chunk_header(citation), "")
-    return _PROVENANCE_LINE_PATTERN.sub("", without_header).strip()
+    without_headers = _SOURCE_HEADER_PATTERN.sub("", content)
+    return _PROVENANCE_LINE_PATTERN.sub("", without_headers).strip()
+
+
+def _cjk_phrase_tokens(token: str) -> frozenset[str]:
+    meaningful = _CJK_IGNORED_PATTERN.sub("", token)
+    if not meaningful:
+        return frozenset()
+    if len(meaningful) < _CJK_PHRASE_LENGTH:
+        return frozenset({meaningful})
+    return frozenset(
+        meaningful[index : index + _CJK_PHRASE_LENGTH]
+        for index in range(len(meaningful) - _CJK_PHRASE_LENGTH + 1)
+    )

@@ -96,6 +96,18 @@ def test_explicit_filename_routes_and_excludes_the_other_manual(
     assert {item.citation.source_file for item in decision.selected} == {expected_document}
 
 
+def test_explicit_filename_takes_precedence_over_a_competing_generic_alias() -> None:
+    summit = _path_candidate(SUMMIT_MANUAL, 1, "summit", "轴承 温度")
+    desmi = _path_candidate(DESMI_MANUAL, 2, "desmi", "DESMI 轴承 温度")
+
+    decision = select_evidence(
+        "2196-ansi-manual-chinese.pdf DESMI 轴承 温度", _payload(desmi, summit)
+    )
+
+    assert decision.routed_document == SUMMIT_MANUAL
+    assert {item.citation.source_file for item in decision.selected} == {SUMMIT_MANUAL}
+
+
 def test_aliases_for_both_manuals_keep_cross_document_candidates() -> None:
     summit = _path_candidate(SUMMIT_MANUAL, 2, "summit", "SUMMIT 轴承 温度")
     desmi = _path_candidate(DESMI_MANUAL, 3, "desmi", "DESMI 轴承 温度")
@@ -145,6 +157,19 @@ def test_chunk_header_is_a_trusted_metadata_decoder_path() -> None:
 
 def test_provenance_metadata_cannot_satisfy_overlap() -> None:
     candidate = _header_candidate(SUMMIT_MANUAL, 11, "unrelated", "无关内容")
+
+    decision = select_evidence("火星基地 page 11", _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())
+
+
+def test_conflicting_chunk_header_cannot_satisfy_overlap() -> None:
+    selected_citation = Citation(SUMMIT_MANUAL, 3, "selected")
+    conflicting_header = encode_chunk_header(Citation(DESMI_MANUAL, 11, "conflicting"))
+    candidate = {
+        "file_path": encode_source_ref(selected_citation),
+        "content": f"{conflicting_header}\n无关内容",
+    }
 
     decision = select_evidence("火星基地 page 11", _payload(candidate))
 
@@ -241,5 +266,32 @@ def test_generic_chinese_bigrams_do_not_satisfy_the_evidence_gate() -> None:
     )
 
     decision = select_evidence("设备维护周期如何确定？", _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())
+
+
+def test_substantive_unspaced_chinese_phrase_passes_the_evidence_gate() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        7,
+        "bearing-temperature",
+        "轴承温度过高时检查润滑。",
+    )
+
+    decision = select_evidence("轴承温度过高怎么办？", _payload(candidate))
+
+    assert decision.allowed is True
+    assert decision.selected[0].citation.chunk_id == "bearing-temperature"
+
+
+def test_generic_unspaced_chinese_instruction_does_not_pass_the_evidence_gate() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        8,
+        "generic-instruction",
+        "如何进行更换密封",
+    )
+
+    decision = select_evidence("如何进行检查轴承", _payload(candidate))
 
     assert decision == EvidenceDecision(False, None, ())
