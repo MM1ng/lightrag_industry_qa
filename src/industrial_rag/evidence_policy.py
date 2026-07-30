@@ -18,9 +18,9 @@ _CJK_TOKEN_PATTERN = re.compile(r"[\u3400-\u9fff]+")
 _SOURCE_HEADER_PATTERN = re.compile(r"\[\[INDUSTRIAL_RAG_SOURCE\b[^\]]*\]\]")
 _PROVENANCE_LINE_PATTERN = re.compile(r"(?m)^\[来源：[^\r\n]*\][ \t]*\r?\n?")
 _MAX_SELECTED = 3
-_CJK_NGRAM_LENGTHS = (3, 4)
-_GENERIC_CJK_PREFIX_PATTERN = re.compile(
-    r"^(?:具体操作步骤|设备维护周期|具体操作|操作步骤|如何进行|请问|如何|怎么|怎么办|进行)+"
+_CJK_NGRAM_LENGTHS = (2, 3, 4)
+_GENERIC_CJK_PHRASE_PATTERN = re.compile(
+    r"(?:具体操作步骤|设备维护周期|具体操作|操作步骤|请说明|如何进行|请问|如何|怎么|怎么办|进行)+"
 )
 _CONDITION_NORMALIZATIONS = {
     "过高": "高",
@@ -30,6 +30,46 @@ _CONDITION_NORMALIZATIONS = {
 }
 _CONDITION_PATTERN = re.compile(
     "|".join(re.escape(term) for term in sorted(_CONDITION_NORMALIZATIONS, key=len, reverse=True))
+)
+_CONDITION_ACTION_PATTERN = re.compile(r"降低|提高")
+_NON_SUBSTANTIVE_CJK_BIGRAMS = frozenset(
+    {
+        "检查",
+        "更换",
+        "操作",
+        "步骤",
+        "维护",
+        "保养",
+        "安装",
+        "运行",
+        "启动",
+        "停机",
+        "处理",
+        "确定",
+        "使用",
+        "进行",
+        "需要",
+        "应该",
+        "说明",
+        "要求",
+        "方法",
+        "怎么",
+        "如何",
+        "请问",
+        "办法",
+        "什么",
+        "哪些",
+        "设备",
+        "系统",
+        "情况",
+        "问题",
+        "原因",
+        "解决",
+        "防止",
+        "发现",
+        "立即",
+        "通过",
+    }
 )
 _STOPWORDS = frozenset(
     {
@@ -171,27 +211,35 @@ def _candidate_text(content: object) -> str:
 def _cjk_terms(token: str) -> frozenset[str]:
     if token in _STOPWORDS:
         return frozenset()
-    meaningful = _GENERIC_CJK_PREFIX_PATTERN.sub("", token)
+    meaningful = _GENERIC_CJK_PHRASE_PATTERN.sub("", token)
     normalized = _CONDITION_PATTERN.sub(
         lambda match: _CONDITION_NORMALIZATIONS[match.group()], meaningful
     )
     if not normalized:
         return frozenset()
-    if len(normalized) < min(_CJK_NGRAM_LENGTHS):
+    if len(normalized) == 1:
         return frozenset({normalized})
+    if len(normalized) == 2:
+        return frozenset({normalized}) if _is_substantive_cjk_bigram(normalized) else frozenset()
     terms = {normalized}
     for length in _CJK_NGRAM_LENGTHS:
-        terms.update(
-            normalized[index : index + length] for index in range(len(normalized) - length + 1)
-        )
+        for index in range(len(normalized) - length + 1):
+            term = normalized[index : index + length]
+            if length != 2 or _is_substantive_cjk_bigram(term):
+                terms.add(term)
     return frozenset(terms)
+
+
+def _is_substantive_cjk_bigram(term: str) -> bool:
+    return term not in _NON_SUBSTANTIVE_CJK_BIGRAMS
 
 
 def _conditions(value: str) -> frozenset[str]:
     normalized = unicodedata.normalize("NFKC", value).casefold()
+    state_text = _CONDITION_ACTION_PATTERN.sub("", normalized)
     return frozenset(
         _CONDITION_NORMALIZATIONS[match.group()]
-        for match in _CONDITION_PATTERN.finditer(normalized)
+        for match in _CONDITION_PATTERN.finditer(state_text)
     )
 
 
@@ -207,4 +255,9 @@ def _overlap(
         and question_conditions.isdisjoint(candidate_conditions)
     ):
         return 0
-    return len(question_tokens & _tokens(candidate_text))
+    shared_terms = question_tokens & _tokens(candidate_text)
+    if len(shared_terms) == 1:
+        term = next(iter(shared_terms))
+        if _CJK_TOKEN_PATTERN.fullmatch(term) and len(term) == 2:
+            return 2
+    return len(shared_terms)

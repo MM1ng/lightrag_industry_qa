@@ -349,3 +349,48 @@ def test_opposite_temperature_condition_refuses_otherwise_matching_evidence() ->
     decision = select_evidence("轴承温度高怎么办？", _payload(candidate))
 
     assert decision == EvidenceDecision(False, None, ())
+
+
+def test_generic_instruction_phrase_embedded_after_a_preamble_cannot_open_the_gate() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        13,
+        "embedded-generic-instruction",
+        "请说明具体操作步骤更换密封。",
+    )
+
+    decision = select_evidence("请说明具体操作步骤检查轴承", _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())
+
+
+@pytest.mark.parametrize(
+    ("question", "text"),
+    [
+        ("泵体泄漏怎么办？", "发现泄漏后应立即停机。"),
+        ("泵体漏油怎么办？", "发现漏油后应检查密封件。"),
+    ],
+)
+def test_unseen_substantive_two_character_cjk_condition_passes_the_gate(
+    question: str, text: str
+) -> None:
+    candidate = _path_candidate(SUMMIT_MANUAL, 14, "two-character-condition", text)
+
+    decision = select_evidence(question, _payload(candidate))
+
+    assert decision.allowed is True
+    assert decision.selected[0].citation.chunk_id == "two-character-condition"
+
+
+def test_lowering_a_temperature_is_not_an_opposite_low_temperature_condition() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        15,
+        "lowering-temperature",
+        "通过降低轴承温度防止过热。",
+    )
+
+    decision = select_evidence("轴承温度高怎么办？", _payload(candidate))
+
+    assert decision.allowed is True
+    assert decision.selected[0].citation.chunk_id == "lowering-temperature"
