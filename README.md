@@ -159,7 +159,8 @@ Copy-Item data\evaluation\golden_questions.example.jsonl data\evaluation\golden_
 确认索引已就绪、`.env` 中已配置本机 API Key 后，显式执行真实评测：
 
 ```powershell
-python scripts\evaluate.py --real --golden data\evaluation\golden_questions.jsonl --output dist\evaluation-report.json
+$env:LIGHTRAG_WORKING_DIR='D:\industrial_energy_agent\lightrag_storage'
+python scripts\evaluate.py --real --golden data\evaluation\industrial_pump_golden_set_50.jsonl --output dist\industrial_pump_trust_gates_report.json
 ```
 
 该命令会调用已有 LightRAG 索引和模型，因此默认测试不会运行它。报告包含：
@@ -169,7 +170,11 @@ python scripts\evaluate.py --real --golden data\evaluation\golden_questions.json
 - `citation_presence_rate`：应有证据的问题中，实际返回引用的比例。
 - `citation_traceability_rate`：返回引用与黄金集完整 `文档名 + 页码 + chunk ID` 匹配的比例。
 - `no_evidence_refusal_rate`：无依据问题返回固定依据不足提示且没有引用的比例。
+- `average_citations_per_answer`、`max_citations_per_answer`：已完成且非拒答回答的平均/最大引用数；用于确认每次成功回答最多携带 3 个可追溯引用。
+- `document_route_accuracy`：黄金证据只属于一份手册的问题中，返回引用非空且全部来自该手册的比例；跨手册黄金问题不计入该指标分母。
 - `success_rate`、`latency_p50_ms`、`latency_p95_ms`：可用性与响应延迟。
+
+信任门控会先按手册别名路由、筛选证据，再只把最多 3 个入选文本块交给模型生成；证据不足时直接返回固定拒答，不调用模型。Kimi K2.6 门控前的同一 50 题基线为 Recall@5 `0.70`、引用可追溯率 `0.9375`、拒答率 `0.0`、成功率 `1.0`。门控后的验收条件为：拒答率至少 `0.90`、引用可追溯率至少 `0.95`、最大引用数不超过 `3`、成功率保持 `1.0`，且 Recall@5 不得低于 `0.65`（相对基线最多下降 `0.05`）。若 Recall@5 低于该保护线，应回滚或修正证据筛选阈值后再发布。
 
 第一版不安装 Ragas。上述确定性指标和人工抽查引用是否支持回答，是发布前的基础质量门；后续如需语义评分，可在同一黄金集上将 Ragas 作为可选离线工具加入。
 
