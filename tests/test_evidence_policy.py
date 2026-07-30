@@ -75,6 +75,27 @@ def test_each_exact_alias_routes_to_its_manual(alias: str, expected_document: st
     assert decision.selected[0].citation.source_file == expected_document
 
 
+@pytest.mark.parametrize(
+    ("filename", "expected_document", "other_document"),
+    [
+        ("2196-ansi-manual-chinese.pdf", SUMMIT_MANUAL, DESMI_MANUAL),
+        ("t1739cn.pdf", DESMI_MANUAL, SUMMIT_MANUAL),
+    ],
+)
+def test_explicit_filename_routes_and_excludes_the_other_manual(
+    filename: str,
+    expected_document: str,
+    other_document: str,
+) -> None:
+    other = _path_candidate(other_document, 1, "other", f"{filename} 轴承 温度")
+    expected = _path_candidate(expected_document, 2, "expected", "轴承 温度")
+
+    decision = select_evidence(f"{filename} 轴承 温度", _payload(other, expected))
+
+    assert decision.routed_document == expected_document
+    assert {item.citation.source_file for item in decision.selected} == {expected_document}
+
+
 def test_aliases_for_both_manuals_keep_cross_document_candidates() -> None:
     summit = _path_candidate(SUMMIT_MANUAL, 2, "summit", "SUMMIT 轴承 温度")
     desmi = _path_candidate(DESMI_MANUAL, 3, "desmi", "DESMI 轴承 温度")
@@ -82,6 +103,25 @@ def test_aliases_for_both_manuals_keep_cross_document_candidates() -> None:
     decision = select_evidence("SUMMIT DESMI 轴承 温度？", _payload(summit, desmi))
 
     assert decision.allowed is True
+    assert decision.routed_document is None
+    assert {item.citation.source_file for item in decision.selected} == {
+        SUMMIT_MANUAL,
+        DESMI_MANUAL,
+    }
+
+
+def test_ambiguous_aliases_exclude_unmatched_documents() -> None:
+    summit = _path_candidate(SUMMIT_MANUAL, 2, "summit", "SUMMIT 轴承 温度")
+    desmi = _path_candidate(DESMI_MANUAL, 3, "desmi", "DESMI 轴承 温度")
+    unrelated = _path_candidate(
+        "other-manual.pdf",
+        4,
+        "unrelated",
+        "SUMMIT DESMI 轴承 温度",
+    )
+
+    decision = select_evidence("SUMMIT DESMI 轴承 温度？", _payload(summit, desmi, unrelated))
+
     assert decision.routed_document is None
     assert {item.citation.source_file for item in decision.selected} == {
         SUMMIT_MANUAL,
@@ -101,6 +141,14 @@ def test_chunk_header_is_a_trusted_metadata_decoder_path() -> None:
 
     assert decision.allowed is True
     assert decision.selected[0].citation == Citation(DESMI_MANUAL, 11, "desmi-header")
+
+
+def test_provenance_metadata_cannot_satisfy_overlap() -> None:
+    candidate = _header_candidate(SUMMIT_MANUAL, 11, "unrelated", "无关内容")
+
+    decision = select_evidence("火星基地 page 11", _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())
 
 
 def test_normalized_tokens_rank_by_overlap_then_original_rank() -> None:
@@ -184,15 +232,14 @@ def test_unknown_question_with_unshared_terms_refuses() -> None:
     assert decision == EvidenceDecision(False, None, ())
 
 
-def test_shared_chinese_terms_pass_without_spaces_or_document_aliases() -> None:
+def test_generic_chinese_bigrams_do_not_satisfy_the_evidence_gate() -> None:
     candidate = _path_candidate(
         SUMMIT_MANUAL,
         6,
-        "bearing-temperature",
-        "轴承温度过高时检查润滑。",
+        "generic-maintenance",
+        "设备维护周期要求。",
     )
 
-    decision = select_evidence("轴承温度过高怎么办？", _payload(candidate))
+    decision = select_evidence("设备维护周期如何确定？", _payload(candidate))
 
-    assert decision.allowed is True
-    assert decision.selected[0].citation.chunk_id == "bearing-temperature"
+    assert decision == EvidenceDecision(False, None, ())

@@ -6,15 +6,15 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
-from industrial_rag.citation_formatter import Citation, collect_citations
+from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
 
 DOCUMENT_ALIASES = {
-    "2196-ANSI-Manual-Chinese.pdf": frozenset({"2196", "summit"}),
-    "t1739cn.pdf": frozenset({"desmi", "t1739"}),
+    "2196-ANSI-Manual-Chinese.pdf": frozenset({"2196", "summit", "2196-ansi-manual-chinese.pdf"}),
+    "t1739cn.pdf": frozenset({"desmi", "t1739", "t1739cn.pdf"}),
 }
 
 _TOKEN_PATTERN = re.compile(r"[a-z0-9]+(?:[-_/.][a-z0-9]+)*|[\u3400-\u9fff]+")
-_CHINESE_TOKEN_PATTERN = re.compile(r"[\u3400-\u9fff]+")
+_PROVENANCE_LINE_PATTERN = re.compile(r"(?m)^\[来源：[^\r\n]*\][ \t]*\r?\n?")
 _MAX_SELECTED = 3
 _STOPWORDS = frozenset(
     {
@@ -62,13 +62,14 @@ class EvidenceDecision:
 def select_evidence(question: str, payload: object, *, limit: int = 3) -> EvidenceDecision:
     """Return traceable candidates that meet deterministic routing and overlap gates."""
     question_tokens = _tokens(question)
-    routed_document = _unique_document_route(question_tokens)
+    matched_documents = _matched_documents(question_tokens)
+    routed_document = next(iter(matched_documents)) if len(matched_documents) == 1 else None
     candidates = _extract_candidates(payload)
-    if routed_document is not None:
+    if matched_documents:
         candidates = [
             candidate
             for candidate in candidates
-            if candidate.citation.source_file == routed_document
+            if candidate.citation.source_file in matched_documents
         ]
     scored = [
         (len(question_tokens & _tokens(candidate.text)), candidate) for candidate in candidates
@@ -89,18 +90,11 @@ def _tokens(value: str) -> frozenset[str]:
         if token in _STOPWORDS:
             continue
         tokens.add(token)
-        if _CHINESE_TOKEN_PATTERN.fullmatch(token) and len(token) > 2:
-            tokens.update(
-                token[index : index + 2]
-                for index in range(len(token) - 1)
-                if token[index : index + 2] not in _STOPWORDS
-            )
     return frozenset(tokens)
 
 
-def _unique_document_route(tokens: frozenset[str]) -> str | None:
-    matches = [document for document, aliases in DOCUMENT_ALIASES.items() if tokens & aliases]
-    return matches[0] if len(matches) == 1 else None
+def _matched_documents(tokens: frozenset[str]) -> frozenset[str]:
+    return frozenset(document for document, aliases in DOCUMENT_ALIASES.items() if tokens & aliases)
 
 
 def _extract_candidates(payload: object) -> list[EvidenceCandidate]:
@@ -119,9 +113,8 @@ def _extract_candidates(payload: object) -> list[EvidenceCandidate]:
             citations = collect_citations({"data": {"references": [], "chunks": [value]}})
             if not citations:
                 continue
-            text = value.get("content")
             citation = citations[0]
-            candidate_text = text if isinstance(text, str) else ""
+            candidate_text = _candidate_text(value.get("content"), citation)
             identity = (citation.source_file, citation.page_number, citation.chunk_id)
             existing_index = identity_indexes.get(identity)
             if existing_index is None:
@@ -141,3 +134,10 @@ def _extract_candidates(payload: object) -> list[EvidenceCandidate]:
                     rank=existing.rank,
                 )
     return candidates
+
+
+def _candidate_text(content: object, citation: Citation) -> str:
+    if not isinstance(content, str):
+        return ""
+    without_header = content.replace(encode_chunk_header(citation), "")
+    return _PROVENANCE_LINE_PATTERN.sub("", without_header).strip()
