@@ -15,6 +15,7 @@ from industrial_rag.document_parser import DocumentChunk
 from industrial_rag.lightrag_service import (
     INSUFFICIENT_EVIDENCE_MESSAGE,
     LightRAGService,
+    _is_model_failover_error,
     build_official_backend,
 )
 
@@ -116,6 +117,119 @@ def test_official_backend_accepts_parser_chunks_and_locks_embedding_dimension(
     assert rag.chunk_token_size == 1600
     assert rag.embedding_func.embedding_dim == 1024
     assert rag.embedding_func.send_dimensions is True
+
+
+@pytest.mark.asyncio
+async def test_official_backend_falls_back_after_quota_error_and_keeps_active_model(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from lightrag.llm import openai as lightrag_openai
+
+    attempted_models: list[str] = []
+
+    async def complete(**kwargs: object) -> str:
+        model = kwargs["model"]
+        assert isinstance(model, str)
+        attempted_models.append(model)
+        if model == "primary-model":
+            raise RuntimeError("free quota exhausted")
+        return f"answer from {model}"
+
+    monkeypatch.setattr(lightrag_openai, "openai_complete_if_cache", complete)
+    settings = Settings.from_mapping(
+        {
+            "DASHSCOPE_API_KEY": "test-only-key",
+            "LLM_MODEL": "primary-model",
+            "LLM_FALLBACK_MODELS": "fallback-one,fallback-two",
+            "LIGHTRAG_WORKING_DIR": str(tmp_path / "storage"),
+        }
+    )
+    backend = build_official_backend(settings)
+
+    assert await backend.generate("question one", "", "system") == "answer from fallback-one"
+    assert await backend.generate("question two", "", "system") == "answer from fallback-one"
+    assert attempted_models == ["primary-model", "fallback-one", "fallback-one"]
+
+
+@pytest.mark.asyncio
+async def test_official_backend_does_not_fail_over_on_ordinary_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from lightrag.llm import openai as lightrag_openai
+
+    attempted_models: list[str] = []
+
+    async def complete(**kwargs: object) -> str:
+        model = kwargs["model"]
+        assert isinstance(model, str)
+        attempted_models.append(model)
+        raise RuntimeError("connection reset by peer")
+
+    monkeypatch.setattr(lightrag_openai, "openai_complete_if_cache", complete)
+    settings = Settings.from_mapping(
+        {
+            "DASHSCOPE_API_KEY": "test-only-key",
+            "LLM_MODEL": "primary-model",
+            "LLM_FALLBACK_MODELS": "fallback-one",
+            "LIGHTRAG_WORKING_DIR": str(tmp_path / "storage"),
+        }
+    )
+    backend = build_official_backend(settings)
+
+    with pytest.raises(RuntimeError, match="connection reset"):
+        await backend.generate("question", "", "system")
+    assert attempted_models == ["primary-model"]
+
+
+@pytest.mark.asyncio
+async def test_official_backend_raises_after_all_configured_models_are_exhausted(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from lightrag.llm import openai as lightrag_openai
+
+    attempted_models: list[str] = []
+
+    async def complete(**kwargs: object) -> str:
+        model = kwargs["model"]
+        assert isinstance(model, str)
+        attempted_models.append(model)
+        raise RuntimeError("rate limit reached")
+
+    monkeypatch.setattr(lightrag_openai, "openai_complete_if_cache", complete)
+    settings = Settings.from_mapping(
+        {
+            "DASHSCOPE_API_KEY": "test-only-key",
+            "LLM_MODEL": "primary-model",
+            "LLM_FALLBACK_MODELS": "fallback-one",
+            "LIGHTRAG_WORKING_DIR": str(tmp_path / "storage"),
+        }
+    )
+    backend = build_official_backend(settings)
+
+    with pytest.raises(RuntimeError, match="rate limit"):
+        await backend.generate("question", "", "system")
+    assert attempted_models == ["primary-model", "fallback-one"]
+
+
+@pytest.mark.parametrize(
+    ("error", "expected"),
+    [
+        (RuntimeError("free quota exhausted"), True),
+        (RuntimeError("rate limit reached"), True),
+        (RuntimeError("model unavailable"), True),
+        (RuntimeError("connection reset by peer"), False),
+        (RuntimeError("invalid request payload"), False),
+    ],
+)
+def test_model_failover_error_classification(error: Exception, expected: bool) -> None:
+    assert _is_model_failover_error(error) is expected
+
+
+def test_model_failover_error_classifies_http_429() -> None:
+    class RateLimitedError(RuntimeError):
+        status_code = 429
+
+    assert _is_model_failover_error(RateLimitedError("request rejected"))
 
 
 @pytest.mark.asyncio

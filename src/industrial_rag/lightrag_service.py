@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from functools import partial
@@ -20,6 +21,7 @@ from industrial_rag.evidence_policy import EvidenceCandidate, select_evidence
 
 QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
 INSUFFICIENT_EVIDENCE_MESSAGE = "手册中未检索到充分依据，无法可靠回答该问题。"
+logger = logging.getLogger(__name__)
 _SYSTEM_PROMPT_BASE = (
     "你是工业离心泵手册问答助手。只能依据检索到的手册内容回答；"
     f"依据不足时必须原样回答：{INSUFFICIENT_EVIDENCE_MESSAGE} "
@@ -113,22 +115,41 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
     except ImportError as error:
         raise RuntimeError("未安装官方 lightrag-hku；请按 requirements.txt 安装依赖") from error
 
+    active_model_index = 0
+
     async def llm_model_func(
         prompt: str,
         system_prompt: str | None = None,
         history_messages: list[dict[str, Any]] | None = None,
         **kwargs: Any,
     ) -> str:
+        nonlocal active_model_index
         kwargs.pop("model", None)
-        return await openai_complete_if_cache(
-            model=settings.llm_model,
-            prompt=prompt,
-            system_prompt=system_prompt,
-            history_messages=history_messages or [],
-            base_url=settings.llm_base_url,
-            api_key=settings.api_key,
-            **kwargs,
-        )
+        for model_index in range(active_model_index, len(settings.llm_models)):
+            model = settings.llm_models[model_index]
+            try:
+                response = await openai_complete_if_cache(
+                    model=model,
+                    prompt=prompt,
+                    system_prompt=system_prompt,
+                    history_messages=history_messages or [],
+                    base_url=settings.llm_base_url,
+                    api_key=settings.api_key,
+                    **kwargs,
+                )
+            except Exception as error:
+                if (
+                    not _is_model_failover_error(error)
+                    or model_index == len(settings.llm_models) - 1
+                ):
+                    raise
+                logger.warning(
+                    "DashScope model %s unavailable; trying configured fallback model.", model
+                )
+                continue
+            active_model_index = model_index
+            return response
+        raise RuntimeError("所有配置的 DashScope 模型均不可用")
 
     embedding_func = EmbeddingFunc(
         embedding_dim=settings.embedding_dim,
@@ -156,6 +177,28 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
         max_parallel_insert=1,
     )
     return _OfficialBackend(rag, QueryParam, llm_model_func)
+
+
+def _is_model_failover_error(error: Exception) -> bool:
+    """Limit automatic model changes to provider capacity/availability failures."""
+
+    status_code = getattr(error, "status_code", None)
+    if status_code == 429:
+        return True
+    message = str(error).casefold()
+    return any(
+        marker in message
+        for marker in (
+            "quota",
+            "rate limit",
+            "rate_limit",
+            "too many requests",
+            "model unavailable",
+            "model not available",
+            "model does not exist",
+            "model_not_found",
+        )
+    )
 
 
 def _selected_context(selected: Sequence[EvidenceCandidate]) -> str:

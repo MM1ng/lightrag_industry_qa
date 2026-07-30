@@ -20,6 +20,13 @@ SUPPORTED_QUERY_MODES = (
     "naive",
 )
 INDEX_METADATA_FILENAME = "industrial_rag_index.json"
+DEFAULT_LLM_MODELS = (
+    "kimi-k2.6",
+    "qwen-plus-2025-07-28",
+    "qwen3.6-plus",
+    "qwen3.6-flash",
+    "qwen-plus",
+)
 
 
 class StorageCompatibilityError(RuntimeError):
@@ -34,16 +41,42 @@ class Settings:
     service_api_key: str | None = field(default=None, repr=False)
     llm_base_url: str = DEFAULT_BAILIAN_BASE_URL
     llm_model: str = "kimi-k2.6"
+    llm_fallback_models: tuple[str, ...] = ()
     embedding_model: str = "text-embedding-v4"
     embedding_dim: int = 1024
     working_dir: Path = PROJECT_ROOT / "lightrag_storage"
+
+    def __post_init__(self) -> None:
+        if not self.llm_model.strip():
+            raise ValueError("LLM_MODEL 不能为空")
+        if not self.llm_fallback_models:
+            object.__setattr__(
+                self,
+                "llm_fallback_models",
+                tuple(model for model in DEFAULT_LLM_MODELS if model != self.llm_model),
+            )
+        if not all(model.strip() for model in self.llm_fallback_models):
+            raise ValueError("LLM_FALLBACK_MODELS 不能包含空模型名")
+        if len(set(self.llm_models)) != len(self.llm_models):
+            raise ValueError("LLM_MODEL 与 LLM_FALLBACK_MODELS 不能重复")
+
+    @property
+    def llm_models(self) -> tuple[str, ...]:
+        """Ordered model chain, starting with the currently preferred model."""
+
+        return (self.llm_model, *self.llm_fallback_models)
 
     @classmethod
     def from_mapping(cls, values: Mapping[str, str | None]) -> Settings:
         api_key = (values.get("DASHSCOPE_API_KEY") or "").strip()
         service_api_key = (values.get("SERVICE_API_KEY") or "").strip() or None
         base_url = (values.get("LLM_BASE_URL") or DEFAULT_BAILIAN_BASE_URL).rstrip("/")
-        llm_model = (values.get("LLM_MODEL") or "kimi-k2.6").strip()
+        llm_model = (values.get("LLM_MODEL") or DEFAULT_LLM_MODELS[0]).strip()
+        fallback_value = values.get("LLM_FALLBACK_MODELS")
+        if fallback_value is None or not fallback_value.strip():
+            llm_fallback_models = tuple(model for model in DEFAULT_LLM_MODELS if model != llm_model)
+        else:
+            llm_fallback_models = tuple(model.strip() for model in fallback_value.split(","))
         embedding_model = (values.get("EMBEDDING_MODEL") or "text-embedding-v4").strip()
         try:
             embedding_dim = int(values.get("EMBEDDING_DIM") or "1024")
@@ -58,8 +91,6 @@ class Settings:
             raise ValueError("必须通过环境变量 DASHSCOPE_API_KEY 提供百炼密钥")
         if base_url != DEFAULT_BAILIAN_BASE_URL:
             raise ValueError("LLM_BASE_URL 必须使用阿里云百炼北京 OpenAI 兼容端点")
-        if llm_model != "kimi-k2.6":
-            raise ValueError("LLM_MODEL 必须为 kimi-k2.6")
         if embedding_model != "text-embedding-v4":
             raise ValueError("EMBEDDING_MODEL 必须为 text-embedding-v4")
         if embedding_dim != 1024:
@@ -69,6 +100,7 @@ class Settings:
             service_api_key=service_api_key,
             llm_base_url=base_url,
             llm_model=llm_model,
+            llm_fallback_models=llm_fallback_models,
             embedding_model=embedding_model,
             embedding_dim=embedding_dim,
             working_dir=working_dir.resolve(),
