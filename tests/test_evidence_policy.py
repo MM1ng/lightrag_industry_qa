@@ -322,3 +322,30 @@ def test_domain_tokens_normalize_high_and_overhigh_for_near_chinese_phrasing() -
 
     assert decision.allowed is True
     assert decision.selected[0].citation.chunk_id == "bearing-high-temperature"
+
+
+def test_general_cjk_terms_match_unseen_substantive_phrase() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        11,
+        "rotor-imbalance",
+        "转子不平衡时应检查联轴器。",
+    )
+
+    decision = select_evidence("转子不平衡怎么办？", _payload(candidate))
+
+    assert decision.allowed is True
+    assert decision.selected[0].citation.chunk_id == "rotor-imbalance"
+
+
+def test_opposite_temperature_condition_refuses_otherwise_matching_evidence() -> None:
+    candidate = _path_candidate(
+        SUMMIT_MANUAL,
+        12,
+        "bearing-low-temperature",
+        "轴承温度低时检查冷却系统。",
+    )
+
+    decision = select_evidence("轴承温度高怎么办？", _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())

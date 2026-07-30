@@ -18,44 +18,18 @@ _CJK_TOKEN_PATTERN = re.compile(r"[\u3400-\u9fff]+")
 _SOURCE_HEADER_PATTERN = re.compile(r"\[\[INDUSTRIAL_RAG_SOURCE\b[^\]]*\]\]")
 _PROVENANCE_LINE_PATTERN = re.compile(r"(?m)^\[来源：[^\r\n]*\][ \t]*\r?\n?")
 _MAX_SELECTED = 3
+_CJK_NGRAM_LENGTHS = (3, 4)
 _GENERIC_CJK_PREFIX_PATTERN = re.compile(
-    r"^(?:具体操作步骤|具体操作|操作步骤|如何进行|请问|如何|怎么|怎么办)+"
+    r"^(?:具体操作步骤|设备维护周期|具体操作|操作步骤|如何进行|请问|如何|怎么|怎么办|进行)+"
 )
-_DOMAIN_CJK_NORMALIZATIONS = {
-    "机械密封": "机械密封",
-    "联轴器": "联轴器",
-    "轴承": "轴承",
-    "温度": "温度",
+_CONDITION_NORMALIZATIONS = {
     "过高": "高",
     "高": "高",
-    "润滑": "润滑",
-    "密封": "密封",
-    "检查": "检查",
-    "更换": "更换",
-    "启动": "启动",
-    "停机": "停机",
-    "安装": "安装",
-    "运行": "运行",
-    "叶轮": "叶轮",
-    "阀门": "阀门",
-    "管路": "管路",
-    "入口": "入口",
-    "出口": "出口",
-    "吸入": "吸入",
-    "排出": "排出",
-    "压力": "压力",
-    "流量": "流量",
-    "振动": "振动",
-    "泄漏": "泄漏",
-    "电机": "电机",
-    "冷却": "冷却",
-    "防腐": "防腐",
-    "存放": "存放",
-    "故障": "故障",
-    "磨损": "磨损",
+    "过低": "低",
+    "低": "低",
 }
-_DOMAIN_CJK_PATTERN = re.compile(
-    "|".join(re.escape(term) for term in sorted(_DOMAIN_CJK_NORMALIZATIONS, key=len, reverse=True))
+_CONDITION_PATTERN = re.compile(
+    "|".join(re.escape(term) for term in sorted(_CONDITION_NORMALIZATIONS, key=len, reverse=True))
 )
 _STOPWORDS = frozenset(
     {
@@ -103,6 +77,7 @@ class EvidenceDecision:
 def select_evidence(question: str, payload: object, *, limit: int = 3) -> EvidenceDecision:
     """Return traceable candidates that meet deterministic routing and overlap gates."""
     question_tokens = _tokens(question)
+    question_conditions = _conditions(question)
     matched_documents = _matched_documents(question_tokens)
     routed_document = next(iter(matched_documents)) if len(matched_documents) == 1 else None
     candidates = _extract_candidates(payload)
@@ -113,7 +88,8 @@ def select_evidence(question: str, payload: object, *, limit: int = 3) -> Eviden
             if candidate.citation.source_file in matched_documents
         ]
     scored = [
-        (len(question_tokens & _tokens(candidate.text)), candidate) for candidate in candidates
+        (_overlap(question_tokens, question_conditions, candidate.text), candidate)
+        for candidate in candidates
     ]
     ranked = sorted(scored, key=lambda item: (-item[0], item[1].rank))
     selected = tuple(candidate for overlap, candidate in ranked if overlap >= 2)[
@@ -129,7 +105,7 @@ def _tokens(value: str) -> frozenset[str]:
     tokens: set[str] = set()
     for token in _TOKEN_PATTERN.findall(normalized):
         if _CJK_TOKEN_PATTERN.fullmatch(token):
-            tokens.update(_cjk_domain_tokens(token))
+            tokens.update(_cjk_terms(token))
             continue
         if token in _STOPWORDS:
             continue
@@ -192,9 +168,43 @@ def _candidate_text(content: object) -> str:
     return _PROVENANCE_LINE_PATTERN.sub("", without_headers).strip()
 
 
-def _cjk_domain_tokens(token: str) -> frozenset[str]:
+def _cjk_terms(token: str) -> frozenset[str]:
+    if token in _STOPWORDS:
+        return frozenset()
     meaningful = _GENERIC_CJK_PREFIX_PATTERN.sub("", token)
-    return frozenset(
-        _DOMAIN_CJK_NORMALIZATIONS[match.group()]
-        for match in _DOMAIN_CJK_PATTERN.finditer(meaningful)
+    normalized = _CONDITION_PATTERN.sub(
+        lambda match: _CONDITION_NORMALIZATIONS[match.group()], meaningful
     )
+    if not normalized:
+        return frozenset()
+    if len(normalized) < min(_CJK_NGRAM_LENGTHS):
+        return frozenset({normalized})
+    terms = {normalized}
+    for length in _CJK_NGRAM_LENGTHS:
+        terms.update(
+            normalized[index : index + length] for index in range(len(normalized) - length + 1)
+        )
+    return frozenset(terms)
+
+
+def _conditions(value: str) -> frozenset[str]:
+    normalized = unicodedata.normalize("NFKC", value).casefold()
+    return frozenset(
+        _CONDITION_NORMALIZATIONS[match.group()]
+        for match in _CONDITION_PATTERN.finditer(normalized)
+    )
+
+
+def _overlap(
+    question_tokens: frozenset[str],
+    question_conditions: frozenset[str],
+    candidate_text: str,
+) -> int:
+    candidate_conditions = _conditions(candidate_text)
+    if (
+        question_conditions
+        and candidate_conditions
+        and question_conditions.isdisjoint(candidate_conditions)
+    ):
+        return 0
+    return len(question_tokens & _tokens(candidate_text))
