@@ -420,6 +420,8 @@ def test_generic_manual_metadata_overlap_does_not_open_the_gate(question: str) -
     ("question", "text"),
     [
         ("泵体泄漏怎么办？", "泵体材质为铸铁。"),
+        ("泵体泄漏怎么办？", "泵体应每月维护。"),
+        ("转子不平衡怎么办？", "转子应定期检查。"),
         ("轴承温度高怎么办？", "轴承应每月检查。"),
     ],
 )

@@ -33,6 +33,9 @@ _CONDITION_PATTERN = re.compile(
 )
 _CONDITION_ACTION_PATTERN = re.compile(r"降低|提高")
 _RESPONSE_CUE_PATTERN = re.compile(r"怎么办|如何|处理|原因|检查|停机|更换|维修|维护|应|需要|建议|立即")
+_CONDITION_CONTEXT_PATTERN = re.compile(
+    r"发生|发现|出现|存在|异常|故障|损坏|失效|导致|造成|超过|低于|过高|过低|后|时"
+)
 _NON_SUBSTANTIVE_CJK_BIGRAMS = frozenset(
     {
         "检查",
@@ -282,8 +285,9 @@ def _overlap(
             _CJK_TOKEN_PATTERN.fullmatch(term)
             and len(term) == 2
             and not question_conditions
-                and _RESPONSE_CUE_PATTERN.search(question)
+            and _RESPONSE_CUE_PATTERN.search(question)
             and _RESPONSE_CUE_PATTERN.search(candidate_text)
+            and _CONDITION_CONTEXT_PATTERN.search(candidate_text.replace(term, ""))
         ):
             return 2
     return len(shared_terms)
