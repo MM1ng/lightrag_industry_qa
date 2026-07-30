@@ -21,7 +21,7 @@ cd /d D:\industrial_energy_agent
 conda create -n industrial-rag python=3.11 -y
 conda activate industrial-rag
 python -m pip install --upgrade pip
-python -m pip install -e "D:\industrial_energy_agent"
+python -m pip install -e "D:\industrial_energy_agent[dev]"
 copy .env.example .env
 ```
 
