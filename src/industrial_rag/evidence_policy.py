@@ -32,6 +32,7 @@ _CONDITION_PATTERN = re.compile(
     "|".join(re.escape(term) for term in sorted(_CONDITION_NORMALIZATIONS, key=len, reverse=True))
 )
 _CONDITION_ACTION_PATTERN = re.compile(r"降低|提高")
+_RESPONSE_CUE_PATTERN = re.compile(r"怎么办|如何|处理|原因|检查|停机|更换|维修|维护|应|需要|建议|立即")
 _NON_SUBSTANTIVE_CJK_BIGRAMS = frozenset(
     {
         "检查",
@@ -138,7 +139,7 @@ def select_evidence(question: str, payload: object, *, limit: int = 3) -> Eviden
             if candidate.citation.source_file in matched_documents
         ]
     scored = [
-        (_overlap(question_tokens, question_conditions, candidate.text), candidate)
+        (_overlap(question, question_tokens, question_conditions, candidate.text), candidate)
         for candidate in candidates
     ]
     ranked = sorted(scored, key=lambda item: (-item[0], item[1].rank))
@@ -262,6 +263,7 @@ def _conditions(value: str) -> frozenset[str]:
 
 
 def _overlap(
+    question: str,
     question_tokens: frozenset[str],
     question_conditions: frozenset[str],
     candidate_text: str,
@@ -276,6 +278,12 @@ def _overlap(
     shared_terms = question_tokens & _tokens(candidate_text)
     if len(shared_terms) == 1:
         term = next(iter(shared_terms))
-        if _CJK_TOKEN_PATTERN.fullmatch(term) and len(term) == 2:
+        if (
+            _CJK_TOKEN_PATTERN.fullmatch(term)
+            and len(term) == 2
+            and not question_conditions
+                and _RESPONSE_CUE_PATTERN.search(question)
+            and _RESPONSE_CUE_PATTERN.search(candidate_text)
+        ):
             return 2
     return len(shared_terms)

@@ -414,3 +414,20 @@ def test_generic_manual_metadata_overlap_does_not_open_the_gate(question: str) -
     decision = select_evidence(question, _payload(candidate))
 
     assert decision == EvidenceDecision(False, None, ())
+
+
+@pytest.mark.parametrize(
+    ("question", "text"),
+    [
+        ("泵体泄漏怎么办？", "泵体材质为铸铁。"),
+        ("轴承温度高怎么办？", "轴承应每月检查。"),
+    ],
+)
+def test_single_shared_cjk_term_without_matching_evidence_refuses(
+    question: str, text: str
+) -> None:
+    candidate = _path_candidate(SUMMIT_MANUAL, 17, "single-generic-term", text)
+
+    decision = select_evidence(question, _payload(candidate))
+
+    assert decision == EvidenceDecision(False, None, ())
