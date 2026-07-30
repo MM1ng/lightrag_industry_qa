@@ -21,7 +21,7 @@ cd /d D:\industrial_energy_agent
 conda create -n industrial-rag python=3.11 -y
 conda activate industrial-rag
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install -e "D:\industrial_energy_agent"
 copy .env.example .env
 ```
 
@@ -64,13 +64,13 @@ streamlit run app\streamlit_app.py
 在已经完成首次文档导入、且已激活 `industrial-rag` Conda 环境的终端中，先启动本地 API：
 
 ```bat
-uvicorn industrial_rag.api:app --host 127.0.0.1 --port 8000
+python -m uvicorn industrial_rag.api:app --host 127.0.0.1 --port 8000
 ```
 
 另开一个已激活同一环境的终端，再启动 Streamlit：
 
 ```bat
-streamlit run app/streamlit_app.py
+python -m streamlit run app\streamlit_app.py
 ```
 
 API 仅绑定到本机回环地址。`GET http://127.0.0.1:8000/readyz` 在索引和运行时可用时返回：
@@ -105,7 +105,7 @@ Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/v1/query' -Headers $h
 
 所有 API 错误均返回不包含内部异常或密钥的公共 JSON：`request_id`、`code`、`message` 和 `retryable`。错误代码包括：
 
-- `INVALID_REQUEST`（422）：查询或 history 格式/长度不合法。
+- `INVALID_REQUEST`（422；未知路径为 404、方法不允许为 405）：查询或 history 格式/长度不合法，或请求了无效路由。
 - `UNAUTHORIZED`（401）：已配置 `SERVICE_API_KEY`，但 Bearer 凭据缺失或无效。
 - `INDEX_NOT_READY`（503）：索引或运行时尚未就绪，可稍后重试。
 - `TIMEOUT`（504）：查询超时，可稍后重试。

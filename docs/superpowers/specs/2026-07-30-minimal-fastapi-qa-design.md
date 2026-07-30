@@ -94,6 +94,7 @@ HTTP 请求 → FastAPI → LightRAGRuntime → LightRAG 检索与生成 → 答
 | 场景 | HTTP | 错误代码 |
 | --- | --- | --- |
 | 请求字段不合法 | 422 | `INVALID_REQUEST` |
+| 路由不存在或 HTTP 方法不允许 | 404 / 405 | `INVALID_REQUEST` |
 | 缺少或错误的 Bearer 凭据 | 401 | `UNAUTHORIZED` |
 | 运行时尚未可用 | 503 | `INDEX_NOT_READY` |
 | 查询超时 | 504 | `TIMEOUT` |

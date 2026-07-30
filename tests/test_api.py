@@ -216,6 +216,14 @@ def test_query_timeout_maps_to_public_timeout_error() -> None:
     assert raw_error not in response.text
 
 
+def test_typed_timeout_error_maps_to_public_timeout_error() -> None:
+    raw_error = "backend deadline exceeded"
+    with TestClient(_app(FakeRuntime(error=TimeoutError(raw_error)))) as client:
+        response = client.post("/v1/query", json={"query": "问题"})
+    _assert_public_error(response, status_code=504, code="TIMEOUT")
+    assert raw_error not in response.text
+
+
 def test_other_runtime_error_hides_raw_exception_text() -> None:
     raw_error = "backend at https://secret.example.invalid failed"
     with TestClient(_app(FakeRuntime(error=RuntimeError(raw_error)))) as client:
@@ -234,3 +242,36 @@ def test_runtime_factory_failure_yields_safe_not_ready_response() -> None:
         response = client.get("/readyz")
     _assert_public_error(response, status_code=503, code="INDEX_NOT_READY")
     assert raw_error not in response.text
+
+
+def test_settings_startup_failure_preserves_configured_service_auth(monkeypatch) -> None:
+    raw_error = "failed to load C:/private/.env with credential secret"
+
+    def fail_from_env(cls) -> Settings:
+        raise RuntimeError(raw_error)
+
+    monkeypatch.setenv("SERVICE_API_KEY", "expected-key")
+    monkeypatch.setattr(Settings, "from_env", classmethod(fail_from_env))
+    with TestClient(create_app(runtime_factory=lambda _: FakeRuntime())) as client:
+        response = client.post(
+            "/v1/query",
+            content="{",
+            headers={"Content-Type": "application/json"},
+        )
+    _assert_public_error(response, status_code=401, code="UNAUTHORIZED")
+    assert raw_error not in response.text
+
+
+@pytest.mark.parametrize(
+    ("method", "path", "status_code"),
+    [("get", "/not-a-route", 404), ("get", "/v1/query", 405)],
+)
+def test_framework_routing_errors_use_public_error_envelope(
+    method: str,
+    path: str,
+    status_code: int,
+) -> None:
+    with TestClient(_app(FakeRuntime())) as client:
+        response = getattr(client, method)(path)
+    _assert_public_error(response, status_code=status_code, code="INVALID_REQUEST")
+    assert "detail" not in response.text

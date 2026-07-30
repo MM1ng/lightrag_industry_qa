@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import logging
+import os
 import secrets
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Mapping
 from contextlib import asynccontextmanager
 from typing import Annotated, Literal, Protocol
 from uuid import uuid4
@@ -13,6 +14,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StringConstraints
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
 from industrial_rag.citation_formatter import Citation
@@ -100,15 +102,25 @@ def _request_id_for(request: Request) -> str:
     return request_id
 
 
-def _error_response(code: str, *, request_id: str | None = None) -> JSONResponse:
-    status_code, message, retryable = _ERRORS[code]
+def _error_response(
+    code: str,
+    *,
+    request_id: str | None = None,
+    status_code: int | None = None,
+    headers: Mapping[str, str] | None = None,
+) -> JSONResponse:
+    default_status_code, message, retryable = _ERRORS[code]
     body = PublicError(
         request_id=request_id or _request_id(),
         code=code,
         message=message,
         retryable=retryable,
     )
-    return JSONResponse(status_code=status_code, content=body.model_dump())
+    return JSONResponse(
+        status_code=status_code if status_code is not None else default_status_code,
+        content=body.model_dump(),
+        headers=headers,
+    )
 
 
 def _citation_response(citation: Citation, index: int) -> CitationResponse:
@@ -131,6 +143,10 @@ def _log_result(*, request_id: str, status: str, latency_ms: int) -> None:
     )
 
 
+def _service_api_key_from_environment() -> str | None:
+    return (os.environ.get("SERVICE_API_KEY") or "").strip() or None
+
+
 def create_app(
     *,
     settings: Settings | None = None,
@@ -141,6 +157,7 @@ def create_app(
     @asynccontextmanager
     async def lifespan(application: FastAPI):
         runtime: QueryRuntime | None = None
+        resolved_settings: Settings | None = None
         application.state.runtime = None
         application.state.service_api_key = None
         try:
@@ -149,7 +166,8 @@ def create_app(
             runtime = runtime_factory(resolved_settings)
             application.state.runtime = runtime
         except Exception:
-            pass
+            if resolved_settings is None and settings is None:
+                application.state.service_api_key = _service_api_key_from_environment()
         try:
             yield
         finally:
@@ -176,6 +194,18 @@ def create_app(
             return await call_next(request)
         _log_result(request_id=request_id, status="UNAUTHORIZED", latency_ms=0)
         return _error_response("UNAUTHORIZED", request_id=request_id)
+
+    @application.exception_handler(StarletteHTTPException)
+    async def framework_http_error_handler(
+        request: Request,
+        error: StarletteHTTPException,
+    ) -> JSONResponse:
+        return _error_response(
+            "INVALID_REQUEST",
+            request_id=_request_id_for(request),
+            status_code=error.status_code,
+            headers=error.headers,
+        )
 
     @application.exception_handler(RequestValidationError)
     async def invalid_request_handler(
@@ -209,7 +239,11 @@ def create_app(
                 timeout=180.0,
             )
         except Exception as error:
-            code = "TIMEOUT" if "timed out" in str(error).casefold() else "UPSTREAM_UNAVAILABLE"
+            code = (
+                "TIMEOUT"
+                if isinstance(error, TimeoutError) or "timed out" in str(error).casefold()
+                else "UPSTREAM_UNAVAILABLE"
+            )
             response = _error_response(code, request_id=request_id)
             _log_result(request_id=request_id, status=code, latency_ms=0)
             return response
