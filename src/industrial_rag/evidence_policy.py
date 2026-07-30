@@ -32,7 +32,9 @@ _CONDITION_PATTERN = re.compile(
     "|".join(re.escape(term) for term in sorted(_CONDITION_NORMALIZATIONS, key=len, reverse=True))
 )
 _CONDITION_ACTION_PATTERN = re.compile(r"降低|提高")
-_RESPONSE_CUE_PATTERN = re.compile(r"怎么办|如何|处理|原因|检查|停机|更换|维修|维护|应|需要|建议|立即")
+_RESPONSE_CUE_PATTERN = re.compile(
+    r"怎么办|如何|处理|原因|检查|停机|更换|维修|维护|应|需要|建议|立即"
+)
 _CONDITION_CONTEXT_PATTERN = re.compile(
     r"发生|发现|出现|存在|异常|故障|损坏|失效|导致|造成|超过|低于|过高|过低|后|时"
 )
@@ -251,8 +253,7 @@ def _is_substantive_cjk_bigram(term: str) -> bool:
 
 def _is_substantive_cjk_term(term: str) -> bool:
     return not any(
-        term[index : index + 2] in _NON_SUBSTANTIVE_CJK_BIGRAMS
-        for index in range(len(term) - 1)
+        term[index : index + 2] in _NON_SUBSTANTIVE_CJK_BIGRAMS for index in range(len(term) - 1)
     )
 
 
