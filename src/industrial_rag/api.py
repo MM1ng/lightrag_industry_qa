@@ -4,15 +4,16 @@ from __future__ import annotations
 
 import logging
 import secrets
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from typing import Annotated, Literal, Protocol
 from uuid import uuid4
 
-from fastapi import Depends, FastAPI, Header, Request
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StringConstraints
+from starlette.responses import Response
 
 from industrial_rag.citation_formatter import Citation
 from industrial_rag.config import Settings
@@ -78,11 +79,6 @@ class PublicError(BaseModel):
     retryable: bool
 
 
-class _AuthenticationError(Exception):
-    def __init__(self, request_id: str) -> None:
-        self.request_id = request_id
-
-
 _ERRORS: dict[str, tuple[int, str, bool]] = {
     "INVALID_REQUEST": (422, "请求内容不合法，请检查后重试。", False),
     "UNAUTHORIZED": (401, "未提供有效的服务凭据。", False),
@@ -135,20 +131,6 @@ def _log_result(*, request_id: str, status: str, latency_ms: int) -> None:
     )
 
 
-def _authenticate_query(
-    request: Request,
-    authorization: Annotated[str | None, Header()] = None,
-) -> None:
-    request_id = _request_id_for(request)
-    service_api_key: str | None = request.app.state.service_api_key
-    if service_api_key is None:
-        return
-    expected = f"Bearer {service_api_key}".encode()
-    supplied = (authorization or "").encode()
-    if not secrets.compare_digest(supplied, expected):
-        raise _AuthenticationError(request_id)
-
-
 def create_app(
     *,
     settings: Settings | None = None,
@@ -177,13 +159,23 @@ def create_app(
 
     application = FastAPI(lifespan=lifespan)
 
-    @application.exception_handler(_AuthenticationError)
-    async def unauthorized_handler(
-        _request: Request,
-        error: _AuthenticationError,
-    ) -> JSONResponse:
-        _log_result(request_id=error.request_id, status="UNAUTHORIZED", latency_ms=0)
-        return _error_response("UNAUTHORIZED", request_id=error.request_id)
+    @application.middleware("http")
+    async def authenticate_query_request(
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
+    ) -> Response:
+        if request.method != "POST" or request.url.path != "/v1/query":
+            return await call_next(request)
+        request_id = _request_id_for(request)
+        service_api_key: str | None = request.app.state.service_api_key
+        if service_api_key is None:
+            return await call_next(request)
+        expected = f"Bearer {service_api_key}".encode()
+        supplied = (request.headers.get("Authorization") or "").encode()
+        if secrets.compare_digest(supplied, expected):
+            return await call_next(request)
+        _log_result(request_id=request_id, status="UNAUTHORIZED", latency_ms=0)
+        return _error_response("UNAUTHORIZED", request_id=request_id)
 
     @application.exception_handler(RequestValidationError)
     async def invalid_request_handler(
@@ -198,11 +190,7 @@ def create_app(
             return _error_response("INDEX_NOT_READY")
         return {"status": "ready"}
 
-    @application.post(
-        "/v1/query",
-        dependencies=[Depends(_authenticate_query)],
-        response_model=QueryResponse,
-    )
+    @application.post("/v1/query", response_model=QueryResponse)
     def query(
         payload: QueryRequest,
         request: Request,

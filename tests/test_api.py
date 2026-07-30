@@ -188,6 +188,16 @@ def test_query_authenticates_before_validating_malformed_payload(header: str | N
     _assert_public_error(response, status_code=401, code="UNAUTHORIZED")
 
 
+@pytest.mark.parametrize("header", [None, "Bearer wrong"])
+def test_query_authenticates_before_parsing_malformed_json(header: str | None) -> None:
+    request_headers = {"Content-Type": "application/json", **_headers(header)}
+    with TestClient(_app(FakeRuntime(), service_api_key="expected-key")) as client:
+        response = client.post("/v1/query", content="{", headers=request_headers)
+    _assert_public_error(response, status_code=401, code="UNAUTHORIZED")
+    assert set(response.json()) == {"request_id", "code", "message", "retryable"}
+    assert "json_invalid" not in response.text
+
+
 def test_query_allows_correct_bearer_key() -> None:
     with TestClient(_app(FakeRuntime(), service_api_key="expected-key")) as client:
         response = client.post(
