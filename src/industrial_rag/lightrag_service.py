@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Sequence
+from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from functools import partial
 from typing import Any, Literal, Protocol, cast
 
-from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
+from industrial_rag.citation_formatter import Citation, encode_chunk_header
 from industrial_rag.config import (
     SUPPORTED_QUERY_MODES,
     Settings,
@@ -16,6 +16,7 @@ from industrial_rag.config import (
     write_storage_metadata,
 )
 from industrial_rag.document_parser import DocumentChunk
+from industrial_rag.evidence_policy import EvidenceCandidate, select_evidence
 
 QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
 INSUFFICIENT_EVIDENCE_MESSAGE = "手册中未检索到充分依据，无法可靠回答该问题。"
@@ -24,8 +25,7 @@ _SYSTEM_PROMPT_BASE = (
     f"依据不足时必须原样回答：{INSUFFICIENT_EVIDENCE_MESSAGE} "
     "不要猜测、补写或编造文件名和页码。\n\n"
 )
-_KG_SYSTEM_PROMPT = _SYSTEM_PROMPT_BASE + "以下是检索到的手册上下文：\n{context_data}"
-_NAIVE_SYSTEM_PROMPT = _SYSTEM_PROMPT_BASE + "以下是检索到的手册上下文：\n{content_data}"
+_SELECTED_CONTEXT_LABEL = "以下是已筛选的手册证据：\n"
 _CHUNK_BOUNDARY = "\n\n<<<INDUSTRIAL_RAG_CHUNK_BOUNDARY>>>\n\n"
 
 
@@ -55,13 +55,19 @@ class LightRAGBackend(Protocol):
 
     async def aquery_data(self, query: str, param: QueryOptions) -> dict[str, object]: ...
 
-    async def aquery(self, query: str, param: QueryOptions, system_prompt: str) -> str: ...
+    async def generate(self, question: str, context: str, system_prompt: str) -> str: ...
 
 
 class _OfficialBackend:
-    def __init__(self, rag: Any, query_param_type: type[Any]) -> None:
+    def __init__(
+        self,
+        rag: Any,
+        query_param_type: type[Any],
+        llm_model_func: Callable[..., Awaitable[str]],
+    ) -> None:
         self._rag = rag
         self._query_param_type = query_param_type
+        self._llm_model_func = llm_model_func
 
     def _param(self, value: QueryOptions) -> Any:
         return self._query_param_type(
@@ -90,14 +96,10 @@ class _OfficialBackend:
     async def aquery_data(self, query: str, param: QueryOptions) -> dict[str, object]:
         return cast(dict[str, object], await self._rag.aquery_data(query, self._param(param)))
 
-    async def aquery(self, query: str, param: QueryOptions, system_prompt: str) -> str:
-        result = await self._rag.aquery(
-            query,
-            self._param(param),
-            system_prompt=system_prompt,
-        )
+    async def generate(self, question: str, context: str, system_prompt: str) -> str:
+        result = await self._llm_model_func(question, system_prompt=system_prompt)
         if not isinstance(result, str):
-            raise RuntimeError("LightRAG returned a streaming response unexpectedly")
+            raise RuntimeError("LightRAG LLM returned a streaming response unexpectedly")
         return result
 
 
@@ -153,7 +155,17 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
         entity_extract_max_entities=12,
         max_parallel_insert=1,
     )
-    return _OfficialBackend(rag, QueryParam)
+    return _OfficialBackend(rag, QueryParam, llm_model_func)
+
+
+def _selected_context(selected: Sequence[EvidenceCandidate]) -> str:
+    return "\n\n".join(
+        f"{encode_chunk_header(candidate.citation)}\n{candidate.text}" for candidate in selected
+    )
+
+
+def _generation_system_prompt(context: str) -> str:
+    return _SYSTEM_PROMPT_BASE + _SELECTED_CONTEXT_LABEL + context
 
 
 class LightRAGService:
@@ -230,16 +242,12 @@ class LightRAGService:
             raise ValueError("问题不能为空")
         options = QueryOptions(mode=mode)
         evidence = await self._backend.aquery_data(question.strip(), options)
-        citations = collect_citations(evidence)
-        data = evidence.get("data") if isinstance(evidence, dict) else None
-        has_evidence = isinstance(data, dict) and any(
-            isinstance(data.get(field), list) and bool(data[field])
-            for field in ("chunks", "entities", "relationships")
-        )
-        if not has_evidence or not citations:
+        decision = select_evidence(question.strip(), evidence)
+        if not decision.allowed:
             return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), mode)
-        system_prompt = _NAIVE_SYSTEM_PROMPT if mode == "naive" else _KG_SYSTEM_PROMPT
-        answer = (await self._backend.aquery(question.strip(), options, system_prompt)).strip()
+        context = _selected_context(decision.selected)
+        system_prompt = _generation_system_prompt(context)
+        answer = (await self._backend.generate(question.strip(), context, system_prompt)).strip()
         if not answer:
-            answer = INSUFFICIENT_EVIDENCE_MESSAGE
-        return QueryResult(answer, citations, mode)
+            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), mode)
+        return QueryResult(answer, tuple(item.citation for item in decision.selected), mode)

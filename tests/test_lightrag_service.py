@@ -20,13 +20,17 @@ from industrial_rag.lightrag_service import (
 
 
 class FakeLightRAGBackend:
-    def __init__(self, *, has_evidence: bool = True) -> None:
+    def __init__(
+        self, *, has_evidence: bool = True, evidence_payload: dict[str, object] | None = None
+    ) -> None:
         self.has_evidence = has_evidence
+        self.evidence_payload = evidence_payload
         self.initialized = False
         self.closed = False
         self.insert_call: dict[str, object] | None = None
         self.insert_calls: list[dict[str, object]] = []
         self.query_modes: list[str] = []
+        self.generate_calls: list[tuple[str, str, str]] = []
 
     async def initialize_storages(self) -> None:
         self.initialized = True
@@ -44,6 +48,8 @@ class FakeLightRAGBackend:
 
     async def aquery_data(self, query: str, param: object) -> dict[str, object]:
         self.query_modes.append(param.mode)  # type: ignore[attr-defined]
+        if self.evidence_payload is not None:
+            return self.evidence_payload
         chunks = []
         references = []
         if self.has_evidence:
@@ -60,7 +66,8 @@ class FakeLightRAGBackend:
             },
         }
 
-    async def aquery(self, query: str, param: object, system_prompt: str) -> str:
+    async def generate(self, question: str, context: str, system_prompt: str) -> str:
+        self.generate_calls.append((question, context, system_prompt))
         assert "手册" in system_prompt
         return "应检查轴承润滑状态。"
 
@@ -210,83 +217,79 @@ async def test_fake_service_returns_fixed_message_without_evidence(tmp_path: Pat
 
 
 @pytest.mark.asyncio
-async def test_query_prompt_preserves_lightrag_retrieval_context(tmp_path: Path) -> None:
-    backend = FakeLightRAGBackend()
-
-    async def format_like_official_lightrag(query: str, param: object, system_prompt: str) -> str:
-        rendered = system_prompt.format(
-            response_type="Multiple Paragraphs",
-            user_prompt="n/a",
-            context_data="检索到的手册证据",
-        )
-        assert "检索到的手册证据" in rendered
-        return "依据检索证据回答。"
-
-    backend.aquery = format_like_official_lightrag  # type: ignore[method-assign]
+async def test_query_refuses_before_generation_when_policy_rejects(tmp_path: Path) -> None:
+    evidence = _payload(
+        [
+            ("pump.pdf", 7, "pump-p7-c1", "轴承润滑应定期检查。"),
+        ]
+    )
+    backend = FakeLightRAGBackend(evidence_payload=evidence)
     service = LightRAGService(_settings(tmp_path), backend=backend)
     await service.initialize()
 
-    result = await service.query("离心泵启动前需要检查什么？", mode="mix")
+    result = await service.query("火星基地零重力维护周期？")
 
-    assert result.answer == "依据检索证据回答。"
+    assert result.answer == INSUFFICIENT_EVIDENCE_MESSAGE
+    assert result.citations == ()
+    assert backend.generate_calls == []
 
 
 @pytest.mark.asyncio
-async def test_naive_query_prompt_preserves_lightrag_retrieval_context(
+async def test_query_generates_from_selected_chunks_and_returns_three_citations(
     tmp_path: Path,
 ) -> None:
-    backend = FakeLightRAGBackend()
-
-    async def format_like_official_naive_lightrag(
-        query: str, param: object, system_prompt: str
-    ) -> str:
-        rendered = system_prompt.format(
-            response_type="Multiple Paragraphs",
-            user_prompt="n/a",
-            content_data="朴素检索到的手册证据",
-        )
-        assert "朴素检索到的手册证据" in rendered
-        return "依据朴素检索证据回答。"
-
-    backend.aquery = format_like_official_naive_lightrag  # type: ignore[method-assign]
+    evidence = _payload(
+        [
+            ("2196-ANSI-Manual-Chinese.pdf", 1, "sumit-c1", "SUMMIT 2196 入口管路应短直布置。"),
+            ("2196-ANSI-Manual-Chinese.pdf", 2, "sumit-c2", "SUMMIT 2196 入口管路避免空气袋。"),
+            ("2196-ANSI-Manual-Chinese.pdf", 3, "sumit-c3", "SUMMIT 2196 入口管路要减少弯头。"),
+            ("2196-ANSI-Manual-Chinese.pdf", 4, "sumit-c4", "SUMMIT 2196 入口管路保持密封。"),
+            ("t1739cn.pdf", 5, "desmi-c5", "DESMI 泵的入口管路安装说明。"),
+        ]
+    )
+    backend = FakeLightRAGBackend(evidence_payload=evidence)
     service = LightRAGService(_settings(tmp_path), backend=backend)
     await service.initialize()
 
-    result = await service.query("离心泵启动前需要检查什么？", mode="naive")
+    result = await service.query("SUMMIT 2196 入口管路如何布置？")
 
-    assert result.answer == "依据朴素检索证据回答。"
+    assert len(result.citations) == 3
+    assert {citation.source_file for citation in result.citations} == {
+        "2196-ANSI-Manual-Chinese.pdf"
+    }
+    assert len(backend.generate_calls) == 1
+    _, context, system_prompt = backend.generate_calls[0]
+    assert "desmi" not in context.casefold()
+    assert "sumit-c4" not in context
+    assert "sumit-c1" in context
+    assert "只能依据检索到的手册内容回答" in system_prompt
+    assert "{context_data}" not in system_prompt
+    assert "{content_data}" not in system_prompt
 
 
 @pytest.mark.asyncio
-async def test_hybrid_query_passes_mode_and_uses_kg_system_prompt(tmp_path: Path) -> None:
+async def test_naive_query_uses_selected_context_in_generation_prompt(tmp_path: Path) -> None:
     backend = FakeLightRAGBackend()
-    captured: dict[str, object] = {}
-
-    async def capture_hybrid_prompt(query: str, param: object, system_prompt: str) -> str:
-        captured["mode"] = param.mode  # type: ignore[attr-defined]
-        captured["system_prompt"] = system_prompt
-        rendered = system_prompt.format(
-            response_type="Multiple Paragraphs",
-            user_prompt="n/a",
-            context_data="hybrid 检索到的手册证据",
-        )
-        assert "hybrid 检索到的手册证据" in rendered
-        assert "{content_data}" not in system_prompt
-        return "依据 hybrid 检索证据回答。"
-
-    backend.aquery = capture_hybrid_prompt  # type: ignore[method-assign]
     service = LightRAGService(_settings(tmp_path), backend=backend)
     await service.initialize()
 
-    result = await service.query("轴承温度过高的原因和对应处理方法是什么？", mode="hybrid")
+    result = await service.query("轴承温度过高怎么办？", mode="naive")
 
-    assert result.mode == "hybrid"
-    assert result.answer == "依据 hybrid 检索证据回答。"
-    assert result.citations
-    assert backend.query_modes == ["hybrid"]
-    assert captured["mode"] == "hybrid"
-    assert "{context_data}" in str(captured["system_prompt"])
-    assert "{content_data}" not in str(captured["system_prompt"])
+    assert result.answer == "应检查轴承润滑状态。"
+    assert backend.generate_calls
+    assert "pump-p7-c1" in backend.generate_calls[0][1]
+    assert "以下是已筛选的手册证据" in backend.generate_calls[0][2]
+
+
+def _payload(chunks: list[tuple[str, int, str, str]]) -> dict[str, object]:
+    rendered = [
+        {
+            "content": text,
+            "file_path": encode_source_ref(Citation(source, page, chunk_id)),
+        }
+        for source, page, chunk_id, text in chunks
+    ]
+    return {"status": "success", "data": {"entities": [], "relationships": [], "chunks": rendered}}
 
 
 @pytest.mark.asyncio
@@ -300,7 +303,7 @@ async def test_all_five_supported_modes_are_accepted(tmp_path: Path) -> None:
     await service.initialize()
 
     for mode in expected_modes:
-        result = await service.query("离心泵启动前需要检查什么？", mode=mode)
+        result = await service.query("轴承温度过高怎么办？", mode=mode)
         assert result.mode == mode
 
     assert backend.query_modes == list(expected_modes)
