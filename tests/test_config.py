@@ -9,7 +9,7 @@ def _valid_values() -> dict[str, str]:
     return {
         "DASHSCOPE_API_KEY": "test-only-key",
         "LLM_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-        "LLM_MODEL": "qwen3.7-plus",
+        "LLM_MODEL": "kimi-k2.6",
         "EMBEDDING_MODEL": "text-embedding-v4",
         "EMBEDDING_DIM": "1024",
         "LIGHTRAG_WORKING_DIR": "./lightrag_storage",

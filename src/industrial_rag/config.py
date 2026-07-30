@@ -33,7 +33,7 @@ class Settings:
     api_key: str = field(repr=False)
     service_api_key: str | None = field(default=None, repr=False)
     llm_base_url: str = DEFAULT_BAILIAN_BASE_URL
-    llm_model: str = "qwen3.7-plus"
+    llm_model: str = "kimi-k2.6"
     embedding_model: str = "text-embedding-v4"
     embedding_dim: int = 1024
     working_dir: Path = PROJECT_ROOT / "lightrag_storage"
@@ -43,7 +43,7 @@ class Settings:
         api_key = (values.get("DASHSCOPE_API_KEY") or "").strip()
         service_api_key = (values.get("SERVICE_API_KEY") or "").strip() or None
         base_url = (values.get("LLM_BASE_URL") or DEFAULT_BAILIAN_BASE_URL).rstrip("/")
-        llm_model = (values.get("LLM_MODEL") or "qwen3.7-plus").strip()
+        llm_model = (values.get("LLM_MODEL") or "kimi-k2.6").strip()
         embedding_model = (values.get("EMBEDDING_MODEL") or "text-embedding-v4").strip()
         try:
             embedding_dim = int(values.get("EMBEDDING_DIM") or "1024")
@@ -58,8 +58,8 @@ class Settings:
             raise ValueError("必须通过环境变量 DASHSCOPE_API_KEY 提供百炼密钥")
         if base_url != DEFAULT_BAILIAN_BASE_URL:
             raise ValueError("LLM_BASE_URL 必须使用阿里云百炼北京 OpenAI 兼容端点")
-        if llm_model != "qwen3.7-plus":
-            raise ValueError("LLM_MODEL 必须为 qwen3.7-plus")
+        if llm_model != "kimi-k2.6":
+            raise ValueError("LLM_MODEL 必须为 kimi-k2.6")
         if embedding_model != "text-embedding-v4":
             raise ValueError("EMBEDDING_MODEL 必须为 text-embedding-v4")
         if embedding_dim != 1024:

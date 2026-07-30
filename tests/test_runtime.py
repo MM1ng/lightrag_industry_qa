@@ -147,7 +147,7 @@ def _settings(working_dir: str = "./lightrag_storage") -> Settings:
         {
             "DASHSCOPE_API_KEY": "test-only-not-a-real-key-12345",
             "LLM_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "LLM_MODEL": "qwen3.7-plus",
+            "LLM_MODEL": "kimi-k2.6",
             "EMBEDDING_MODEL": "text-embedding-v4",
             "EMBEDDING_DIM": "1024",
             "LIGHTRAG_WORKING_DIR": working_dir,

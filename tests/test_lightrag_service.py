@@ -70,7 +70,7 @@ def _settings(tmp_path: Path) -> Settings:
         {
             "DASHSCOPE_API_KEY": "test-only-key",
             "LLM_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "LLM_MODEL": "qwen3.7-plus",
+            "LLM_MODEL": "kimi-k2.6",
             "EMBEDDING_MODEL": "text-embedding-v4",
             "EMBEDDING_DIM": "1024",
             "LIGHTRAG_WORKING_DIR": str(tmp_path / "storage"),
@@ -83,7 +83,7 @@ def test_settings_lock_required_bailian_contract(tmp_path: Path) -> None:
 
     assert SUPPORTED_QUERY_MODES == ("mix", "hybrid", "local", "global", "naive")
     assert "bypass" not in SUPPORTED_QUERY_MODES
-    assert settings.llm_model == "qwen3.7-plus"
+    assert settings.llm_model == "kimi-k2.6"
     assert settings.embedding_model == "text-embedding-v4"
     assert settings.embedding_dim == 1024
     assert settings.llm_base_url == "https://dashscope.aliyuncs.com/compatible-mode/v1"

@@ -1,6 +1,6 @@
 # 基于 LightRAG 的工业离心泵知识库问答系统
 
-这是一个收敛的单页知识库问答 MVP：使用 PyMuPDF 解析 `data\manuals` 中的两份离心泵 PDF，将带文件名、物理页码和章节信息的文本块导入 LightRAG，再通过阿里云百炼 `qwen3.7-plus` 与 `text-embedding-v4`（1024 维，北京端点）回答问题。
+这是一个收敛的单页知识库问答 MVP：使用 PyMuPDF 解析 `data\manuals` 中的两份离心泵 PDF，将带文件名、物理页码和章节信息的文本块导入 LightRAG，再通过阿里云百炼 `kimi-k2.6` 与 `text-embedding-v4`（1024 维，北京端点）回答问题。
 
 ## 功能范围
 
@@ -30,7 +30,7 @@ copy .env.example .env
 ```dotenv
 DASHSCOPE_API_KEY=你的百炼密钥
 LLM_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
-LLM_MODEL=qwen3.7-plus
+LLM_MODEL=kimi-k2.6
 EMBEDDING_MODEL=text-embedding-v4
 EMBEDDING_DIM=1024
 LIGHTRAG_WORKING_DIR=./lightrag_storage
