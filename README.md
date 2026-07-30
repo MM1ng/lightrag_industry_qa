@@ -59,6 +59,58 @@ streamlit run app\streamlit_app.py
 
 本项目不提供 `bypass` 模式，因为 bypass 不会检索手册，无法满足基于证据回答和页码引用要求。引用来自 LightRAG 检索结果中由解析器写入的元数据，显示为 `[文档名称，第X页]`，页码不由模型生成。
 
+## 本地 FastAPI 问答服务
+
+在已经完成首次文档导入、且已激活 `industrial-rag` Conda 环境的终端中，先启动本地 API：
+
+```bat
+uvicorn industrial_rag.api:app --host 127.0.0.1 --port 8000
+```
+
+另开一个已激活同一环境的终端，再启动 Streamlit：
+
+```bat
+streamlit run app/streamlit_app.py
+```
+
+API 仅绑定到本机回环地址。`GET http://127.0.0.1:8000/readyz` 在索引和运行时可用时返回：
+
+```json
+{"status":"ready"}
+```
+
+使用 `POST http://127.0.0.1:8000/v1/query` 提交 JSON 请求；服务固定使用 `mix` 检索模式。下面是 PowerShell 示例（不启用服务认证时）：
+
+```powershell
+$body = @{ query = 'E102 如何处理？' } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/v1/query' -ContentType 'application/json' -Body $body
+```
+
+响应的 `status` 为 `success` 时，`answer`、可追溯的 `citations`（文档名、页码、chunk ID）和 `claims` 均会返回。若没有足够的手册证据，HTTP 仍为 `200`，但 `status` 为 `insufficient_evidence`，且 `citations` 与 `claims` 都是空数组；客户端应将其作为拒答结果处理。
+
+### 可选服务认证
+
+`.env` 中的 `SERVICE_API_KEY` 是可选项：留空时，`/v1/query` 不要求认证；设置后，每次查询都必须携带 `Authorization: Bearer <SERVICE_API_KEY>`。不要将真实密钥写进命令历史、README 或版本控制。PowerShell 示例使用明显的占位符：
+
+```powershell
+$serviceApiKey = '<replace-with-local-service-api-key>'
+$headers = @{ Authorization = "Bearer $serviceApiKey" }
+$body = @{ query = 'E102 如何处理？' } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/v1/query' -Headers $headers -ContentType 'application/json' -Body $body
+```
+
+`history` 可选，格式为最多 10 条 `user` 或 `assistant` 消息，每条内容最多 2000 个字符。它会被校验以保证请求边界，但当前版本不会将历史传给运行时、保存，或在后续请求中复用。
+
+### 公共错误格式
+
+所有 API 错误均返回不包含内部异常或密钥的公共 JSON：`request_id`、`code`、`message` 和 `retryable`。错误代码包括：
+
+- `INVALID_REQUEST`（422）：查询或 history 格式/长度不合法。
+- `UNAUTHORIZED`（401）：已配置 `SERVICE_API_KEY`，但 Bearer 凭据缺失或无效。
+- `INDEX_NOT_READY`（503）：索引或运行时尚未就绪，可稍后重试。
+- `TIMEOUT`（504）：查询超时，可稍后重试。
+- `UPSTREAM_UNAVAILABLE`（502）：上游知识库服务暂时不可用，可稍后重试。
+
 ## 知识图谱可视化
 
 应用包含「智能问答」与「知识图谱」两个页签。图谱由 LightRAG 文档导入时自动生成，文件位于：
