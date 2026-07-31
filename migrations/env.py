@@ -1,15 +1,12 @@
-from logging.config import fileConfig
-
 import sys
+from logging.config import fileConfig
 from pathlib import Path
 
 # Add project root to sys.path so imports resolve
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -23,7 +20,10 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 from industrial_rag.db.models import Base  # noqa: E402
+from industrial_rag.db.session import get_sync_url  # noqa: E402
+
 target_metadata = Base.metadata
+config.set_main_option("sqlalchemy.url", get_sync_url())
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

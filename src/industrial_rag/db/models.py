@@ -71,8 +71,18 @@ class TaskType(enum.StrEnum):
     reparse = "reparse"
     reindex = "reindex"
     rebuild = "rebuild"
+    migrate_to_qdrant = "migrate_to_qdrant"
+    rollback_to_nano = "rollback_to_nano"
     delete_document = "delete_document"
     delete_knowledge_base = "delete_knowledge_base"
+
+
+class VectorIndexGenerationStatus(enum.StrEnum):
+    shadow = "shadow"
+    active = "active"
+    retired = "retired"
+    failed = "failed"
+    deleted = "deleted"
 
 
 class TaskStatus(enum.StrEnum):
@@ -119,6 +129,21 @@ class KnowledgeBase(Base):
     embedding_model: Mapped[str] = mapped_column(String(50), nullable=False, default="text-embedding-v4")
     embedding_dimension: Mapped[int] = mapped_column(Integer, nullable=False, default=1024)
 
+    # Vector backend state. The active record carries immutable workspace and input provenance.
+    vector_backend: Mapped[str] = mapped_column(String(20), nullable=False, default="nano")
+    active_vector_generation_id: Mapped[str | None] = mapped_column(
+        String(32),
+        ForeignKey("vector_index_generations.id", use_alter=True, name="fk_kb_active_vector_generation"),
+        nullable=True,
+        default=None,
+        index=True,
+    )
+    active_vector_generation: Mapped[VectorIndexGeneration | None] = relationship(
+        "VectorIndexGeneration",
+        foreign_keys=[active_vector_generation_id],
+        post_update=True,
+    )
+
     # Counts (aggregated from documents / LightRAG)
     document_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     active_document_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
@@ -149,9 +174,56 @@ class KnowledgeBase(Base):
     tasks: Mapped[list[LifecycleTask]] = relationship(
         "LifecycleTask", back_populates="knowledge_base", lazy="selectin"
     )
+    vector_generations: Mapped[list[VectorIndexGeneration]] = relationship(
+        "VectorIndexGeneration",
+        back_populates="knowledge_base",
+        foreign_keys="VectorIndexGeneration.knowledge_base_id",
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
         return f"<KnowledgeBase id={self.id!r} name={self.name!r} status={self.status.value!r}>"
+
+
+class VectorIndexGeneration(Base):
+    """Immutable storage/provenance record for one complete vector index build."""
+
+    __tablename__ = "vector_index_generations"
+    __table_args__ = (
+        UniqueConstraint(
+            "knowledge_base_id", "backend", "generation", name="uq_kb_vector_generation"
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_uuid)
+    knowledge_base_id: Mapped[str] = mapped_column(
+        String(32), ForeignKey("knowledge_bases.id"), nullable=False, index=True
+    )
+    backend: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    generation: Mapped[str] = mapped_column(String(80), nullable=False)
+    status: Mapped[VectorIndexGenerationStatus] = mapped_column(
+        Enum(VectorIndexGenerationStatus), nullable=False, default=VectorIndexGenerationStatus.shadow,
+        index=True,
+    )
+    workspace_path: Mapped[str] = mapped_column(Text, nullable=False)
+    collections: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
+    document_manifest_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    child_chunks_manifest_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    embedding_config_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    chunking_config_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_by_task_id: Mapped[str | None] = mapped_column(
+        String(32), ForeignKey("lifecycle_tasks.id"), nullable=True, index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
+    activated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    retired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    knowledge_base: Mapped[KnowledgeBase] = relationship(
+        "KnowledgeBase", back_populates="vector_generations", foreign_keys=[knowledge_base_id]
+    )
 
 
 class Document(Base):
