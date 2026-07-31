@@ -45,6 +45,16 @@ class Settings:
     embedding_model: str = "text-embedding-v4"
     embedding_dim: int = 1024
     working_dir: Path = PROJECT_ROOT / "lightrag_storage"
+    mineru_enabled: bool = False
+    mineru_api_base_url: str = "https://mineru.net"
+    mineru_api_key: str | None = field(default=None, repr=False)
+    mineru_api_version: str = "v4"
+    mineru_request_timeout: float = 60.0
+    mineru_task_timeout: float = 600.0
+    mineru_poll_interval: float = 3.0
+    mineru_max_retries: int = 3
+    mineru_fallback_to_pymupdf: bool = True
+    mineru_save_raw_response: bool = True
 
     def __post_init__(self) -> None:
         if not self.llm_model.strip():
@@ -95,6 +105,31 @@ class Settings:
             raise ValueError("EMBEDDING_MODEL 必须为 text-embedding-v4")
         if embedding_dim != 1024:
             raise ValueError("EMBEDDING_DIM 必须为 1024")
+
+        # MinerU config — defaults to disabled
+        mineru_enabled = (values.get("MINERU_ENABLED") or "").strip().lower() == "true"
+        mineru_api_base_url = (values.get("MINERU_API_BASE_URL") or "https://mineru.net").rstrip("/")
+        mineru_api_key = (values.get("MINERU_API_KEY") or "").strip() or None
+        mineru_api_version = (values.get("MINERU_API_VERSION") or "v4").strip()
+        try:
+            mineru_request_timeout = float(values.get("MINERU_REQUEST_TIMEOUT_SECONDS") or "60")
+        except ValueError:
+            mineru_request_timeout = 60.0
+        try:
+            mineru_task_timeout = float(values.get("MINERU_TASK_TIMEOUT_SECONDS") or "600")
+        except ValueError:
+            mineru_task_timeout = 600.0
+        try:
+            mineru_poll_interval = float(values.get("MINERU_POLL_INTERVAL_SECONDS") or "3")
+        except ValueError:
+            mineru_poll_interval = 3.0
+        try:
+            mineru_max_retries = int(values.get("MINERU_MAX_RETRIES") or "3")
+        except ValueError:
+            mineru_max_retries = 3
+        mineru_fallback_to_pymupdf = (values.get("MINERU_FALLBACK_TO_PYMUPDF") or "true").strip().lower() != "false"
+        mineru_save_raw_response = (values.get("MINERU_SAVE_RAW_RESPONSE") or "true").strip().lower() != "false"
+
         return cls(
             api_key=api_key,
             service_api_key=service_api_key,
@@ -104,6 +139,16 @@ class Settings:
             embedding_model=embedding_model,
             embedding_dim=embedding_dim,
             working_dir=working_dir.resolve(),
+            mineru_enabled=mineru_enabled,
+            mineru_api_base_url=mineru_api_base_url,
+            mineru_api_key=mineru_api_key,
+            mineru_api_version=mineru_api_version,
+            mineru_request_timeout=mineru_request_timeout,
+            mineru_task_timeout=mineru_task_timeout,
+            mineru_poll_interval=mineru_poll_interval,
+            mineru_max_retries=mineru_max_retries,
+            mineru_fallback_to_pymupdf=mineru_fallback_to_pymupdf,
+            mineru_save_raw_response=mineru_save_raw_response,
         )
 
     @classmethod

@@ -1,0 +1,63 @@
+- generic:
+  - generic [ref=e131]:
+    - log [ref=e132]:
+      - generic [ref=e133]: 5 options available.
+    - log
+  - generic [ref=e3]:
+    - banner [ref=e6]:
+      - generic [ref=e9]:
+        - button [ref=e134] [cursor=pointer]:
+          - generic [ref=e12]: Deploy
+        - button [ref=e135] [cursor=pointer]
+    - generic [ref=e19]:
+      - heading [level=1] [ref=e136]:
+        - text: 基于 LightRAG 的工业离心泵知识库问答系统
+        - generic [ref=e25]:
+          - link:
+            - /url: "#light-rag"
+      - generic [ref=e27]:
+        - tablist [ref=e28]:
+          - tab [selected] [ref=e137] [cursor=pointer]:
+            - paragraph [ref=e31]: 智能问答
+          - tab [ref=e138] [cursor=pointer]:
+            - paragraph [ref=e35]: 知识图谱
+        - tabpanel "智能问答" [ref=e36]:
+          - generic [ref=e37]:
+            - paragraph [ref=e42]: 模型：qwen3.7-plus ｜ Embedding：text-embedding-v4（1024 维）
+            - status [ref=e45]:
+              - paragraph [ref=e49]: LightRAG 状态：索引已就绪
+            - generic [ref=e51]:
+              - paragraph [ref=e55]: 查询模式
+              - group [ref=e57]:
+                - combobox "查询模式" [expanded] [active] [ref=e58]: mix
+                - button [expanded] [ref=e139] [cursor=pointer]
+            - paragraph [ref=e67]: 示例问题
+            - generic [ref=e69]:
+              - generic [ref=e71]:
+                - button [ref=e140] [cursor=pointer]:
+                  - paragraph [ref=e78]: 离心泵启动前需要检查什么？
+                - button [ref=e141] [cursor=pointer]:
+                  - paragraph [ref=e85]: 水泵不输送液体应该如何排查？
+                - button [ref=e142] [cursor=pointer]:
+                  - paragraph [ref=e92]: 气蚀产生的原因和危害是什么？
+              - generic [ref=e94]:
+                - button [ref=e143] [cursor=pointer]:
+                  - paragraph [ref=e101]: 轴承温度过高可能是什么原因？
+                - button [ref=e144] [cursor=pointer]:
+                  - paragraph [ref=e108]: 维修水泵前需要执行哪些安全步骤？
+                - button [ref=e145] [cursor=pointer]:
+                  - paragraph [ref=e115]: 机械密封失效有哪些可能原因？
+            - generic [ref=e117]:
+              - paragraph [ref=e121]: 请输入问题
+              - textbox [ref=e146]:
+                - /placeholder: 例如：离心泵启动前需要检查什么？
+            - button [ref=e147] [cursor=pointer]:
+              - paragraph [ref=e130]: 提交问题
+  - generic [ref=e149]:
+    - listbox "查询模式 Open" [ref=e150]:
+      - option "mix" [selected] [ref=e151] [cursor=pointer]
+      - option "hybrid" [ref=e153] [cursor=pointer]
+      - option "local" [ref=e155] [cursor=pointer]
+      - option "global" [ref=e157] [cursor=pointer]
+      - option "naive" [ref=e159] [cursor=pointer]
+    - button "Dismiss" [ref=e162] [cursor=pointer]

@@ -1,0 +1,7 @@
+{
+  "storage_dir": "D:\\industrial_energy_agent\\lightrag_storage",
+  "documents_jsonl": "D:\\industrial_energy_agent\\data\\processed\\documents.jsonl",
+  "parent_chunks_jsonl": null,
+  "child_chunks_jsonl": null,
+  "chunk_count": 118
+}

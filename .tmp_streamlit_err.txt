@@ -1,0 +1,157 @@
+2026-07-24 16:31:53.612 Uvicorn server started on :::8501
+2026-07-24 16:35:54.421 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 16:35:54.512 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 16:37:27.358 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 16:37:27.362 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 16:42:09.685 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 16:42:09.686 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 16:43:09.983 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 16:43:09.985 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 17:07:28.022 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 17:07:28.026 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+INFO: [] Loaded graph from D:\industrial_energy_agent\lightrag_storage\graph_chunk_entity_relation.graphml with 365 nodes, 418 edges
+INFO:nano-vectordb:Load (365, 1024) data
+INFO:nano-vectordb:Init {'embedding_dim': 1024, 'metric': 'cosine', 'storage_file': 'D:\\industrial_energy_agent\\lightrag_storage\\vdb_entities.json'} 365 data
+INFO:nano-vectordb:Load (418, 1024) data
+INFO:nano-vectordb:Init {'embedding_dim': 1024, 'metric': 'cosine', 'storage_file': 'D:\\industrial_energy_agent\\lightrag_storage\\vdb_relationships.json'} 418 data
+INFO:nano-vectordb:Load (118, 1024) data
+INFO:nano-vectordb:Init {'embedding_dim': 1024, 'metric': 'cosine', 'storage_file': 'D:\\industrial_energy_agent\\lightrag_storage\\vdb_chunks.json'} 118 data
+INFO: Role LLM Configuration (initialized):
+INFO:  - extract: None/None, host=None, max_async=4, timeout=240
+INFO:  - keyword: None/None, host=None, max_async=4, timeout=240
+INFO:  - query: None/None, host=None, max_async=4, timeout=240
+INFO:  - vlm: None/None, host=None, max_async=4, timeout=240
+INFO: [] Process 28836 KV load full_docs with 2 records
+INFO: [] Process 28836 KV load text_chunks with 118 records
+INFO: [] Process 28836 KV load full_entities with 2 records
+INFO: [] Process 28836 KV load full_relations with 2 records
+INFO: [] Process 28836 KV load entity_chunks with 365 records
+INFO: [] Process 28836 KV load relation_chunks with 418 records
+INFO: [] Process 28836 KV load llm_response_cache with 186 records
+INFO: [] Process 28836 doc status load doc_status with 6 records
+INFO: Embedding func: 8 new workers initialized (Timeouts: Func: 30s, Worker: 60s, Health Check: 75s)
+INFO: Query nodes: 离心泵 (top_k:12, cosine:0.2)
+INFO: Local query: 12 entites, 71 relations
+INFO: Query edges: 离心泵启动前检查, 离心泵启动, 泵启动检查 (top_k:12, cosine:0.2)
+INFO: Global query: 16 entites, 12 relations
+INFO: Naive query: 8 chunks (chunk_top_k:8 cosine:0.2)
+INFO: Raw search results: 26 entities, 76 relations, 8 vector chunks
+INFO: After truncation: 26 entities, 76 relations
+INFO: Selecting 65 from 73 entity-related chunks by vector similarity
+INFO: Find 7 additional chunks in 7 relations (deduplicated 35)
+INFO: Selecting 7 from 7 relation-related chunks by vector similarity
+INFO: Round-robin merged chunks: 80 -> 72 (deduplicated 8)
+INFO: Final context: 26 entities, 76 relations, 8 chunks
+INFO: Final chunks S+F/O: E4/1 R1/1 E2/2 R2/2 E2/3 R1/3 E2/4 R1/4
+INFO: Query nodes: 离心泵 (top_k:12, cosine:0.2)
+INFO: Local query: 12 entites, 71 relations
+INFO: Query edges: 离心泵启动前检查, 离心泵启动, 泵启动检查 (top_k:12, cosine:0.2)
+INFO: Global query: 16 entites, 12 relations
+INFO: Naive query: 8 chunks (chunk_top_k:8 cosine:0.2)
+INFO: Raw search results: 26 entities, 76 relations, 8 vector chunks
+INFO: After truncation: 26 entities, 76 relations
+INFO: Selecting 65 from 73 entity-related chunks by vector similarity
+INFO: Find 7 additional chunks in 7 relations (deduplicated 35)
+INFO: Selecting 7 from 7 relation-related chunks by vector similarity
+INFO: Round-robin merged chunks: 80 -> 72 (deduplicated 8)
+INFO: Final context: 26 entities, 76 relations, 8 chunks
+INFO: Final chunks S+F/O: E4/1 R1/1 E2/2 R2/2 E2/3 R1/3 E2/4 R1/4
+INFO:  == LLM cache == Query cache hit, using cached response as query result
+2026-07-24 17:08:50.010 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 17:08:50.011 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 17:09:10.629 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 17:09:10.630 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+INFO: keyword LLM func: 4 new workers initialized (Timeouts: Func: 240s, Worker: 480s, Health Check: 495s)
+INFO:  == LLM cache == saving: mix:keywords:46c68ab7be6c567555fb42282819ebc7
+INFO: Query nodes: 轴承 (top_k:12, cosine:0.2)
+INFO: Local query: 12 entites, 11 relations
+INFO: Query edges: 轴承温度高, 故障原因分析 (top_k:12, cosine:0.2)
+INFO: Global query: 17 entites, 12 relations
+INFO: Naive query: 8 chunks (chunk_top_k:8 cosine:0.2)
+INFO: Raw search results: 27 entities, 22 relations, 8 vector chunks
+INFO: After truncation: 27 entities, 22 relations
+INFO: Selecting 58 from 58 entity-related chunks by vector similarity
+INFO: Find no additional relations-related chunks from 22 relations
+INFO: Round-robin merged chunks: 66 -> 59 (deduplicated 7)
+INFO: Final context: 27 entities, 22 relations, 8 chunks
+INFO: Final chunks S+F/O: E3/1 E3/2 C1/3 E2/3 E3/4 E1/5 E1/6 E3/7
+INFO: Query nodes: 轴承 (top_k:12, cosine:0.2)
+INFO: Local query: 12 entites, 11 relations
+INFO: Query edges: 轴承温度高, 故障原因分析 (top_k:12, cosine:0.2)
+INFO: Global query: 17 entites, 12 relations
+INFO: Naive query: 8 chunks (chunk_top_k:8 cosine:0.2)
+INFO: Raw search results: 27 entities, 22 relations, 8 vector chunks
+INFO: After truncation: 27 entities, 22 relations
+INFO: Selecting 58 from 58 entity-related chunks by vector similarity
+INFO: Find no additional relations-related chunks from 22 relations
+INFO: Round-robin merged chunks: 66 -> 59 (deduplicated 7)
+INFO: Final context: 27 entities, 22 relations, 8 chunks
+INFO: Final chunks S+F/O: E3/1 E3/2 C1/3 E2/3 E3/4 E1/5 E1/6 E3/7
+INFO: query LLM func: 4 new workers initialized (Timeouts: Func: 240s, Worker: 480s, Health Check: 495s)
+INFO:  == LLM cache == saving: mix:query:6c4195ab186127205cb076c033b92580
+2026-07-24 17:10:06.259 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 17:10:06.260 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 17:13:43.110 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 17:13:43.118 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-07-24 17:23:22.606 Please replace `st.components.v1.html` with `st.iframe`.
+
+`st.components.v1.html` will be removed after 2026-06-01.
+2026-07-24 17:23:22.613 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.

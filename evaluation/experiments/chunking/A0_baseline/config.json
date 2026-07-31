@@ -1,0 +1,31 @@
+{
+  "experiment": "A0",
+  "description": "Current baseline: PyMuPDF 1800-char chunks, LightRAG mix, no parent-child",
+  "git_commit": "55623b4fc7514df5146bafa9a68c7b66f1a5c31c",
+  "git_branch": "codex/knowledge-qa-platform-design",
+  "has_uncommitted": true,
+  "python_version": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+  "lightrag_version": "1.5.4",
+  "parser": "PyMuPDF",
+  "parser_version": "1.28.0",
+  "chunker": "fixed_character",
+  "chunk_max_characters": 1800,
+  "chunk_overlap_characters": 180,
+  "lightrag_chunk_token_size": 1600,
+  "lightrag_split_by_character_only": true,
+  "embedding_model": "text-embedding-v4",
+  "embedding_dim": 1024,
+  "llm_model": "kimi-k2.6",
+  "retrieval_mode": "mix",
+  "rerank_enabled": false,
+  "parent_child": false,
+  "evidence_policy": {
+    "max_selected": 3,
+    "min_overlap": 2
+  },
+  "pdfs": {
+    "2196-ANSI-Manual-Chinese.pdf": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700",
+    "t1739cn.pdf": "77fd7ebf86ef6c574de11eac446dc321de04fd0773cd7d844287da7fa4d6c4ae"
+  },
+  "golden_set": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf"
+}

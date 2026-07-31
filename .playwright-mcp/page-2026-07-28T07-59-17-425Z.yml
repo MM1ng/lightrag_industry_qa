@@ -1,0 +1,36 @@
+- generic:
+  - generic [ref=e6]:
+    - log
+    - log
+  - generic [ref=e3]:
+    - banner [ref=e7]:
+      - generic [ref=e10]:
+        - button "Deploy" [ref=e12] [cursor=pointer]
+        - button "Main menu" [ref=e16] [cursor=pointer]
+    - generic [ref=e20]:
+      - heading "基于 LightRAG 的工业离心泵知识库问答系统" [level=1] [ref=e25]:
+        - text: 基于 LightRAG 的工业离心泵知识库问答系统
+        - generic [ref=e26]:
+          - link "Link to heading":
+            - /url: "#light-rag"
+      - generic [ref=e28]:
+        - tablist [ref=e29]:
+          - tab [ref=e30] [cursor=pointer]:
+            - paragraph [ref=e32]: 智能问答
+          - tab [active] [selected] [ref=e33] [cursor=pointer]:
+            - paragraph [ref=e35]: 知识图谱
+        - tabpanel "知识图谱" [ref=e37]:
+          - generic [ref=e38]:
+            - paragraph [ref=e43]: 展示后端当前活动手册的版本化知识图谱。
+            - generic [ref=e45]:
+              - paragraph [ref=e49]: 手册版本
+              - group [ref=e51]:
+                - combobox "手册版本" [ref=e52]: v_77fd7ebf86ef6c57
+                - button "Open" [ref=e53] [cursor=pointer]
+            - paragraph [ref=e61]: 版本 v_77fd7ebf86ef6c57：206 个节点，228 条关系
+            - iframe [ref=e63]:
+              - generic [ref=f1e1]:
+                - generic:
+                  - heading [level=1]
+                - generic:
+                  - heading [level=1]

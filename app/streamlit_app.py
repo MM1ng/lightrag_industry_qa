@@ -1,57 +1,42 @@
-"""Single-page Streamlit UI for the centrifugal-pump LightRAG knowledge base.
+"""Single-page Streamlit UI backed by the P3 Knowledge QA API.
 
-IMPORTANT - Windows event loop policy
-=====================================
-Windows defaults to ``ProactorEventLoop``, which is incompatible with
-``asyncio.Lock`` objects shared across event loops.  LightRAG uses internal
-locks inside its storage managers.  We **must** force ``SelectorEventLoop``
-on Windows **before** importing ``streamlit`` (which imports ``uvicorn``
-and creates the default event loop).
-
-See: https://github.com/HKUDS/LightRAG/pull/2704
-
-
-IMPORTANT - single event loop runtime
-=====================================
-All LightRAG async operations run on one daemon background thread with
-one persistent event loop.  The ``LightRAGRuntime`` class (see
-``src/industrial_rag/runtime.py``) owns the thread, loop, and service.
-``st.cache_resource`` caches exactly ONE runtime per Streamlit process.
-
-Graph visualization is fully separate: it only reads GraphML and never
-touches LightRAGRuntime or the Bailian API.
+All LightRAG and model work runs behind the API boundary. The graph tab stays
+local and reads GraphML only, so it does not depend on API availability.
 """
 
 from __future__ import annotations
 
-import asyncio
-import platform
+import os
 import sys
 from pathlib import Path
-
-if platform.system() == "Windows":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 import streamlit as st
 import streamlit.components.v1 as components
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
+for import_path in (PROJECT_ROOT, PROJECT_ROOT / "src"):
+    resolved = str(import_path)
+    if resolved not in sys.path:
+        sys.path.insert(0, resolved)
 
 from industrial_rag import graph_visualizer as gv  # noqa: E402
-from industrial_rag.config import (  # noqa: E402
-    INDEX_METADATA_FILENAME,
-    SUPPORTED_QUERY_MODES,
-    Settings,
+from industrial_rag.config import INDEX_METADATA_FILENAME  # noqa: E402
+
+from app.api_client import ApiError, KnowledgeApiClient  # noqa: E402
+from app.chat_state import (  # noqa: E402
+    AssistantMessage,
+    ChatSession,
+    UserMessage,
+    add_error_message,
+    add_user_message,
+    clear_session,
+    create_empty_session,
 )
-from industrial_rag.lightrag_service import (  # noqa: E402
-    QueryMode,
-    QueryResult,
-)
-from industrial_rag.runtime import LightRAGRuntime  # noqa: E402
+from app.p3_chat import append_p3_answer, build_p3_history  # noqa: E402
+from app.ui_theme import inject_theme_css  # noqa: E402
 
 # ---------------------------------------------------------------------------
-# Cached runtime — one bg thread + one event loop per Streamlit process
+# API client and local graph configuration
 # ---------------------------------------------------------------------------
 
 EXAMPLE_QUESTIONS = (
@@ -77,21 +62,32 @@ ENTITY_SEARCH_EXAMPLES = (
 )
 
 
+API_BASE_URL = os.environ.get("KNOWLEDGE_API_URL", "http://127.0.0.1:8000")
+API_KEY = os.environ.get("SERVICE_API_KEY", "")
+WORKING_DIR = Path(os.environ.get("LIGHTRAG_WORKING_DIR", PROJECT_ROOT / "lightrag_storage"))
+
+
+def _api_timeout_seconds() -> float:
+    """Read a bounded timeout without making an invalid environment value fatal."""
+    try:
+        timeout = float(os.environ.get("API_TIMEOUT_S", "120"))
+    except ValueError:
+        return 120.0
+    return timeout if timeout > 0 else 120.0
+
+
 @st.cache_resource(show_spinner=False)
-def _get_runtime(_settings: Settings) -> LightRAGRuntime:
-    """Cache exactly ONE LightRAGRuntime per Streamlit process.
-
-    ``_settings`` is prefixed with ``_`` so Streamlit does NOT hash it
-    for the cache key.  The cache returns the same runtime instance for
-    the entire process lifetime.  Config changes require a Streamlit restart.
-    """
-    return LightRAGRuntime(_settings)
+def _get_client(base_url: str, api_key: str, timeout: float) -> KnowledgeApiClient:
+    """Create one reusable P3 HTTP client per Streamlit process."""
+    return KnowledgeApiClient(base_url, api_key=api_key, timeout=timeout)
 
 
-def _ask_sync(settings: Settings, question: str, mode: QueryMode) -> tuple[QueryResult, float]:
-    """Execute a LightRAG query through the cached runtime."""
-    runtime = _get_runtime(settings)
-    return runtime.query(question, mode=mode)
+def _ask_api(question: str, history: list[dict[str, str]]):
+    """Execute one P3 query through the configured API boundary."""
+    return _get_client(API_BASE_URL, API_KEY, _api_timeout_seconds()).query(
+        question,
+        history=history,
+    )
 
 
 @st.cache_data(show_spinner=False)
@@ -111,61 +107,149 @@ def _get_graph(working_dir: Path):
 
 
 # ---------------------------------------------------------------------------
-# UI sections
+# Helpers
 # ---------------------------------------------------------------------------
 
 
-def _render_qa_tab(settings: Settings | None) -> None:
-    if settings is not None:
-        st.caption(
-            f"模型：{settings.llm_model} ｜ Embedding："
-            f"{settings.embedding_model}（{settings.embedding_dim} 维）"
-        )
-        marker = settings.working_dir / INDEX_METADATA_FILENAME
-        st.info("LightRAG 状态：索引已就绪" if marker.is_file() else "LightRAG 状态：尚未导入文档")
+def _get_status_bar_graph_stats(working_dir: Path) -> dict | None:
+    """Return graph statistics for the shared status bar.
 
-    mode = st.selectbox("查询模式", SUPPORTED_QUERY_MODES, index=0, key="qa_mode")
-    st.write("示例问题")
-    columns = st.columns(2)
-    for index, example in enumerate(EXAMPLE_QUESTIONS):
-        if columns[index % 2].button(example, key=f"example-{index}", use_container_width=True):
-            st.session_state["question"] = example
-
-    question = st.text_area(
-        "请输入问题",
-        key="question",
-        placeholder="例如：离心泵启动前需要检查什么？",
-        height=100,
-    )
-
-    if st.button("提交问题", type="primary", use_container_width=True):
-        if settings is None:
-            st.error("请先修正环境配置。")
-        elif not question.strip():
-            st.error("请输入问题后再提交。")
-        else:
-            try:
-                with st.spinner("正在检索两份离心泵手册……"):
-                    result, elapsed = _ask_sync(settings, question.strip(), mode)
-                st.caption(f"⏱ 查询耗时：{elapsed:.2f} 秒")
-                st.subheader("回答")
-                st.write(result.answer)
-                st.subheader("引用来源")
-                if result.citations:
-                    for citation in result.citations:
-                        st.write(citation.display)
-                else:
-                    st.info("本次回答没有可验证的手册页码来源。")
-            except Exception as error:
-                st.error(f"查询失败：{error}")
+    Uses the existing GraphML cache. Failures are silent so Q&A stays available.
+    """
+    try:
+        _, graph = _get_graph(working_dir)
+    except Exception:
+        return None
+    if graph is None:
+        return None
+    try:
+        return gv.get_graph_statistics(graph)
+    except Exception:
+        return None
 
 
-def _render_graph_tab(settings: Settings | None) -> None:
+# ---------------------------------------------------------------------------
+# Chat submission — single entry path
+# ---------------------------------------------------------------------------
+
+
+def _submit_question(prompt: str) -> None:
+    """Unique query submission path used by chat_input and example buttons."""
+    normalized = prompt.strip()
+    if not normalized:
+        return
+
+    session = st.session_state["chat_session"]
+    history = build_p3_history(session)
+    new_session, user_msg = add_user_message(session, normalized)
+    st.session_state["chat_session"] = new_session
+
+    # Immediate user-message feedback for the current run only.
+    with st.chat_message("user"):
+        st.markdown(user_msg.content)
+
+    try:
+        with st.spinner("正在检索离心泵手册……"):
+            result = _ask_api(normalized, history)
+        new_session, _ = append_p3_answer(new_session, result)
+    except ApiError as exc:
+        new_session, _ = add_error_message(new_session, f"查询失败 [{exc.code}]：{exc.message}")
+    except Exception:
+        new_session, _ = add_error_message(new_session, "查询失败：服务暂时不可用，请稍后重试。")
+
+    st.session_state["chat_session"] = new_session
+    st.rerun()
+
+
+# ---------------------------------------------------------------------------
+# Chat render helpers
+# ---------------------------------------------------------------------------
+
+
+def _render_status_bar(working_dir: Path, graph_stats: dict | None) -> None:
+    """Compact shared status bar above both tabs."""
+    parts = ["🔧 工业离心泵知识库"]
+    parts.append(f"API: {API_BASE_URL}")
+    marker = working_dir / INDEX_METADATA_FILENAME
+    parts.append("本地图谱已就绪" if marker.is_file() else "本地图谱未就绪")
+    if graph_stats is not None:
+        parts.append(f"节点: {graph_stats['node_count']}")
+        parts.append(f"边: {graph_stats['edge_count']}")
+    with st.container(key="status-bar"):
+        st.caption(" ｜ ".join(parts))
+
+
+def _render_chat_history(session: ChatSession) -> None:
+    """Render the full chat history."""
+    for msg in session:
+        if isinstance(msg, UserMessage):
+            with st.chat_message("user"):
+                st.markdown(msg.content)
+        elif isinstance(msg, AssistantMessage):
+            _render_assistant_message(msg)
+
+
+def _render_assistant_message(msg: AssistantMessage) -> None:
+    """Render one assistant message: body, meta line, citations."""
+    with st.chat_message("assistant"):
+        st.markdown(msg.content)
+        _render_message_meta(msg)
+        _render_citations(msg)
+
+
+def _render_message_meta(msg: AssistantMessage) -> None:
+    """Compact per-message metadata line."""
+    parts: list[str] = []
+    if msg.mode:
+        parts.append(f"模式: {msg.mode}")
+    if msg.latency_seconds is not None:
+        parts.append(f"⏱ {msg.latency_seconds:.2f}s")
+    parts.append(f"📎 {msg.citation_count}条引用")
+    if msg.status == "insufficient_evidence":
+        parts.append("⚠️ 证据不足")
+    elif msg.status == "error":
+        parts.append("❌ 查询失败")
+    else:
+        parts.append("✓ 成功")
+    st.caption(" ｜ ".join(parts))
+
+
+def _render_citations(msg: AssistantMessage) -> None:
+    """Collapsed citation panel with filename / page / chunk_id."""
+    if not msg.citations:
+        st.caption("本次回答没有可验证的来源。")
+        return
+
+    with st.expander(f"📎 引用来源（{msg.citation_count} 条）"):
+        for index, citation in enumerate(msg.citations, start=1):
+            st.markdown(f"**来源 {index}**")
+            st.write(citation.source_file)
+            st.caption(f"第 {citation.page_number} 页 · Chunk：{citation.chunk_id}")
+
+
+def _render_empty_state() -> None:
+    """First-open empty state with example questions."""
+    with st.container(key="empty-state"):
+        st.markdown("### 你可以这样问我")
+        st.caption("基于离心泵运维手册的证据检索问答 · 选择示例或直接在下方输入")
+        cols = st.columns(2, gap="small")
+        for index, example in enumerate(EXAMPLE_QUESTIONS[:4]):
+            if cols[index % 2].button(
+                example,
+                key=f"example-chat-{index}",
+                use_container_width=True,
+            ):
+                _submit_question(example)
+
+
+# ---------------------------------------------------------------------------
+# Graph tab (core logic unchanged)
+# ---------------------------------------------------------------------------
+
+
+def _render_graph_tab(working_dir: Path) -> None:
     st.caption("只读展示 LightRAG 已生成的 GraphML 子集，不调用百炼 API，不修改图谱。")
 
-    working_dir = (
-        settings.working_dir if settings is not None else PROJECT_ROOT / "lightrag_storage"
-    )
     graph_path = gv.locate_graph_file(working_dir)
 
     col_a, col_b = st.columns([3, 1])
@@ -304,23 +388,58 @@ def _render_graph_tab(settings: Settings | None) -> None:
 
 
 # ---------------------------------------------------------------------------
+# QA tab
+# ---------------------------------------------------------------------------
+
+
+def _render_qa_tab() -> None:
+    with st.container(key="qa-shell"):
+        with st.container(key="qa-toolbar"):
+            col1, col2 = st.columns([3, 1], vertical_alignment="bottom", gap="small")
+            with col1:
+                st.caption("P3 工作流会自动选择检索策略")
+            with col2:
+                if st.button("清空会话", use_container_width=True, key="clear-session"):
+                    st.session_state["chat_session"] = clear_session()
+                    st.rerun()
+
+        session = st.session_state.get("chat_session", [])
+        if session:
+            _render_chat_history(session)
+        else:
+            _render_empty_state()
+
+    if prompt := st.chat_input(
+        placeholder="请输入离心泵运维问题，例如：离心泵启动前需要检查什么？"
+    ):
+        _submit_question(prompt)
+
+
+# ---------------------------------------------------------------------------
 # Page shell
 # ---------------------------------------------------------------------------
 
 st.set_page_config(page_title="工业离心泵知识库问答", page_icon="🔧", layout="wide")
-st.title("基于 LightRAG 的工业离心泵知识库问答系统")
+inject_theme_css()
 
-try:
-    settings = Settings.from_env()
-except Exception as error:
-    settings = None
-    st.error(f"配置错误：{error}")
+if "chat_session" not in st.session_state:
+    st.session_state["chat_session"] = create_empty_session()
+
+api_ready = _get_client(API_BASE_URL, API_KEY, _api_timeout_seconds()).ready()
+if not api_ready:
+    st.warning(
+        f"知识库 API 未就绪（{API_BASE_URL}）。"
+        "请确认 P3 API 已启动且 SERVICE_API_KEY 配置一致。"
+    )
+
+graph_stats = _get_status_bar_graph_stats(WORKING_DIR)
+_render_status_bar(WORKING_DIR, graph_stats)
 
 qa_tab, graph_tab = st.tabs(["智能问答", "知识图谱"])
 with qa_tab:
-    _render_qa_tab(settings)
+    _render_qa_tab()
 with graph_tab:
     try:
-        _render_graph_tab(settings)
+        _render_graph_tab(WORKING_DIR)
     except Exception as error:
         st.error(f"知识图谱页面异常：{error}")

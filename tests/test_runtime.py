@@ -335,8 +335,7 @@ class TestSameLoopAndThread:
                     f"Mode {modes[idx]}: loop_id {call['loop_id']} != init_loop {init_loop}"
                 )
                 assert call["thread_id"] == init_thread, (
-                    f"Mode {modes[idx]}: thread_id {call['thread_id']} != "
-                    f"init_thread {init_thread}"
+                    f"Mode {modes[idx]}: thread_id {call['thread_id']} != init_thread {init_thread}"
                 )
         finally:
             rt.close()

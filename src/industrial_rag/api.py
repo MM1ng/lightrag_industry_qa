@@ -1,4 +1,4 @@
-"""Minimal FastAPI adapter for the synchronous LightRAG runtime."""
+"""FastAPI application with KB lifecycle + legacy query compatibility."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import os
 import secrets
 from collections.abc import Awaitable, Callable, Mapping
 from contextlib import asynccontextmanager
-from typing import Annotated, Literal, Protocol
+from typing import Annotated, Any, Literal, Protocol
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
@@ -19,7 +19,10 @@ from starlette.responses import Response
 
 from industrial_rag.citation_formatter import Citation
 from industrial_rag.config import Settings
+from industrial_rag.db.session import close_db, get_session, init_db
+from industrial_rag.errors import AppError
 from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
+from industrial_rag.routers import documents, knowledge_bases, tasks
 from industrial_rag.runtime import LightRAGRuntime
 
 logger = logging.getLogger(__name__)
@@ -147,6 +150,30 @@ def _service_api_key_from_environment() -> str | None:
     return (os.environ.get("SERVICE_API_KEY") or "").strip() or None
 
 
+# ---------------------------------------------------------------------------
+# Query schema with optional knowledge_base_id
+# ---------------------------------------------------------------------------
+
+
+class QueryRequestV2(BaseModel):
+    query: QueryText
+    history: list[HistoryMessage] = Field(default_factory=list, max_length=10)
+    knowledge_base_id: str | None = Field(default=None, max_length=64)
+
+
+def _query_schema(history: list[dict[str, str]]) -> dict[str, object]:
+    """Backward-compatible v1 query schema: no knowledge_base_id."""
+    return {
+        "query": QueryText,
+        "history": list[HistoryMessage],  # type: ignore[dict-item]
+    }
+
+
+# ---------------------------------------------------------------------------
+# App factory
+# ---------------------------------------------------------------------------
+
+
 def create_app(
     *,
     settings: Settings | None = None,
@@ -154,39 +181,86 @@ def create_app(
 ) -> FastAPI:
     """Create an API whose settings and runtime are resolved during lifespan startup."""
 
+    # Shared state visible to all routes
+    _runtime_manager: Any = None
+
     @asynccontextmanager
     async def lifespan(application: FastAPI):
+        nonlocal _runtime_manager
         runtime: QueryRuntime | None = None
         resolved_settings: Settings | None = None
         application.state.runtime = None
         application.state.service_api_key = None
+        application.state.runtime_manager = None
+
+        # Init DB
+        await init_db()
+
         try:
             resolved_settings = settings or Settings.from_env()
             application.state.service_api_key = resolved_settings.service_api_key
             runtime = runtime_factory(resolved_settings)
             application.state.runtime = runtime
+
+            # Create runtime manager for multi-KB support
+            from industrial_rag.services.runtime_manager import (
+                KnowledgeBaseRuntimeManager,
+            )
+            _runtime_manager = KnowledgeBaseRuntimeManager()
+            application.state.runtime_manager = _runtime_manager
+
+            # Start lifecycle task executor
+            # Import handler impls so they self-register
+            import industrial_rag.services.handler_impls  # noqa: F401
+            from industrial_rag.db.session import get_session_factory
+            from industrial_rag.services.lifecycle_task_executor import (
+                LifecycleTaskExecutor,
+            )
+
+            _executor = LifecycleTaskExecutor(
+                get_session_factory(),
+                settings=resolved_settings,
+                runtime_manager=_runtime_manager,
+            )
+            await _executor.start()
+            application.state.task_executor = None
         except Exception:
             if resolved_settings is None and settings is None:
                 application.state.service_api_key = _service_api_key_from_environment()
         try:
             yield
         finally:
+            executor = getattr(application.state, "task_executor", None)
+            if executor is not None:
+                await executor.stop()
             if runtime is not None:
                 runtime.close()
+            if _runtime_manager is not None:
+                await _runtime_manager.close_all()
+            await close_db()
             application.state.runtime = None
 
     application = FastAPI(lifespan=lifespan)
+
+    # ------------------------------------------------------------------
+    # Middleware
+    # ------------------------------------------------------------------
 
     @application.middleware("http")
     async def authenticate_query_request(
         request: Request,
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
-        if request.method != "POST" or request.url.path != "/v1/query":
+        # Authenticate mutation endpoints (POST/PATCH/DELETE to v1/knowledge-bases, v1/tasks)
+        # and legacy /v1/query
+        if request.method in ("GET", "OPTIONS", "HEAD"):
             return await call_next(request)
         request_id = _request_id_for(request)
         service_api_key: str | None = request.app.state.service_api_key
         if service_api_key is None:
+            return await call_next(request)
+        path = request.url.path
+        if path == "/readyz" or path == "/healthz":
             return await call_next(request)
         expected = f"Bearer {service_api_key}".encode()
         supplied = (request.headers.get("Authorization") or "").encode()
@@ -194,6 +268,10 @@ def create_app(
             return await call_next(request)
         _log_result(request_id=request_id, status="UNAUTHORIZED", latency_ms=0)
         return _error_response("UNAUTHORIZED", request_id=request_id)
+
+    # ------------------------------------------------------------------
+    # Exception handlers
+    # ------------------------------------------------------------------
 
     @application.exception_handler(StarletteHTTPException)
     async def framework_http_error_handler(
@@ -214,11 +292,45 @@ def create_app(
     ) -> JSONResponse:
         return _error_response("INVALID_REQUEST", request_id=_request_id_for(request))
 
+    @application.exception_handler(AppError)
+    async def app_error_handler(
+        request: Request,
+        error: AppError,
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=error.status_code,
+            content={
+                "error": {
+                    "code": error.code,
+                    "message": error.message,
+                    "request_id": _request_id_for(request),
+                    "details": error.details,
+                }
+            },
+        )
+
+    # ------------------------------------------------------------------
+    # Health
+    # ------------------------------------------------------------------
+
     @application.get("/readyz", response_model=None)
     def readyz(request: Request) -> dict[str, str] | JSONResponse:
         if request.app.state.runtime is None:
             return _error_response("INDEX_NOT_READY")
         return {"status": "ready"}
+
+    @application.get("/healthz")
+    async def healthz(request: Request) -> dict[str, str]:
+        try:
+            async for _ in get_session():
+                break  # DB available
+        except Exception:
+            return {"status": "degraded", "db": "unavailable"}
+        return {"status": "ok", "db": "available"}
+
+    # ------------------------------------------------------------------
+    # Legacy query (backward compatible)
+    # ------------------------------------------------------------------
 
     @application.post("/v1/query", response_model=QueryResponse)
     def query(
@@ -285,6 +397,96 @@ def create_app(
         )
         _log_result(request_id=request_id, status="success", latency_ms=latency_ms)
         return response
+
+    # ------------------------------------------------------------------
+    # KB-scoped query
+    # ------------------------------------------------------------------
+
+    @application.post("/v1/knowledge-bases/{kb_id}/query", response_model=QueryResponse)
+    def query_kb(
+        kb_id: str,
+        payload: QueryRequest,
+        request: Request,
+    ) -> QueryResponse | JSONResponse:
+        request_id = _request_id_for(request)
+        runtime_manager = getattr(request.app.state, "runtime_manager", None)
+        if runtime_manager is None:
+            return _error_response("INDEX_NOT_READY", request_id=request_id)
+
+        import asyncio
+
+        from industrial_rag.config import Settings as Cfg
+        from industrial_rag.storage_layout import kb_workspace_dir
+
+        workspace = kb_workspace_dir(kb_id)
+        base = Cfg.from_env()
+        kb_settings = Cfg(
+            api_key=base.api_key,
+            service_api_key=base.service_api_key,
+            llm_base_url=base.llm_base_url,
+            llm_model=base.llm_model,
+            embedding_model=base.embedding_model,
+            embedding_dim=base.embedding_dim,
+            working_dir=workspace,
+        )
+
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
+        async def _kb_query():
+            svc = await runtime_manager.get_runtime(kb_id, kb_settings)
+            return await svc.query(payload.query, mode="mix")
+
+        try:
+            result = loop.run_until_complete(_kb_query())
+        except Exception as error:
+            code = (
+                "TIMEOUT"
+                if isinstance(error, TimeoutError) or "timed out" in str(error).casefold()
+                else "UPSTREAM_UNAVAILABLE"
+            )
+            _log_result(request_id=request_id, status=code, latency_ms=0)
+            return _error_response(code, request_id=request_id)
+
+        if result.answer == INSUFFICIENT_EVIDENCE_MESSAGE or not result.citations:
+            return QueryResponse(
+                request_id=request_id,
+                status="insufficient_evidence",
+                answer=INSUFFICIENT_EVIDENCE_MESSAGE,
+                citations=[],
+                claims=[],
+                latency_ms=0,
+            )
+
+        citations = [
+            _citation_response(citation, index)
+            for index, citation in enumerate(result.citations, start=1)
+        ]
+        return QueryResponse(
+            request_id=request_id,
+            status="success",
+            answer=result.answer,
+            citations=citations,
+            claims=[
+                ClaimResponse(
+                    claim_id="claim_1",
+                    text=result.answer,
+                    citation_ids=[citation.citation_id for citation in citations],
+                )
+            ],
+            latency_ms=0,
+        )
+
+    # ------------------------------------------------------------------
+    # Register new phase-2 routers
+    # ------------------------------------------------------------------
+
+    application.include_router(knowledge_bases.router)
+    application.include_router(documents.router)
+    application.include_router(tasks.router)
 
     return application
 
