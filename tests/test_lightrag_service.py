@@ -119,6 +119,33 @@ def test_official_backend_accepts_parser_chunks_and_locks_embedding_dimension(
     assert rag.embedding_func.send_dimensions is True
 
 
+def test_official_backend_uses_project_qdrant_storage_with_safe_generation(
+    tmp_path: Path,
+) -> None:
+    settings = Settings.from_mapping(
+        {
+            "DASHSCOPE_API_KEY": "test-only-key",
+            "VECTOR_BACKEND": "qdrant",
+            "QDRANT_URL": "http://127.0.0.1:6333",
+            "QDRANT_API_KEY": "qdrant-test-key",
+            "QDRANT_COLLECTION_PREFIX": "ira_p3test",
+            "QDRANT_GENERATION": "g20260731abc",
+            "QDRANT_KB_ID": "a" * 32,
+            "LIGHTRAG_WORKING_DIR": str(tmp_path / "storage"),
+        }
+    )
+
+    backend = build_official_backend(settings)
+    rag = backend._rag  # type: ignore[attr-defined]
+
+    assert rag.vector_storage == "PhysicalQdrantVectorDBStorage"
+    assert rag.vector_db_storage_cls_kwargs["qdrant_collection_prefix"] == "ira_p3test"
+    assert rag.vector_db_storage_cls_kwargs["qdrant_generation"] == "g20260731abc"
+    assert rag.vector_db_storage_cls_kwargs["qdrant_kb_id"] == "a" * 32
+    assert rag.vector_db_storage_cls_kwargs["qdrant_url"] == "http://127.0.0.1:6333"
+    assert rag.vector_db_storage_cls_kwargs["qdrant_api_key"] == "qdrant-test-key"
+
+
 @pytest.mark.asyncio
 async def test_official_backend_falls_back_after_quota_error_and_keeps_active_model(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch

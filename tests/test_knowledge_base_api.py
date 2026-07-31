@@ -69,6 +69,8 @@ def test_create_knowledge_base():
             body = resp.json()
             assert body["name"] == "测试知识库"
             assert body["status"] == "ready"
+            assert body["vector_backend"] == "nano"
+            assert body["active_vector_generation"] is None
             assert body["id"]
 
     _run(_test())
