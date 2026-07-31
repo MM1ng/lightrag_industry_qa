@@ -10,8 +10,10 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from industrial_rag.config import Settings
 from industrial_rag.db.models import KBStatus
 from industrial_rag.errors import AppError, AppErrorCode
+from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
 from industrial_rag.repositories.document_repository import DocumentRepository
 from industrial_rag.repositories.knowledge_base_repository import (
     KnowledgeBaseRepository,
@@ -20,13 +22,18 @@ from industrial_rag.repositories.task_repository import TaskRepository
 from industrial_rag.storage_layout import (
     is_safe_to_delete,
     kb_base_dir,
+    kb_qdrant_generation_workspace,
+    kb_qdrant_generations_dir,
 )
+from industrial_rag.vector_collections import VectorBackend
 
 logger = logging.getLogger(__name__)
 
 # Steps in KB delete (ordered)
 _CLEANUP_STEPS = [
     "close_runtime",
+    "delete_qdrant_collections",
+    "delete_vector_generation_workspaces",
     "delete_workspace",
     "delete_parsed",
     "delete_uploads",
@@ -108,9 +115,15 @@ class KnowledgeBaseCleanupService:
             if self._runtime_manager is not None:
                 await self._runtime_manager.close_runtime(kb_id)
 
+        elif step_name == "delete_qdrant_collections":
+            await self._delete_qdrant_generations(kb_id)
+
+        elif step_name == "delete_vector_generation_workspaces":
+            self._safe_delete_dir(kb_qdrant_generations_dir(kb_id), kb_id)
+
         elif step_name == "delete_workspace":
-            workspace = base_dir / "lightrag"
-            self._safe_delete_dir(workspace, kb_id)
+            self._safe_delete_dir(base_dir / "nano", kb_id)
+            self._safe_delete_dir(base_dir / "lightrag", kb_id)
 
         elif step_name == "delete_parsed":
             parsed = base_dir / "parsed"
@@ -133,6 +146,30 @@ class KnowledgeBaseCleanupService:
 
         elif step_name == "mark_kb_deleted":
             await self._kb_repo.update(kb_id, last_error=None)
+
+    async def _delete_qdrant_generations(self, kb_id: str) -> None:
+        kb = await self._kb_repo.get(kb_id)
+        if kb is None:
+            return
+        from industrial_rag.repositories.vector_index_generation_repository import (
+            VectorIndexGenerationRepository,
+        )
+        from industrial_rag.services.qdrant_collection_service import QdrantCollectionService
+
+        base_settings = Settings.from_env()
+        generations = await VectorIndexGenerationRepository(self._session).list_cleanup_candidates(kb_id)
+        for record in generations:
+            if record.backend != VectorBackend.qdrant.value:
+                continue
+            generation = record.generation
+            qdrant_settings = settings_for_knowledge_base(
+                base_settings,
+                kb,
+                backend=VectorBackend.qdrant,
+                generation=generation,
+                working_dir=kb_qdrant_generation_workspace(kb_id, generation),
+            )
+            await QdrantCollectionService(qdrant_settings).delete_generation()
 
     # ------------------------------------------------------------------
     # Path safety

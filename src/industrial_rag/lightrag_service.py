@@ -18,6 +18,7 @@ from industrial_rag.config import (
 )
 from industrial_rag.document_parser import DocumentChunk
 from industrial_rag.evidence_policy import EvidenceCandidate, select_evidence
+from industrial_rag.vector_collections import VectorBackend
 
 QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
 INSUFFICIENT_EVIDENCE_MESSAGE = "手册中未检索到充分依据，无法可靠回答该问题。"
@@ -105,6 +106,18 @@ class _OfficialBackend:
         return result
 
 
+def _register_project_qdrant_storage() -> None:
+    """Register the project storage before LightRAG validates its backend name."""
+    from lightrag.kg import STORAGE_ENV_REQUIREMENTS, STORAGE_IMPLEMENTATIONS, STORAGES
+
+    storage_name = "PhysicalQdrantVectorDBStorage"
+    implementations = STORAGE_IMPLEMENTATIONS["VECTOR_STORAGE"]["implementations"]
+    if storage_name not in implementations:
+        implementations.append(storage_name)
+    STORAGES[storage_name] = "industrial_rag.physical_qdrant_storage"
+    STORAGE_ENV_REQUIREMENTS[storage_name] = []
+
+
 def build_official_backend(settings: Settings) -> LightRAGBackend:
     """Build against the locally installed HKUDS LightRAG API, with explicit 1024 dimensions."""
 
@@ -114,6 +127,11 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
         from lightrag.utils import EmbeddingFunc
     except ImportError as error:
         raise RuntimeError("未安装官方 lightrag-hku；请按 requirements.txt 安装依赖") from error
+
+    if settings.vector_backend is VectorBackend.qdrant:
+        _register_project_qdrant_storage()
+        if settings.qdrant_generation is None:
+            raise ValueError("Qdrant backend requires an active generation")
 
     active_model_index = 0
 
@@ -175,6 +193,23 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
         entity_extract_max_records=12,
         entity_extract_max_entities=12,
         max_parallel_insert=1,
+        vector_storage=(
+            "PhysicalQdrantVectorDBStorage"
+            if settings.vector_backend is VectorBackend.qdrant
+            else "NanoVectorDBStorage"
+        ),
+        workspace=settings.vector_workspace or "",
+        vector_db_storage_cls_kwargs=(
+            {
+                "qdrant_collection_prefix": settings.qdrant_collection_prefix,
+                "qdrant_generation": settings.qdrant_generation,
+                "qdrant_kb_id": settings.qdrant_kb_id,
+                "qdrant_url": settings.qdrant_url,
+                "qdrant_api_key": settings.qdrant_api_key,
+            }
+            if settings.vector_backend is VectorBackend.qdrant
+            else {}
+        ),
     )
     return _OfficialBackend(rag, QueryParam, llm_model_func)
 

@@ -1,18 +1,11 @@
-"""Runtime manager: create / cache / evict LightRAGRuntime per knowledge base.
-
-Each KB gets its own runtime backed by the KB's isolated LightRAG workspace.
-The runtime manager ensures:
-
-- One runtime per KB (no duplicates).
-- KB delete / rebuild closes and evicts the runtime.
-- FastAPI shutdown closes all runtimes.
-"""
+"""Runtime manager for complete KB vector-index generations."""
 
 from __future__ import annotations
 
 import asyncio
 import logging
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 from industrial_rag.config import Settings
@@ -20,17 +13,9 @@ from industrial_rag.lightrag_service import LightRAGService, QueryMode, QueryRes
 
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Minimal async factory for LightRAGService (no sync bridge needed for API)
-# ---------------------------------------------------------------------------
-
 
 class AsyncLightRAGService:
-    """Thin async-friendly wrapper around LightRAGService.
-
-    Unlike ``LightRAGRuntime``, this does NOT create a background thread —
-    it runs directly in the async FastAPI event loop.
-    """
+    """Async-friendly LightRAGService wrapper used by FastAPI routes."""
 
     def __init__(self, settings: Settings) -> None:
         self._svc = LightRAGService(settings)
@@ -60,16 +45,31 @@ class AsyncLightRAGService:
         return self._initialized
 
 
-# ---------------------------------------------------------------------------
-# Runtime Manager
-# ---------------------------------------------------------------------------
+@dataclass(frozen=True, slots=True)
+class RuntimeCacheKey:
+    kb_id: str
+    vector_backend: str
+    generation: str | None
+    workspace: str
+    embedding_model: str
+    embedding_dim: int
+    vector_workspace: str | None = None
+
+    @classmethod
+    def from_settings(cls, kb_id: str, settings: Settings) -> RuntimeCacheKey:
+        return cls(
+            kb_id=kb_id,
+            vector_backend=settings.vector_backend.value,
+            generation=settings.qdrant_generation,
+            workspace=str(settings.working_dir.resolve()),
+            embedding_model=settings.embedding_model,
+            embedding_dim=settings.embedding_dim,
+            vector_workspace=settings.vector_workspace,
+        )
 
 
 class KnowledgeBaseRuntimeManager:
-    """Creates and caches async LightRAG services keyed by KB id.
-
-    Not thread-safe — use only within the asyncio event loop.
-    """
+    """Cache only runtimes matching the full active generation identity."""
 
     def __init__(
         self,
@@ -79,74 +79,65 @@ class KnowledgeBaseRuntimeManager:
     ) -> None:
         self._max_cached = max_cached
         self._service_factory = service_factory or AsyncLightRAGService
-        self._runtimes: dict[str, Any] = {}
+        self._runtimes: dict[RuntimeCacheKey, Any] = {}
         self._locks: dict[str, asyncio.Lock] = {}
 
-    # ------------------------------------------------------------------
-    # Public API
-    # ------------------------------------------------------------------
-
     async def get_runtime(self, kb_id: str, settings: Settings) -> Any:
-        """Return a ready async LightRAG service for the given KB."""
-        # Fast path: already cached
-        cached = self._runtimes.get(kb_id)
+        key = RuntimeCacheKey.from_settings(kb_id, settings)
+        cached = self._runtimes.get(key)
         if cached is not None and cached.initialized:
             return cached
-
-        # Serialize creation per KB
         lock = self._locks.setdefault(kb_id, asyncio.Lock())
         async with lock:
-            # Double-check inside lock
-            cached = self._runtimes.get(kb_id)
+            cached = self._runtimes.get(key)
             if cached is not None and cached.initialized:
                 return cached
-
-            # Evict LRU if over limit
+            await self._close_mismatched_kb_runtimes(kb_id, keep=key)
             if len(self._runtimes) >= self._max_cached:
-                self._evict_one()
-
-            svc = self._service_factory(settings)
-            await svc.initialize()
-            self._runtimes[kb_id] = svc
-            logger.info("Runtime created for kb=%s workspace=%s", kb_id, settings.working_dir)
-            return svc
+                await self._evict_one()
+            service = self._service_factory(settings)
+            await service.initialize()
+            self._runtimes[key] = service
+            logger.info(
+                "Runtime created kb=%s backend=%s generation=%s workspace=%s",
+                kb_id,
+                key.vector_backend,
+                key.generation,
+                key.workspace,
+            )
+            return service
 
     async def close_runtime(self, kb_id: str) -> None:
-        """Close and evict the runtime for a KB."""
-        svc = self._runtimes.pop(kb_id, None)
-        if svc is not None:
+        keys = [key for key in self._runtimes if key.kb_id == kb_id]
+        for key in keys:
+            service = self._runtimes.pop(key)
             try:
-                await svc.close()
+                await service.close()
             except Exception:
                 logger.warning("Error closing runtime for kb=%s", kb_id, exc_info=True)
         self._locks.pop(kb_id, None)
 
     async def evict_runtime(self, kb_id: str) -> None:
-        """Alias for close_runtime."""
         await self.close_runtime(kb_id)
 
     async def close_all(self) -> None:
-        """Close and evict all cached runtimes. Called at FastAPI shutdown."""
-        for kb_id in list(self._runtimes.keys()):
+        for kb_id in {key.kb_id for key in self._runtimes}:
             await self.close_runtime(kb_id)
-        self._runtimes.clear()
         self._locks.clear()
 
     def is_cached(self, kb_id: str) -> bool:
-        return kb_id in self._runtimes
+        return any(key.kb_id == kb_id for key in self._runtimes)
 
-    # ------------------------------------------------------------------
-    # Internal
-    # ------------------------------------------------------------------
+    async def _close_mismatched_kb_runtimes(self, kb_id: str, *, keep: RuntimeCacheKey) -> None:
+        for key in [key for key in self._runtimes if key.kb_id == kb_id and key != keep]:
+            service = self._runtimes.pop(key)
+            await service.close()
 
-    def _evict_one(self) -> None:
-        """Simple FIFO eviction — remove the first entry."""
+    async def _evict_one(self) -> None:
         if self._runtimes:
-            first_key = next(iter(self._runtimes))
-            svc = self._runtimes.pop(first_key)
-            # Fire-and-forget close (best effort)
+            key = next(iter(self._runtimes))
+            service = self._runtimes.pop(key)
             try:
-                asyncio.ensure_future(svc.close())
+                await service.close()
             except Exception:
-                pass
-            self._locks.pop(first_key, None)
+                logger.warning("Error evicting runtime for kb=%s", key.kb_id, exc_info=True)

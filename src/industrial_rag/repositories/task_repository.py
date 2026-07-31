@@ -58,10 +58,23 @@ class TaskRepository:
 
     async def find_pending(self, *, limit: int = 1) -> list[LifecycleTask]:
         stmt = select(LifecycleTask).where(
-            LifecycleTask.status == TaskStatus.pending
+            LifecycleTask.status.in_([TaskStatus.pending, TaskStatus.retrying])
         ).order_by(LifecycleTask.created_at.asc()).limit(limit)
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
+
+    async def find_active_backend_task(
+        self,
+        kb_id: str,
+        task_type: str,
+    ) -> LifecycleTask | None:
+        stmt = select(LifecycleTask).where(
+            LifecycleTask.knowledge_base_id == kb_id,
+            LifecycleTask.task_type == task_type,
+            LifecycleTask.status.in_([TaskStatus.pending, TaskStatus.running, TaskStatus.retrying]),
+        ).order_by(LifecycleTask.created_at.asc())
+        result = await self._session.execute(stmt)
+        return result.scalars().first()
 
     async def update(self, task_id: str, **values: Any) -> LifecycleTask | None:
         task = await self.get(task_id)
@@ -76,7 +89,7 @@ class TaskRepository:
 
     async def mark_running(self, task_id: str) -> LifecycleTask | None:
         task = await self.get(task_id)
-        if task is None or task.status != TaskStatus.pending:
+        if task is None or task.status not in (TaskStatus.pending, TaskStatus.retrying):
             return None
         task.status = TaskStatus.running
         task.attempt += 1

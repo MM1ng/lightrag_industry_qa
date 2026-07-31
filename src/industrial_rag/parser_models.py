@@ -162,6 +162,11 @@ class ChildChunk:
 
         d = asdict(self)
         d["section_path"] = list(self.section_path)
+        # Serialize enum members (e.g. ContentType) as their string values so
+        # json.dumps(default=str) round-trips via from_dict/load_child_chunks.
+        for key, value in d.items():
+            if hasattr(value, "value"):
+                d[key] = value.value
         return d
 
     @classmethod

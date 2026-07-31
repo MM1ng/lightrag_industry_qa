@@ -10,6 +10,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from industrial_rag.vector_collections import VectorBackend
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_BAILIAN_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 SUPPORTED_QUERY_MODES = (
@@ -45,6 +47,16 @@ class Settings:
     embedding_model: str = "text-embedding-v4"
     embedding_dim: int = 1024
     working_dir: Path = PROJECT_ROOT / "lightrag_storage"
+    vector_backend: VectorBackend = VectorBackend.nano
+    qdrant_url: str | None = None
+    qdrant_api_key: str | None = field(default=None, repr=False)
+    qdrant_collection_prefix: str = "ira_qdrant"
+    qdrant_generation: str | None = None
+    qdrant_kb_id: str | None = None
+    # LightRAG per-generation isolation token. Derived per knowledge base by
+    # settings_for_knowledge_base(); None keeps the legacy layout (workspace="")
+    # used by pre-generation knowledge bases.
+    vector_workspace: str | None = None
     mineru_enabled: bool = False
     mineru_api_base_url: str = "https://mineru.net"
     mineru_api_key: str | None = field(default=None, repr=False)
@@ -57,6 +69,10 @@ class Settings:
     mineru_save_raw_response: bool = True
 
     def __post_init__(self) -> None:
+        if not isinstance(self.vector_backend, VectorBackend):
+            object.__setattr__(self, "vector_backend", VectorBackend(self.vector_backend))
+        if self.vector_backend is VectorBackend.qdrant and not self.qdrant_url:
+            raise ValueError("VECTOR_BACKEND=qdrant 时必须配置 QDRANT_URL")
         if not self.llm_model.strip():
             raise ValueError("LLM_MODEL 不能为空")
         if not self.llm_fallback_models:
@@ -96,6 +112,18 @@ class Settings:
         working_dir = Path(raw_working_dir)
         if not working_dir.is_absolute():
             working_dir = PROJECT_ROOT / working_dir
+        raw_vector_backend = (values.get("VECTOR_BACKEND") or VectorBackend.nano.value).strip().lower()
+        try:
+            vector_backend = VectorBackend(raw_vector_backend)
+        except ValueError as error:
+            raise ValueError("VECTOR_BACKEND 必须为 nano 或 qdrant") from error
+        qdrant_url = (values.get("QDRANT_URL") or "").strip().rstrip("/") or None
+        qdrant_api_key = (values.get("QDRANT_API_KEY") or "").strip() or None
+        qdrant_collection_prefix = (
+            values.get("QDRANT_COLLECTION_PREFIX") or "ira_qdrant"
+        ).strip()
+        qdrant_generation = (values.get("QDRANT_GENERATION") or "").strip() or None
+        qdrant_kb_id = (values.get("QDRANT_KB_ID") or "").strip() or None
 
         if not api_key:
             raise ValueError("必须通过环境变量 DASHSCOPE_API_KEY 提供百炼密钥")
@@ -139,6 +167,12 @@ class Settings:
             embedding_model=embedding_model,
             embedding_dim=embedding_dim,
             working_dir=working_dir.resolve(),
+            vector_backend=vector_backend,
+            qdrant_url=qdrant_url,
+            qdrant_api_key=qdrant_api_key,
+            qdrant_collection_prefix=qdrant_collection_prefix,
+            qdrant_generation=qdrant_generation,
+            qdrant_kb_id=qdrant_kb_id,
             mineru_enabled=mineru_enabled,
             mineru_api_base_url=mineru_api_base_url,
             mineru_api_key=mineru_api_key,

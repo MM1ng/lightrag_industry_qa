@@ -10,3 +10,4 @@ pytest-asyncio>=1.0,<2
 ruff>=0.12,<1
 sqlalchemy>=2.0,<3
 aiosqlite>=0.20,<1
+qdrant-client>=1.18,<2

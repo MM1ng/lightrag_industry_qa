@@ -7,7 +7,7 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from industrial_rag.db.models import KBStatus
+from industrial_rag.db.models import KBStatus, TaskType
 from industrial_rag.errors import AppError, AppErrorCode
 from industrial_rag.repositories.knowledge_base_repository import (
     KnowledgeBaseRepository,
@@ -15,9 +15,9 @@ from industrial_rag.repositories.knowledge_base_repository import (
 from industrial_rag.repositories.task_repository import TaskRepository
 from industrial_rag.storage_layout import (
     kb_base_dir,
+    kb_nano_workspace,
     kb_parsed_dir,
     kb_uploads_dir,
-    kb_workspace_dir,
 )
 
 logger = logging.getLogger(__name__)
@@ -60,13 +60,13 @@ class KnowledgeBaseService:
             base.mkdir(parents=True, exist_ok=True)
             kb_uploads_dir(kb.id).mkdir(parents=True, exist_ok=True)
             kb_parsed_dir(kb.id).mkdir(parents=True, exist_ok=True)
-            kb_workspace_dir(kb.id).mkdir(parents=True, exist_ok=True)
+            kb_nano_workspace(kb.id).mkdir(parents=True, exist_ok=True)
         except OSError as exc:
             raise AppError(AppErrorCode.storage_failure, f"无法创建知识库目录: {exc}")
 
         await self._repo.update(
             kb.id,
-            workspace_path=str(kb_workspace_dir(kb.id)),
+            workspace_path=str(kb_nano_workspace(kb.id)),
             upload_path=str(kb_uploads_dir(kb.id)),
             parsed_path=str(kb_parsed_dir(kb.id)),
             embedding_model=embedding_model,
@@ -147,6 +147,64 @@ class KnowledgeBaseService:
 
         await self._repo.update(kb_id, **values)
         return await self._repo.get(kb_id)
+
+    # ------------------------------------------------------------------
+    # Vector backend migration / rollback
+    # ------------------------------------------------------------------
+
+    async def request_vector_backend_change(self, kb_id: str, *, target_backend: str) -> dict[str, str | bool]:
+        """Create or return one lifecycle task for a safe backend transition."""
+        kb = await self.get(kb_id)
+        if target_backend not in {"nano", "qdrant"}:
+            raise AppError(
+                AppErrorCode.invalid_state_transition,
+                "target_backend 必须为 nano 或 qdrant",
+                status_code=422,
+            )
+        if kb.status in (KBStatus.deleting, KBStatus.deleted):
+            raise AppError(
+                AppErrorCode.invalid_state_transition,
+                "删除中的知识库不能切换向量后端",
+                status_code=409,
+            )
+        if kb.vector_backend == target_backend:
+            raise AppError(
+                AppErrorCode.invalid_state_transition,
+                "知识库已处于目标向量后端；健康检查应通过专用任务执行",
+                status_code=409,
+            )
+        task_type = (
+            TaskType.migrate_to_qdrant
+            if target_backend == "qdrant"
+            else TaskType.rollback_to_nano
+        )
+        existing = await self._task_repo.find_active_backend_task(kb_id, task_type)
+        if existing is not None:
+            return {
+                "task_id": existing.id,
+                "knowledge_base_id": kb_id,
+                "status": existing.status.value,
+                "target_backend": target_backend,
+                "idempotent": True,
+            }
+        if await self._repo.has_active_tasks(kb_id):
+            raise AppError(
+                AppErrorCode.knowledge_base_busy,
+                "知识库存在冲突的生命周期任务",
+                status_code=409,
+            )
+        task = await self._task_repo.create(
+            knowledge_base_id=kb_id,
+            task_type=task_type,
+            payload={"target_backend": target_backend, "requested_from": kb.vector_backend},
+        )
+        return {
+            "task_id": task.id,
+            "knowledge_base_id": kb_id,
+            "status": task.status.value,
+            "target_backend": target_backend,
+            "idempotent": False,
+        }
 
     # ------------------------------------------------------------------
     # Delete

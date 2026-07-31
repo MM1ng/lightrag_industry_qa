@@ -10,6 +10,7 @@ import logging
 
 from industrial_rag.db.models import TaskType
 from industrial_rag.services.cleanup_service import KnowledgeBaseCleanupService
+from industrial_rag.services.generation_fingerprint_service import build_generation_fingerprint
 from industrial_rag.services.task_context import TaskExecutionContext, TaskExecutionResult
 from industrial_rag.services.task_handlers import register_handler
 
@@ -169,6 +170,93 @@ async def handle_rebuild(ctx: TaskExecutionContext) -> TaskExecutionResult:
         return TaskExecutionResult(
             success=False, error_code="rebuild_failed", error_message=str(exc)[:500],
         )
+
+
+@register_handler(TaskType.migrate_to_qdrant)
+async def handle_migrate_to_qdrant(ctx: TaskExecutionContext) -> TaskExecutionResult:
+    """Build a verified Qdrant shadow generation from existing ChildChunks."""
+    try:
+        await ctx.update_progress(0.0, "starting_qdrant_migration")
+        from industrial_rag.services.index_service import IndexService
+        from industrial_rag.vector_collections import VectorBackend
+
+        result = await IndexService(
+            ctx.task_repo._session,
+            settings=ctx.settings,
+            runtime_manager=ctx.runtime_manager,
+        ).index_knowledge_base(
+            ctx.task.knowledge_base_id,
+            ctx.task.id,
+            target_backend=VectorBackend.qdrant,
+        )
+        await ctx.update_progress(1.0, "qdrant_migration_done")
+        return TaskExecutionResult(success=True, result=result)
+    except Exception as exc:
+        return TaskExecutionResult(
+            success=False,
+            error_code="qdrant_migration_failed",
+            error_message=str(exc)[:500],
+        )
+
+
+@register_handler(TaskType.rollback_to_nano)
+async def handle_rollback_to_nano(ctx: TaskExecutionContext) -> TaskExecutionResult:
+    """Activate Nano only when its immutable input fingerprint still matches the KB."""
+    try:
+        from industrial_rag.db.models import VectorIndexGenerationStatus
+        from industrial_rag.repositories.vector_index_generation_repository import (
+            VectorIndexGenerationRepository,
+        )
+        from industrial_rag.services.parse_service import load_child_chunks
+        from industrial_rag.storage_layout import kb_parsed_dir
+
+        kb = await ctx.kb_repo.get(ctx.task.knowledge_base_id)
+        if kb is None:
+            return TaskExecutionResult(False, "knowledge_base_not_found", "知识库不存在")
+        generations = await VectorIndexGenerationRepository(ctx.task_repo._session).list_for_kb(kb.id)
+        nano = next(
+            (
+                generation
+                for generation in generations
+                if generation.backend == "nano" and generation.status in {
+                    VectorIndexGenerationStatus.active,
+                    VectorIndexGenerationStatus.retired,
+                }
+            ),
+            None,
+        )
+        if nano is None:
+            return TaskExecutionResult(False, "nano_generation_missing", "没有可回滚的 Nano generation")
+        document_children = []
+        for document in await ctx.doc_repo.list_active_for_kb(kb.id):
+            document_children.extend(
+                (document, child)
+                for child in load_child_chunks(kb_parsed_dir(kb.id) / "documents" / document.id)
+            )
+        if not document_children:
+            return TaskExecutionResult(False, "nano_generation_stale", "当前知识库没有可验证的 ChildChunk")
+        fingerprint = build_generation_fingerprint(kb, document_children)
+        if (
+            nano.document_manifest_hash != fingerprint.document_manifest_hash
+            or nano.child_chunks_manifest_hash != fingerprint.child_chunks_manifest_hash
+            or nano.embedding_config_hash != fingerprint.embedding_config_hash
+            or nano.chunking_config_hash != fingerprint.chunking_config_hash
+        ):
+            return TaskExecutionResult(
+                False,
+                "nano_generation_stale",
+                "Nano workspace 与当前有效知识库不一致；拒绝陈旧回滚",
+            )
+        if ctx.runtime_manager is not None:
+            await ctx.runtime_manager.close_runtime(kb.id)
+        await VectorIndexGenerationRepository(ctx.task_repo._session).activate(nano)
+        await ctx.kb_repo.update(kb.id, vector_backend="nano", active_vector_generation_id=nano.id)
+        return TaskExecutionResult(
+            success=True,
+            result={"backend": "nano", "generation": nano.generation, "generation_id": nano.id},
+        )
+    except Exception as exc:
+        return TaskExecutionResult(False, "nano_rollback_failed", str(exc)[:500])
 
 
 @register_handler(TaskType.index)

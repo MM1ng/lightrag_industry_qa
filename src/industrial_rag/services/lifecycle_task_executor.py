@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -115,13 +114,13 @@ class LifecycleTaskExecutor:
         async with self._session_factory() as session:
             task_repo = TaskRepository(session)
 
-            # 1. Claim a pending task
+            # Persist the claim before the background task opens its own session.
             pending = await task_repo.find_pending(limit=1)
             for task in pending:
                 claimed = await task_repo.mark_running(task.id)
                 if claimed is None:
-                    continue  # race — another poller claimed it
-                # Submit for execution
+                    continue
+                await session.commit()
                 asyncio.create_task(self._execute_task(task.id))
 
     # ------------------------------------------------------------------
@@ -143,8 +142,9 @@ class LifecycleTaskExecutor:
                 # Acquire KB lock
                 kb_id = task.knowledge_base_id
                 lock = self._acquire_kb_lock(kb_id)
-                async with lock:
+                async with self._semaphore, lock:
                     await self._run_handler(task, kb_repo, doc_repo, task_repo)
+                    await session.commit()
         except Exception:
             logger.exception("Task %s execution failed", task_id)
         finally:
@@ -213,27 +213,19 @@ class LifecycleTaskExecutor:
     # ------------------------------------------------------------------
 
     async def _recover_stale_tasks(self) -> None:
-        """On startup, retry any running task whose updated_at is too old."""
+        """Recover all interrupted local-process tasks immediately on startup."""
         async with self._session_factory() as session:
             task_repo = TaskRepository(session)
-            # Find running tasks
             from sqlalchemy import select
 
             from industrial_rag.db.models import LifecycleTask
 
-            stmt = select(LifecycleTask).where(
-                LifecycleTask.status == TaskStatus.running
-            ).limit(10)
-            result = await session.execute(stmt)
-            stale_tasks = result.scalars().all()
-
-            cutoff = datetime.now(tz=UTC).timestamp() - self._stale_running_seconds
-            recovered = 0
-            for t in stale_tasks:
-                updated_ts = t.updated_at.timestamp() if t.updated_at else 0
-                if updated_ts < cutoff:
-                    await task_repo.mark_retrying(t.id)
-                    recovered += 1
-
-            if recovered:
-                logger.info("Recovered %d stale running tasks", recovered)
+            result = await session.execute(
+                select(LifecycleTask).where(LifecycleTask.status == TaskStatus.running)
+            )
+            interrupted_tasks = result.scalars().all()
+            for task in interrupted_tasks:
+                await task_repo.mark_retrying(task.id)
+            if interrupted_tasks:
+                await session.commit()
+                logger.info("Recovered %d interrupted running tasks", len(interrupted_tasks))
