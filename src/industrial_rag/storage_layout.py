@@ -36,7 +36,25 @@ def kb_base_dir(kb_id: str) -> Path:
 
 
 def kb_workspace_dir(kb_id: str) -> Path:
+    """Return the legacy Nano workspace path for existing knowledge bases."""
     return kb_base_dir(kb_id) / "lightrag"
+
+
+def kb_nano_workspace(kb_id: str) -> Path:
+    """Return the complete isolated workspace for a Nano generation."""
+    return kb_base_dir(kb_id) / "nano" / "workspace"
+
+
+def kb_qdrant_generations_dir(kb_id: str) -> Path:
+    """Return the root containing isolated Qdrant generation workspaces."""
+    return kb_base_dir(kb_id) / "qdrant" / "generations"
+
+
+def kb_qdrant_generation_workspace(kb_id: str, generation: str) -> Path:
+    """Return the complete local LightRAG workspace for one Qdrant generation."""
+    if not re.fullmatch(r"g[a-z0-9]{8,63}", generation):
+        raise ValueError(f"Invalid Qdrant generation: {generation!r}")
+    return kb_qdrant_generations_dir(kb_id) / generation / "workspace"
 
 
 def kb_uploads_dir(kb_id: str) -> Path:
