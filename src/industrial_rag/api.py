@@ -190,6 +190,7 @@ def create_app(
         runtime: QueryRuntime | None = None
         resolved_settings: Settings | None = None
         application.state.runtime = None
+        application.state.resolved_settings = None
         application.state.service_api_key = None
         application.state.runtime_manager = None
 
@@ -198,6 +199,7 @@ def create_app(
 
         try:
             resolved_settings = settings or Settings.from_env()
+            application.state.resolved_settings = resolved_settings
             application.state.service_api_key = resolved_settings.service_api_key
             runtime = runtime_factory(resolved_settings)
             application.state.runtime = runtime
@@ -223,7 +225,7 @@ def create_app(
                 runtime_manager=_runtime_manager,
             )
             await _executor.start()
-            application.state.task_executor = None
+            application.state.task_executor = _executor
         except Exception:
             if resolved_settings is None and settings is None:
                 application.state.service_api_key = _service_api_key_from_environment()
@@ -239,6 +241,7 @@ def create_app(
                 await _runtime_manager.close_all()
             await close_db()
             application.state.runtime = None
+            application.state.resolved_settings = None
 
     application = FastAPI(lifespan=lifespan)
 
@@ -403,53 +406,42 @@ def create_app(
     # ------------------------------------------------------------------
 
     @application.post("/v1/knowledge-bases/{kb_id}/query", response_model=QueryResponse)
-    def query_kb(
+    async def query_kb(
         kb_id: str,
         payload: QueryRequest,
         request: Request,
     ) -> QueryResponse | JSONResponse:
         request_id = _request_id_for(request)
         runtime_manager = getattr(request.app.state, "runtime_manager", None)
-        if runtime_manager is None:
+        base_settings = getattr(request.app.state, "resolved_settings", None)
+        if runtime_manager is None or base_settings is None:
             return _error_response("INDEX_NOT_READY", request_id=request_id)
 
-        import asyncio
-
-        from industrial_rag.config import Settings as Cfg
-        from industrial_rag.storage_layout import kb_workspace_dir
-
-        workspace = kb_workspace_dir(kb_id)
-        base = Cfg.from_env()
-        kb_settings = Cfg(
-            api_key=base.api_key,
-            service_api_key=base.service_api_key,
-            llm_base_url=base.llm_base_url,
-            llm_model=base.llm_model,
-            embedding_model=base.embedding_model,
-            embedding_dim=base.embedding_dim,
-            working_dir=workspace,
+        from industrial_rag.db.session import get_session_factory
+        from industrial_rag.errors import AppErrorCode
+        from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
+        from industrial_rag.repositories.knowledge_base_repository import (
+            KnowledgeBaseRepository,
         )
 
+        async with get_session_factory()() as session:
+            kb = await KnowledgeBaseRepository(session).get(kb_id)
+            if kb is None or kb.status.value in {"deleting", "deleted"}:
+                raise AppError(AppErrorCode.knowledge_base_not_found, "知识库不存在")
+            kb_settings = settings_for_knowledge_base(base_settings, kb)
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-
-        async def _kb_query():
-            svc = await runtime_manager.get_runtime(kb_id, kb_settings)
-            return await svc.query(payload.query, mode="mix")
-
-        try:
-            result = loop.run_until_complete(_kb_query())
-        except Exception as error:
-            code = (
-                "TIMEOUT"
-                if isinstance(error, TimeoutError) or "timed out" in str(error).casefold()
-                else "UPSTREAM_UNAVAILABLE"
+            result = await (await runtime_manager.get_runtime(kb_id, kb_settings)).query(
+                payload.query,
+                mode="mix",
             )
-            _log_result(request_id=request_id, status=code, latency_ms=0)
-            return _error_response(code, request_id=request_id)
+        except TimeoutError:
+            _log_result(request_id=request_id, status="TIMEOUT", latency_ms=0)
+            return _error_response("TIMEOUT", request_id=request_id)
+        except AppError:
+            raise
+        except Exception:
+            _log_result(request_id=request_id, status="UPSTREAM_UNAVAILABLE", latency_ms=0)
+            return _error_response("UPSTREAM_UNAVAILABLE", request_id=request_id)
 
         if result.answer == INSUFFICIENT_EVIDENCE_MESSAGE or not result.citations:
             return QueryResponse(
@@ -460,7 +452,6 @@ def create_app(
                 claims=[],
                 latency_ms=0,
             )
-
         citations = [
             _citation_response(citation, index)
             for index, citation in enumerate(result.citations, start=1)

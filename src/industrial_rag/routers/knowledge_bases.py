@@ -17,6 +17,8 @@ from industrial_rag.routers.schemas import (
     KnowledgeBaseSummary,
     KnowledgeBaseUpdate,
     PaginatedResponse,
+    VectorBackendTaskResponse,
+    VectorBackendUpdateRequest,
 )
 from industrial_rag.services.knowledge_base_service import KnowledgeBaseService
 
@@ -52,6 +54,12 @@ def _kb_to_detail(kb) -> KnowledgeBaseDetail:
         chunking_config=kb.chunking_config,
         embedding_model=kb.embedding_model,
         embedding_dimension=kb.embedding_dimension,
+        vector_backend=kb.vector_backend,
+        active_vector_generation=(
+            kb.active_vector_generation.generation
+            if kb.active_vector_generation is not None
+            else None
+        ),
         document_count=kb.document_count,
         active_document_count=kb.active_document_count,
         chunk_count=kb.chunk_count,
@@ -117,6 +125,24 @@ async def update_knowledge_base(
     kb = await svc.update(kb_id, name=body.name, description=body.description)
     return _kb_to_detail(kb)
 
+
+@router.post(
+    "/{kb_id}/vector-backend",
+    status_code=202,
+    response_model=VectorBackendTaskResponse,
+)
+async def request_vector_backend_change(
+    kb_id: str,
+    body: VectorBackendUpdateRequest,
+    session: AsyncSession = Depends(get_session),
+) -> VectorBackendTaskResponse:
+    svc = KnowledgeBaseService(session)
+    return VectorBackendTaskResponse(
+        **await svc.request_vector_backend_change(
+            kb_id,
+            target_backend=body.target_backend,
+        )
+    )
 
 @router.delete("/{kb_id}", status_code=202, response_model=DeleteTaskResponse)
 async def delete_knowledge_base(

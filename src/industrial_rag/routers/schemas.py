@@ -44,6 +44,8 @@ class KnowledgeBaseDetail(BaseModel):
     chunking_config: dict[str, Any] | None = None
     embedding_model: str
     embedding_dimension: int
+    vector_backend: str = "nano"
+    active_vector_generation: str | None = None
     document_count: int
     active_document_count: int
     chunk_count: int
@@ -53,6 +55,18 @@ class KnowledgeBaseDetail(BaseModel):
     updated_at: datetime | str | None = None
     deleted_at: datetime | str | None = None
     last_error: str | None = None
+
+
+class VectorBackendUpdateRequest(BaseModel):
+    target_backend: str
+
+
+class VectorBackendTaskResponse(BaseModel):
+    task_id: str
+    knowledge_base_id: str
+    status: str
+    target_backend: str
+    idempotent: bool = False
 
 
 class DeleteTaskResponse(BaseModel):
