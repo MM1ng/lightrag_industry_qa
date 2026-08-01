@@ -98,15 +98,19 @@
 
 - 两级 checkpoint（索引完成 / 查询完成）机制已实现并写入 `fixed_model/checkpoint_<group>.json`；
 - 恢复路径：校验冻结产物 → 校验配置 hash → 校验门禁 → 校验 Qdrant collection 存在 → 跳过已完成阶段；
-- 当前无全量 checkpoint（实验未运行）；机制经单元测试覆盖（门禁拒绝路径）。
+- **实际状态**：P0/P1 全量运行已完成，checkpoint 已产生并保留（`checkpoint_0.json`、`checkpoint_1.json`），查询结果已产生；
+- 临时 Qdrant 资源已精确清理，因此 **checkpoint 不能再用于恢复已删除的临时 Collection**；
+- checkpoint 作为**实验审计记录**保留；如需复现，应创建新的 KB/generation，而不是直接恢复已清理资源。
 
 ## 11. 测试结果
 
 ```text
-python -m pytest --collect-only -q   -> 417 collected（404 基线 + 13 门禁/冻结/缓存测试）
-python -m pytest -q                  -> 402 passed, 15 skipped, 0 failed（最终以实际运行为准）
+python -m pytest --collect-only -q   -> 417 collected
+python -m pytest -q                  -> 405 passed, 12 skipped, 0 failed
 python -m ruff check .               -> All checks passed
 ```
+
+12 项 skip 均为外部服务 opt-in（11 项真实 Qdrant 集成 + 1 项真实 MinerU API）。
 
 ## 12. 是否启动全量实验
 

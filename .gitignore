@@ -51,6 +51,7 @@ graph_storage/
 # Phase 3A parser experiment raw payloads (large binaries; kept on disk, not in git)
 evaluation/experiments/parser_backend/P1/**/mineru_raw/
 evaluation/mineru_smoke/
+evaluation/experiments/parser_backend/fixed_model/cache/
 
 # Protected source data and generated processing outputs
 data/raw_dataset/**

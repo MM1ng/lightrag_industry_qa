@@ -19,9 +19,7 @@ from evaluation.experiments.parser_backend.config import (
     PDF_FACTS,
     PDF_NAMES,
     RETRIEVAL,
-    comparison_dir,
     group_dir,
-    retrieval_dir,
 )
 from evaluation.experiments.parser_backend.metrics import (
     build_evidence_mapping,
@@ -43,8 +41,9 @@ from industrial_rag.parser_models import (
 )
 from industrial_rag.structured_chunker import ChunkerConfig
 
-EXPERIMENT_ROOT = comparison_dir().parent
+EXPERIMENT_ROOT = Path(__file__).resolve().parents[1] / "evaluation" / "experiments" / "parser_backend"
 GOLDEN_SHA256 = "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf"
+FIXED_ROOT = EXPERIMENT_ROOT / "fixed_model"
 
 
 # ---------------------------------------------------------------------------
@@ -265,9 +264,11 @@ def _artifacts_present() -> bool:
 
 
 def _results_present() -> bool:
-    return _artifacts_present() and (
-        retrieval_dir("1") / "results.jsonl"
-    ).is_file() and (comparison_dir() / "evidence_mapping_p1.json").is_file()
+    return (
+        (FIXED_ROOT / "P0_pymupdf" / "results.jsonl").is_file()
+        and (FIXED_ROOT / "P1_mineru" / "results.jsonl").is_file()
+        and (FIXED_ROOT / "comparison" / "evidence_mapping_p1.json").is_file()
+    )
 
 
 @pytest.mark.skipif(not _artifacts_present(), reason="parser_backend experiment artifacts absent")
@@ -311,33 +312,33 @@ def test_p0_and_p1_chunker_config_identical() -> None:
 
 @pytest.mark.skipif(not _results_present(), reason="parser_backend retrieval results absent")
 def test_experiment_results_and_metrics_exist_for_both_groups() -> None:
-    for group, label in (("0", "pymupdf_qdrant"), ("1", "mineru_qdrant")):
-        results = read_jsonl(retrieval_dir(group) / "results.jsonl")
+    for label in ("P0_pymupdf", "P1_mineru"):
+        results = read_jsonl(FIXED_ROOT / label / "results.jsonl")
         assert len(results) == 50
-        metrics = read_json(retrieval_dir(group) / "metrics.json")
+        metrics = read_json(FIXED_ROOT / label / "metrics.json")
         assert metrics["retrieval"]["evidence_case_count"] == 48
         assert metrics["retrieval"]["recall_at_1"] <= metrics["retrieval"]["recall_at_3"] + 1e-9
         assert metrics["retrieval"]["recall_at_3"] <= metrics["retrieval"]["recall_at_5"] + 1e-9
+        assert metrics["llm"]["model_mismatches"] == 0
+        assert metrics["llm"]["all_actual_model"] == ["qwen-plus-2025-07-28"]
 
 
 @pytest.mark.skipif(not _results_present(), reason="parser_backend retrieval results absent")
 def test_evidence_mapping_files_are_independent_per_parser() -> None:
     for group in ("0", "1"):
-        mapping = read_json(comparison_dir() / f"evidence_mapping_p{group}.json")
+        mapping = read_json(FIXED_ROOT / "comparison" / f"evidence_mapping_p{group}.json")
         assert mapping["total_gold_citations"] == 70
         assert mapping["mapping_rate"] > 0.5
+        assert mapping["exact_mapped"] + mapping["fuzzy_mapped"] + mapping["unmapped"] == 70
 
 
 @pytest.mark.skipif(not _results_present(), reason="parser_backend retrieval results absent")
 def test_retrieval_groups_use_distinct_qdrant_prefixes_in_records() -> None:
-    for group in ("0", "1"):
-        results = read_jsonl(retrieval_dir(group) / "results.jsonl")
-        chunk_ids = {item["chunk_id"] for row in results for item in row.get("retrieved", [])}
-        assert chunk_ids, f"group {group} has no retrieved chunks"
-    # Distinct groups must not share chunk ids (different KBs/collections).
-    ids0 = {item["chunk_id"] for row in read_jsonl(retrieval_dir("0") / "results.jsonl") for item in row.get("retrieved", [])}
-    ids1 = {item["chunk_id"] for row in read_jsonl(retrieval_dir("1") / "results.jsonl") for item in row.get("retrieved", [])}
-    assert ids0.isdisjoint(ids1)
+    # Distinct KBs/generations must own disjoint Qdrant collection sets.
+    names0 = set(read_json(FIXED_ROOT / "P0_pymupdf" / "metrics.json")["index"]["check"]["names"].values())
+    names1 = set(read_json(FIXED_ROOT / "P1_mineru" / "metrics.json")["index"]["check"]["names"].values())
+    assert names0 and names1
+    assert names0.isdisjoint(names1)
 
 
 # ---------------------------------------------------------------------------
