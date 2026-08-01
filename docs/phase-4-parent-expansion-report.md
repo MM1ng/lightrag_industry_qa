@@ -16,7 +16,7 @@
 ## 2. Git commit
 
 - 实验基线：`c7bcf59`
-- 本阶段代码与结果提交：`0f6bee4`（feat）+ `566eddc`（docs）。
+- 本阶段代码与结果提交：`0f6bee4`（feat）+ `566eddc`（docs）+ `0194d26`（Closeout 收尾）。
 
 ## 3. PyMuPDF 固定声明
 

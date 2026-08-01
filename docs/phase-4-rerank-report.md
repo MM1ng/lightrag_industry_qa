@@ -15,7 +15,7 @@
 ## 2. Git commit
 
 - Phase 4C 基线：`0f6bee4` / `566eddc` / `42b72dc`
-- 本阶段提交：见文末（提交时回填）。
+- 本阶段提交：`0194d26`（fix 4C 收尾）+ `98690a2`（feat rerank）+ `4c2faef`（docs rerank）。
 
 ## 3. Phase 4C 收尾修正
 
