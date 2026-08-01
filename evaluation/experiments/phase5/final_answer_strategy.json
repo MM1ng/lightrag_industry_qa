@@ -1,0 +1,15 @@
+{
+  "parser_pipeline": "pymupdf_standard_adapter",
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "parent_expansion": "none",
+  "rerank_enabled": false,
+  "context_strategy": "stable_unique_fill",
+  "answer_strategy": "current",
+  "citation_validation_enabled": false,
+  "max_repair_attempts": 0,
+  "replacement_approved": false,
+  "replacement_gates_passed": false,
+  "selection_reason": "Grounded Answer Pipeline did not pass Phase 5 replacement gates"
+}
