@@ -234,7 +234,18 @@ Qdrant disabled 时不要求 Qdrant 可用；`VECTOR_BACKEND=nano` 时无需 `QD
 
 ## 12. 文件变更与 commit
 
-见提交说明（本报告生成后按逻辑拆分提交，记录于提交信息与 `git log`）。新增/修改文件清单同 `docs/phase-3-qdrant-storage-progress-report.md` §4，另新增本报告。未提交差异备份 `phase3-uncommitted-backup.patch` 保留。
+Phase 3 已按逻辑拆分提交，commit hash（分支 `codex/knowledge-qa-platform-design`，基线 `64dcee4`）：
+
+| Commit | 说明 |
+|---|---|
+| `6eae939` | feat(phase3): add Qdrant vector generation data model and migrations |
+| `a10c94e` | feat(phase3): add physical Qdrant storage adapter and collection service |
+| `51b4837` | feat(phase3): generation-aware runtime isolation and lifecycle migration |
+| `e8f06ce` | feat(phase3): vector-backend change API and async KB query route |
+| `bfd2f8b` | test(phase3): unit, real Qdrant integration, and E2E coverage |
+| `98dcb4d` | docs(phase3): design, plan status, and final acceptance report |
+
+新增/修改文件清单同 `docs/phase-3-qdrant-storage-progress-report.md` §4，另新增本报告。未提交差异备份 `phase3-uncommitted-backup.patch` 按要求保留且未进入任何提交；差异审查未发现 API Key、Authorization Header、签名上传/下载 URL。
 
 ---
 
