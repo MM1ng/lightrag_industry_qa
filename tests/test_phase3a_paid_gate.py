@@ -180,7 +180,9 @@ def test_cache_hit_only_for_exact_match(tmp_path: Path) -> None:
     assert llm2.cache_hits == 1
     assert llm2.calls[0]["status"] == "cache_hit"
     assert llm2.calls[0]["cache_hit"] is True
-    assert llm2.calls[0]["total_tokens"] == 0
+    # Cache hits replay the original usage for cost accounting.
+    assert llm2.calls[0]["total_tokens"] == 12
+    assert llm2.calls[0]["cached_total_tokens"] == 12
 
 
 def test_cache_key_differs_across_prompt_and_model() -> None:

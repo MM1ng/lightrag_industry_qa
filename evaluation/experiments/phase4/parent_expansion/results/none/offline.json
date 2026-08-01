@@ -1,0 +1,27 @@
+{
+  "strategy": "none",
+  "evidence_questions": 48,
+  "child_recall_at_1": 0.5625,
+  "child_recall_at_3": 0.6875,
+  "child_recall_at_5": 0.75,
+  "child_mrr": 0.6316,
+  "expanded_gold_evidence_coverage": 0.8333,
+  "expanded_gold_page_coverage": 0.8958,
+  "context_evidence_density": 0.4796,
+  "context_token": {
+    "mean": 897.3,
+    "p50": 963.0,
+    "p95": 1312.0,
+    "max": 1495
+  },
+  "parent_count_mean": 0.0,
+  "parent_count_p50": 0.0,
+  "parent_count_p95": 0.0,
+  "duplicate_context_tokens": 0.0,
+  "duplicate_ratio": 0.0,
+  "over_budget_questions": 0,
+  "over_budget_parents_total": 0,
+  "no_parent_questions": 48,
+  "cross_page_parents": 0,
+  "citation_traceable_questions": 48
+}

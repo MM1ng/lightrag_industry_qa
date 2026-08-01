@@ -98,17 +98,17 @@ class FixedModelLLM:
                 {
                     "requested_model": self.model,
                     "actual_model": self.model,
-                    "input_tokens": 0,
-                    "output_tokens": 0,
-                    "total_tokens": 0,
-                    "cached_input_tokens": cached.get("input_tokens", 0),
-                    "cached_output_tokens": cached.get("output_tokens", 0),
-                    "cached_total_tokens": cached.get("total_tokens", 0),
-                    "latency": 0.0,
+                    "input_tokens": cached.get("input_tokens", 0),
+                    "output_tokens": cached.get("output_tokens", 0),
+                    "total_tokens": cached.get("total_tokens", 0),
+                    "latency": cached.get("latency", 0.0),
                     "retry_count": 0,
                     "status": "cache_hit",
                     "error_code": None,
                     "cache_hit": True,
+                    "cached_input_tokens": cached.get("input_tokens", 0),
+                    "cached_output_tokens": cached.get("output_tokens", 0),
+                    "cached_total_tokens": cached.get("total_tokens", 0),
                     "system_prompt_hash": _hash(system_prompt or ""),
                     "prompt_hash": _hash(prompt),
                 }
@@ -177,6 +177,7 @@ class FixedModelLLM:
                 "output_tokens": output_tokens,
                 "total_tokens": total_tokens,
                 "model": self.model,
+                "latency": round(time.monotonic() - started, 3),
             }
             self._cache[cache_key] = entry
             self.cache_path.parent.mkdir(parents=True, exist_ok=True)
