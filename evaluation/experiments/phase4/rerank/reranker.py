@@ -20,6 +20,10 @@ class RerankConfigurationError(RuntimeError):
     pass
 
 
+ALLOWED_RERANK_MODELS = frozenset({"qwen3-rerank"})
+_ALIAS_WORDS = frozenset({"latest", "auto", "default"})
+
+
 @dataclass(frozen=True, slots=True)
 class RerankedCandidate:
     chunk_id: str
@@ -63,14 +67,19 @@ class RerankerProvider(Protocol):
 
 
 def resolve_rerank_model(env: dict[str, str] | None = None) -> str | None:
-    """Return the exact configured model or None (never picks a model)."""
+    """Return the allowlisted exact model or None (never picks a model)."""
     env = dict(os.environ if env is None else env)
     model = (env.get("RERANK_MODEL") or "").strip()
     if not model:
         return None
-    if model.casefold() in {"latest", "auto", "default"} or model.endswith("-latest"):
+    if model.casefold() in _ALIAS_WORDS or model.endswith("-latest"):
         raise RerankConfigurationError(
             f"RERANK_MODEL must be an exact model name, got alias: {model!r}"
+        )
+    if model not in ALLOWED_RERANK_MODELS:
+        raise RerankConfigurationError(
+            f"RERANK_MODEL {model!r} is not in the allowed rerank model allowlist "
+            f"{sorted(ALLOWED_RERANK_MODELS)}"
         )
     return model
 
