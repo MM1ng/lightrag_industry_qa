@@ -1,4 +1,17 @@
-"""DashScope qwen3-rerank provider (standard rerank API or MaaS workspace)."""
+"""DashScope qwen3-rerank provider (standard rerank API or MaaS workspace).
+
+Phase 4D-R2: supports variable-size frozen candidate inputs (1..candidate_k
+for answerable questions, 0..candidate_k for evidence-insufficient
+questions) and a two-layer cache contract:
+
+- Provider Request Cache: identity is the exact request payload hash
+  (provider, model, query hash, ordered candidate IDs/text hashes, input
+  count, top_n, region, request schema version). Evaluation-rule changes or
+  code-commit changes never invalidate an identical request.
+- Evaluation Result Cache: written by the offline evaluation layer.
+
+Never logs the API key or the Authorization header.
+"""
 
 from __future__ import annotations
 
@@ -27,6 +40,7 @@ STANDARD_ENDPOINT = (
 WORKSPACE_ENDPOINT_TEMPLATE = (
     "https://{workspace_id}.cn-beijing.maas.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank"
 )
+REQUEST_SCHEMA_VERSION = "rerank_request_v1"
 
 
 def build_rerank_payload(
@@ -88,10 +102,42 @@ class DashScopeQwen3Reranker:
                         entry = json.loads(line)
                     except json.JSONDecodeError:
                         continue
-                    self._cache[entry["key"]] = entry
+                    key = entry.get("request_payload_hash") or entry.get("key")
+                    if key:
+                        self._cache[key] = entry
         self.schema_summary: dict[str, Any] | None = None
 
-    def _cache_key(self, query: str, candidates: list[dict[str, Any]], top_n: int) -> str:
+    def request_payload_hash(
+        self, query: str, candidates: list[dict[str, Any]], top_n: int
+    ) -> str:
+        """Cache identity for the exact provider request semantics.
+
+        Deliberately excludes code commit and evaluation config: identical
+        requests must be reusable across evaluation-contract changes.
+        """
+        candidate_ids = [str(c.get("chunk_id")) for c in candidates]
+        text_hashes = [
+            str(c.get("child_text_hash") or c.get("text_hash") or "") for c in candidates
+        ]
+        payload = "\x00".join(
+            [
+                "provider=aliyun_model_studio",
+                f"model={self.model}",
+                _sha256_text(query),
+                "candidate_ids=" + "|".join(candidate_ids),
+                "candidate_text_hashes=" + _sha256_text("|".join(text_hashes)),
+                f"input_count={len(candidates)}",
+                f"top_n={top_n}",
+                f"region={self.endpoint_mode}",
+                f"schema={REQUEST_SCHEMA_VERSION}",
+            ]
+        )
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+    def _legacy_cache_key(
+        self, query: str, candidates: list[dict[str, Any]], top_n: int
+    ) -> str:
+        """Old cache key (included commit/config hash); kept for compatibility reads."""
         payload = "\x00".join(
             [
                 "aliyun_model_studio",
@@ -132,10 +178,31 @@ class DashScopeQwen3Reranker:
         top_n: int,
         metadata: dict[str, Any] | None = None,
     ) -> list[RerankedCandidate]:
+        if not candidates:
+            self.calls.append(
+                {
+                    "cache_hit": False,
+                    "requested_model": self.model,
+                    "query_hash": _sha256_text(query),
+                    "candidate_ids": [],
+                    "input_count": 0,
+                    "request_id": None,
+                    "response_hash": None,
+                    "latency": 0.0,
+                    "status": "skipped_empty",
+                    "error": None,
+                }
+            )
+            return []
         documents = [str(c.get("text", "") or "") for c in candidates]
         self._check_input_lengths(query, documents)
-        cache_key = self._cache_key(query, candidates, top_n)
-        cached = self._cache.get(cache_key)
+        payload_hash = self.request_payload_hash(query, candidates, top_n)
+        cached = self._cache.get(payload_hash)
+        reused_legacy = False
+        if cached is None:
+            legacy_key = self._legacy_cache_key(query, candidates, top_n)
+            cached = self._cache.get(legacy_key)
+            reused_legacy = cached is not None
         if cached is not None:
             if self.schema_summary is None and "schema_summary" in cached:
                 self.schema_summary = cached["schema_summary"]
@@ -143,10 +210,14 @@ class DashScopeQwen3Reranker:
             self.calls.append(
                 {
                     "cache_hit": True,
+                    "reused_existing_response": True,
+                    "reused_legacy_entry": reused_legacy,
                     "requested_model": self.model,
                     "query_hash": _sha256_text(query),
                     "candidate_ids": [str(c.get("chunk_id")) for c in candidates],
+                    "input_count": len(candidates),
                     "request_id": cached.get("request_id"),
+                    "response_hash": cached.get("response_hash"),
                     "latency": cached.get("latency"),
                     "status": "ok",
                     "error": None,
@@ -184,7 +255,9 @@ class DashScopeQwen3Reranker:
                     "requested_model": self.model,
                     "query_hash": _sha256_text(query),
                     "candidate_ids": [str(c.get("chunk_id")) for c in candidates],
+                    "input_count": len(candidates),
                     "request_id": request_id,
+                    "response_hash": None,
                     "latency": round(time.monotonic() - started, 3),
                     "status": "error",
                     "error": f"{type(last_error).__name__}: {last_error}",
@@ -194,9 +267,11 @@ class DashScopeQwen3Reranker:
         if self.schema_summary is None:
             self.schema_summary = self._summarize_schema(body, request_id)
         results = body.get("output", {}).get("results") or body.get("results")
-        if not isinstance(results, list) or len(results) != top_n:
+        expected_count = min(top_n, len(candidates))
+        if not isinstance(results, list) or len(results) != expected_count:
             raise RerankConfigurationError(
-                f"rerank returned {len(results) if isinstance(results, list) else '?'} results; expected {top_n}"
+                f"rerank returned {len(results) if isinstance(results, list) else '?'} results; "
+                f"expected {expected_count} (min(top_n={top_n}, input_count={len(candidates)}))"
             )
         indexes: list[int] = []
         scores: list[float] = []
@@ -209,13 +284,25 @@ class DashScopeQwen3Reranker:
             scores.append(float(score))
         if sorted(indexes) != list(range(len(candidates))):
             raise RerankConfigurationError(
-                f"rerank indexes {indexes} do not cover all candidates"
+                f"rerank indexes {indexes} do not cover all {len(candidates)} input candidates"
             )
         order = sorted(range(len(scores)), key=lambda i: (-scores[i], indexes[i]))
         rerank_order = [indexes[i] for i in order]
         rerank_scores = [scores[i] for i in order]
         entry = {
-            "key": cache_key,
+            "key": payload_hash,
+            "request_payload_hash": payload_hash,
+            "schema_version": 2,
+            "provider": "aliyun_model_studio",
+            "model": self.model,
+            "query_hash": _sha256_text(query),
+            "candidate_ids": [str(c.get("chunk_id")) for c in candidates],
+            "candidate_text_hashes": [
+                str(c.get("child_text_hash") or c.get("text_hash") or "") for c in candidates
+            ],
+            "input_count": len(candidates),
+            "top_n": top_n,
+            "endpoint_mode": self.endpoint_mode,
             "request_id": request_id,
             "rerank_order": rerank_order,
             "scores": rerank_scores,
@@ -224,8 +311,10 @@ class DashScopeQwen3Reranker:
             "schema_summary": self.schema_summary,
             "latency": round(time.monotonic() - started, 3),
             "created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "commit": self._commit,
+            "config_hash": self._config_hash,
         }
-        self._cache[cache_key] = entry
+        self._cache[payload_hash] = entry
         if self._cache_path is not None:
             self._cache_path.parent.mkdir(parents=True, exist_ok=True)
             with self._cache_path.open("a", encoding="utf-8") as handle:
@@ -236,7 +325,9 @@ class DashScopeQwen3Reranker:
                 "requested_model": self.model,
                 "query_hash": _sha256_text(query),
                 "candidate_ids": [str(c.get("chunk_id")) for c in candidates],
+                "input_count": len(candidates),
                 "request_id": request_id,
+                "response_hash": entry["response_hash"],
                 "latency": entry["latency"],
                 "status": "ok",
                 "error": None,
@@ -319,5 +410,9 @@ class DashScopeQwen3Reranker:
             "calls": len(self.calls),
             "cache_hits": self.cache_hits,
             "cache_misses": self.cache_misses,
+            "skipped_empty": sum(1 for c in self.calls if c["status"] == "skipped_empty"),
             "errors": sum(1 for c in self.calls if c["status"] == "error"),
+            "live_api_calls": sum(
+                1 for c in self.calls if c["status"] == "ok" and not c["cache_hit"]
+            ),
         }

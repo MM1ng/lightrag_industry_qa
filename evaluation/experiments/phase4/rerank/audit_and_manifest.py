@@ -40,8 +40,17 @@ def _candidate_pool_manifest() -> dict[str, Any]:
         "question_count": len(per_question),
         "candidate_count_total": len(rows),
         "candidate_count_per_question": dict(sorted(per_question.items())),
+        "candidate_count_contract": "variable_unique_candidates_up_to_candidate_k",
         "candidate_k": RERANK_CONFIG["candidate_k"],
         "final_k": RERANK_CONFIG["final_k"],
+        "per_question_counts": {
+            "default_answerable": 20,
+            "C007": per_question.get("C007", 0),
+            "N001": per_question.get("N001", 0),
+            "N002": per_question.get("N002", 0),
+        },
+        "negative_questions_may_have_candidates": True,
+        "effective_final_k_rule": "min(final_k, input_candidate_count)",
         "query_mode": RERANK_CONFIG["query_mode"],
         "parser_pipeline": RERANK_CONFIG["parser_pipeline"],
         "parent_expansion": RERANK_CONFIG["parent_expansion"],
@@ -76,6 +85,14 @@ def _reranker_audit() -> dict[str, Any]:
             "Production default remains RERANK_ENABLED=false",
             "RerankerProvider interface implemented in reranker.py (provider-neutral)",
             "Exact model name required; latest/auto aliases rejected",
+            (
+                "Phase 4D-R2: variable-size candidate contract accepted; "
+                "C007=19 rows (one pre-existing duplicate chunk_id row at "
+                "original ranks 2/5), N001=20, N002=19 are all valid frozen "
+                "inputs; qwen3-rerank preserved every input row"
+            ),
+            "Provider Request Cache keyed by request_payload_hash (exact request semantics)",
+            "Legacy cache entries (old key with commit/config hash) remain readable",
         ],
     }
 

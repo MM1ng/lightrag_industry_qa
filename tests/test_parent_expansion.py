@@ -72,9 +72,8 @@ def test_frozen_child_results_hash_is_stable_if_present() -> None:
     assert rows
     by_q = {r["question_id"] for r in rows}
     assert len(by_q) == 50
-    # Known frozen-pool contract deviation (documented in Phase 4D report and
-    # blocking R1): N001/N002 should have no rows and C007 should have 20, but
-    # the frozen pool actually has N001=20, N002=19, C007=19.
+    # Phase 4D-R2 variable-size contract: C007=19, N001=20, N002=19 are all
+    # valid frozen inputs; negative questions keep their real candidates.
     from collections import Counter
 
     counts = Counter(r["question_id"] for r in rows)
