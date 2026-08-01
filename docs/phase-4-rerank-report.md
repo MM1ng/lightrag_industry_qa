@@ -16,7 +16,7 @@
 ## 2. Git commit
 
 - 基线：`655c592`
-- 本阶段提交：见文末（提交时回填）。
+- 本阶段提交：`0288aa5`（feat qwen3 reranker）+ `d578ebb`（eval 消融）+ `631270e`（docs）。
 
 ## 3. qwen3-rerank 模型身份
 
