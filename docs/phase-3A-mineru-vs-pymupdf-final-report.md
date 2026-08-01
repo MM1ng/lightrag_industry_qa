@@ -12,7 +12,7 @@
 - MinerU 真实调用 **全部成功**：batch submit → 签名上传 → poll done → **CDN ZIP 下载成功** → content_list 可读 → pages 提取成功（两份 PDF 均完成）。
 - P0（PyMuPDF）完整实验 **已完成**：解析 → 切块 → Qdrant → 50 题检索与引用指标。
 - P1（MinerU）解析与切块 **已完成且严格满足** `parser_used=mineru_online`、`fallback_used=false`；**Qdrant 索引与 50 题检索未能完成**。
-- 阻塞原因：DashScope 免费额度在实验期间依次耗尽（kimi-k2.6、qwen3.6-plus、qwen3.6-flash、qwen-plus、qwen-turbo），唯一剩余模型 qwen3.5-flash-2026-02-23 单次调用约 20–90 秒；P1 仍需约 400 次抽取调用 + 100 次查询调用，按当前吞吐需 8 小时以上。
+- 阻塞原因：DashScope 免费额度在实验期间**全部 6 个模型依次耗尽**（kimi-k2.6 → qwen3.6-plus → qwen3.6-flash → qwen-plus → qwen-turbo → qwen3.5-flash-2026-02-23），P1 索引在 2196 第 60/278 chunk 处被 403 中断；剩余约 380 次抽取 + 100 次查询调用无可用模型。
 - 依据任务规则：P1 关键项未完成 → **Phase 3A 标记 incomplete**；默认解析器保持 **PyMuPDF**；不进入 Phase 4；不实施任何生产默认值修改。
 
 ---
@@ -55,7 +55,7 @@
 
 - Chunker：`ChunkerConfig(strategy="pymupdf-v1")`（parent_target 1500 / child_target 450 / child_min 120 / child_max 700 / overlap 80 / merge_small_children=True）
 - Embedding：`text-embedding-v4`，1024 维
-- LLM 锁定：实验开始时锁定 qwen3.6-plus；因额度耗尽在 P0 查询中途（约第 11–15 题）降级 qwen3.6-flash → qwen-turbo → qwen3.5-flash-2026-02-23。**P0 检索/引用指标不受 LLM 影响**（由 embedding + 确定性证据策略产生）；回答指标因此标记 N/A。
+- LLM 锁定：实验开始时锁定 qwen3.6-plus；因额度耗尽在 P0 查询中途（约第 11–15 题）降级 qwen3.6-flash → qwen-turbo → qwen3.5-flash-2026-02-23。**P0 检索/引用指标不受 LLM 影响**（由 embedding + 确定性证据策略产生）；回答指标因此标记 N/A。P1 索引期间 qwen3.5-flash 最终也耗尽（60/278 处 403）。
 - LightRAG：mix / top_k=12 / chunk_top_k=20 / enable_rerank=False / evidence_limit=3 / chunk_token_size=2000（实验统一；生产默认仍 1600）
 - Qdrant：COSINE、1024 维、随机测试前缀、P0/P1 不同 KB/collection
 - 黄金集：`industrial_pump_golden_set_50.jsonl`（SHA256 `fc52600f…`，50 题，未修改）
@@ -230,7 +230,7 @@
 
 ### P1（MinerU → Qdrant）
 
-**未完成**：P1 索引需约 437 次 LLM 抽取调用，受 DashScope 免费额度/吞吐阻塞（当前模型 qwen3.5-flash 单次约 20–90s）。任务规则要求真实完成才能计算指标，故 P1 检索指标缺省，不编造。
+**未完成**：P1 索引需约 437 次 LLM 抽取调用；实际完成 60/278（2196）后，qwen3.5-flash 也返回 403 免费额度耗尽，全部 6 个可用模型均不可用。任务规则要求真实完成才能计算指标，故 P1 检索指标缺省，不编造。
 
 ---
 
@@ -275,12 +275,13 @@
 | ZIP 大小 | 5.39 MB | 10.01 MB |
 | 费用 | N/A（免费额度） | N/A |
 
-### RAG（P0 实测）
+### RAG（P0 实测；P1 部分）
 
 - 索引 LLM 调用：约 453 次抽取 + 合并阶段少量调用（Qdrant points=453）
 - 50 题查询：100 次 LLM 调用（每题 keyword+answer），LLM 调用计数由 openai 包装器实测
 - 平均查询延迟：约 55–70 s/题（受降级模型拖累；正常模型约 5–10 s）
 - Qdrant：chunks 453 points；P0/P1 使用不同 KB/collection，跨 KB 隔离由 Phase 3 集成测试验证
+- P1：索引到 60/278 后被 403 中断（已清理该次精确 collection）
 
 **成本结论**：MinerU 解析本身便宜（两本手册 <1 分钟 API 时间），但真实 LLM 索引成本与模型配额是当前实验的主要瓶颈；免费额度无法支撑两组全量（约 900 次抽取 + 200 次查询调用）。
 
@@ -357,12 +358,12 @@ python -m ruff check .               -> All checks passed
 
 ## 17. 已知限制
 
-- P1 检索指标缺省（LLM 配额/吞吐阻塞），Phase 3A 未验收。
+- P1 检索指标缺省（LLM 免费配额全部耗尽），Phase 3A 未验收；继续需为 DashScope 充值或关闭 free-tier-only。
 - P0 查询中途模型降级（额度耗尽），回答类指标 N/A；检索/引用指标不受影响。
 - 标题/步骤/警告统计为行级启发式，人工抽查覆盖 14 页代表性页面。
 - MinerU OCR 误差、页眉/页脚噪声、HTML 标记噪声未做清洗实验（清洗会改变解析器后处理，超出“只允许改变解析器”范围）。
 - 未修改生产默认解析器；未重新解析正式 KB。
-- 免费 DashScope 额度无法支撑全量实验；如继续需充值/关闭 free-tier-only。
+- 免费 DashScope 额度无法支撑全量实验（6 个模型全部 403）。
 
 ---
 
