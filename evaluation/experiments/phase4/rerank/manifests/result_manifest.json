@@ -1,0 +1,41 @@
+{
+  "created_at": "2026-08-01T17:28:40+0800",
+  "status": "Phase 4D blocked by missing rerank model configuration",
+  "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
+  "baseline_metrics": {
+    "evidence_questions": 48,
+    "recall_at_1": 0.5625,
+    "recall_at_3": 0.6875,
+    "recall_at_5": 0.75,
+    "recall_at_12": 0.7917,
+    "mrr": 0.6201,
+    "gold_document_recall": 1.0,
+    "gold_page_recall": 0.8542,
+    "gold_evidence_recall": 0.7917,
+    "evidence_precision_at_5": 0.2,
+    "evidence_precision_at_12": 0.1024,
+    "top1_document_accuracy": 1.0,
+    "top5_page_coverage": 0.7917
+  },
+  "rerank_metrics": null,
+  "reranker_audit": {
+    "existing_interface": false,
+    "provider": null,
+    "configured_model": null,
+    "exact_model_name": null,
+    "endpoint": null,
+    "supports_batch": null,
+    "max_documents": null,
+    "score_range": null,
+    "deterministic_parameters": null,
+    "fallback_behavior": "disabled (RERANK_FALLBACK_ENABLED must be false)",
+    "secret_source": "RERANK_API_KEY / provider env (never logged)",
+    "readiness": false,
+    "blocked_reason": "missing rerank model configuration (RERANK_MODEL unset)",
+    "notes": [
+      "Production default remains RERANK_ENABLED=false",
+      "RerankerProvider interface implemented in reranker.py (provider-neutral)",
+      "Exact model name required; latest/auto aliases rejected"
+    ]
+  }
+}

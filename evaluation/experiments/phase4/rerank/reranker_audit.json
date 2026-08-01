@@ -1,0 +1,20 @@
+{
+  "existing_interface": false,
+  "provider": null,
+  "configured_model": null,
+  "exact_model_name": null,
+  "endpoint": null,
+  "supports_batch": null,
+  "max_documents": null,
+  "score_range": null,
+  "deterministic_parameters": null,
+  "fallback_behavior": "disabled (RERANK_FALLBACK_ENABLED must be false)",
+  "secret_source": "RERANK_API_KEY / provider env (never logged)",
+  "readiness": false,
+  "blocked_reason": "missing rerank model configuration (RERANK_MODEL unset)",
+  "notes": [
+    "Production default remains RERANK_ENABLED=false",
+    "RerankerProvider interface implemented in reranker.py (provider-neutral)",
+    "Exact model name required; latest/auto aliases rejected"
+  ]
+}
