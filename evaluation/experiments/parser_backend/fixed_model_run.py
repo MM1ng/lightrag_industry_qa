@@ -222,16 +222,21 @@ async def _verify_index(group: str, world: dict[str, Any], expected_children: in
     from industrial_rag.services.qdrant_collection_service import QdrantCollectionService
 
     kb = world["kb"]
+    generation = kb.active_vector_generation.generation
     qdrant_settings = Settings(
         api_key="experiment",
         vector_backend="qdrant",
         qdrant_url=QDRANT_TEST_URL,
         qdrant_collection_prefix=world["prefix"],
         qdrant_kb_id=kb.id,
-        qdrant_generation=kb.active_vector_generation.generation,
+        qdrant_generation=generation,
     )
     service = QdrantCollectionService(qdrant_settings)
     names = service.names()
+    print(
+        f"[group {group}] kb={kb.id} generation={generation} "
+        f"collections={list(names.values())}"
+    )
     client = service._client()
     try:
         counts = {}
@@ -239,14 +244,30 @@ async def _verify_index(group: str, world: dict[str, Any], expected_children: in
             counts[namespace] = (await client.count(name, exact=True)).count
     finally:
         await client.close()
+    # doc status verification from the generation workspace
+    workspace = Path(kb.active_vector_generation.workspace_path)
+    token = f"qdrant-{generation}"
+    doc_status_path = workspace / token / "kv_store_doc_status.json"
+    doc_status: dict[str, Any] = {}
+    if doc_status_path.is_file():
+        doc_status = json.loads(doc_status_path.read_text(encoding="utf-8"))
+    statuses = [
+        str(v.get("status", "")).casefold()
+        for v in doc_status.values()
+        if isinstance(v, dict)
+    ]
+    all_processed = bool(statuses) and all(s == "processed" for s in statuses)
+    has_failed = any(s in {"failed", "partial", "processing"} for s in statuses)
     checks = {
         "chunks_non_empty": counts["chunks"] > 0,
         "entities_non_empty": counts["entities"] > 0,
         "relationships_non_empty": counts["relationships"] > 0,
         "chunks_point_ge_children": counts["chunks"] >= expected_children,
+        "all_documents_processed": all_processed,
+        "no_failed_processing_partial": not has_failed,
     }
     assert all(checks.values()), f"index completeness failed: {checks} counts={counts}"
-    return {"names": names, "counts": counts}
+    return {"names": names, "counts": counts, "doc_status": doc_status}
 
 
 def _extract_retrieved(evidence: dict[str, Any]) -> list[dict[str, Any]]:
@@ -496,6 +517,30 @@ async def run_full(group: str) -> dict[str, Any]:
     print(f"[gate] paid run allowed; estimated tokens={gate['estimated_total_tokens']}")
     gate = assert_consistency()
     children = _all_children(group)
+    monitor_path = FIXED_DIR / f"monitor_{group}.jsonl"
+    monitor_started = time.monotonic()
+    monitor_state = {"calls": 0}
+
+    def monitor_callback(llm: FixedModelLLM) -> None:
+        monitor_state["calls"] += 1
+        if monitor_state["calls"] % 50 == 0:
+            summary = llm.summary()
+            row = {
+                "group": group,
+                "completed_calls": monitor_state["calls"],
+                "input_tokens": summary["input_tokens"],
+                "output_tokens": summary["output_tokens"],
+                "total_tokens": summary["total_tokens"],
+                "cache_hits": summary["cache_hits"],
+                "cache_misses": summary["cache_misses"],
+                "retry_count": summary["retry_count"],
+                "error_count": summary["errors"],
+                "elapsed_seconds": round(time.monotonic() - monitor_started, 1),
+                "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            }
+            with monitor_path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+
     llm = FixedModelLLM(
         model=cfg["llm_model"],
         api_key=os.environ.get("DASHSCOPE_API_KEY", ""),
@@ -503,6 +548,7 @@ async def run_full(group: str) -> dict[str, Any]:
         enable_thinking=cfg["enable_thinking"],
         cache_path=FIXED_DIR / "cache" / f"full_{group}.jsonl",
         config_hash=gate["p0"]["chunk_config_hash"],
+        on_progress=monitor_callback,
     )
     out_dir = FIXED_DIR / ("P0_pymupdf" if group == "0" else "P1_mineru")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -572,19 +618,82 @@ async def run_full(group: str) -> dict[str, Any]:
             llm,
             out_jsonl=FIXED_DIR / f"full_{group}_raw_results.jsonl",
         )
-        for row in rows:
-            row["category"] = QUESTION_CATEGORIES.get(row["question_id"], "未分类")
-        write_jsonl(out_dir / "results.jsonl", rows)
-        write_jsonl(FIXED_DIR / f"full_{group}_llm_calls.jsonl", llm.calls)
-        checkpoint["queries_complete"] = True
-        checkpoint_path.write_text(json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    pipeline = "pymupdf_standard_adapter" if group == "0" else "mineru_online_clean_adapter"
+    parent_map: dict[str, str] = {}
+    for pdf in PDF_NAMES:
+        for child in read_jsonl(_child_dir(group) / pdf / "child_chunks.jsonl"):
+            parent_map[child["chunk_id"]] = child.get("parent_chunk_id", "")
     gold = load_gold()
+    gold_pages = {
+        case.case_id: {(c.source_file, c.page_number) for c in case.expected_citations}
+        for case in gold
+    }
     mapping = build_evidence_mapping(children)
+    mapped_ids: dict[str, set[str]] = {}
+    for entry in mapping["entries"]:
+        if entry["mapped"]:
+            mapped_ids.setdefault(entry["case_id"], set()).update(entry["mapped_child_ids"])
+    enriched: list[dict[str, Any]] = []
+    for row in rows:
+        expected_pages = gold_pages.get(row["question_id"], set())
+        retrieved = []
+        for item in row.get("retrieved", []):
+            retrieved.append(
+                {
+                    **item,
+                    "parent_chunk_id": parent_map.get(item.get("chunk_id", ""), ""),
+                }
+            )
+        top5_pages = {(item.get("file"), item.get("page")) for item in retrieved[:5]}
+        top5_ids = {item.get("chunk_id") for item in retrieved[:5]}
+        expected_ids = mapped_ids.get(row["question_id"], set())
+        enriched.append(
+            {
+                **row,
+                "case_id": row["question_id"],
+                "parser_pipeline": pipeline,
+                "category": QUESTION_CATEGORIES.get(row["question_id"], "未分类"),
+                "retrieved": retrieved,
+                "gold_document_match": any(
+                    item.get("file") in {doc for doc, _ in expected_pages}
+                    for item in retrieved[:5]
+                ),
+                "gold_page_match": bool(top5_pages & expected_pages),
+                "gold_evidence_match": bool(top5_ids & expected_ids),
+            }
+        )
+    write_jsonl(out_dir / "results.jsonl", enriched)
+    calls_path = FIXED_DIR / f"full_{group}_llm_calls.jsonl"
+    persisted_calls: list[dict[str, Any]] = []
+    if calls_path.is_file():
+        persisted_calls = read_jsonl(calls_path)
+    write_jsonl(calls_path, persisted_calls + llm.calls)
+    checkpoint["queries_complete"] = True
+    checkpoint_path.write_text(json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8")
+
     write_json(FIXED_DIR / "comparison" / f"evidence_mapping_p{group}.json", mapping)
-    retrieval = retrieval_metrics(rows, gold=gold, mapping=mapping)
-    citations = citation_metrics(rows, gold=gold)
-    categories = category_breakdown(rows, retrieval, gold=gold, mapping=mapping)
+    retrieval = retrieval_metrics(enriched, gold=gold, mapping=mapping)
+    citations = citation_metrics(enriched, gold=gold)
+    categories = category_breakdown(enriched, retrieval, gold=gold, mapping=mapping)
+    all_calls = persisted_calls + llm.calls
+    llm_stats = {
+        "call_count": len(all_calls),
+        "input_tokens": sum(c["input_tokens"] for c in all_calls),
+        "output_tokens": sum(c["output_tokens"] for c in all_calls),
+        "total_tokens": sum(c["total_tokens"] for c in all_calls),
+        "cache_hits": sum(1 for c in all_calls if c.get("cache_hit")),
+        "cache_misses": sum(1 for c in all_calls if not c.get("cache_hit")),
+        "retry_count": sum(c.get("retry_count", 0) for c in all_calls),
+        "errors": sum(1 for c in all_calls if c.get("status") == "error"),
+        "model_mismatches": sum(
+            1
+            for c in all_calls
+            if c.get("requested_model") != FIXED_MODEL or c.get("actual_model") != FIXED_MODEL
+        ),
+        "all_requested_model": sorted({c.get("requested_model") for c in all_calls}),
+        "all_actual_model": sorted({c.get("actual_model") for c in all_calls}),
+    }
     metrics = {
         "group": group,
         "gate": {k: v[:16] for k, v in gate["p0"].items()},
@@ -592,7 +701,8 @@ async def run_full(group: str) -> dict[str, Any]:
         "retrieval": retrieval,
         "citations": citations,
         "categories": categories,
-        "llm": llm.summary(),
+        "llm": llm_stats,
+        "pipeline": pipeline,
     }
     write_json(out_dir / "metrics.json", metrics)
     return metrics

@@ -8,13 +8,15 @@
 
 ## 1. 阶段结论
 
-- **Phase 3A incomplete；Phase 3A-P/R 状态：`blocked by insufficient qwen-plus-2025-07-28 quota`**
+- **Phase 3A complete（2026-08-01 付费运行正式完成）；Phase 4 allowed（不自动实施）**
+- 付费授权：用户已开启阿里云百炼按量付费并明确授权本次实验产生费用；显式门禁 `IRA_PHASE3A_PAID_RUN=1` 已设置并通过。
+- 固定模型 `qwen-plus-2025-07-28`，fallback=false，thinking=false；P0/P1 全部 LLM 调用 requested==actual==该模型，0 重试、0 错误。
+- P0（PyMuPDF 标准解析管线）与 P1（MinerU 标准清洗解析管线）**均完成完整索引 + 50 题**，全部完整性门禁通过，临时资源已精确清理。
 - MinerU 真实调用 **全部成功**：batch submit → 签名上传 → poll done → **CDN ZIP 下载成功** → content_list 可读 → pages 提取成功（两份 PDF 均完成）。
-- P0（PyMuPDF）完整实验 **已完成**：解析 → 切块 → Qdrant → 50 题检索与引用指标。
-- P1（MinerU）解析与切块 **已完成且严格满足** `parser_used=mineru_online`、`fallback_used=false`；**Qdrant 索引与 50 题检索未能完成**。
-- 阻塞原因：**Phase 3A-P/R 固定模型 Token 预检**（qwen-plus-2025-07-28 实测）估算全量实验需约 **241 万 token**，超过免费额度 100 万 → 按规则**不得启动全量实验**、不得切换模型。
+- P1 使用冻结的 MinerU-clean（`mineru_online_clean_adapter`）构建索引；P1-raw 仅作消融，不参与正式对比。
+- 正式结果摘要：P0 在 Recall@1/5、MRR、Gold Page Recall、Citation Accuracy 上领先；P1（MinerU-clean）在 Gold Evidence Recall 上略高（0.9375 vs 0.9167），LLM Token 消耗低约 **51%**（602k vs 1,229k）。
 - 此前历史实验（非固定模型）还经历了 DashScope 免费额度逐模型耗尽（kimi → qwen3.6-plus → qwen3.6-flash → qwen-plus → qwen-turbo → qwen3.5-flash），已归档为 historical，不参与最终对比。
-- 依据任务规则：P1 关键项未完成 → **Phase 3A 标记 incomplete**；默认解析器保持 **PyMuPDF**；不进入 Phase 4；不实施任何生产默认值修改。
+- **最终解析器决策：C（PyMuPDF 默认，MinerU 手动选择）**——数据不支持自动切换；默认解析器保持 PyMuPDF，不实施生产默认值修改。
 
 ---
 
@@ -88,6 +90,95 @@
 ```
 
 八项配置 hash（chunk / embedding / index_llm / query_llm / prompt_bundle / retrieval / qdrant_schema / golden_set）P0=P1；冻结产物 25 项 SHA256 已固化（见 [phase-3A-paid-run-readiness-report.md](phase-3A-paid-run-readiness-report.md)）。
+
+---
+
+## 3c. Phase 3A-R-Paid 正式公平实验结果
+
+### 索引完整性与模型一致性（付费运行实测）
+
+| 项 | P0 pymupdf_standard_adapter | P1 mineru_online_clean_adapter |
+|---|---|---|
+| KB / generation | `4e1b9915…` / `g746baf3…` | `b3885f95…` / `g9fff457…` |
+| chunks points | 453 | 184 |
+| entities points | 1,024 | 774 |
+| relationships points | 1,082 | 661 |
+| 文档状态 | 2/2 processed | 2/2 processed |
+| 无 processing/failed/partial | ✅ | ✅ |
+| LLM 调用数 | 594 | 296 |
+| 全部 requested==actual | `qwen-plus-2025-07-28` ✅ | `qwen-plus-2025-07-28` ✅ |
+| retry / error / mismatch | 0 / 0 / 0 | 0 / 0 / 0 |
+| input / output / total tokens | 1,053,531 / 175,852 / **1,229,383** | 499,956 / 102,220 / **602,176** |
+| cache hit / miss | 0 / 594（首次运行无缓存） | 0 / 296 |
+| 索引耗时 | ≈18.4 min | ≈11 min |
+
+### 检索指标（同 50 题黄金集）
+
+| 指标 | P0 | P1 |
+|---|---|---|
+| Recall@1 | **0.5625** | 0.5208 |
+| Recall@3 | 0.6875 | 0.6875 |
+| Recall@5 | **0.7500** | 0.7292 |
+| MRR | **0.6167** | 0.6111 |
+| Gold Document Recall | 1.0000 | 1.0000 |
+| Gold Page Recall | **0.7917** | 0.6667 |
+| Gold Evidence Recall | 0.9167 | **0.9375** |
+| Evidence Precision@5 | 0.1958 | 0.1833 |
+| 无结果率 | 0 | 0 |
+| 错误文档召回率 | 0 | 0 |
+| Top-1 文档正确率 | **1.0000** | 0.9792 |
+| Top-5 页面覆盖率 | **0.7917** | 0.6667 |
+
+### 引用与拒答
+
+| 指标 | P0 | P1 |
+|---|---|---|
+| Citation Accuracy | **0.8958** | 0.7917 |
+| Citation Precision | **0.3507** | 0.3090 |
+| Citation Recall | **0.7785** | 0.6941 |
+| Citation Traceability | 1.0000 | 1.0000 |
+| Unsupported Citation Rate | 0 | 0 |
+| Insufficient Evidence Rejection（N001/N002） | 1.0000 | 1.0000 |
+| False Rejection Rate | 0.2917 | 0.3333 |
+| Unsupported Answer Rate | 0 | 0 |
+| 查询延迟 avg / P50 / P95 | 3.78s / 3.75s / 5.66s | 3.70s / 3.44s / 6.09s |
+
+### 分类对比
+
+| 分类 | P0 page/evidence | P1 page/evidence |
+|---|---|---|
+| 参数查询 (20) | **0.90 / 0.80** | 0.65 / 0.75 |
+| 表格查询 (3) | 1.00 / 1.00 | 1.00 / 1.00 |
+| 操作步骤 (9) | **0.667 / 0.667** | 0.556 / 0.667 |
+| 故障诊断 (3) | **0.667 / 0.667** | 0.333 / 0.333 |
+| 安全警告 (5) | **0.80 / 0.80** | 0.60 / 0.60 |
+| 普通事实 (2) | 0.50 / 0.50 | **1.00 / 1.00** |
+| 跨页问题 (6) | 0.667 / 0.667 | **0.833 / 0.833** |
+| 证据不足 (2) | 拒答 ✅ | 拒答 ✅ |
+
+### Evidence Mapping（独立映射，黄金集未修改）
+
+| | P0 | P1 |
+|---|---|---|
+| 黄金证据总数 | 70 | 70 |
+| 精确映射 | 70 | 61 |
+| 模糊映射（跨页文本覆盖） | 0 | 5 |
+| unmapped | 0 | 4 |
+| 人工确认 | 抽样 14 页 | 抽样 14 页 |
+
+P1 的 4 条 unmapped 与 5 条模糊映射集中在 2196 p23/24/28/29 与 t1739cn p22：MinerU-clean 的 heading 分组产生跨页 parent（如 p22-24、p27-39），child 的 page_start 偏移，导致页级映射失败（内容未丢失，见 pages_clean 核验）。
+
+### OCR 错误影响
+
+- 2196 p14 表3：`150°F` → `$1 5 0 ^ { \circ }$`、`表2` 丢字；p15 表4：`AC0→ACO`、美孚行错位——这些 OCR 原始错误在 P1-clean 中保留未修复，参数查询页召回 0.65 vs P0 0.90。
+- 故障诊断页 23 的表格虽保留结构，但因页属性偏移（chunk page_start=22）导致 P1 故障诊断 evidence recall 0.333 vs P0 0.667。
+- MinerU-clean 在普通事实与跨页问题上优于 P0（结构保留的收益体现在部分类别）。
+
+### 结论
+
+- 两组均为真实、完整、同一固定模型下的公平结果；唯一变量 `parser_pipeline`。
+- MinerU-clean 的核心收益是**成本**（Token −51%、调用数 −50%）与部分结构化内容；核心代价是**检索/引用指标整体略降**（Gold Page Recall −12.5pp、Citation Accuracy −10.4pp、故障诊断 −33pp），且引入 OCR 错误与页属性偏移。
+- 表格双表示没有提升表格类查询（两组均 1.0），未构成切换到 MinerU 的依据。
 
 ---
 
@@ -376,12 +467,12 @@
   - P1-clean 全量索引 ≈ 516,092
   - 查询 ≈ 140,763
   - **合计 ≈ 2,408,642 token > 1,000,000 → blocked_insufficient_quota**
-- 因此：不启动全量索引；不计算 P0/P1 公平检索指标；不编造结果。
-- **2,408,642 是估算值，不是最终实际计费值**；该估算足以证明 1,000,000 免费额度不足。用户已开启按量付费（余额 300 元声明），但显式门禁 `IRA_PHASE3A_PAID_RUN=1` 未设置，按指令不启动全量运行（详见 [phase-3A-paid-run-readiness-report.md](phase-3A-paid-run-readiness-report.md)）。
+- 预检阶段因此未启动全量索引（免费额度不足）；**付费授权后已正式完成全量运行**（见 §3c），实际消耗 P0 1,229,383 + P1 602,176 token。
+- **2,408,642 是估算值，不是最终实际计费值**；正式运行实际合计约 183 万 token（费用 SDK 未提供，N/A）。
 
 ### 配置一致性门禁
 
-`fixed_model/config.json` 冻结，8 项 hash（chunk/embedding/index_llm/query_llm/prompt/retrieval/qdrant/golden）P0=P1 全部一致，唯一变量 parser_backend；golden set SHA256 与冻结值一致。
+`fixed_model/config.json` 冻结，8 项 hash（chunk/embedding/index_llm/query_llm/prompt/retrieval/qdrant/golden）P0=P1 全部一致，唯一变量 `parser_pipeline`；golden set SHA256 与冻结值一致。
 
 ---
 
@@ -394,6 +485,8 @@ python -m ruff check .               -> All checks passed
 ```
 
 **Phase 3A-P/R 更新后**：`python -m pytest --collect-only -q` → **404 collected**；`python -m pytest -q` → **389 passed, 15 skipped, 0 failed**；`ruff check .` → All checks passed。
+
+**Phase 3A-R-Paid 运行后**：`python -m pytest --collect-only -q` → **417 collected**；`python -m pytest -q` → **402 passed, 15 skipped, 0 failed**；`ruff check .` → All checks passed（原测试无退化）。
 
 - Phase 3A 新增测试：19（parser comparison）+ 16（MinerU Block Policy / 固定模型门禁），见 `tests/test_parser_backend_comparison.py`、`tests/test_mineru_block_policy.py`。
 - 真实 MinerU 测试：1（`IRA_MINERU_REAL=1` opt-in；本阶段已用 smoke + P1 真实调用完成验证，测试本身未重复消耗额度）。
@@ -424,15 +517,17 @@ python -m ruff check .               -> All checks passed
 
 ## 17. 已知限制
 
-- P1 检索指标缺省（LLM 免费配额全部耗尽），Phase 3A 未验收；继续需为 DashScope 充值或关闭 free-tier-only。
+- 正式 P0/P1 检索指标已产生（付费运行），但 **Answer Correctness / Faithfulness 标记 N/A**：为避免额外 Judge 费用，未运行 LLM Judge；检索与确定性引用指标完整。
 - 旧 P0（历史非固定模型基线）查询中途发生模型降级，回答类指标 N/A；该基线不用于最终公平对比（LightRAG 图谱抽取与 mix 查询可能受 LLM 变化影响）。
 - 标题/步骤/警告统计为行级启发式，人工抽查覆盖 14 页代表性页面。
-- 页眉、页脚、页码与重复 page_footnote 已完成确定性清洗（P1-clean）；HTML 表格已实现 raw_html 与 embedding_text 双表示；OCR 原始字符错误未自动修复；P1-clean 已通过人工质量门禁；**P1-clean 的完整 RAG 指标尚未产生**（等待付费运行放行）。
+- 页眉、页脚、页码与重复 page_footnote 已完成确定性清洗（P1-clean）；HTML 表格已实现 raw_html 与 embedding_text 双表示；OCR 原始字符错误未自动修复；P1-clean 已通过人工质量门禁并有完整 RAG 指标。
+- MinerU-clean 的 heading 分组导致跨页 parent（p22-24、p27-39），child page_start 偏移，是 P1 Gold Page Recall 偏低与 4 条 evidence unmapped 的主因（内容未丢失）。
 - 未修改生产默认解析器；未重新解析正式 KB。
-- 免费 DashScope 额度无法支撑全量实验（6 个模型全部 403）。
+- 付费运行实际消耗：P0 1,229,383 token + P1 602,176 token（合计约 183 万 token；人民币费用 SDK 未提供，标记 N/A，不编造金额）。
+- 实验临时 Qdrant Collection 与临时 workspace 已按登记名称精确清理（Qdrant 现存 0 collection）；缓存、checkpoint、逐题结果与指标均保留。
 
 ---
 
 ## 18. 是否允许进入 Phase 4
 
-**否。** Phase 3A 未完成（P1 检索缺失），按规则停止；不进入 Rerank，不进入 Phase 4。待 P1 检索完成后可更新本报告并重新判定。
+**是（Phase 3A complete）。** P0/P1 完整索引、同一固定模型、无 fallback、两组各 50 题、黄金集未修改、独立 Evidence Mapping、完整公平指标、测试与 Ruff 通过、临时资源精确清理——全部满足。允许进入 **Phase 4：混合检索、Parent 扩展与 Rerank 对比**；**不自动实施**，需用户另行发起。

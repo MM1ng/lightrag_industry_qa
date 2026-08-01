@@ -9,8 +9,8 @@
 
 - Phase 3 complete
 - Phase 3A-P（MinerU 确定性 Adapter + P1-clean）complete，人工质量门禁通过
-- Phase 3A-R（固定模型公平实验）**blocked by insufficient qwen-plus-2025-07-28 quota**（免费额度估算不足；付费运行尚未放行）
-- Phase 3A incomplete；Phase 4 not allowed
+- Phase 3A-R（固定模型公平实验）**付费运行完成（Phase 3A-R-Paid）**
+- **Phase 3A complete；Phase 4 allowed（不自动实施）**
 
 ## 2. 固定模型
 
@@ -40,6 +40,7 @@
 - 估算包含 8% merge 与 20% 安全余量
 - **估算总量 ≈ 2,408,642 token（估算值，非最终实际计费值）**
 - 该估算足以证明 1,000,000 免费额度不足；按量付费开启后仍以实际计费为准
+- **正式运行实际消耗（付费）**：P0 1,229,383 + P1 602,176 ≈ **1,831,559 token**（估算偏高约 31%，因 P1-clean 实际 chunk 少于 P1-raw 估算口径）；人民币费用 SDK 未提供，标记 N/A。
 
 ## 4. 当前免费额度
 
@@ -47,17 +48,17 @@
 
 ## 5. 是否获得付费授权
 
-- 用户声明：已开启按量付费，账户余额 300 元（2026-08-01）。
-- 显式运行门禁 `IRA_PHASE3A_PAID_RUN`：**未设置**。
-- 结论：付费能力已开启，但运行门禁未放行；按指令不启动全量实验。
+- 用户声明并授权：已开启阿里云百炼按量付费，账户有可用余额（2026-08-01）。
+- 显式运行门禁 `IRA_PHASE3A_PAID_RUN=1`：**已设置并通过**；`LLM_MODEL=qwen-plus-2025-07-28`、`MODEL_FALLBACK_ENABLED=false` 均确认。
+- 结论：付费运行已获授权并完成。
 
 ## 6. 付费运行门禁状态
 
-`python -m evaluation.experiments.parser_backend.paid_run_gate`（或 `fixed_model_run --readiness`）输出：
+`fixed_model_run --readiness` 输出（放行时）：
 
 | 检查项 | 状态 |
 |---|---|
-| IRA_PHASE3A_PAID_RUN=1 | ❌ 未设置 |
+| IRA_PHASE3A_PAID_RUN=1 | ✅ |
 | LLM_MODEL == qwen-plus-2025-07-28 | ✅ |
 | MODEL_FALLBACK_ENABLED=false | ✅（实验脚本强制） |
 | enable_thinking=false | ✅ |
@@ -65,6 +66,8 @@
 | 冻结产物未变化（25 项） | ✅ |
 | 随机测试 prefix（ira_p3ar_） | ✅（运行期生成） |
 | 预检模型一致性 | ✅ |
+
+运行期间两次（P0/P1 启动前）均通过；完成后按登记名称精确清理（Qdrant 现存 0 collection）。
 
 ## 7. 冻结产物 hash
 
@@ -107,9 +110,13 @@ python -m ruff check .               -> All checks passed
 
 ## 12. 是否启动全量实验
 
-**否。** 未设置 `IRA_PHASE3A_PAID_RUN=1` 时：只允许配置/报告/hash 检查，不执行全量索引、不执行 100 题查询、不产生新的全量模型调用。
+**是（已执行并完成）。** 2026-08-01 门禁放行后：
 
-放行条件（全部满足后由用户显式设置 `IRA_PHASE3A_PAID_RUN=1` 并重新执行）：
+- P0 全量索引（453 children）+ 50 题：594 次 LLM 调用，1,229,383 token
+- P1-clean 全量索引（184 children）+ 50 题：296 次 LLM 调用，602,176 token
+- 两组完整性门禁全部通过；结果与指标见 [phase-3A-mineru-vs-pymupdf-final-report.md](phase-3A-mineru-vs-pymupdf-final-report.md) §3c。
+
+如需复现（例如配额/配置变化后重跑）：
 
 ```powershell
 $env:IRA_PHASE3A_PAID_RUN='1'

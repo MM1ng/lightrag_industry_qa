@@ -8,7 +8,7 @@ import json
 import os
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from openai import AsyncOpenAI
 
@@ -31,6 +31,7 @@ class FixedModelLLM:
         timeout: float = 180.0,
         cache_path: Path | None = None,
         config_hash: str = "",
+        on_progress: Callable[["FixedModelLLM"], None] | None = None,
     ) -> None:
         self.model = model
         self.enable_thinking = enable_thinking
@@ -40,6 +41,7 @@ class FixedModelLLM:
         self.config_hash = config_hash
         self.cache_hits = 0
         self.cache_misses = 0
+        self.on_progress = on_progress
         self._cache: dict[str, dict[str, Any]] = {}
         if cache_path is not None and cache_path.is_file():
             for line in cache_path.read_text(encoding="utf-8").splitlines():
@@ -111,6 +113,8 @@ class FixedModelLLM:
                     "prompt_hash": _hash(prompt),
                 }
             )
+            if self.on_progress is not None:
+                self.on_progress(self)
             return str(cached["content"])
         self.cache_misses += 1
         while True:
@@ -178,6 +182,8 @@ class FixedModelLLM:
             self.cache_path.parent.mkdir(parents=True, exist_ok=True)
             with self.cache_path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        if self.on_progress is not None:
+            self.on_progress(self)
         return content
 
     def summary(self) -> dict[str, Any]:

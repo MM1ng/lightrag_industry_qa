@@ -43,6 +43,7 @@ def build_evidence_mapping(
     children: list[dict[str, Any]],
     *,
     gold: tuple[GoldenCase, ...] | None = None,
+    fuzzy_coverage_threshold: float = 0.5,
 ) -> dict[str, Any]:
     """Map each gold citation to experiment child chunks by page + text overlap.
 
@@ -54,6 +55,11 @@ def build_evidence_mapping(
     by_page = children_by_file_and_page(children)
     entries: list[dict[str, Any]] = []
     mapped_count = 0
+    exact_count = 0
+    fuzzy_count = 0
+    by_doc: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for child in children:
+        by_doc[str(child.get("document_name", ""))].append(child)
     for case in gold:
         for citation in case.expected_citations:
             gold_text = texts.get(citation.chunk_id, "")
@@ -65,8 +71,30 @@ def build_evidence_mapping(
                 if score >= OVERLAP_THRESHOLD:
                     scored.append((score, child.get("chunk_id")))
             scored.sort(key=lambda item: (-item[0], str(item[1])))
-            mapped = bool(scored)
+            mapping_kind = "exact" if scored else None
+            mapped_ids = [str(cid) for _, cid in scored[:5]]
+            if not scored:
+                # Fuzzy fallback: content coverage across the document (page
+                # attribution may shift when parents span pages).
+                gold_grams = _bigrams(gold_text)
+                if gold_grams:
+                    best: list[tuple[float, str]] = []
+                    for child in by_doc.get(citation.source_file, []):
+                        content = str(child.get("embedding_content") or child.get("content") or "")
+                        child_grams = _bigrams(content)
+                        if not child_grams:
+                            continue
+                        coverage = len(gold_grams & child_grams) / len(gold_grams)
+                        if coverage >= fuzzy_coverage_threshold:
+                            best.append((coverage, str(child.get("chunk_id"))))
+                    best.sort(key=lambda item: (-item[0], item[1]))
+                    if best:
+                        mapping_kind = "fuzzy"
+                        mapped_ids = [cid for _, cid in best[:5]]
+            mapped = mapping_kind is not None
             mapped_count += int(mapped)
+            exact_count += int(mapping_kind == "exact")
+            fuzzy_count += int(mapping_kind == "fuzzy")
             entries.append(
                 {
                     "case_id": case.case_id,
@@ -75,8 +103,9 @@ def build_evidence_mapping(
                     "gold_chunk_id": citation.chunk_id,
                     "gold_text_present": bool(gold_text),
                     "mapped": mapped,
-                    "mapped_child_ids": [str(cid) for _, cid in scored[:5]],
-                    "mapping_scores": [round(score, 3) for score, _ in scored[:5]],
+                    "mapping_kind": mapping_kind,
+                    "mapped_child_ids": mapped_ids,
+                    "mapping_scores": [round(score, 3) for score, _ in scored[:5]] if scored else [],
                     "unmapped_reason": None if mapped else ("gold text missing" if not gold_text else "no page/text overlap"),
                 }
             )
@@ -84,8 +113,16 @@ def build_evidence_mapping(
         "total_gold_citations": len(entries),
         "mapped_citations": mapped_count,
         "mapping_rate": round(mapped_count / len(entries), 4) if entries else 0.0,
+        "exact_mapped": exact_count,
+        "fuzzy_mapped": fuzzy_count,
+        "unmapped": len(entries) - mapped_count,
         "entries": entries,
     }
+
+
+def _bigrams(text: str) -> set[str]:
+    normalized = "".join(text.split()).casefold()
+    return {normalized[i : i + 2] for i in range(max(1, len(normalized) - 1))}
 
 
 def _gold_pages(gold: tuple[GoldenCase, ...]) -> dict[str, list[tuple[str, int, str]]]:
