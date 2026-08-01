@@ -363,7 +363,9 @@ python -m pytest -q                  -> 373 passed, 15 skipped, 0 failed
 python -m ruff check .               -> All checks passed
 ```
 
-- Phase 3A 新增测试：19（13 纯函数 + 6 实验产物/opt-in 门禁），见 `tests/test_parser_backend_comparison.py`。
+**Phase 3A-P/R 更新后**：`python -m pytest --collect-only -q` → **404 collected**；`python -m pytest -q` → **389 passed, 15 skipped, 0 failed**；`ruff check .` → All checks passed。
+
+- Phase 3A 新增测试：19（parser comparison）+ 16（MinerU Block Policy / 固定模型门禁），见 `tests/test_parser_backend_comparison.py`、`tests/test_mineru_block_policy.py`。
 - 真实 MinerU 测试：1（`IRA_MINERU_REAL=1` opt-in；本阶段已用 smoke + P1 真实调用完成验证，测试本身未重复消耗额度）。
 - parser comparison 测试：18 项（目录隔离、PDF hash、chunk 参数一致、P1 strict manifest、ZIP hash、页面覆盖率、token 分布、Recall@K、MRR、Gold Page Recall、黄金集未修改、mapping 独立等）。
 - skipped 15 = 11（Qdrant opt-in）+ 1（真实 MinerU opt-in）+ 3（P1 检索结果待生成）。
