@@ -1,0 +1,224 @@
+{
+  "version": "phase5-metrics-v1",
+  "scope": "Defined from the actual Phase 4D-R2 stage-2 evaluation code (stage2_answers._answer_metrics). Historical values preserved; canonical names added where the historical name was ambiguous.",
+  "historical_values_preserved": true,
+  "definitions": [
+    {
+      "metric_name": "answer_citation_accuracy",
+      "historical_name": "Citation Accuracy",
+      "definition": "Per-question: share of answerable questions whose answer has at least one citation whose (document, page) pair is in the gold set.",
+      "numerator": "questions with >=1 gold-matching citation",
+      "denominator": "answerable questions (48)",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": 43,
+        "denominator": 48,
+        "decimal": 0.8958
+      },
+      "phase4d_r2_r1_value": 0.8958,
+      "phase4d_r2_cn0_value": 0.8333
+    },
+    {
+      "metric_name": "answer_citation_precision",
+      "historical_name": "Citation Precision",
+      "definition": "Per-question mean of (gold-matching citation count / total cited count) over answerable questions; rows without citations count 0.",
+      "numerator": "sum over questions of correct/total cited",
+      "denominator": "answerable questions (48)",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": "unsupported_citation_reference_rate (per-citation, not strictly complementary)",
+      "raw_counts": {
+        "numerator": 16.1667,
+        "denominator": 48,
+        "decimal": 0.3368
+      },
+      "phase4d_r2_r1_value": 0.3368
+    },
+    {
+      "metric_name": "answer_citation_recall",
+      "historical_name": "Citation Recall",
+      "definition": "Per-question mean of (gold-matching citation count / expected gold citation count) over answerable questions.",
+      "numerator": "sum over questions of correct/expected",
+      "denominator": "answerable questions (48)",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": 37.9167,
+        "denominator": 48,
+        "decimal": 0.7899
+      },
+      "phase4d_r2_r1_value": 0.7899
+    },
+    {
+      "metric_name": "citation_traceability",
+      "historical_name": "Citation Traceability",
+      "definition": "Per-question: share of answerable questions where every emitted citation carries a chunk_id.",
+      "numerator": "questions with all citations carrying chunk_id",
+      "denominator": "answerable questions (48)",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0
+      },
+      "phase4d_r2_r1_value": 1.0,
+      "phase4d_r2_cn0_value": 1.0
+    },
+    {
+      "metric_name": "citation_traceability_emitted",
+      "historical_name": null,
+      "definition": "Phase 5 structural definition: among answerable questions that emitted at least one citation, the share whose every citation carries a chunk_id. Rows that refused (zero citations) are excluded from the denominator; refusal is evaluated separately by rejection metrics.",
+      "numerator": "questions with >=1 citation and all citations carry chunk_id",
+      "denominator": "answerable questions with >=1 emitted citation",
+      "included_questions": "S/D/C (48 answerable) with emitted citations",
+      "excluded_questions": "N001/N002 and answerable refusals (0 citations)",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": null,
+        "denominator": null,
+        "decimal": null,
+        "note": "computed per Phase 5 arm; Phase 4 historical value not comparable"
+      }
+    },
+    {
+      "metric_name": "unsupported_citation_reference_rate",
+      "historical_name": "Unsupported Citation Rate",
+      "definition": "Per-citation: share of emitted citation references whose (document, page) pair is not in the gold set. Counts every cited reference; a question with N citations contributes N references.",
+      "numerator": "wrong citation references (document/page not gold)",
+      "denominator": "total emitted citation references",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": false,
+      "complement_metric": "answer_citation_precision (related but per-question mean)",
+      "raw_counts": {
+        "numerator": 93,
+        "denominator": 139,
+        "decimal": 0.6691
+      },
+      "phase4d_r2_r1_value": 0.6691,
+      "phase4d_r2_cn0_value": 0.6838
+    },
+    {
+      "metric_name": "false_rejection_rate",
+      "historical_name": "False Rejection Rate",
+      "definition": "Per-question: share of answerable questions refused (no factual answer emitted) even though gold evidence exists.",
+      "numerator": "answerable questions refused",
+      "denominator": "answerable questions (48)",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": false,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": 14,
+        "denominator": 48,
+        "decimal": 0.2917
+      },
+      "phase4d_r2_r1_value": 0.2917,
+      "phase4d_r2_cn0_value": 0.3125
+    },
+    {
+      "metric_name": "insufficient_evidence_rejection_rate",
+      "historical_name": "Insufficient Evidence Rejection Rate",
+      "definition": "Per-question: share of evidence-insufficient questions correctly refused. Denominator is fixed at 2 (N001/N002).",
+      "numerator": "negative questions refused",
+      "denominator": "negative questions (2)",
+      "included_questions": "N001/N002",
+      "excluded_questions": "S/D/C (48 answerable)",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0
+      },
+      "phase4d_r2_r1_value": 1.0,
+      "phase4d_r2_cn0_value": 1.0
+    },
+    {
+      "metric_name": "negative_unsupported_answer_rate",
+      "historical_name": "Unsupported Answer Rate",
+      "definition": "Per-question: share of evidence-insufficient questions answered (not refused) with a factual answer. Denominator fixed at 2.",
+      "numerator": "negative questions answered",
+      "denominator": "negative questions (2)",
+      "included_questions": "N001/N002",
+      "excluded_questions": "S/D/C (48 answerable)",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": false,
+      "complement_metric": "insufficient_evidence_rejection_rate",
+      "raw_counts": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0
+      },
+      "phase4d_r2_r1_value": 0.0,
+      "phase4d_r2_cn0_value": 0.0
+    },
+    {
+      "metric_name": "answered_without_evidence_rate",
+      "historical_name": null,
+      "definition": "Per-question: share of answerable questions answered factually but with zero citations emitted.",
+      "numerator": "answerable questions answered with 0 citations",
+      "denominator": "answerable questions (48)",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": false,
+      "complement_metric": null,
+      "raw_counts": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0
+      },
+      "phase4d_r2_r1_value": 0.0,
+      "phase4d_r2_cn0_value": 0.0
+    }
+  ]
+}
