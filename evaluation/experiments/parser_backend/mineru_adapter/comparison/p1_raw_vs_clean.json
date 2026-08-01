@@ -1,0 +1,114 @@
+{
+  "2196-ANSI-Manual-Chinese.pdf": {
+    "raw": {
+      "chars": 68146,
+      "tokens": 36992,
+      "blocks": 530,
+      "parents": 234,
+      "children": 278,
+      "dup_ids": 46,
+      "dup_occurrences": 58,
+      "child_tokens": [
+        136.6,
+        31.0,
+        494.0,
+        1565
+      ],
+      "child_under_120": 210,
+      "child_1": 11,
+      "child_over_700": 8,
+      "html_tokens": 25095,
+      "pages": 53
+    },
+    "clean": {
+      "chars": 30149,
+      "tokens": 22748,
+      "blocks": 385,
+      "parents": 59,
+      "children": 89,
+      "dup_ids": 0,
+      "dup_occurrences": 0,
+      "child_tokens": [
+        264.8,
+        356.0,
+        513.0,
+        680
+      ],
+      "child_under_120": 33,
+      "child_1": 3,
+      "child_over_700": 0,
+      "html_tokens": 25095,
+      "pages": 51,
+      "tables": 39,
+      "steps": 142,
+      "warnings": 47
+    },
+    "token_reduction": 0.3851,
+    "chunk_reduction": 0.6799,
+    "filtered": {
+      "count": 190,
+      "by_reason": {
+        "image_without_text": 30,
+        "empty_block": 5,
+        "page_layout_boilerplate": 155
+      }
+    }
+  },
+  "t1739cn.pdf": {
+    "raw": {
+      "chars": 46989,
+      "tokens": 26346,
+      "blocks": 1009,
+      "parents": 136,
+      "children": 159,
+      "dup_ids": 0,
+      "dup_occurrences": 0,
+      "child_tokens": [
+        169.6,
+        55.0,
+        467.0,
+        1494
+      ],
+      "child_under_120": 98,
+      "child_1": 1,
+      "child_over_700": 3,
+      "html_tokens": 10045,
+      "pages": 61
+    },
+    "clean": {
+      "chars": 22180,
+      "tokens": 16722,
+      "blocks": 600,
+      "parents": 90,
+      "children": 95,
+      "dup_ids": 0,
+      "dup_occurrences": 0,
+      "child_tokens": [
+        178.1,
+        114.0,
+        471.0,
+        573
+      ],
+      "child_under_120": 48,
+      "child_1": 0,
+      "child_over_700": 0,
+      "html_tokens": 10045,
+      "pages": 55,
+      "tables": 15,
+      "steps": 186,
+      "warnings": 106
+    },
+    "token_reduction": 0.3653,
+    "chunk_reduction": 0.4025,
+    "filtered": {
+      "count": 508,
+      "by_reason": {
+        "image_without_text": 77,
+        "page_layout_boilerplate": 253,
+        "empty_block": 4,
+        "repeated_page_footnote_layout": 165,
+        "table_without_text_body": 9
+      }
+    }
+  }
+}

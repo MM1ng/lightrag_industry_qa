@@ -157,6 +157,10 @@ def structure_stats(blocks: Sequence[Any]) -> dict[str, Any]:
                 formulas += 1
                 continue
         # Block-level types that line rules cannot detect.
+        if bt == BlockType.table:
+            tables += 1
+            table_rows += sum(1 for line in text.splitlines() if line.strip().startswith("行"))
+            continue
         if bt == BlockType.list_item:
             steps += 1
             lists += 1

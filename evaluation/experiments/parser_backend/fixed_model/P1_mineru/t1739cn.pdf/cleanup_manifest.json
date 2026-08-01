@@ -1,0 +1,3560 @@
+{
+  "filtered_blocks": [
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 1,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 1,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 1,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 2,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "header",
+      "block_hash": "52daa71ebc310581",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "page_number",
+      "block_hash": "6b86b273ff34fce1",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 3,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "header",
+      "block_hash": "52daa71ebc310581",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 4,
+      "block_type": "page_number",
+      "block_hash": "d4735e3a265e16ee",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 5,
+      "block_type": "header",
+      "block_hash": "2f86caed5c79763b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 5,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 5,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 5,
+      "block_type": "page_number",
+      "block_hash": "4e07408562bedb8b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 5,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "page_number",
+      "block_hash": "4b227777d4dd1fc6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "header",
+      "block_hash": "2f86caed5c79763b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 6,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "header",
+      "block_hash": "afb63a620bdcff15",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 7,
+      "block_type": "page_number",
+      "block_hash": "ef2d127de37b942b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "page_number",
+      "block_hash": "e7f6c011776e8db7",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "header",
+      "block_hash": "afb63a620bdcff15",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 8,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "header",
+      "block_hash": "afb63a620bdcff15",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "page_number",
+      "block_hash": "7902699be42c8a8e",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 9,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 10,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 10,
+      "block_type": "header",
+      "block_hash": "afb63a620bdcff15",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 10,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 10,
+      "block_type": "page_number",
+      "block_hash": "2c624232cdd22177",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 11,
+      "block_type": "header",
+      "block_hash": "afb63a620bdcff15",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 11,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 11,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 11,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 11,
+      "block_type": "page_number",
+      "block_hash": "19581e27de7ced00",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "page_number",
+      "block_hash": "4a44dc15364204a8",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "header",
+      "block_hash": "afb63a620bdcff15",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 12,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "header",
+      "block_hash": "dcf9596868dfd5a6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "page_number",
+      "block_hash": "4fc82b26aecb47d2",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 13,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "header",
+      "block_hash": "dcf9596868dfd5a6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "page_number",
+      "block_hash": "6b51d431df5d7f14",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 14,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 15,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 15,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 15,
+      "block_type": "header",
+      "block_hash": "dcf9596868dfd5a6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 15,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 15,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 15,
+      "block_type": "page_number",
+      "block_hash": "3fdba35f04dc8c46",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "header",
+      "block_hash": "dcf9596868dfd5a6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "page_number",
+      "block_hash": "8527a891e2241369",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 16,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "header",
+      "block_hash": "38f8d0b788e0fbea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "page_number",
+      "block_hash": "e629fa6598d73276",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 17,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "header",
+      "block_hash": "38f8d0b788e0fbea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "page_number",
+      "block_hash": "b17ef6d19c7a5b1e",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 18,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "page_number",
+      "block_hash": "4523540f1504cd17",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 19,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 20,
+      "block_type": "page_number",
+      "block_hash": "4ec9599fc203d176",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 21,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 21,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 21,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 21,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 21,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 21,
+      "block_type": "page_number",
+      "block_hash": "9400f1b21cb527d7",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "page_number",
+      "block_hash": "f5ca38f748a1d6ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 22,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "page_number",
+      "block_hash": "6f4b6612125fb3a0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 23,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 24,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 24,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 24,
+      "block_type": "page_number",
+      "block_hash": "785f3ec7eb32f30b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 24,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 25,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 25,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 25,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 25,
+      "block_type": "page_number",
+      "block_hash": "535fa30d7e25dd8a",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 25,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 26,
+      "block_type": "page_number",
+      "block_hash": "c2356069e9d1e79c",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "header",
+      "block_hash": "e8f88f51ccb085ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "page_number",
+      "block_hash": "b7a56873cd771f2c",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 27,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "page_number",
+      "block_hash": "5f9c4ab08cac7457",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 28,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 29,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 29,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 29,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 29,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 29,
+      "block_type": "page_number",
+      "block_hash": "670671cd97404156",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 29,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 30,
+      "block_type": "page_number",
+      "block_hash": "59e19706d51d39f6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "page_number",
+      "block_hash": "35135aaa6cc23891",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 31,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 32,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 32,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 32,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 32,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 32,
+      "block_type": "page_number",
+      "block_hash": "624b60c58c9d8bfb",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 32,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "page_number",
+      "block_hash": "eb1e33e8a81b697b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 33,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "page_number",
+      "block_hash": "e29c9c180c6279b0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 34,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 35,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 35,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 35,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 35,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 35,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 35,
+      "block_type": "page_number",
+      "block_hash": "c6f3ac57944a5314",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "page_number",
+      "block_hash": "86e5014965866131",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "header",
+      "block_hash": "a34751f221798efd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 36,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 37,
+      "block_type": "header",
+      "block_hash": "efa24b63208250df",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 37,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 37,
+      "block_type": "page_number",
+      "block_hash": "9f14025af0065b30",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 37,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 37,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "header",
+      "block_hash": "efa24b63208250df",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 38,
+      "block_type": "page_number",
+      "block_hash": "76a50887d8f1c2e9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "header",
+      "block_hash": "efa24b63208250df",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "page_number",
+      "block_hash": "7a61b53701befdae",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 39,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "header",
+      "block_hash": "efa24b63208250df",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 40,
+      "block_type": "page_number",
+      "block_hash": "aea92132c4cbeb26",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "header",
+      "block_hash": "efa24b63208250df",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "page_number",
+      "block_hash": "0b918943df0962bc",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 41,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "header",
+      "block_hash": "efa24b63208250df",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "page_number",
+      "block_hash": "d59eced1ded07f84",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 42,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "footer",
+      "block_hash": "f34f8fb074d73d7d",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "header",
+      "block_hash": "a591ad837a7a94a9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "page_number",
+      "block_hash": "3d914f9348c9cc0f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 43,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "header",
+      "block_hash": "a591ad837a7a94a9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 44,
+      "block_type": "page_number",
+      "block_hash": "73475cb40a568e8d",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "header",
+      "block_hash": "a591ad837a7a94a9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 45,
+      "block_type": "page_number",
+      "block_hash": "44cb730c420480a0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "page_number",
+      "block_hash": "71ee45a3c0db9a98",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "header",
+      "block_hash": "a591ad837a7a94a9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 46,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "header",
+      "block_hash": "a591ad837a7a94a9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "page_number",
+      "block_hash": "811786ad1ae74adf",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 47,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "footer",
+      "block_hash": "5206c145dcfd0cde",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 48,
+      "block_type": "page_number",
+      "block_hash": "25fc0e7096fc6537",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "footer",
+      "block_hash": "e73855928586bed4",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 49,
+      "block_type": "page_number",
+      "block_hash": "31489056e0916d59",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "header",
+      "block_hash": "77188c4fc0672a6c",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "page_number",
+      "block_hash": "98010bd9270f9b10",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 50,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "page_number",
+      "block_hash": "0e17daca5f3e175f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 51,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 52,
+      "block_type": "page_number",
+      "block_hash": "1a6562590ef19d10",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "page_number",
+      "block_hash": "031b4af5197ec30a",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 53,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "table",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "table_without_text_body"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "page_footnote",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 54,
+      "block_type": "page_number",
+      "block_hash": "41cfc0d1f2d127b0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "header",
+      "block_hash": "4052d62a304dd79b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "page_number",
+      "block_hash": "2858dcd1057d3eae",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 55,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "header",
+      "block_hash": "114714e99188c596",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 56,
+      "block_type": "page_number",
+      "block_hash": "2fca346db6561871",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "header",
+      "block_hash": "114714e99188c596",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "page_number",
+      "block_hash": "02d20bbd7e394ad5",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 57,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "header",
+      "block_hash": "aa2fad1c1446b65f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 58,
+      "block_type": "page_number",
+      "block_hash": "7688b6ef52555962",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "header",
+      "block_hash": "aa2fad1c1446b65f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "page_footnote",
+      "block_hash": "adebf7f0012da17a",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "page_number",
+      "block_hash": "c837649cce43f272",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 59,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "header",
+      "block_hash": "aa2fad1c1446b65f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 60,
+      "block_type": "page_number",
+      "block_hash": "6208ef0f7750c111",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 61,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 61,
+      "block_type": "header",
+      "block_hash": "aa2fad1c1446b65f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 61,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 61,
+      "block_type": "page_number",
+      "block_hash": "3e1e967e9b793e90",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 61,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "header",
+      "block_hash": "dc824eab0b596bfd",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "header",
+      "block_hash": "aa2fad1c1446b65f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "page_footnote",
+      "block_hash": "5bdaab55995a89f9",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "page_footnote",
+      "block_hash": "5e51985d1ba66244",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "page_footnote",
+      "block_hash": "7c8622ab20cfdb06",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "page_footnote",
+      "block_hash": "37b79dd47136d5a3",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "page_footnote",
+      "block_hash": "166ef43240c13ec1",
+      "filter_reason": "repeated_page_footnote_layout"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "footer",
+      "block_hash": "9fa5f716c2d95c91",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "t1739cn.pdf",
+      "page_number": 62,
+      "block_type": "page_number",
+      "block_hash": "39fa9ec190eee7b6",
+      "filter_reason": "page_layout_boilerplate"
+    }
+  ]
+}

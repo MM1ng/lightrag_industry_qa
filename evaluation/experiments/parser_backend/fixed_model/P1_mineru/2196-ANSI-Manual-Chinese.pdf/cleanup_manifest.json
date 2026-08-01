@@ -1,0 +1,1334 @@
+{
+  "filtered_blocks": [
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 1,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 1,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 2,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 4,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 5,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 5,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 5,
+      "block_type": "page_number",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 6,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 6,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 6,
+      "block_type": "page_number",
+      "block_hash": "5d7f49449ab22dea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 6,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 7,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 7,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 7,
+      "block_type": "page_number",
+      "block_hash": "6b86b273ff34fce1",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 8,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 8,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 8,
+      "block_type": "page_number",
+      "block_hash": "d4735e3a265e16ee",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 8,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 9,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 9,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 9,
+      "block_type": "page_number",
+      "block_hash": "4e07408562bedb8b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 10,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 10,
+      "block_type": "page_number",
+      "block_hash": "4b227777d4dd1fc6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 10,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 11,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 11,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 11,
+      "block_type": "page_number",
+      "block_hash": "ef2d127de37b942b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 12,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 12,
+      "block_type": "page_number",
+      "block_hash": "e7f6c011776e8db7",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 12,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 13,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 13,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 13,
+      "block_type": "page_number",
+      "block_hash": "7902699be42c8a8e",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 14,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 14,
+      "block_type": "page_number",
+      "block_hash": "2c624232cdd22177",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 14,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 15,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 15,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 15,
+      "block_type": "page_number",
+      "block_hash": "19581e27de7ced00",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 16,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 16,
+      "block_type": "page_number",
+      "block_hash": "4a44dc15364204a8",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 16,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 17,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 17,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 17,
+      "block_type": "page_number",
+      "block_hash": "4fc82b26aecb47d2",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 18,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 18,
+      "block_type": "page_number",
+      "block_hash": "6b51d431df5d7f14",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 18,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 19,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 19,
+      "block_type": "page_number",
+      "block_hash": "3fdba35f04dc8c46",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 19,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 20,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 20,
+      "block_type": "page_number",
+      "block_hash": "8527a891e2241369",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 20,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 21,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 21,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 21,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 21,
+      "block_type": "page_number",
+      "block_hash": "e629fa6598d73276",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 22,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 22,
+      "block_type": "page_number",
+      "block_hash": "b17ef6d19c7a5b1e",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 22,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 23,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 23,
+      "block_type": "header",
+      "block_hash": "0f44c075b8e8cf03",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 23,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 23,
+      "block_type": "page_number",
+      "block_hash": "4523540f1504cd17",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 24,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 24,
+      "block_type": "page_number",
+      "block_hash": "4ec9599fc203d176",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 24,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 25,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 25,
+      "block_type": "header",
+      "block_hash": "502e31c2c4e6c1a6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 25,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 25,
+      "block_type": "page_number",
+      "block_hash": "9400f1b21cb527d7",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 26,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 26,
+      "block_type": "text",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "empty_block"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 26,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 26,
+      "block_type": "page_number",
+      "block_hash": "f5ca38f748a1d6ea",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 26,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 27,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 27,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 27,
+      "block_type": "page_number",
+      "block_hash": "6f4b6612125fb3a0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 28,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 28,
+      "block_type": "page_number",
+      "block_hash": "785f3ec7eb32f30b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 28,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 29,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 29,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 29,
+      "block_type": "page_number",
+      "block_hash": "535fa30d7e25dd8a",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 30,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 30,
+      "block_type": "page_number",
+      "block_hash": "c2356069e9d1e79c",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 30,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 31,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 31,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 31,
+      "block_type": "page_number",
+      "block_hash": "b7a56873cd771f2c",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 32,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 32,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 32,
+      "block_type": "page_number",
+      "block_hash": "5f9c4ab08cac7457",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 32,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 33,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 33,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 33,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 33,
+      "block_type": "page_number",
+      "block_hash": "670671cd97404156",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 34,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 34,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 34,
+      "block_type": "page_number",
+      "block_hash": "59e19706d51d39f6",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 34,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 35,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 35,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 35,
+      "block_type": "page_number",
+      "block_hash": "35135aaa6cc23891",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 36,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 36,
+      "block_type": "page_number",
+      "block_hash": "624b60c58c9d8bfb",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 36,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 37,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 37,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 37,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 37,
+      "block_type": "page_number",
+      "block_hash": "eb1e33e8a81b697b",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 38,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 38,
+      "block_type": "page_number",
+      "block_hash": "e29c9c180c6279b0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 38,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 39,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 39,
+      "block_type": "page_number",
+      "block_hash": "c6f3ac57944a5314",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 39,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 40,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 40,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 40,
+      "block_type": "page_number",
+      "block_hash": "86e5014965866131",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 40,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 41,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 41,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 41,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 41,
+      "block_type": "page_number",
+      "block_hash": "9f14025af0065b30",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 41,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 42,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 42,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 42,
+      "block_type": "page_number",
+      "block_hash": "76a50887d8f1c2e9",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 42,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 43,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 43,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 43,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 43,
+      "block_type": "page_number",
+      "block_hash": "7a61b53701befdae",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 44,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 44,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 44,
+      "block_type": "page_number",
+      "block_hash": "aea92132c4cbeb26",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 44,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 45,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 45,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 45,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 45,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 45,
+      "block_type": "page_number",
+      "block_hash": "0b918943df0962bc",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 46,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 46,
+      "block_type": "page_number",
+      "block_hash": "d59eced1ded07f84",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 46,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 47,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 47,
+      "block_type": "page_number",
+      "block_hash": "3d914f9348c9cc0f",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 47,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 48,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 48,
+      "block_type": "page_number",
+      "block_hash": "73475cb40a568e8d",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 48,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e4d728295b0c6a58",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "eea88b3175455075",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "c2d7583a445fc96e",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "0953764e2c041a5b",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "a01f486cefdff5ca",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "8e8c0c27e63b7c0a",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "image",
+      "block_hash": "e9c041ed91b36308",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "page_number",
+      "block_hash": "44cb730c420480a0",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 49,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 50,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 50,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 50,
+      "block_type": "page_number",
+      "block_hash": "71ee45a3c0db9a98",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 50,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 51,
+      "block_type": "image",
+      "block_hash": "dfd81c2d00a6fccd",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 51,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 51,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 51,
+      "block_type": "page_number",
+      "block_hash": "811786ad1ae74adf",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 52,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 52,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 52,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 52,
+      "block_type": "page_number",
+      "block_hash": "25fc0e7096fc6537",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 52,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 53,
+      "block_type": "image",
+      "block_hash": "e3b0c44298fc1c14",
+      "filter_reason": "image_without_text"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 53,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 53,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 53,
+      "block_type": "page_number",
+      "block_hash": "31489056e0916d59",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 54,
+      "block_type": "header",
+      "block_hash": "5b27139002dd7346",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 54,
+      "block_type": "page_number",
+      "block_hash": "98010bd9270f9b10",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 54,
+      "block_type": "footer",
+      "block_hash": "3ba0e1660efa7879",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 55,
+      "block_type": "footer",
+      "block_hash": "5cf84f379c14327d",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 55,
+      "block_type": "footer",
+      "block_hash": "2ff595474de6c920",
+      "filter_reason": "page_layout_boilerplate"
+    },
+    {
+      "document": "2196-ANSI-Manual-Chinese.pdf",
+      "page_number": 55,
+      "block_type": "footer",
+      "block_hash": "11b1f0826dc7bf6d",
+      "filter_reason": "page_layout_boilerplate"
+    }
+  ]
+}

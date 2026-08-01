@@ -8,11 +8,12 @@
 
 ## 1. 阶段结论
 
-- **Phase 3A incomplete（部分完成，P1 检索被 LLM 配额/吞吐阻塞）**
+- **Phase 3A incomplete；Phase 3A-P/R 状态：`blocked by insufficient qwen-plus-2025-07-28 quota`**
 - MinerU 真实调用 **全部成功**：batch submit → 签名上传 → poll done → **CDN ZIP 下载成功** → content_list 可读 → pages 提取成功（两份 PDF 均完成）。
 - P0（PyMuPDF）完整实验 **已完成**：解析 → 切块 → Qdrant → 50 题检索与引用指标。
 - P1（MinerU）解析与切块 **已完成且严格满足** `parser_used=mineru_online`、`fallback_used=false`；**Qdrant 索引与 50 题检索未能完成**。
-- 阻塞原因：DashScope 免费额度在实验期间**全部 6 个模型依次耗尽**（kimi-k2.6 → qwen3.6-plus → qwen3.6-flash → qwen-plus → qwen-turbo → qwen3.5-flash-2026-02-23），P1 索引在 2196 第 60/278 chunk 处被 403 中断；剩余约 380 次抽取 + 100 次查询调用无可用模型。
+- 阻塞原因：**Phase 3A-P/R 固定模型 Token 预检**（qwen-plus-2025-07-28 实测）估算全量实验需约 **241 万 token**，超过免费额度 100 万 → 按规则**不得启动全量实验**、不得切换模型。
+- 此前历史实验（非固定模型）还经历了 DashScope 免费额度逐模型耗尽（kimi → qwen3.6-plus → qwen3.6-flash → qwen-plus → qwen-turbo → qwen3.5-flash），已归档为 historical，不参与最终对比。
 - 依据任务规则：P1 关键项未完成 → **Phase 3A 标记 incomplete**；默认解析器保持 **PyMuPDF**；不进入 Phase 4；不实施任何生产默认值修改。
 
 ---
@@ -318,6 +319,39 @@
 - 网络检查显示 Clash/TUN 会破坏 CDN TLS 下载（已复现并解决一次），网络稳定性风险真实存在。
 
 **推荐：C. PyMuPDF 默认，MinerU 由用户手动选择**（当前不修改生产默认值；待 P1 检索完成后再做最终 A/B/C/D 决策）。
+
+---
+
+## 14b. Phase 3A-P/R：确定性适配器清洗 + 固定模型预检
+
+### MinerU 确定性适配器（P1-clean）
+
+- 根因：原 Adapter 把 header/footer/page_number/page_footnote 与表格 raw HTML 全部并入正文。
+- 实现 `MinerUBlockPolicy`：确定性过滤 + filter audit trail + 表格双表示（raw_html 原样保存、embedding_text 由 HTML 确定性转换，OCR 错误不修复）。
+- P1-clean 人工质量门禁：14 个代表性页面全部通过（表格/表头/行列/步骤/警告/目录/正文/页码/OCR 可追溯）。
+- 无 LLM 指标（详见 [phase-3A-mineru-adapter-cleanup-report.md](phase-3A-mineru-adapter-cleanup-report.md)）：
+  - token_reduction：2196 **38.5%**、t1739cn **36.5%**
+  - chunk_reduction：2196 **68.0%**、t1739cn **40.2%**
+  - P1-clean 重复 chunk 0、>700 token 0；表格 39+15 全部保留。
+
+### 固定模型 Token 预检（真实 LightRAG 流程，qwen-plus-2025-07-28）
+
+| 组 | 样本 | 索引 Token（20 chunk） | 每 chunk Token | 4 题查询 Token |
+|---|---|---|---|---|
+| P0（PyMuPDF） | 20 | 53,514 | 2,676 | 6,618 |
+| P1（MinerU-clean） | 20 | 56,097 | 2,805 | 4,643 |
+
+- 53 次真实 LLM 调用，0 重试、0 模型不匹配、0 错误；requested_model == actual_model == `qwen-plus-2025-07-28`，fallback 关闭。
+- 估算（含 merge 8% + 20% 安全余量）：
+  - P0 全量索引 ≈ 1,212,092
+  - P1-clean 全量索引 ≈ 516,092
+  - 查询 ≈ 140,763
+  - **合计 ≈ 2,408,642 token > 1,000,000 → blocked_insufficient_quota**
+- 因此：不启动全量索引；不计算 P0/P1 公平检索指标；不编造结果。
+
+### 配置一致性门禁
+
+`fixed_model/config.json` 冻结，8 项 hash（chunk/embedding/index_llm/query_llm/prompt/retrieval/qdrant/golden）P0=P1 全部一致，唯一变量 parser_backend；golden set SHA256 与冻结值一致。
 
 ---
 

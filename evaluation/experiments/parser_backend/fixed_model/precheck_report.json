@@ -1,0 +1,70 @@
+{
+  "gate": {
+    "chunk_config_hash": "f229c037a0b3b79a",
+    "embedding_config_hash": "775f872567606c32",
+    "index_llm_config_hash": "b5692989c7449520",
+    "query_llm_config_hash": "015ef043b89e5b8f",
+    "prompt_bundle_hash": "119c8e0b37455bdb",
+    "retrieval_config_hash": "e20fcaddae8e3c4b",
+    "qdrant_schema_hash": "5a4ea7001fb77fc8",
+    "golden_set_hash": "fc52600fcce019d7"
+  },
+  "index_stats": {
+    "0": {
+      "chunks": 20,
+      "total_tokens": 53514,
+      "calls": 20,
+      "model_set": [
+        "qwen-plus-2025-07-28"
+      ]
+    },
+    "1": {
+      "chunks": 20,
+      "total_tokens": 56097,
+      "calls": 20,
+      "model_set": [
+        "qwen-plus-2025-07-28"
+      ]
+    }
+  },
+  "query_stats": {
+    "0": {
+      "questions": 4,
+      "total_tokens": 6618
+    },
+    "1": {
+      "questions": 4,
+      "total_tokens": 4643
+    }
+  },
+  "llm_summary": {
+    "call_count": 53,
+    "input_tokens": 96595,
+    "output_tokens": 24277,
+    "total_tokens": 120872,
+    "retry_count": 0,
+    "model_mismatches": 0,
+    "errors": 0
+  },
+  "estimate": {
+    "p0_full_children": 453,
+    "p1_full_children": 184,
+    "per_chunk_tokens": {
+      "0": 2675.7,
+      "1": 2804.8
+    },
+    "per_question_tokens": {
+      "0": 1654.5,
+      "1": 1160.8
+    },
+    "p0_estimated_index_tokens": 1212092,
+    "p1_estimated_index_tokens": 516092,
+    "p0_estimated_query_tokens": 82725,
+    "p1_estimated_query_tokens": 58038,
+    "merge_tokens": 138255,
+    "estimated_total_tokens": 2408642,
+    "with_20pct_margin": true,
+    "decision": "blocked_insufficient_quota"
+  },
+  "recorded_at": "2026-08-01T12:50:54+0800"
+}

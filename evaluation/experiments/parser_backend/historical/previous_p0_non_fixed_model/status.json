@@ -1,0 +1,5 @@
+{
+  "status": "Historical non-fixed-model baseline",
+  "detail": "Index and query phases experienced multi-model auto-fallback (quota exhaustion). Not used for the final fair P0/P1 comparison.",
+  "not_used_for_final_comparison": true
+}

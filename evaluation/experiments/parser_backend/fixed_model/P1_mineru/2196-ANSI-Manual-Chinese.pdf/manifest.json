@@ -1,0 +1,20 @@
+{
+  "parser_requested": "mineru_online",
+  "adapter": "mineru_block_policy",
+  "parser_used": "mineru_online_clean",
+  "fallback_used": false,
+  "fallback_reason": null,
+  "pdf_name": "2196-ANSI-Manual-Chinese.pdf",
+  "pdf_sha256": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700",
+  "raw_content_list_sha256": "93e7509fe1901a956dbffc2594fe6cdf021185bb65bbc1f867155a412cb82927",
+  "raw_result_zip_sha256": "cc71e3b638072f80d943fbf64f5c76779c993de25a4826b9df48782e51a7b538",
+  "raw_pages": 51,
+  "block_count": 385,
+  "parent_count": 59,
+  "child_count": 89,
+  "filtered_block_count": 190,
+  "build_seconds": 0.047,
+  "chunker_strategy": "pymupdf-v1",
+  "chunker_version": "0.1.0",
+  "created_at": "2026-08-01T12:52:12+0800"
+}
