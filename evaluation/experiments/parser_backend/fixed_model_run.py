@@ -24,8 +24,10 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from .common import read_jsonl, write_json, write_jsonl
 from .config import PDF_NAMES, PROJECT_ROOT, QDRANT_TEST_URL
+from .config import QUESTION_CATEGORIES
 from .fixed_model_gate import assert_consistency, load_frozen_config
 from .fixed_model_llm import FixedModelLLM
+from .paid_run_gate import FIXED_MODEL, check_paid_run_gate
 from .metrics import (
     build_evidence_mapping,
     category_breakdown,
@@ -416,6 +418,8 @@ async def run_precheck() -> dict[str, Any]:
         api_key=os.environ.get("DASHSCOPE_API_KEY", ""),
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
         enable_thinking=cfg["enable_thinking"],
+        cache_path=FIXED_DIR / "cache" / "precheck.jsonl",
+        config_hash=assert_consistency()["p0"]["chunk_config_hash"],
     )
     index_stats: dict[str, Any] = {}
     query_stats: dict[str, Any] = {}
@@ -478,32 +482,102 @@ async def run_precheck() -> dict[str, Any]:
 
 
 async def run_full(group: str) -> dict[str, Any]:
-    gate = assert_consistency()
     cfg = load_frozen_config()
+    os.environ["LLM_MODEL"] = cfg["llm_model"]
+    os.environ["MODEL_FALLBACK_ENABLED"] = "false"
+    gate = check_paid_run_gate()
+    if not gate["allowed"]:
+        raise RuntimeError(
+            "paid run gate blocked: "
+            + json.dumps(
+                {k: v for k, v in gate["checks"].items() if v is False}, ensure_ascii=False
+            )
+        )
+    print(f"[gate] paid run allowed; estimated tokens={gate['estimated_total_tokens']}")
+    gate = assert_consistency()
     children = _all_children(group)
     llm = FixedModelLLM(
         model=cfg["llm_model"],
         api_key=os.environ.get("DASHSCOPE_API_KEY", ""),
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
         enable_thinking=cfg["enable_thinking"],
+        cache_path=FIXED_DIR / "cache" / f"full_{group}.jsonl",
+        config_hash=gate["p0"]["chunk_config_hash"],
     )
-    tmp = EXPERIMENT_ROOT / "tmp" / f"full_{group}"
-    if tmp.exists():
-        shutil.rmtree(tmp, ignore_errors=True)
-    tmp.mkdir(parents=True, exist_ok=True)
-    world = await _build_kb(group, tmp, children=children, llm=llm)
-    index_check = await _verify_index(group, world, expected_children=len(children))
-    index_summary = llm.summary()
-    rows = await _retrieve_questions(
-        world,
-        llm,
-        out_jsonl=FIXED_DIR / f"full_{group}_raw_results.jsonl",
-    )
-    # write results to the fixed-model comparison dir
     out_dir = FIXED_DIR / ("P0_pymupdf" if group == "0" else "P1_mineru")
     out_dir.mkdir(parents=True, exist_ok=True)
-    write_jsonl(out_dir / "results.jsonl", rows)
-    write_jsonl(FIXED_DIR / f"full_{group}_llm_calls.jsonl", llm.calls)
+    checkpoint_path = FIXED_DIR / f"checkpoint_{group}.json"
+    checkpoint: dict[str, Any] = {}
+    if checkpoint_path.is_file():
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+    tmp = EXPERIMENT_ROOT / "tmp" / f"full_{group}"
+
+    if checkpoint.get("index_complete") and (tmp / "exp.db").is_file():
+        print(f"[resume] group {group} index checkpoint found; verifying collections")
+        from industrial_rag.config import Settings
+        from sqlalchemy import select
+        from sqlalchemy.orm import selectinload
+        from industrial_rag.db.models import KnowledgeBase
+        from industrial_rag.db.session import init_db
+
+        _bootstrap_env(tmp, checkpoint["prefix"])
+        engine = create_async_engine(
+            f"sqlite+aiosqlite:///{(tmp / 'exp.db').as_posix()}", connect_args={"check_same_thread": False}
+        )
+        factory = async_sessionmaker(engine, expire_on_commit=False)
+        async with factory() as session:
+            kb = (
+                await session.execute(
+                    select(KnowledgeBase)
+                    .where(KnowledgeBase.id == checkpoint["kb_id"])
+                    .options(selectinload(KnowledgeBase.active_vector_generation))
+                )
+            ).scalar_one()
+        world = {
+            "kb": kb,
+            "settings": Settings.from_env(),
+            "factory": factory,
+            "engine": engine,
+            "prefix": checkpoint["prefix"],
+            "tmp": tmp,
+        }
+        index_check = await _verify_index(group, world, expected_children=len(children))
+        index_summary = {"resumed": True}
+    else:
+        if tmp.exists():
+            shutil.rmtree(tmp, ignore_errors=True)
+        tmp.mkdir(parents=True, exist_ok=True)
+        world = await _build_kb(group, tmp, children=children, llm=llm)
+        index_check = await _verify_index(group, world, expected_children=len(children))
+        index_summary = llm.summary()
+        checkpoint.update(
+            {
+                "group": group,
+                "kb_id": world["kb"].id,
+                "generation": world["kb"].active_vector_generation.generation,
+                "prefix": world["prefix"],
+                "index_complete": True,
+                "children_count": len(children),
+                "llm_calls_at_index": len(llm.calls),
+            }
+        )
+        checkpoint_path.write_text(json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if checkpoint.get("queries_complete") and (out_dir / "results.jsonl").is_file():
+        print(f"[resume] group {group} queries checkpoint found")
+        rows = read_jsonl(out_dir / "results.jsonl")
+    else:
+        rows = await _retrieve_questions(
+            world,
+            llm,
+            out_jsonl=FIXED_DIR / f"full_{group}_raw_results.jsonl",
+        )
+        for row in rows:
+            row["category"] = QUESTION_CATEGORIES.get(row["question_id"], "未分类")
+        write_jsonl(out_dir / "results.jsonl", rows)
+        write_jsonl(FIXED_DIR / f"full_{group}_llm_calls.jsonl", llm.calls)
+        checkpoint["queries_complete"] = True
+        checkpoint_path.write_text(json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8")
 
     gold = load_gold()
     mapping = build_evidence_mapping(children)
@@ -527,6 +601,7 @@ async def run_full(group: str) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--precheck", action="store_true")
+    parser.add_argument("--readiness", action="store_true")
     parser.add_argument("--full", action="store_true")
     parser.add_argument("--group", choices=["0", "1"])
     args = parser.parse_args()
@@ -534,6 +609,10 @@ def main() -> int:
         report = asyncio.run(run_precheck())
         print("precheck decision:", report["estimate"]["decision"])
         return 0 if report["estimate"]["decision"] == "proceed" else 1
+    if args.readiness:
+        result = check_paid_run_gate()
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0 if result["allowed"] else 1
     if args.full:
         metrics = asyncio.run(run_full(args.group))
         print(json.dumps(metrics["retrieval"], ensure_ascii=False, indent=2))

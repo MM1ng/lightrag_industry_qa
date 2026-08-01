@@ -1,8 +1,8 @@
 {
   "experiment_name": "phase3a_fixed_model_parser_comparison",
-  "only_variable": "parser_backend",
-  "p0_parser": "pymupdf",
-  "p1_parser": "mineru_online_clean",
+  "only_independent_variable": "parser_pipeline",
+  "p0_parser_pipeline": "pymupdf_standard_adapter",
+  "p1_parser_pipeline": "mineru_online_clean_adapter",
   "llm_model": "qwen-plus-2025-07-28",
   "index_llm_model": "qwen-plus-2025-07-28",
   "query_llm_model": "qwen-plus-2025-07-28",

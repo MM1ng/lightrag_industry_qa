@@ -56,10 +56,38 @@
 
 - Chunker：`ChunkerConfig(strategy="pymupdf-v1")`（parent_target 1500 / child_target 450 / child_min 120 / child_max 700 / overlap 80 / merge_small_children=True）
 - Embedding：`text-embedding-v4`，1024 维
-- LLM 锁定：实验开始时锁定 qwen3.6-plus；因额度耗尽在 P0 查询中途（约第 11–15 题）降级 qwen3.6-flash → qwen-turbo → qwen3.5-flash-2026-02-23。**P0 检索/引用指标不受 LLM 影响**（由 embedding + 确定性证据策略产生）；回答指标因此标记 N/A。P1 索引期间 qwen3.5-flash 最终也耗尽（60/278 处 403）。
+- **历史非固定模型基线**（仅归档，不用于公平对比）：旧实验开始时锁定 qwen3.6-plus，随后因额度耗尽依次降级 qwen3.6-flash → qwen-turbo → qwen3.5-flash-2026-02-23；P1 索引在 2196 第 60/278 chunk 处被 403 中断。该结果是真实运行结果，但 LightRAG 图谱抽取与 mix 查询可能受 LLM 变化影响，因此**不得用于最终 P0/P1 公平对比**。
 - LightRAG：mix / top_k=12 / chunk_top_k=20 / enable_rerank=False / evidence_limit=3 / chunk_token_size=2000（实验统一；生产默认仍 1600）
 - Qdrant：COSINE、1024 维、随机测试前缀、P0/P1 不同 KB/collection
 - 黄金集：`industrial_pump_golden_set_50.jsonl`（SHA256 `fc52600f…`，50 题，未修改）
+
+---
+
+## 3b. 正式固定模型实验配置
+
+正式公平实验（Phase 3A-R）使用以下冻结配置（`fixed_model/config.json`），P0/P1 完全一致，唯一独立变量为 `parser_pipeline`：
+
+| 项 | 值 |
+|---|---|
+| model / index_llm / query_llm | `qwen-plus-2025-07-28`（三者一致） |
+| fallback | `false` |
+| thinking | `false` |
+| embedding | `text-embedding-v4` |
+| dimension | 1024 |
+| query_mode | `mix` |
+| top_k | 12 |
+| chunk_top_k | 20 |
+| rerank | `false` |
+
+```json
+{
+  "only_independent_variable": "parser_pipeline",
+  "p0_parser_pipeline": "pymupdf_standard_adapter",
+  "p1_parser_pipeline": "mineru_online_clean_adapter"
+}
+```
+
+八项配置 hash（chunk / embedding / index_llm / query_llm / prompt_bundle / retrieval / qdrant_schema / golden_set）P0=P1；冻结产物 25 项 SHA256 已固化（见 [phase-3A-paid-run-readiness-report.md](phase-3A-paid-run-readiness-report.md)）。
 
 ---
 
@@ -342,12 +370,14 @@
 | P1（MinerU-clean） | 20 | 56,097 | 2,805 | 4,643 |
 
 - 53 次真实 LLM 调用，0 重试、0 模型不匹配、0 错误；requested_model == actual_model == `qwen-plus-2025-07-28`，fallback 关闭。
+- 样本说明：P0/P1 各 20 个 ChildChunk、各 4 个黄金问题（S001/S007/S011/S015），使用真实完整 LightRAG Prompt；53 次真实调用，0 模型不匹配；估算包含 8% merge 与 20% 安全余量。
 - 估算（含 merge 8% + 20% 安全余量）：
   - P0 全量索引 ≈ 1,212,092
   - P1-clean 全量索引 ≈ 516,092
   - 查询 ≈ 140,763
   - **合计 ≈ 2,408,642 token > 1,000,000 → blocked_insufficient_quota**
 - 因此：不启动全量索引；不计算 P0/P1 公平检索指标；不编造结果。
+- **2,408,642 是估算值，不是最终实际计费值**；该估算足以证明 1,000,000 免费额度不足。用户已开启按量付费（余额 300 元声明），但显式门禁 `IRA_PHASE3A_PAID_RUN=1` 未设置，按指令不启动全量运行（详见 [phase-3A-paid-run-readiness-report.md](phase-3A-paid-run-readiness-report.md)）。
 
 ### 配置一致性门禁
 
@@ -395,9 +425,9 @@ python -m ruff check .               -> All checks passed
 ## 17. 已知限制
 
 - P1 检索指标缺省（LLM 免费配额全部耗尽），Phase 3A 未验收；继续需为 DashScope 充值或关闭 free-tier-only。
-- P0 查询中途模型降级（额度耗尽），回答类指标 N/A；检索/引用指标不受影响。
+- 旧 P0（历史非固定模型基线）查询中途发生模型降级，回答类指标 N/A；该基线不用于最终公平对比（LightRAG 图谱抽取与 mix 查询可能受 LLM 变化影响）。
 - 标题/步骤/警告统计为行级启发式，人工抽查覆盖 14 页代表性页面。
-- MinerU OCR 误差、页眉/页脚噪声、HTML 标记噪声未做清洗实验（清洗会改变解析器后处理，超出“只允许改变解析器”范围）。
+- 页眉、页脚、页码与重复 page_footnote 已完成确定性清洗（P1-clean）；HTML 表格已实现 raw_html 与 embedding_text 双表示；OCR 原始字符错误未自动修复；P1-clean 已通过人工质量门禁；**P1-clean 的完整 RAG 指标尚未产生**（等待付费运行放行）。
 - 未修改生产默认解析器；未重新解析正式 KB。
 - 免费 DashScope 额度无法支撑全量实验（6 个模型全部 403）。
 

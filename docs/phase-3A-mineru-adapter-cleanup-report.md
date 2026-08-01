@@ -15,6 +15,32 @@
 - `image` 项的 `image_caption` 未被使用（2196 的 39 张图仅 9 个有标题，其中多数为空）；
 - 没有任何结构信息（text_level 等被丢弃），标题/警告/步骤只能靠文本启发式猜测。
 
+## 1b. 实验定位声明
+
+P1-clean 是 **MinerU 标准解析管线的一部分**（`mineru_online_clean_adapter`），不是下游检索优化。
+
+清洗只包括：
+
+- 基于真实 block type 的确定性过滤（header/footer/page_number/空块）；
+- 重复版式脚注处理（唯一脚注保留）；
+- HTML 表格确定性文本化（raw_html 与 embedding_text 双表示）；
+- Unicode 与空白规范化。
+
+不包括：
+
+- LLM 清洗；语义摘要；OCR 纠错；参数修正；
+- 检索调参；Prompt 调参；Rerank。
+
+正式公平比较是：
+
+```text
+PyMuPDF 标准解析管线（pymupdf_standard_adapter）
+vs
+MinerU 标准清洗解析管线（mineru_online_clean_adapter）
+```
+
+从 StructuredChunker 开始，所有下游切块、索引、查询与评估配置完全一致。
+
 ## 2. content_list 实际 schema（本机两份真实文件）
 
 字段：`type`、`text`、`html`（本批无）、`bbox`、`page_idx`、`text_level`（text 项）、`table_body`/`table_caption`/`table_footnote`（table 项）、`image_caption`/`image_footnote`/`img_path`（image 项）。

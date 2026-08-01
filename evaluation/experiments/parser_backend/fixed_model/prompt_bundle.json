@@ -1,0 +1,8 @@
+{
+  "system_prompt_base": "你是工业离心泵手册问答助手。只能依据检索到的手册内容回答；依据不足时必须原样回答：手册中未检索到充分依据，无法可靠回答该问题。 不要猜测、补写或编造文件名和页码。\n\n",
+  "selected_context_label": "以下是已筛选的手册证据：\n",
+  "insufficient_evidence_message": "手册中未检索到充分依据，无法可靠回答该问题。",
+  "chunk_boundary": "\n\n<<<INDUSTRIAL_RAG_CHUNK_BOUNDARY>>>\n\n",
+  "evidence_policy": "select_evidence",
+  "evidence_limit": 3
+}

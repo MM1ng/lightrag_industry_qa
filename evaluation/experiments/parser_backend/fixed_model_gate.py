@@ -24,9 +24,11 @@ def _sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
-def config_hashes(parser_backend: str) -> dict[str, str]:
-    """Compute the eight consistency hashes for one parser group."""
-    cfg = load_frozen_config()
+def config_hashes(parser_pipeline: str, *, cfg: dict[str, Any] | None = None) -> dict[str, str]:
+    """Compute the eight consistency hashes for one parser pipeline group."""
+    cfg = cfg or load_frozen_config()
+    if cfg.get("only_independent_variable") != "parser_pipeline":
+        raise RuntimeError("frozen config must declare parser_pipeline as the only variable")
     chunker = cfg["chunker"]
     chunk_config = {
         "strategy": chunker["strategy"],
@@ -106,9 +108,14 @@ def config_hashes(parser_backend: str) -> dict[str, str]:
 
 
 def assert_consistency() -> dict[str, dict[str, str]]:
-    """Assert P0/P1 differ only in parser_backend; return the hash tables."""
-    hashes_p0 = config_hashes("pymupdf")
-    hashes_p1 = config_hashes("mineru_online_clean")
+    """Assert P0/P1 differ only in parser_pipeline; return the hash tables."""
+    cfg = load_frozen_config()
+    p0 = cfg.get("p0_parser_pipeline")
+    p1 = cfg.get("p1_parser_pipeline")
+    if not p0 or not p1 or p0 == p1:
+        raise RuntimeError("frozen config must define distinct P0/P1 parser pipelines")
+    hashes_p0 = config_hashes(p0)
+    hashes_p1 = config_hashes(p1)
     mismatches = {
         key: (hashes_p0[key], hashes_p1[key])
         for key in hashes_p0
@@ -119,6 +126,33 @@ def assert_consistency() -> dict[str, dict[str, str]]:
     if hashes_p0["golden_set_hash"] != GOLDEN_SHA256:
         raise RuntimeError("golden set hash does not match the frozen value")
     return {"p0": hashes_p0, "p1": hashes_p1}
+
+
+PROMPT_BUNDLE_PATH = EXPERIMENT_ROOT / "fixed_model" / "prompt_bundle.json"
+
+
+def write_prompt_bundle() -> dict[str, str]:
+    """Freeze the exact prompt bundle used by both pipelines."""
+    from industrial_rag.lightrag_service import (
+        INSUFFICIENT_EVIDENCE_MESSAGE,
+        _CHUNK_BOUNDARY,
+        _SELECTED_CONTEXT_LABEL,
+        _SYSTEM_PROMPT_BASE,
+    )
+
+    bundle = {
+        "system_prompt_base": _SYSTEM_PROMPT_BASE,
+        "selected_context_label": _SELECTED_CONTEXT_LABEL,
+        "insufficient_evidence_message": INSUFFICIENT_EVIDENCE_MESSAGE,
+        "chunk_boundary": _CHUNK_BOUNDARY,
+        "evidence_policy": "select_evidence",
+        "evidence_limit": load_frozen_config()["evidence_limit"],
+    }
+    PROMPT_BUNDLE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    PROMPT_BUNDLE_PATH.write_text(
+        json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return bundle
 
 
 def main() -> int:
