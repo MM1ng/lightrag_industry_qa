@@ -1,0 +1,29 @@
+{
+  "parser_requested": "pymupdf",
+  "parser_used": "pymupdf",
+  "fallback_used": false,
+  "fallback_reason": null,
+  "pdf_name": "t1739cn.pdf",
+  "pdf_size": 4532306,
+  "pdf_sha256": "77fd7ebf86ef6c574de11eac446dc321de04fd0773cd7d844287da7fa4d6c4ae",
+  "pdf_pages": 62,
+  "pdf_encrypted": false,
+  "parse_seconds": 0.343,
+  "source_chunk_count": 65,
+  "block_count": 937,
+  "parent_count": 165,
+  "child_count": 168,
+  "chunker_strategy": "pymupdf-v1",
+  "chunker_version": "0.1.0",
+  "chunker_config": {
+    "parent_target_tokens": 1500,
+    "parent_max_tokens": 2200,
+    "child_target_tokens": 450,
+    "child_min_tokens": 120,
+    "child_max_tokens": 700,
+    "child_overlap_tokens": 80,
+    "merge_small_children": true
+  },
+  "git_commit": "ff6afec22aaea7311601580a0ec8c12c7b94927f",
+  "created_at": "2026-08-01T08:52:44+0800"
+}

@@ -29,6 +29,7 @@ env/
 logs/**
 !logs/.gitkeep
 *.log
+*.log.err
 *.sqlite
 *.sqlite3
 *.db
@@ -46,6 +47,10 @@ lightrag_storage*/
 rag_storage/
 vector_store/
 graph_storage/
+
+# Phase 3A parser experiment raw payloads (large binaries; kept on disk, not in git)
+evaluation/experiments/parser_backend/P1/**/mineru_raw/
+evaluation/mineru_smoke/
 
 # Protected source data and generated processing outputs
 data/raw_dataset/**
