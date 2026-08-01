@@ -1,0 +1,50 @@
+{
+  "n_iter": 1000,
+  "seed": 20260801,
+  "n_questions": 48,
+  "recall_at_5": {
+    "n": 48,
+    "mean_diff": 0.1042,
+    "ci95": [
+      0.0208,
+      0.1875
+    ],
+    "crosses_zero": false
+  },
+  "mrr": {
+    "n": 48,
+    "mean_diff": 0.175,
+    "ci95": [
+      0.0688,
+      0.2896
+    ],
+    "crosses_zero": false
+  },
+  "gold_page_recall": {
+    "n": 48,
+    "mean_diff": 0.0833,
+    "ci95": [
+      0.0208,
+      0.1667
+    ],
+    "crosses_zero": false
+  },
+  "gold_evidence_recall": {
+    "n": 48,
+    "mean_diff": 0.0833,
+    "ci95": [
+      0.0208,
+      0.1667
+    ],
+    "crosses_zero": false
+  },
+  "evidence_precision_at_5": {
+    "n": 48,
+    "mean_diff": 0.0333,
+    "ci95": [
+      0.0083,
+      0.0625
+    ],
+    "crosses_zero": false
+  }
+}

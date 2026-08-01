@@ -1,0 +1,226 @@
+{
+  "N001": {
+    "r0_candidate_count": 20,
+    "r1_candidate_count": 20,
+    "r0_top12": [
+      {
+        "chunk_id": "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838",
+        "rank": 1
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-e5c77c241392-000-e5c77c241392",
+        "rank": 2
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-aa6ad5a2a815-000-aa6ad5a2a815",
+        "rank": 3
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+        "rank": 4
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-47226b1f749b-000-47226b1f749b",
+        "rank": 5
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-6bbb16843e56-000-6bbb16843e56",
+        "rank": 6
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-d17ee11ffd10-000-d17ee11ffd10",
+        "rank": 7
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-b9130b9ade71-000-b9130b9ade71",
+        "rank": 8
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-卸泵组-231afb91e1bf-000-231afb91e1bf",
+        "rank": 9
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-450f03b02d3c-000-450f03b02d3c",
+        "rank": 10
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-离心泵-77685151ce68-000-77685151ce68",
+        "rank": 11
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-339cc97ced59-000-339cc97ced59",
+        "rank": 12
+      }
+    ],
+    "r1_top12": [
+      {
+        "chunk_id": "cchunk-pymupdf-v1-体说明-656758c8defd-000-656758c8defd",
+        "rerank_rank": 1
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-d17ee11ffd10-000-d17ee11ffd10",
+        "rerank_rank": 2
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-450f03b02d3c-000-450f03b02d3c",
+        "rerank_rank": 3
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-体说明-d359342e1474-000-d359342e1474",
+        "rerank_rank": 4
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-47226b1f749b-000-47226b1f749b",
+        "rerank_rank": 5
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-03883996196c-000-03883996196c",
+        "rerank_rank": 6
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-0ee0e4b87829-000-0ee0e4b87829",
+        "rerank_rank": 7
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-d7662854755a-000-d7662854755a",
+        "rerank_rank": 8
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-e5c77c241392-000-e5c77c241392",
+        "rerank_rank": 9
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-2c32d3b2a77d-000-2c32d3b2a77d",
+        "rerank_rank": 10
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838",
+        "rerank_rank": 11
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-离心泵-77685151ce68-000-77685151ce68",
+        "rerank_rank": 12
+      }
+    ],
+    "r0_refused": true,
+    "r1_refused": true,
+    "r0_unsupported_answer": false,
+    "r1_unsupported_answer": false,
+    "r0_refusal_reason": "evidence_policy_rejected",
+    "r1_refusal_reason": "evidence_policy_rejected",
+    "r0_llm_called": false,
+    "r1_llm_called": false
+  },
+  "N002": {
+    "r0_candidate_count": 19,
+    "r1_candidate_count": 19,
+    "r0_top12": [
+      {
+        "chunk_id": "cchunk-pymupdf-v1--安装-b2054aa3a455-000-b2054aa3a455",
+        "rank": 1
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-06c604348869-000-06c604348869",
+        "rank": 2
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-b1f39a866e20-000-b1f39a866e20",
+        "rank": 3
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-6bbb16843e56-000-6bbb16843e56",
+        "rank": 4
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-1cb6b3670125-000-1cb6b3670125",
+        "rank": 5
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-a667c5b9cb55-000-a667c5b9cb55",
+        "rank": 6
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-4830c2604e44-000-4830c2604e44",
+        "rank": 7
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-6b59e1a95c3b-000-6b59e1a95c3b",
+        "rank": 8
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd",
+        "rank": 9
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-d26b894d7d59-000-d26b894d7d59",
+        "rank": 10
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1--安全-093ca1d01486-000-093ca1d01486",
+        "rank": 11
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-4596927e9914-000-4596927e9914",
+        "rank": 12
+      }
+    ],
+    "r1_top12": [
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-6b59e1a95c3b-000-6b59e1a95c3b",
+        "rerank_rank": 1
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-d26b894d7d59-000-d26b894d7d59",
+        "rerank_rank": 2
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-47226b1f749b-000-47226b1f749b",
+        "rerank_rank": 3
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-06c604348869-000-06c604348869",
+        "rerank_rank": 4
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-3c438bcdf804-000-3c438bcdf804",
+        "rerank_rank": 5
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-6bbb16843e56-000-6bbb16843e56",
+        "rerank_rank": 6
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-f8ed1da9c0e5-000-f8ed1da9c0e5",
+        "rerank_rank": 7
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1--安装-b2054aa3a455-000-b2054aa3a455",
+        "rerank_rank": 8
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-a667c5b9cb55-000-a667c5b9cb55",
+        "rerank_rank": 9
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-4596927e9914-000-4596927e9914",
+        "rerank_rank": 10
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd",
+        "rerank_rank": 11
+      },
+      {
+        "chunk_id": "cchunk-pymupdf-v1-护手册-03883996196c-000-03883996196c",
+        "rerank_rank": 12
+      }
+    ],
+    "r0_refused": true,
+    "r1_refused": true,
+    "r0_unsupported_answer": false,
+    "r1_unsupported_answer": false,
+    "r0_refusal_reason": null,
+    "r1_refusal_reason": null,
+    "r0_llm_called": true,
+    "r1_llm_called": true
+  }
+}

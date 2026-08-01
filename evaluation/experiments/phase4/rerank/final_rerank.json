@@ -1,6 +1,6 @@
 {
   "evaluation_completed": true,
-  "status": "Phase 4D-R blocked by R1 candidate completeness gate (frozen pool contract mismatch)",
+  "status": "Phase 4D-R2 evaluation completed",
   "parser_pipeline": "pymupdf_standard_adapter",
   "query_mode": "mix",
   "top_k": 12,
@@ -12,7 +12,7 @@
   "final_k": 12,
   "replacement_approved": false,
   "replacement_gates_passed": false,
-  "selection_reason": "qwen3-rerank preflight passed (20/20, request_id, scores finite). R1 completeness gate failed: the frozen candidate pool violates the contract (C007 has 19 candidates instead of 20; N001/N002 contain 20/19 candidate rows instead of 0). For C007, qwen3-rerank returns 19/19 (no loss beyond the pool), so input=20/output=20 cannot be satisfied. R1 invalid; stage 2 not run; rerank remains disabled.",
+  "selection_reason": "qwen3-rerank did not pass Phase 4D replacement gates",
   "baseline_metrics": {
     "evidence_questions": 48,
     "recall_at_1": 0.5625,
@@ -28,93 +28,1387 @@
     "top1_document_accuracy": 1.0,
     "top5_page_coverage": 0.7917
   },
-  "rerank_metrics": null,
+  "rerank_metrics": {
+    "evidence_questions": 48,
+    "recall_at_1": 0.75,
+    "recall_at_3": 0.8542,
+    "recall_at_5": 0.8542,
+    "recall_at_12": 0.875,
+    "mrr": 0.7951,
+    "gold_document_recall": 1.0,
+    "gold_page_recall": 0.9375,
+    "gold_evidence_recall": 0.875,
+    "evidence_precision_at_5": 0.2333,
+    "evidence_precision_at_12": 0.1215,
+    "top1_document_accuracy": 1.0,
+    "top5_page_coverage": 0.9167
+  },
   "completeness": {
-    "request_count": 48,
-    "success_count": 47,
-    "error_count": 1,
-    "error_details": [
-      {
-        "question_id": "C007",
-        "error": "RerankConfigurationError: rerank returned 19 results; expected 20",
-        "input_candidates": 19
-      }
-    ],
-    "per_question_output_count": {
-      "S001": 20,
-      "S002": 20,
-      "S003": 20,
-      "S004": 20,
-      "S005": 20,
-      "S006": 20,
-      "S007": 20,
-      "S008": 20,
-      "S009": 20,
-      "S010": 20,
-      "S011": 20,
-      "S012": 20,
-      "S013": 20,
-      "S014": 20,
-      "S015": 20,
-      "S016": 20,
-      "S017": 20,
-      "S018": 20,
-      "S019": 20,
-      "S020": 20,
-      "D001": 20,
-      "D002": 20,
-      "D003": 20,
-      "D004": 20,
-      "D005": 20,
-      "D006": 20,
-      "D007": 20,
-      "D008": 20,
-      "D009": 20,
-      "D010": 20,
-      "D011": 20,
-      "D012": 20,
-      "D013": 20,
-      "D014": 20,
-      "D015": 20,
-      "D016": 20,
-      "D017": 20,
-      "D018": 20,
-      "D019": 20,
-      "D020": 20,
-      "C001": 20,
-      "C002": 20,
-      "C003": 20,
-      "C004": 20,
-      "C005": 20,
-      "C006": 20,
-      "C008": 20
-    },
-    "preservation_rate": null,
+    "contract": "variable_unique_candidates_up_to_candidate_k",
+    "candidate_k": 20,
+    "final_k": 12,
+    "effective_final_k_rule": "min(final_k, input_candidate_count)",
+    "negative_questions_may_have_candidates": true,
+    "answerable_request_count": 48,
+    "answerable_success_count": 48,
+    "negative_request_count": 2,
+    "negative_success_count": 2,
+    "error_count": 0,
+    "error_details": [],
+    "candidate_preservation_rate": 1.0,
     "pool_out_count": 0,
     "duplicate_count": 0,
-    "lost_count": 1,
-    "passed": false
+    "lost_count": 0,
+    "fallback_count": 0,
+    "per_question": {
+      "S001": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S002": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S003": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S004": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S005": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S006": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S007": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S008": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S009": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S010": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S011": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S012": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S013": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S014": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S015": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S016": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S017": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S018": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S019": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "S020": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D001": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D002": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D003": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D004": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D005": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D006": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D007": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D008": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D009": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D010": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D011": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D012": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D013": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D014": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D015": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D016": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D017": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D018": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D019": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "D020": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C001": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C002": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C003": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 19,
+        "output_unique_chunk_ids": 19,
+        "input_duplicate_chunk_ids": {
+          "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d": 2
+        },
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C004": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 19,
+        "output_unique_chunk_ids": 19,
+        "input_duplicate_chunk_ids": {
+          "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d": 2
+        },
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C005": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C006": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C007": {
+        "input_rows": 19,
+        "output_rows": 19,
+        "input_unique_chunk_ids": 18,
+        "output_unique_chunk_ids": 18,
+        "input_duplicate_chunk_ids": {
+          "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d": 2
+        },
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "C008": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 19,
+        "output_unique_chunk_ids": 19,
+        "input_duplicate_chunk_ids": {
+          "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d": 2
+        },
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "N001": {
+        "input_rows": 20,
+        "output_rows": 20,
+        "input_unique_chunk_ids": 20,
+        "output_unique_chunk_ids": 20,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      },
+      "N002": {
+        "input_rows": 19,
+        "output_rows": 19,
+        "input_unique_chunk_ids": 19,
+        "output_unique_chunk_ids": 19,
+        "input_duplicate_chunk_ids": {},
+        "preservation_rate": 1.0,
+        "lost_count": 0,
+        "pool_out_count": 0,
+        "introduced_duplicate_count": 0,
+        "metadata_unchanged": true,
+        "called": true,
+        "cache_hit": true,
+        "passed": true
+      }
+    },
+    "passed": true,
+    "notes": [
+      "The frozen pool contains pre-existing duplicate chunk_id rows for ['C003', 'C004', 'C007', 'C008'] (same text hash/page/parent at different original ranks). The reranker faithfully preserved every input row; completeness is evaluated as output multiset == input multiset, so no candidate was lost and no new duplicate was introduced."
+    ]
   },
   "movement": {
-    "mean_abs_rank_movement": 6.004,
+    "mean_abs_rank_movement": 6.008,
     "median_rank_movement": 5,
     "p95_rank_movement": 14,
-    "relevant_promoted_count": 31,
+    "relevant_promoted_count": 34,
     "relevant_demoted_count": 14,
-    "irrelevant_promoted_count": 416,
-    "irrelevant_demoted_count": 402,
-    "top1_changed_count": 0
+    "irrelevant_promoted_count": 419,
+    "irrelevant_demoted_count": 412,
+    "top1_changed_count": 21,
+    "top3_membership_changed_count": 48,
+    "top5_membership_changed_count": 48,
+    "top12_membership_changed_count": 48,
+    "improved_count": 4,
+    "regressed_count": 0,
+    "unchanged_count": 44,
+    "improved_questions": [
+      "S016",
+      "D016",
+      "D018",
+      "C002"
+    ],
+    "regressed_questions": [],
+    "per_question_status": {
+      "S001": "unchanged",
+      "S002": "unchanged",
+      "S003": "unchanged",
+      "S004": "unchanged",
+      "S005": "unchanged",
+      "S006": "unchanged",
+      "S007": "unchanged",
+      "S008": "unchanged",
+      "S009": "unchanged",
+      "S010": "unchanged",
+      "S011": "unchanged",
+      "S012": "unchanged",
+      "S013": "unchanged",
+      "S014": "unchanged",
+      "S015": "unchanged",
+      "S016": "improved",
+      "S017": "unchanged",
+      "S018": "unchanged",
+      "S019": "unchanged",
+      "S020": "unchanged",
+      "D001": "unchanged",
+      "D002": "unchanged",
+      "D003": "unchanged",
+      "D004": "unchanged",
+      "D005": "unchanged",
+      "D006": "unchanged",
+      "D007": "unchanged",
+      "D008": "unchanged",
+      "D009": "unchanged",
+      "D010": "unchanged",
+      "D011": "unchanged",
+      "D012": "unchanged",
+      "D013": "unchanged",
+      "D014": "unchanged",
+      "D015": "unchanged",
+      "D016": "improved",
+      "D017": "unchanged",
+      "D018": "improved",
+      "D019": "unchanged",
+      "D020": "unchanged",
+      "C001": "unchanged",
+      "C002": "improved",
+      "C003": "unchanged",
+      "C004": "unchanged",
+      "C005": "unchanged",
+      "C006": "unchanged",
+      "C007": "unchanged",
+      "C008": "unchanged"
+    }
   },
-  "model_identity": {
-    "provider": "aliyun_model_studio",
-    "requested_model": "qwen3-rerank",
-    "model_id": "qwen3-rerank",
-    "model_identity_type": "official_mainline_model_id",
-    "dated_snapshot_available": false,
-    "fallback_enabled": false,
-    "region": "cn-beijing",
-    "endpoint_mode": "dashscope_standard_public",
-    "endpoint_hash": "6ed02994f7d0c4f58b6b35e78aab0c58f06244095349e47ce6e8b99e6c0bd02b",
-    "actual_model_version": null
+  "offline_gates": {
+    "hard_passed": true,
+    "hard": {
+      "recall5_drop_leq_002": true,
+      "gold_page_drop_leq_002": true,
+      "gold_evidence_drop_leq_002": true,
+      "mrr_drop_leq_002": true,
+      "top1_doc_drop_leq_002": true,
+      "rerank_error_rate_0": true,
+      "candidate_preservation_1": true,
+      "no_pool_out": true,
+      "no_duplicates": true,
+      "no_lost": true,
+      "no_fallback": true
+    },
+    "value_passed": true,
+    "value": {
+      "recall5_plus_002": true,
+      "mrr_plus_002": true,
+      "gold_page_plus_002": true,
+      "gold_evidence_plus_002": true,
+      "ev_prec5_plus_002": true,
+      "failed_to_success_ge_2": true,
+      "net_improvement_ge_2": true
+    },
+    "stage2_allowed": true
+  },
+  "hard": {
+    "citation_accuracy_drop_leq_002": true,
+    "citation_traceability_1": true,
+    "unsupported_citation_rate_0": false,
+    "unsupported_answer_rate_0": true,
+    "rejection_not_down": true,
+    "false_rejection_worsening_leq_005": true,
+    "gold_page_drop_leq_002": true,
+    "parameter_citation_accuracy_drop_leq_005": true,
+    "safety_not_regressed": false,
+    "candidate_preservation_1": true,
+    "rerank_error_rate_0": true,
+    "p95_latency_leq_2x_baseline": false
+  },
+  "value": {
+    "recall5_plus_002": true,
+    "mrr_plus_002": true,
+    "gold_evidence_plus_002": true,
+    "citation_accuracy_plus_002": true,
+    "citation_recall_plus_002": true,
+    "false_rejection_down_005": false
+  },
+  "stage2": {
+    "entered": true,
+    "metrics": {
+      "baseline": {
+        "citation": {
+          "answerable_questions": 48,
+          "citation_accuracy": 0.8333,
+          "citation_precision": 0.3299,
+          "citation_recall": 0.7212,
+          "citation_traceability": 1.0,
+          "unsupported_citation_rate": 0.6838,
+          "unsupported_citation_rows": 8,
+          "false_rejection_rate": 0.3125,
+          "insufficient_evidence_rejection_rate": 1.0,
+          "unsupported_answer_rate": 0.0,
+          "negative_questions": 2,
+          "negative_refusals": 2
+        },
+        "engineering": {
+          "llm_calls": 49,
+          "answer_latency_mean": 0.0,
+          "answer_latency_p50": 0.0,
+          "answer_latency_p95": 0.0,
+          "total_latency_p50": 0.0,
+          "total_latency_p95": 0.0,
+          "rerank_latency_mean": 0.0,
+          "rerank_latency_p50": 0.0,
+          "rerank_latency_p95": 0.0,
+          "input_tokens": 43250,
+          "output_tokens": 4196,
+          "total_tokens": 47446,
+          "cache_hits": 49,
+          "cache_misses": 0,
+          "errors": 0
+        },
+        "categories": {
+          "参数查询": {
+            "questions": 20,
+            "citation_accuracy": 0.9,
+            "citation_recall": 0.9,
+            "false_rejection_rate": 0.15
+          },
+          "表格查询": {
+            "questions": 3,
+            "citation_accuracy": 1.0,
+            "citation_recall": 1.0,
+            "false_rejection_rate": 0.3333
+          },
+          "操作步骤": {
+            "questions": 9,
+            "citation_accuracy": 0.7778,
+            "citation_recall": 0.6111,
+            "false_rejection_rate": 0.3333
+          },
+          "故障诊断": {
+            "questions": 3,
+            "citation_accuracy": 0.6667,
+            "citation_recall": 0.6667,
+            "false_rejection_rate": 0.0
+          },
+          "安全警告": {
+            "questions": 5,
+            "citation_accuracy": 1.0,
+            "citation_recall": 0.74,
+            "false_rejection_rate": 0.2
+          },
+          "普通事实": {
+            "questions": 2,
+            "citation_accuracy": 0.5,
+            "citation_recall": 0.5,
+            "false_rejection_rate": 0.5
+          },
+          "跨页问题": {
+            "questions": 6,
+            "citation_accuracy": 0.6667,
+            "citation_recall": 0.2361,
+            "false_rejection_rate": 1.0
+          },
+          "_all_categories": [
+            "参数查询",
+            "安全警告",
+            "操作步骤",
+            "故障诊断",
+            "普通事实",
+            "表格查询",
+            "跨页问题"
+          ]
+        }
+      },
+      "reranked": {
+        "citation": {
+          "answerable_questions": 48,
+          "citation_accuracy": 0.8958,
+          "citation_precision": 0.3368,
+          "citation_recall": 0.7899,
+          "citation_traceability": 1.0,
+          "unsupported_citation_rate": 0.6691,
+          "unsupported_citation_rows": 5,
+          "false_rejection_rate": 0.2917,
+          "insufficient_evidence_rejection_rate": 1.0,
+          "unsupported_answer_rate": 0.0,
+          "negative_questions": 2,
+          "negative_refusals": 2
+        },
+        "engineering": {
+          "llm_calls": 49,
+          "answer_latency_mean": 0.0,
+          "answer_latency_p50": 0.0,
+          "answer_latency_p95": 0.0,
+          "total_latency_p50": 0.0,
+          "total_latency_p95": 0.016,
+          "rerank_latency_mean": 0.004,
+          "rerank_latency_p50": 0.0,
+          "rerank_latency_p95": 0.016,
+          "input_tokens": 45037,
+          "output_tokens": 3771,
+          "total_tokens": 48808,
+          "cache_hits": 49,
+          "cache_misses": 0,
+          "errors": 0
+        },
+        "categories": {
+          "参数查询": {
+            "questions": 20,
+            "citation_accuracy": 0.9,
+            "citation_recall": 0.9,
+            "false_rejection_rate": 0.15
+          },
+          "表格查询": {
+            "questions": 3,
+            "citation_accuracy": 1.0,
+            "citation_recall": 1.0,
+            "false_rejection_rate": 0.3333
+          },
+          "操作步骤": {
+            "questions": 9,
+            "citation_accuracy": 1.0,
+            "citation_recall": 0.8333,
+            "false_rejection_rate": 0.1111
+          },
+          "故障诊断": {
+            "questions": 3,
+            "citation_accuracy": 1.0,
+            "citation_recall": 1.0,
+            "false_rejection_rate": 0.3333
+          },
+          "安全警告": {
+            "questions": 5,
+            "citation_accuracy": 0.8,
+            "citation_recall": 0.7,
+            "false_rejection_rate": 0.2
+          },
+          "普通事实": {
+            "questions": 2,
+            "citation_accuracy": 0.5,
+            "citation_recall": 0.5,
+            "false_rejection_rate": 0.5
+          },
+          "跨页问题": {
+            "questions": 6,
+            "citation_accuracy": 0.8333,
+            "citation_recall": 0.3194,
+            "false_rejection_rate": 1.0
+          },
+          "_all_categories": [
+            "参数查询",
+            "安全警告",
+            "操作步骤",
+            "故障诊断",
+            "普通事实",
+            "表格查询",
+            "跨页问题"
+          ]
+        }
+      },
+      "bootstrap": {
+        "citation_accuracy": {
+          "n": 48,
+          "mean_diff": 0.0625,
+          "ci95": [
+            -0.0208,
+            0.1458
+          ],
+          "crosses_zero": true
+        },
+        "citation_recall": {
+          "n": 48,
+          "mean_diff": 0.0896,
+          "ci95": [
+            0.0167,
+            0.1729
+          ],
+          "crosses_zero": false
+        }
+      },
+      "llm_summary": {
+        "call_count": 98,
+        "input_tokens": 88287,
+        "output_tokens": 7967,
+        "total_tokens": 96254,
+        "retry_count": 0,
+        "cache_hits": 98,
+        "cache_misses": 0,
+        "model_mismatches": 0,
+        "errors": 0
+      },
+      "decision": {
+        "evaluation_completed": true,
+        "rerank_enabled": false,
+        "replacement_approved": false,
+        "replacement_gates_passed": false,
+        "rerank_model": "qwen3-rerank",
+        "selection_reason": "qwen3-rerank did not pass Phase 4D replacement gates",
+        "hard": {
+          "citation_accuracy_drop_leq_002": true,
+          "citation_traceability_1": true,
+          "unsupported_citation_rate_0": false,
+          "unsupported_answer_rate_0": true,
+          "rejection_not_down": true,
+          "false_rejection_worsening_leq_005": true,
+          "gold_page_drop_leq_002": true,
+          "parameter_citation_accuracy_drop_leq_005": true,
+          "safety_not_regressed": false,
+          "candidate_preservation_1": true,
+          "rerank_error_rate_0": true,
+          "p95_latency_leq_2x_baseline": false
+        },
+        "value": {
+          "recall5_plus_002": true,
+          "mrr_plus_002": true,
+          "gold_evidence_plus_002": true,
+          "citation_accuracy_plus_002": true,
+          "citation_recall_plus_002": true,
+          "false_rejection_down_005": false
+        }
+      }
+    },
+    "negative_analysis": {
+      "N001": {
+        "r0_candidate_count": 20,
+        "r1_candidate_count": 20,
+        "r0_top12": [
+          {
+            "chunk_id": "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838",
+            "rank": 1
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-e5c77c241392-000-e5c77c241392",
+            "rank": 2
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-aa6ad5a2a815-000-aa6ad5a2a815",
+            "rank": 3
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+            "rank": 4
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-47226b1f749b-000-47226b1f749b",
+            "rank": 5
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-6bbb16843e56-000-6bbb16843e56",
+            "rank": 6
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-d17ee11ffd10-000-d17ee11ffd10",
+            "rank": 7
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-b9130b9ade71-000-b9130b9ade71",
+            "rank": 8
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-卸泵组-231afb91e1bf-000-231afb91e1bf",
+            "rank": 9
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-450f03b02d3c-000-450f03b02d3c",
+            "rank": 10
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-离心泵-77685151ce68-000-77685151ce68",
+            "rank": 11
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-339cc97ced59-000-339cc97ced59",
+            "rank": 12
+          }
+        ],
+        "r1_top12": [
+          {
+            "chunk_id": "cchunk-pymupdf-v1-体说明-656758c8defd-000-656758c8defd",
+            "rerank_rank": 1
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-d17ee11ffd10-000-d17ee11ffd10",
+            "rerank_rank": 2
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-450f03b02d3c-000-450f03b02d3c",
+            "rerank_rank": 3
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-体说明-d359342e1474-000-d359342e1474",
+            "rerank_rank": 4
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-47226b1f749b-000-47226b1f749b",
+            "rerank_rank": 5
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-03883996196c-000-03883996196c",
+            "rerank_rank": 6
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-0ee0e4b87829-000-0ee0e4b87829",
+            "rerank_rank": 7
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-d7662854755a-000-d7662854755a",
+            "rerank_rank": 8
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-e5c77c241392-000-e5c77c241392",
+            "rerank_rank": 9
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-2c32d3b2a77d-000-2c32d3b2a77d",
+            "rerank_rank": 10
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838",
+            "rerank_rank": 11
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-离心泵-77685151ce68-000-77685151ce68",
+            "rerank_rank": 12
+          }
+        ],
+        "r0_refused": true,
+        "r1_refused": true,
+        "r0_unsupported_answer": false,
+        "r1_unsupported_answer": false,
+        "r0_refusal_reason": "evidence_policy_rejected",
+        "r1_refusal_reason": "evidence_policy_rejected",
+        "r0_llm_called": false,
+        "r1_llm_called": false
+      },
+      "N002": {
+        "r0_candidate_count": 19,
+        "r1_candidate_count": 19,
+        "r0_top12": [
+          {
+            "chunk_id": "cchunk-pymupdf-v1--安装-b2054aa3a455-000-b2054aa3a455",
+            "rank": 1
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-06c604348869-000-06c604348869",
+            "rank": 2
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-b1f39a866e20-000-b1f39a866e20",
+            "rank": 3
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-6bbb16843e56-000-6bbb16843e56",
+            "rank": 4
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-1cb6b3670125-000-1cb6b3670125",
+            "rank": 5
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-a667c5b9cb55-000-a667c5b9cb55",
+            "rank": 6
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-4830c2604e44-000-4830c2604e44",
+            "rank": 7
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-6b59e1a95c3b-000-6b59e1a95c3b",
+            "rank": 8
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd",
+            "rank": 9
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-d26b894d7d59-000-d26b894d7d59",
+            "rank": 10
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1--安全-093ca1d01486-000-093ca1d01486",
+            "rank": 11
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-4596927e9914-000-4596927e9914",
+            "rank": 12
+          }
+        ],
+        "r1_top12": [
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-6b59e1a95c3b-000-6b59e1a95c3b",
+            "rerank_rank": 1
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-d26b894d7d59-000-d26b894d7d59",
+            "rerank_rank": 2
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-47226b1f749b-000-47226b1f749b",
+            "rerank_rank": 3
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-06c604348869-000-06c604348869",
+            "rerank_rank": 4
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-3c438bcdf804-000-3c438bcdf804",
+            "rerank_rank": 5
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-6bbb16843e56-000-6bbb16843e56",
+            "rerank_rank": 6
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-f8ed1da9c0e5-000-f8ed1da9c0e5",
+            "rerank_rank": 7
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1--安装-b2054aa3a455-000-b2054aa3a455",
+            "rerank_rank": 8
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-a667c5b9cb55-000-a667c5b9cb55",
+            "rerank_rank": 9
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-4596927e9914-000-4596927e9914",
+            "rerank_rank": 10
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd",
+            "rerank_rank": 11
+          },
+          {
+            "chunk_id": "cchunk-pymupdf-v1-护手册-03883996196c-000-03883996196c",
+            "rerank_rank": 12
+          }
+        ],
+        "r0_refused": true,
+        "r1_refused": true,
+        "r0_unsupported_answer": false,
+        "r1_unsupported_answer": false,
+        "r0_refusal_reason": null,
+        "r1_refusal_reason": null,
+        "r0_llm_called": true,
+        "r1_llm_called": true
+      }
+    }
   }
 }

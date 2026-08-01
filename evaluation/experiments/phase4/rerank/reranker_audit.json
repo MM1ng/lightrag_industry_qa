@@ -22,6 +22,9 @@
     "Exact model name required; latest/auto aliases rejected",
     "Official request schema verified against the live API: {model, input:{query,documents}, parameters:{top_n,return_documents}}",
     "Preflight passed on 2026-08-01 (20/20 results, request_id, usage).",
-    "R1 blocked by frozen candidate pool contract mismatch (C007=19; N001/N002 have rows)."
+    "Phase 4D-R2: variable-size candidate contract accepted; C007=19 rows (one pre-existing duplicate chunk_id row at original ranks 2/5), N001=20, N002=19 are all valid frozen inputs; qwen3-rerank preserved every input row",
+    "Historical contract-blocked run (fixed 20-candidate contract) superseded by Phase 4D-R2 variable-size candidate contract",
+    "Provider Request Cache keyed by request_payload_hash (exact request semantics); evaluation-rule/commit changes do not invalidate identical requests",
+    "Legacy cache entries (old key with commit/config hash) remain readable"
   ]
 }

@@ -57,8 +57,17 @@
     "S019": 20,
     "S020": 20
   },
+  "candidate_count_contract": "variable_unique_candidates_up_to_candidate_k",
   "candidate_k": 20,
   "final_k": 12,
+  "per_question_counts": {
+    "default_answerable": 20,
+    "C007": 19,
+    "N001": 20,
+    "N002": 19
+  },
+  "negative_questions_may_have_candidates": true,
+  "effective_final_k_rule": "min(final_k, input_candidate_count)",
   "query_mode": "mix",
   "parser_pipeline": "pymupdf_standard_adapter",
   "parent_expansion": "none",

@@ -1,1 +1,15 @@
-null
+{
+  "evidence_questions": 48,
+  "recall_at_1": 0.75,
+  "recall_at_3": 0.8542,
+  "recall_at_5": 0.8542,
+  "recall_at_12": 0.875,
+  "mrr": 0.7951,
+  "gold_document_recall": 1.0,
+  "gold_page_recall": 0.9375,
+  "gold_evidence_recall": 0.875,
+  "evidence_precision_at_5": 0.2333,
+  "evidence_precision_at_12": 0.1215,
+  "top1_document_accuracy": 1.0,
+  "top5_page_coverage": 0.9167
+}
