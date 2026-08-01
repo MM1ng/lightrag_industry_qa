@@ -118,8 +118,18 @@ def _register_project_qdrant_storage() -> None:
     STORAGE_ENV_REQUIREMENTS[storage_name] = []
 
 
-def build_official_backend(settings: Settings) -> LightRAGBackend:
-    """Build against the locally installed HKUDS LightRAG API, with explicit 1024 dimensions."""
+def build_official_backend(
+    settings: Settings,
+    *,
+    llm_model_func: Callable[..., Awaitable[str]] | None = None,
+) -> LightRAGBackend:
+    """Build against the locally installed HKUDS LightRAG API, with explicit 1024 dimensions.
+
+    ``llm_model_func`` is an optional caller-supplied LLM implementation used
+    by experiments that must record usage and enforce a single fixed model.
+    When omitted, the built-in model chain is used (respecting
+    ``settings.model_fallback_enabled``).
+    """
 
     try:
         from lightrag import LightRAG, QueryParam
@@ -133,41 +143,48 @@ def build_official_backend(settings: Settings) -> LightRAGBackend:
         if settings.qdrant_generation is None:
             raise ValueError("Qdrant backend requires an active generation")
 
-    active_model_index = 0
+    if llm_model_func is None:
+        active_model_index = 0
 
-    async def llm_model_func(
-        prompt: str,
-        system_prompt: str | None = None,
-        history_messages: list[dict[str, Any]] | None = None,
-        **kwargs: Any,
-    ) -> str:
-        nonlocal active_model_index
-        kwargs.pop("model", None)
-        for model_index in range(active_model_index, len(settings.llm_models)):
-            model = settings.llm_models[model_index]
-            try:
-                response = await openai_complete_if_cache(
-                    model=model,
-                    prompt=prompt,
-                    system_prompt=system_prompt,
-                    history_messages=history_messages or [],
-                    base_url=settings.llm_base_url,
-                    api_key=settings.api_key,
-                    **kwargs,
-                )
-            except Exception as error:
-                if (
-                    not _is_model_failover_error(error)
-                    or model_index == len(settings.llm_models) - 1
-                ):
-                    raise
-                logger.warning(
-                    "DashScope model %s unavailable; trying configured fallback model.", model
-                )
-                continue
-            active_model_index = model_index
-            return response
-        raise RuntimeError("所有配置的 DashScope 模型均不可用")
+        async def llm_model_func(
+            prompt: str,
+            system_prompt: str | None = None,
+            history_messages: list[dict[str, Any]] | None = None,
+            **kwargs: Any,
+        ) -> str:
+            nonlocal active_model_index
+            kwargs.pop("model", None)
+            configured_models = (
+                settings.llm_models
+                if settings.model_fallback_enabled
+                else (settings.llm_model,)
+            )
+            for model_index in range(active_model_index, len(configured_models)):
+                model = configured_models[model_index]
+                try:
+                    response = await openai_complete_if_cache(
+                        model=model,
+                        prompt=prompt,
+                        system_prompt=system_prompt,
+                        history_messages=history_messages or [],
+                        base_url=settings.llm_base_url,
+                        api_key=settings.api_key,
+                        **kwargs,
+                    )
+                except Exception as error:
+                    if (
+                        not _is_model_failover_error(error)
+                        or model_index == len(configured_models) - 1
+                    ):
+                        raise
+                    logger.warning(
+                        "DashScope model %s unavailable; trying configured fallback model.",
+                        model,
+                    )
+                    continue
+                active_model_index = model_index
+                return response
+            raise RuntimeError("所有配置的 DashScope 模型均不可用")
 
     embedding_func = EmbeddingFunc(
         embedding_dim=settings.embedding_dim,

@@ -44,6 +44,7 @@ class Settings:
     llm_base_url: str = DEFAULT_BAILIAN_BASE_URL
     llm_model: str = "kimi-k2.6"
     llm_fallback_models: tuple[str, ...] = ()
+    model_fallback_enabled: bool = True
     embedding_model: str = "text-embedding-v4"
     embedding_dim: int = 1024
     chunk_token_size: int = 1600
@@ -99,6 +100,9 @@ class Settings:
         service_api_key = (values.get("SERVICE_API_KEY") or "").strip() or None
         base_url = (values.get("LLM_BASE_URL") or DEFAULT_BAILIAN_BASE_URL).rstrip("/")
         llm_model = (values.get("LLM_MODEL") or DEFAULT_LLM_MODELS[0]).strip()
+        model_fallback_enabled = (
+            (values.get("MODEL_FALLBACK_ENABLED") or "true").strip().lower() != "false"
+        )
         fallback_value = values.get("LLM_FALLBACK_MODELS")
         if fallback_value is None or not fallback_value.strip():
             llm_fallback_models = tuple(model for model in DEFAULT_LLM_MODELS if model != llm_model)
@@ -171,6 +175,7 @@ class Settings:
             llm_base_url=base_url,
             llm_model=llm_model,
             llm_fallback_models=llm_fallback_models,
+            model_fallback_enabled=model_fallback_enabled,
             embedding_model=embedding_model,
             embedding_dim=embedding_dim,
             chunk_token_size=chunk_token_size,
