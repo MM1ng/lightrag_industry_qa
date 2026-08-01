@@ -122,27 +122,38 @@ class IndexService:
             from industrial_rag.lightrag_service import LightRAGService
 
             boundary = "\n\n<<<INDUSTRIAL_RAG_CHUNK_BOUNDARY>>>\n\n"
-            rendered = []
-            for doc, child in all_children:
-                citation = Citation(doc.original_file_name, child.page_start or 1, child.chunk_id)
-                rendered.append(
-                    f"{encode_chunk_header(citation)}\n"
-                    f"[来源：{doc.original_file_name}，第{child.page_start or 1}页，"
-                    f"章节：{child.section_title or '未识别章节'}]\n"
-                    f"[parent_chunk_id：{child.parent_chunk_id}]\n"
-                    f"{child.embedding_content or child.content}"
-                )
-            identity = hashlib.sha256(
-                "\n".join(child.chunk_id for _, child in all_children).encode("utf-8")
-            ).hexdigest()[:20]
+            rendered_by_doc: list[tuple[Any, list[str]]] = []
+            for doc in active_docs:
+                parts = [
+                    (
+                        f"{encode_chunk_header(Citation(doc.original_file_name, child.page_start or 1, child.chunk_id))}\n"
+                        f"[来源：{doc.original_file_name}，第{child.page_start or 1}页，"
+                        f"章节：{child.section_title or '未识别章节'}]\n"
+                        f"[parent_chunk_id：{child.parent_chunk_id}]\n"
+                        f"{child.embedding_content or child.content}"
+                    )
+                    for _, child in all_children
+                    if _.id == doc.id
+                ]
+                if parts:
+                    rendered_by_doc.append((doc, parts))
+            inputs = [boundary.join(parts) for _, parts in rendered_by_doc]
+            identities = [
+                hashlib.sha256(
+                    "\n".join(
+                        child.chunk_id for _, child in all_children if _.id == doc.id
+                    ).encode("utf-8")
+                ).hexdigest()[:20]
+                for doc, _ in rendered_by_doc
+            ]
             service = LightRAGService(kb_settings)
             await service.initialize()
             try:
                 await self._task_repo.update(task_id, current_stage="ingesting", progress=0.30)
                 await service._backend.ainsert(
-                    input=[boundary.join(rendered)],
-                    ids=[f"kb-{identity}"],
-                    file_paths=[doc.original_file_name for doc in active_docs],
+                    input=inputs,
+                    ids=[f"kb-{identity}" for identity in identities],
+                    file_paths=[doc.original_file_name for doc, _ in rendered_by_doc],
                     split_by_character=boundary,
                     split_by_character_only=True,
                 )

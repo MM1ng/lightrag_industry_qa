@@ -139,9 +139,17 @@ class PhysicalQdrantVectorDBStorage(BaseVectorStorage):
         if not data:
             return
         ids = list(data)
-        vectors = await self.embedding_func(
-            [str(data[doc_id]["content"]) for doc_id in ids], context="document"
+        batch_size = max(
+            1, int(self.global_config.get("embedding_batch_num", 10) or 10)
         )
+        vectors: list[list[float]] = []
+        contents = [str(data[doc_id]["content"]) for doc_id in ids]
+        for start in range(0, len(contents), batch_size):
+            vectors.extend(
+                await self.embedding_func(
+                    contents[start : start + batch_size], context="document"
+                )
+            )
         points = [
             models.PointStruct(
                 id=_point_id(doc_id),

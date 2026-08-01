@@ -46,6 +46,7 @@ class Settings:
     llm_fallback_models: tuple[str, ...] = ()
     embedding_model: str = "text-embedding-v4"
     embedding_dim: int = 1024
+    chunk_token_size: int = 1600
     working_dir: Path = PROJECT_ROOT / "lightrag_storage"
     vector_backend: VectorBackend = VectorBackend.nano
     qdrant_url: str | None = None
@@ -108,6 +109,12 @@ class Settings:
             embedding_dim = int(values.get("EMBEDDING_DIM") or "1024")
         except ValueError as error:
             raise ValueError("EMBEDDING_DIM 必须是整数") from error
+        try:
+            chunk_token_size = int(values.get("LIGHTRAG_CHUNK_TOKEN_SIZE") or "1600")
+        except ValueError as error:
+            raise ValueError("LIGHTRAG_CHUNK_TOKEN_SIZE 必须是整数") from error
+        if chunk_token_size < 512:
+            raise ValueError("LIGHTRAG_CHUNK_TOKEN_SIZE 不能小于 512")
         raw_working_dir = values.get("LIGHTRAG_WORKING_DIR") or "./lightrag_storage"
         working_dir = Path(raw_working_dir)
         if not working_dir.is_absolute():
@@ -166,6 +173,7 @@ class Settings:
             llm_fallback_models=llm_fallback_models,
             embedding_model=embedding_model,
             embedding_dim=embedding_dim,
+            chunk_token_size=chunk_token_size,
             working_dir=working_dir.resolve(),
             vector_backend=vector_backend,
             qdrant_url=qdrant_url,
