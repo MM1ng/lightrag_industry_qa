@@ -1,0 +1,54 @@
+{
+  "model_identity": {
+    "provider": "aliyun_model_studio",
+    "requested_model": "qwen3-rerank",
+    "model_id": "qwen3-rerank",
+    "model_identity_type": "official_mainline_model_id",
+    "dated_snapshot_available": false,
+    "fallback_enabled": false,
+    "region": "cn-beijing",
+    "endpoint_mode": "dashscope_standard_public",
+    "endpoint_hash": "6ed02994f7d0c4f58b6b35e78aab0c58f06244095349e47ce6e8b99e6c0bd02b",
+    "actual_model_version": null
+  },
+  "run_started_at": "2026-08-01T18:42:00+0800",
+  "run_finished_at": "2026-08-01T18:45:53+0800",
+  "code_commit": "655c5922b9e6bb85585e585f214d23a3285a99ec",
+  "experiment_config_hash": "phase4d-frozen-pool",
+  "preflight": {
+    "passed": true,
+    "schema_summary": {
+      "http_status": 200,
+      "request_id": "7dc0c3af-34d5-9c70-a7f8-d9e3a6e46c4b",
+      "result_count": 20,
+      "result_index_field": "index",
+      "score_field": "relevance_score",
+      "usage_present": true,
+      "model_metadata_present": true,
+      "authorization_not_stored": true
+    }
+  },
+  "r1": {
+    "questions_attempted": 48,
+    "questions_succeeded": 47,
+    "questions_failed": 1,
+    "failed_question": "C007",
+    "failure_reason": "frozen pool has 19 candidates for C007 (contract requires 20); qwen3-rerank returns 19/19",
+    "input_length_gate": "passed for all attempted questions",
+    "candidate_pool_contract_deviation": {
+      "C007": 19,
+      "N001": 20,
+      "N002": 19,
+      "expected": "C007=20; N001=N002=0"
+    },
+    "completeness_passed": false,
+    "cache_hit_count": null,
+    "error_count": 1
+  },
+  "sanitization": {
+    "api_key_logged": false,
+    "authorization_header_logged": false,
+    "workspace_endpoint_logged": false,
+    "endpoint_stored_as_hash": true
+  }
+}

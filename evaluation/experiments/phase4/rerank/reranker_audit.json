@@ -1,20 +1,27 @@
 {
-  "existing_interface": false,
-  "provider": null,
-  "configured_model": null,
-  "exact_model_name": null,
-  "endpoint": null,
-  "supports_batch": null,
+  "existing_interface": true,
+  "provider": "DashScopeQwen3Reranker",
+  "configured_model": "qwen3-rerank",
+  "exact_model_name": "qwen3-rerank",
+  "endpoint": "dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank (standard public; workspace endpoint template available when DASHSCOPE_WORKSPACE_ID is set)",
+  "supports_batch": true,
   "max_documents": null,
   "score_range": null,
-  "deterministic_parameters": null,
-  "fallback_behavior": "disabled (RERANK_FALLBACK_ENABLED must be false)",
-  "secret_source": "RERANK_API_KEY / provider env (never logged)",
-  "readiness": false,
-  "blocked_reason": "missing rerank model configuration (RERANK_MODEL unset)",
+  "deterministic_parameters": {
+    "model": "qwen3-rerank",
+    "top_n": 20,
+    "return_documents": false
+  },
+  "fallback_behavior": "disabled (RERANK_FALLBACK_ENABLED=false)",
+  "secret_source": "DASHSCOPE_API_KEY (never logged)",
+  "readiness": true,
+  "blocked_reason": null,
   "notes": [
     "Production default remains RERANK_ENABLED=false",
     "RerankerProvider interface implemented in reranker.py (provider-neutral)",
-    "Exact model name required; latest/auto aliases rejected"
+    "Exact model name required; latest/auto aliases rejected",
+    "Official request schema verified against the live API: {model, input:{query,documents}, parameters:{top_n,return_documents}}",
+    "Preflight passed on 2026-08-01 (20/20 results, request_id, usage).",
+    "R1 blocked by frozen candidate pool contract mismatch (C007=19; N001/N002 have rows)."
   ]
 }
