@@ -1,0 +1,422 @@
+{
+  "scope": "all 50 frozen questions",
+  "source": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\frozen_child_results.jsonl",
+  "row_count_total": 998,
+  "duplicate_row_count": 4,
+  "affected_question_count": 4,
+  "affected_questions": [
+    "C003",
+    "C004",
+    "C007",
+    "C008"
+  ],
+  "duplicate_chunk_ids_global": {
+    "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d": 4
+  },
+  "likely_cause": "mix query merges multiple recall channels (local/global/naive) into chunk_top_k=20; the same chunk_id can be recalled by several channels at different ranks. The Phase 4 freeze step did not deduplicate by chunk_id, so the frozen pool keeps duplicate rows with identical text_hash/document/page.",
+  "rrf_dedup_missing": "Observed rows share chunk_id/text_hash/page but differ in rank; consistent with an RRF/mix merge that lacked a final chunk_id deduplication pass.",
+  "per_question": {
+    "C001": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "C002": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "C003": {
+      "row_count": 20,
+      "unique_chunk_id_count": 19,
+      "duplicate_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d"
+      ],
+      "duplicate_rows": [
+        {
+          "chunk_id": "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d",
+          "duplicate_rank": 5,
+          "first_rank": 3,
+          "document_id": "2196-ANSI-Manual-Chinese.pdf",
+          "page": 24,
+          "text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "first_text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "original_rank": 5
+        }
+      ],
+      "affected": true
+    },
+    "C004": {
+      "row_count": 20,
+      "unique_chunk_id_count": 19,
+      "duplicate_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d"
+      ],
+      "duplicate_rows": [
+        {
+          "chunk_id": "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d",
+          "duplicate_rank": 11,
+          "first_rank": 9,
+          "document_id": "2196-ANSI-Manual-Chinese.pdf",
+          "page": 24,
+          "text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "first_text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "original_rank": 11
+        }
+      ],
+      "affected": true
+    },
+    "C005": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "C006": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "C007": {
+      "row_count": 19,
+      "unique_chunk_id_count": 18,
+      "duplicate_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d"
+      ],
+      "duplicate_rows": [
+        {
+          "chunk_id": "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d",
+          "duplicate_rank": 5,
+          "first_rank": 2,
+          "document_id": "2196-ANSI-Manual-Chinese.pdf",
+          "page": 24,
+          "text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "first_text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "original_rank": 5
+        }
+      ],
+      "affected": true
+    },
+    "C008": {
+      "row_count": 20,
+      "unique_chunk_id_count": 19,
+      "duplicate_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d"
+      ],
+      "duplicate_rows": [
+        {
+          "chunk_id": "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d",
+          "duplicate_rank": 16,
+          "first_rank": 14,
+          "document_id": "2196-ANSI-Manual-Chinese.pdf",
+          "page": 24,
+          "text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "first_text_hash": "6f7427f66850846cfad17b97a87afbadb53601d638180bbd06642266667338b9",
+          "original_rank": 16
+        }
+      ],
+      "affected": true
+    },
+    "D001": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D002": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D003": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D004": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D005": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D006": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D007": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D008": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D009": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D010": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D011": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D012": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D013": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D014": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D015": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D016": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D017": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D018": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D019": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "D020": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "N001": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "N002": {
+      "row_count": 19,
+      "unique_chunk_id_count": 19,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S001": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S002": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S003": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S004": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S005": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S006": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S007": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S008": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S009": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S010": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S011": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S012": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S013": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S014": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S015": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S016": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S017": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S018": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S019": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    },
+    "S020": {
+      "row_count": 20,
+      "unique_chunk_id_count": 20,
+      "duplicate_chunk_ids": [],
+      "duplicate_rows": [],
+      "affected": false
+    }
+  }
+}
