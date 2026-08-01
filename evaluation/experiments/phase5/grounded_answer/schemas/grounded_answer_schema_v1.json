@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://industrial-rag.local/schemas/grounded_answer_schema_v1.json",
+  "title": "GroundedAnswerV1",
+  "type": "object",
+  "required": ["status", "answer", "claims", "refusal_reason"],
+  "properties": {
+    "status": {
+      "enum": ["answered", "insufficient_evidence"]
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "text", "claim_type", "citations"],
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claim_type": {
+            "enum": ["fact", "parameter", "procedure", "safety", "troubleshooting"]
+          },
+          "citations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["chunk_id", "document_name", "page"],
+              "properties": {
+                "chunk_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "document_name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "page": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "refusal_reason": {
+      "type": ["string", "null"]
+    }
+  },
+  "additionalProperties": true
+}

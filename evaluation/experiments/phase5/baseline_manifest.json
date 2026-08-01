@@ -1,0 +1,46 @@
+{
+  "source_phase": "Phase 4D-R2",
+  "source_commit": "dd9ce808b7ea32071c5e1db043e118d741dc5750",
+  "parser_pipeline": "pymupdf_standard_adapter",
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "parent_expansion": "none",
+  "rerank": false,
+  "answer_model": "qwen-plus-2025-07-28",
+  "fallback_enabled": false,
+  "thinking_enabled": false,
+  "golden_set": {
+    "path": "D:\\industrial_energy_agent\\data\\evaluation\\industrial_pump_golden_set_50.jsonl",
+    "sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf"
+  },
+  "frozen_candidate_pool": {
+    "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\frozen_child_results.jsonl",
+    "sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0"
+  },
+  "phase4_frozen_index": {
+    "kb_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation": "g5162e7fb4208635103ff4ebb",
+    "points": {
+      "chunks": 453,
+      "entities": 1012,
+      "relationships": 1061
+    },
+    "role": "phase4_frozen_index"
+  },
+  "prompt_bundle": {
+    "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase5\\grounded_answer\\prompt_bundle\\prompt_bundle_v1.json",
+    "sha256": "a39582ea101251af23051727ed9a746ea597e5acd8cc3b168520219a55182719",
+    "version": "v1"
+  },
+  "answer_baseline_results": {
+    "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\rerank\\results\\answers\\baseline.jsonl",
+    "sha256": "3a2fbec4df5b3df6b9eec206254e302a0bcbc68183e2e303d14dfb367e2d9e8c"
+  },
+  "canonical_metric_definition_version": "phase5-metrics-v1",
+  "canonical_category_manifest": {
+    "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase5\\manifests\\category_manifest.json",
+    "sha256": "71e2176c784e16c8f41deb73869bfd9abd5636688c4a64ded552128d615de76d",
+    "version": "phase4-canonical-categories-v1"
+  }
+}

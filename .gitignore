@@ -54,6 +54,7 @@ evaluation/mineru_smoke/
 evaluation/experiments/parser_backend/fixed_model/cache/
 evaluation/experiments/phase4/parent_expansion/cache/
 evaluation/experiments/phase4/rerank/cache/
+evaluation/experiments/phase5/cache/
 
 # Protected source data and generated processing outputs
 data/raw_dataset/**
