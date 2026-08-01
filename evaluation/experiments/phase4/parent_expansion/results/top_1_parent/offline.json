@@ -4,7 +4,7 @@
   "child_recall_at_1": 0.5625,
   "child_recall_at_3": 0.6875,
   "child_recall_at_5": 0.75,
-  "child_mrr": 0.6316,
+  "child_mrr": 0.6201,
   "expanded_gold_evidence_coverage": 0.8333,
   "expanded_gold_page_coverage": 0.8958,
   "context_evidence_density": 0.4652,

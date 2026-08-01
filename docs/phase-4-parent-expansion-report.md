@@ -58,7 +58,7 @@
 | 指标 | none | top_1_parent | top_3_parents | adaptive |
 |---|---|---|---|---|
 | Child Recall@1/3/5 | 0.5625/0.6875/0.75 | 同左 | 同左 | 同左 |
-| Child MRR | 0.6316 | 同左 | 同左 | 同左 |
+| Child MRR@5（canonical） | 0.6201 | 同左 | 同左 | 同左 |
 | Expanded Gold Evidence Coverage | 0.8333 | 0.8333 | 0.8333 | 0.8333 |
 | Expanded Gold Page Coverage | 0.8958 | 0.8958 | 0.8958 | 0.8958 |
 | Context Evidence Density | 0.4796 | 0.4652 | 0.4625 | 0.4625 |
@@ -146,11 +146,19 @@ D008 在 PE0 被拒答、top_1 正常回答（引用一致）：top_1 的 False 
 
 ```json
 {
+  "evaluation_completed": true,
   "parent_expansion": "none",
+  "replacement_approved": false,
+  "replacement_gates_passed": false,
   "selection_reason": "No parent expansion strategy passed replacement gates",
-  "replacement_gates_passed": true
 }
 ```
+
+> Closeout 修正：`replacement_gates_passed` 表示候选是否通过替换门禁（false）；`replacement_approved` 表示是否批准替换（false）；`evaluation_completed` 表示实验流程完整（true）。三者语义分离。
+
+**MRR 口径审计（Closeout）**：Phase 4C frozen pool 的 MRR 统一为 canonical MRR@5（rank 1-5、48 题、p0 evidence mapping、N001/N002 排除）= **0.6201**（四组一致）。Phase 3A 官方 MRR 0.6167 来自其自身检索实例；0.0034 差异源于两次独立检索实例，非指标 bug；历史指标未修改。定义见 `evaluation/experiments/phase4/metrics_definition.json`。
+
+**答案调用审计（Closeout）**：每组 total=50、answer_llm_calls=49、deterministic_refusals=1（N001 无证据、零调用）、cache_hits=0（最终运行）、failures=0、missing_results=0；50 题结果完整、每题有 status。
 
 ## 21. 是否替换默认配置
 
@@ -160,11 +168,11 @@ D008 在 PE0 被拒答、top_1 正常回答（引用一致）：top_1 的 False 
 
 ```text
 python -m pytest --collect-only -q   -> 432 collected
-python -m pytest -q                  -> 418 passed, 14 skipped, 0 failed
+python -m pytest -q                  -> 420 passed, 12 skipped, 0 failed
 python -m ruff check .               -> All checks passed
 ```
 
-skip 分类：11 真实 Qdrant opt-in + 1 真实 MinerU opt-in + 2 实验产物依赖（frozen 结果/最终决策未生成时跳过；本实验已生成后实跑）。
+skip 审计（Closeout）：12 项全部为外部 opt-in——2 真实 DashScope+Qdrant E2E（`IRA_QDRANT_E2E`）+ 9 真实 Qdrant 集成（`IRA_QDRANT_INTEGRATION`）+ 1 真实 MinerU API（`IRA_MINERU_REAL`）；无产物依赖跳过。
 新增 `tests/test_parent_expansion.py`（15 项：冻结隔离、Parent 映射、四策略、上下文、provenance、指标、bootstrap 种子）。
 
 ## 23. 已知限制

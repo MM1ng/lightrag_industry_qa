@@ -135,5 +135,7 @@
       "false_rejection_minus_005": false
     }
   },
-  "replacement_gates_passed": true
+  "evaluation_completed": true,
+  "replacement_approved": false,
+  "replacement_gates_passed": false
 }

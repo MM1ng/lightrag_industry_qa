@@ -216,7 +216,7 @@ def _child_mrr(frozen: list[dict[str, Any]]) -> float:
     total = 0.0
     for q in evidence:
         rows = sorted(by_q[q], key=lambda r: r.get("rank") or 999)
-        for rank, r in enumerate(rows, start=1):
+        for rank, r in enumerate(rows[:5], start=1):
             if r["child_chunk_id"] in mapped_ids.get(q, set()):
                 total += 1.0 / rank
                 break

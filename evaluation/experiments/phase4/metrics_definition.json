@@ -1,0 +1,49 @@
+{
+  "canonical_mrr": {
+    "definition": "MRR@5 over the frozen candidate pool",
+    "rank_start": 1,
+    "window": 5,
+    "denominator": "48 evidence questions (N001/N002 excluded)",
+    "gold_match": "evidence (chunk id) match against p0 evidence mapping (exact+fuzzy)",
+    "no_hit_value": 0,
+    "frozen_pool_value": 0.6201,
+    "phase3a_official_value": 0.6167,
+    "difference_explanation": "Phase 3A official MRR (0.6167) was computed over the Phase 3A P0 retrieval instantiation (top-5). Phase 4C frozen pool (same config, new phase4_frozen_index retrieval) yields MRR@5=0.6201. The 0.0034 gap comes from two independent retrieval instantiations, not from a metric bug. Historical Phase 3A numbers are not modified."
+  },
+  "recall_at_k": {
+    "definition": "per-question hit if any gold-mapped chunk id appears in top-K retrieved candidates",
+    "denominator": "48 evidence questions"
+  },
+  "gold_evidence_recall": {
+    "definition": "per-question hit if any gold-mapped chunk id appears anywhere in the retrieved candidate list",
+    "denominator": "48 evidence questions"
+  },
+  "gold_page_recall": {
+    "definition": "per-question hit if any top-5 (file, page) overlaps gold pages",
+    "denominator": "48 evidence questions"
+  },
+  "evidence_precision_at_5": {
+    "definition": "fraction of top-5 retrieved chunk ids that are gold-mapped, averaged over questions",
+    "denominator": "48 evidence questions"
+  },
+  "citation_metrics": {
+    "definition": "per-question citation set matched to gold (file, page)",
+    "denominator": "48 evidence questions"
+  },
+  "rejection_metrics": {
+    "insufficient_evidence_rejection": {
+      "denominator": "N001/N002 (2)"
+    },
+    "false_rejection_rate": {
+      "denominator": "48 evidence questions"
+    },
+    "unsupported_answer_rate": {
+      "denominator": "N001/N002 (2)"
+    }
+  },
+  "notes": [
+    "fuzzy evidence mapping entries count as mapped and contribute to recall metrics",
+    "unmapped citations do not count as failures; they simply provide no mapped id",
+    "MRR canonical definition applies to Phase 4D and later sub-phases"
+  ]
+}
