@@ -1,0 +1,8 @@
+{
+  "questions": 50,
+  "llm_called": false,
+  "retrieval_called": false,
+  "input_fully_equal_count": 1,
+  "parser_reparse_explains_gap": false,
+  "note": "Saved-answer reparse with the single canonical structured parser reproduces each path's stored citations exactly; parser replay does not explain the citation gap. The gap comes from input-level differences (evidence-policy candidate universe and final-context rendering) and the refusal-citation convention."
+}
