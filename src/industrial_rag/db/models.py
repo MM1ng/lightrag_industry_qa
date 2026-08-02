@@ -108,12 +108,34 @@ class UpdateOperation(enum.StrEnum):
 
 class UpdateJobStatus(enum.StrEnum):
     pending = "pending"
+    claimed = "claimed"
+    running = "running"
     building = "building"
     validating = "validating"
     ready = "ready"
+    succeeded = "succeeded"
     failed = "failed"
+    cancelled = "cancelled"
+    recovery_required = "recovery_required"
     promoted = "promoted"
     rolled_back = "rolled_back"
+
+
+class ValidationRunStatus(enum.StrEnum):
+    running = "running"
+    passed = "passed"
+    failed = "failed"
+    abandoned = "abandoned"
+
+
+class GCPlanStatus(enum.StrEnum):
+    planned = "planned"
+    approved = "approved"
+    executing = "executing"
+    completed = "completed"
+    partial_failed = "partial_failed"
+    rejected = "rejected"
+    expired = "expired"
 
 
 # ---------------------------------------------------------------------------
@@ -163,6 +185,18 @@ class KnowledgeBase(Base):
         "VectorIndexGeneration",
         foreign_keys=[active_vector_generation_id],
         post_update=True,
+    )
+    generation_epoch: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    last_rollback_target_generation_id: Mapped[str | None] = mapped_column(
+        String(32),
+        ForeignKey(
+            "vector_index_generations.id",
+            use_alter=True,
+            name="fk_kb_last_rollback_generation",
+        ),
+        nullable=True,
+        default=None,
+        index=True,
     )
 
     # Counts (aggregated from documents / LightRAG)
@@ -241,6 +275,17 @@ class VectorIndexGeneration(Base):
     activated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     retired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    protect_from_delete: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False
+    )
+    audit_frozen: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    retention_until: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    content_epoch: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    validated_fingerprint: Mapped[str | None] = mapped_column(
+        String(64), nullable=True
+    )
 
     knowledge_base: Mapped[KnowledgeBase] = relationship(
         "KnowledgeBase", back_populates="vector_generations", foreign_keys=[knowledge_base_id]
@@ -424,6 +469,17 @@ class UpdateJob(Base):
     approved_by: Mapped[str | None] = mapped_column(String(50), nullable=True)
     metrics: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
     result: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
+    worker_id: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
+    lease_token: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    fencing_token: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    claimed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    heartbeat_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    lease_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True, index=True
+    )
+    attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=3)
+    checkpoint: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=_utcnow
     )
@@ -445,3 +501,94 @@ class UpdateJob(Base):
     candidate_generation: Mapped[VectorIndexGeneration | None] = relationship(
         "VectorIndexGeneration", foreign_keys=[candidate_generation_id]
     )
+
+
+class ValidationRun(Base):
+    """Append-only canonical validation evidence for one Generation."""
+
+    __tablename__ = "validation_runs"
+
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_uuid)
+    knowledge_base_id: Mapped[str] = mapped_column(
+        String(32), ForeignKey("knowledge_bases.id"), nullable=False, index=True
+    )
+    generation_id: Mapped[str] = mapped_column(
+        String(32), ForeignKey("vector_index_generations.id"), nullable=False, index=True
+    )
+    status: Mapped[ValidationRunStatus] = mapped_column(
+        Enum(ValidationRunStatus),
+        nullable=False,
+        default=ValidationRunStatus.running,
+        index=True,
+    )
+    golden_set_version: Mapped[str] = mapped_column(String(100), nullable=False)
+    golden_set_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    runner_version: Mapped[str] = mapped_column(String(100), nullable=False)
+    app_git_commit: Mapped[str] = mapped_column(String(40), nullable=False)
+    configured_model: Mapped[str] = mapped_column(String(100), nullable=False)
+    strategy_fingerprint: Mapped[str] = mapped_column(String(64), nullable=False)
+    generation_manifest_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    qdrant_content_fingerprint: Mapped[str] = mapped_column(String(64), nullable=False)
+    document_registry_fingerprint: Mapped[str] = mapped_column(String(64), nullable=False)
+    generation_content_epoch: Mapped[int] = mapped_column(Integer, nullable=False)
+    metrics: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    passed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    result_artifact_path: Mapped[str | None] = mapped_column(Text, nullable=True)
+    result_artifact_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    actor: Mapped[str] = mapped_column(String(50), nullable=False)
+    request_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    trace_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
+
+
+class KBOperationLease(Base):
+    """Durable one-writer lease and monotonic fencing counter for a KB."""
+
+    __tablename__ = "kb_operation_leases"
+
+    knowledge_base_id: Mapped[str] = mapped_column(
+        String(32), ForeignKey("knowledge_bases.id"), primary_key=True
+    )
+    lock_owner: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    lease_token: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    fencing_token: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    acquired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    heartbeat_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, index=True)
+    operation: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    job_id: Mapped[str | None] = mapped_column(
+        String(32), ForeignKey("update_jobs.id"), nullable=True, index=True
+    )
+
+
+class GCPlan(Base):
+    """Immutable dry-run plan plus explicit approval and execution evidence."""
+
+    __tablename__ = "gc_plans"
+
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_uuid)
+    knowledge_base_id: Mapped[str] = mapped_column(
+        String(32), ForeignKey("knowledge_bases.id"), nullable=False, index=True
+    )
+    status: Mapped[GCPlanStatus] = mapped_column(
+        Enum(GCPlanStatus), nullable=False, default=GCPlanStatus.planned, index=True
+    )
+    policy: Mapped[dict] = mapped_column(JSON, nullable=False)
+    items: Mapped[list] = mapped_column(JSON, nullable=False)
+    manifest_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_by: Mapped[str] = mapped_column(String(50), nullable=False)
+    approved_by: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    result: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
+    approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    executed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
