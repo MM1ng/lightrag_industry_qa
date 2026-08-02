@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from functools import partial
 from typing import Any, Literal, Protocol, cast
 
-from industrial_rag.citation_formatter import Citation, encode_chunk_header
+from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
 from industrial_rag.config import (
     SUPPORTED_QUERY_MODES,
     Settings,
@@ -45,6 +45,8 @@ class QueryResult:
     answer: str
     citations: tuple[Citation, ...]
     mode: QueryMode
+    retrieval_chunk_ids: tuple[str, ...] = ()
+    retrieval_meta: tuple[tuple[str, str, int], ...] = ()
 
 
 class LightRAGBackend(Protocol):
@@ -259,6 +261,38 @@ def _selected_context(selected: Sequence[EvidenceCandidate]) -> str:
     )
 
 
+def _extract_retrieved(evidence: dict[str, Any]) -> list[dict[str, Any]]:
+    """Extract retrieved chunk identities from a LightRAG evidence payload."""
+    data = evidence.get("data", {}) if isinstance(evidence, dict) else {}
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[str, int, str]] = set()
+    for field in ("chunks", "references"):
+        values = data.get(field, []) if isinstance(data, dict) else []
+        if not isinstance(values, list):
+            continue
+        for value in values:
+            if not isinstance(value, dict):
+                continue
+            citations = collect_citations({"data": {"references": [], "chunks": [value]}})
+            if not citations:
+                continue
+            citation = citations[0]
+            identity = (citation.source_file, citation.page_number, citation.chunk_id)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            out.append(
+                {
+                    "file": citation.source_file,
+                    "page": citation.page_number,
+                    "chunk_id": citation.chunk_id,
+                    "score": value.get("score") or value.get("distance"),
+                    "rank": len(out) + 1,
+                }
+            )
+    return out
+
+
 def _generation_system_prompt(context: str) -> str:
     return _SYSTEM_PROMPT_BASE + _SELECTED_CONTEXT_LABEL + context
 
@@ -337,12 +371,35 @@ class LightRAGService:
             raise ValueError("问题不能为空")
         options = QueryOptions(mode=mode)
         evidence = await self._backend.aquery_data(question.strip(), options)
+        retrieved = _extract_retrieved(evidence)
+        retrieval_chunk_ids = tuple(item["chunk_id"] for item in retrieved)
+        retrieval_meta = tuple(
+            (item["file"], item["page"], item["chunk_id"]) for item in retrieved
+        )
         decision = select_evidence(question.strip(), evidence)
         if not decision.allowed:
-            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), mode)
+            return QueryResult(
+                INSUFFICIENT_EVIDENCE_MESSAGE,
+                (),
+                mode,
+                retrieval_chunk_ids,
+                retrieval_meta,
+            )
         context = _selected_context(decision.selected)
         system_prompt = _generation_system_prompt(context)
         answer = (await self._backend.generate(question.strip(), context, system_prompt)).strip()
         if not answer:
-            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), mode)
-        return QueryResult(answer, tuple(item.citation for item in decision.selected), mode)
+            return QueryResult(
+                INSUFFICIENT_EVIDENCE_MESSAGE,
+                (),
+                mode,
+                retrieval_chunk_ids,
+                retrieval_meta,
+            )
+        return QueryResult(
+            answer,
+            tuple(item.citation for item in decision.selected),
+            mode,
+            retrieval_chunk_ids,
+            retrieval_meta,
+        )

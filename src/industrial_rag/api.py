@@ -70,11 +70,14 @@ class ClaimResponse(BaseModel):
 
 class QueryResponse(BaseModel):
     request_id: str
+    trace_id: str = ""
     status: Literal["success", "insufficient_evidence"]
     answer: str
     citations: list[CitationResponse]
     claims: list[ClaimResponse]
     latency_ms: int
+    retrieved_chunk_ids: list[str] = []
+    shadow_audit: dict[str, Any] | None = None
 
 
 class PublicError(BaseModel):
@@ -90,10 +93,24 @@ _ERRORS: dict[str, tuple[int, str, bool]] = {
     "INDEX_NOT_READY": (503, "知识库索引尚未就绪，请稍后重试。", True),
     "TIMEOUT": (504, "知识库查询超时，请稍后重试。", True),
     "UPSTREAM_UNAVAILABLE": (502, "知识库服务暂时不可用，请稍后重试。", True),
+    "EMPTY_QUESTION": (422, "问题不能为空。", False),
+    "KB_NOT_FOUND": (404, "知识库不存在。", False),
+    "GENERATION_NOT_READY": (503, "知识库生成尚未就绪，请稍后重试。", True),
+    "RETRIEVAL_FAILED": (502, "检索服务暂时不可用，请稍后重试。", True),
+    "EMBEDDING_FAILED": (502, "向量服务暂时不可用，请稍后重试。", True),
+    "ANSWER_MODEL_FAILED": (502, "答案模型暂时不可用，请稍后重试。", True),
+    "QA_TIMEOUT": (504, "问答请求超时，请稍后重试。", True),
+    "SAFETY_POLICY_BLOCKED": (403, "该请求涉及高风险操作或超出系统安全边界，系统仅提供信息检索与分析，请人工复核。", False),
+    "CITATION_AUDIT_WARNING": (200, "引用审计发现警告，请人工复核。", False),
+    "INTERNAL_ERROR": (500, "系统内部错误，请稍后重试。", False),
 }
 
 
 def _request_id() -> str:
+    return uuid4().hex
+
+
+def _trace_id() -> str:
     return uuid4().hex
 
 
@@ -103,6 +120,14 @@ def _request_id_for(request: Request) -> str:
         request_id = _request_id()
         request.state.request_id = request_id
     return request_id
+
+
+def _trace_id_for(request: Request) -> str:
+    trace_id = getattr(request.state, "trace_id", None)
+    if trace_id is None:
+        trace_id = request.headers.get("x-trace-id") or _trace_id()
+        request.state.trace_id = trace_id
+    return trace_id
 
 
 def _error_response(
@@ -133,6 +158,36 @@ def _citation_response(citation: Citation, index: int) -> CitationResponse:
         page=citation.page_number,
         chunk_id=citation.chunk_id,
     )
+
+
+def _shadow_audit_record(
+    *,
+    request_id: str,
+    kb_id: str | None,
+    generation: str | None,
+    result: QueryResult,
+) -> dict[str, Any]:
+    """Non-blocking citation audit record (never alters the answer)."""
+    from industrial_rag.shadow_audit import CitationShadowAudit
+
+    audit = CitationShadowAudit(
+        request_id=request_id,
+        question_id=None,
+        kb_id=kb_id,
+        generation=generation,
+        citations=tuple(
+            {
+                "chunk_id": citation.chunk_id,
+                "document_name": citation.source_file,
+                "page": citation.page_number,
+            }
+            for citation in result.citations
+        ),
+        context_chunk_ids=tuple(result.retrieval_chunk_ids),
+        retrieved_chunk_ids=tuple(result.retrieval_chunk_ids),
+        context_registry=tuple(result.retrieval_meta),
+    )
+    return audit.record
 
 
 def _log_result(*, request_id: str, status: str, latency_ms: int) -> None:
@@ -259,6 +314,7 @@ def create_app(
         if request.method in ("GET", "OPTIONS", "HEAD"):
             return await call_next(request)
         request_id = _request_id_for(request)
+        _trace_id_for(request)
         service_api_key: str | None = request.app.state.service_api_key
         if service_api_key is None:
             return await call_next(request)
@@ -331,6 +387,83 @@ def create_app(
             return {"status": "degraded", "db": "unavailable"}
         return {"status": "ok", "db": "available"}
 
+    @application.get("/health")
+    async def health(request: Request) -> dict[str, str]:
+        """Liveness: the application process is alive."""
+        return {"status": "ok", "service": "industrial-rag-qa"}
+
+    @application.get("/version")
+    async def version(request: Request) -> dict[str, object]:
+        """Version surface (no secrets)."""
+        from industrial_rag.production_config import ProductionQASettings
+
+        try:
+            qa = ProductionQASettings.from_env()
+            config_version = "phase6-v1"
+        except Exception:
+            qa = None
+            config_version = "unresolved"
+        return {
+            "app_version": "industrial-rag-qa-rc1",
+            "git_commit": os.environ.get("GIT_COMMIT", ""),
+            "config_version": config_version,
+            "parser_pipeline": qa.parser_pipeline if qa else None,
+            "query_mode": qa.query_mode if qa else None,
+            "answer_model": qa.answer_model if qa else None,
+            "embedding_model": qa.embedding_model if qa else None,
+        }
+
+    @application.get("/ready", response_model=None)
+    def ready(request: Request) -> dict[str, object] | JSONResponse:
+        """Readiness: config legal, DB reachable, Qdrant reachable (when used)."""
+        components: dict[str, str] = {"config": "unknown", "db": "unknown", "qdrant": "n/a"}
+        resolved = getattr(request.app.state, "resolved_settings", None)
+        if resolved is None:
+            components["config"] = "not_loaded"
+            components["db"] = "unknown"
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "status": "not_ready",
+                    "components": components,
+                    "message": "runtime not initialized",
+                },
+            )
+        components["config"] = "ok"
+        try:
+            import asyncio
+
+            async def _db_ok() -> None:
+                async for _ in get_session():
+                    break
+
+            asyncio.run(_db_ok())
+            components["db"] = "ok"
+        except Exception:
+            components["db"] = "unavailable"
+        if resolved.vector_backend.value == "qdrant":
+            try:
+                import asyncio
+
+                from qdrant_client import AsyncQdrantClient
+
+                async def _qdrant_ok() -> bool:
+                    client = AsyncQdrantClient(url=resolved.qdrant_url, timeout=5)
+                    try:
+                        await client.get_collections()
+                        return True
+                    finally:
+                        await client.close()
+
+                components["qdrant"] = "ok" if asyncio.run(_qdrant_ok()) else "unavailable"
+            except Exception:
+                components["qdrant"] = "unavailable"
+        ready_status = components.get("db") == "ok" and components.get("qdrant") in {"ok", "n/a"}
+        return {
+            "status": "ready" if ready_status else "not_ready",
+            "components": components,
+        }
+
     # ------------------------------------------------------------------
     # Legacy query (backward compatible)
     # ------------------------------------------------------------------
@@ -341,6 +474,18 @@ def create_app(
         request: Request,
     ) -> QueryResponse | JSONResponse:
         request_id = _request_id_for(request)
+        trace_id = _trace_id_for(request)
+        from industrial_rag.safety_policy import evaluate_input
+
+        safety = evaluate_input(payload.query)
+        if not safety.allowed:
+            response = _error_response(
+                "SAFETY_POLICY_BLOCKED",
+                request_id=request_id,
+                status_code=403,
+            )
+            _log_result(request_id=request_id, status="SAFETY_POLICY_BLOCKED", latency_ms=0)
+            return response
         runtime: QueryRuntime | None = request.app.state.runtime
         if runtime is None:
             response = _error_response("INDEX_NOT_READY", request_id=request_id)
@@ -367,6 +512,7 @@ def create_app(
         if result.answer == INSUFFICIENT_EVIDENCE_MESSAGE or not result.citations:
             response = QueryResponse(
                 request_id=request_id,
+                trace_id=trace_id,
                 status="insufficient_evidence",
                 answer=INSUFFICIENT_EVIDENCE_MESSAGE,
                 citations=[],
@@ -386,6 +532,7 @@ def create_app(
         ]
         response = QueryResponse(
             request_id=request_id,
+            trace_id=trace_id,
             status="success",
             answer=result.answer,
             citations=citations,
@@ -399,6 +546,28 @@ def create_app(
             latency_ms=latency_ms,
         )
         _log_result(request_id=request_id, status="success", latency_ms=latency_ms)
+        if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true":
+            from industrial_rag.shadow_audit import CitationShadowAudit
+
+            audit = CitationShadowAudit(
+                request_id=request_id,
+                question_id=None,
+                kb_id=None,
+                generation=None,
+                citations=tuple(
+                    {
+                        "chunk_id": citation.chunk_id,
+                        "document_name": citation.source_file,
+                        "page": citation.page_number,
+                    }
+                    for citation in result.citations
+                ),
+                context_chunk_ids=tuple(result.retrieval_chunk_ids),
+                retrieved_chunk_ids=tuple(result.retrieval_chunk_ids),
+                context_registry=tuple(result.retrieval_meta),
+            )
+            if request.headers.get("x-debug-audit") == "1":
+                response.shadow_audit = audit.record
         return response
 
     # ------------------------------------------------------------------
@@ -412,6 +581,16 @@ def create_app(
         request: Request,
     ) -> QueryResponse | JSONResponse:
         request_id = _request_id_for(request)
+        trace_id = _trace_id_for(request)
+        from industrial_rag.safety_policy import evaluate_input
+
+        safety = evaluate_input(payload.query)
+        if not safety.allowed:
+            return _error_response(
+                "SAFETY_POLICY_BLOCKED",
+                request_id=request_id,
+                status_code=403,
+            )
         runtime_manager = getattr(request.app.state, "runtime_manager", None)
         base_settings = getattr(request.app.state, "resolved_settings", None)
         if runtime_manager is None or base_settings is None:
@@ -446,11 +625,24 @@ def create_app(
         if result.answer == INSUFFICIENT_EVIDENCE_MESSAGE or not result.citations:
             return QueryResponse(
                 request_id=request_id,
+                trace_id=trace_id,
                 status="insufficient_evidence",
                 answer=INSUFFICIENT_EVIDENCE_MESSAGE,
                 citations=[],
                 claims=[],
                 latency_ms=0,
+                retrieved_chunk_ids=list(result.retrieval_chunk_ids),
+                shadow_audit=(
+                    _shadow_audit_record(
+                        request_id=request_id,
+                        kb_id=kb_id,
+                        generation=getattr(kb_settings, "qdrant_generation", None),
+                        result=result,
+                    )
+                    if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true"
+                    and request.headers.get("x-debug-audit") == "1"
+                    else None
+                ),
             )
         citations = [
             _citation_response(citation, index)
@@ -458,6 +650,7 @@ def create_app(
         ]
         return QueryResponse(
             request_id=request_id,
+            trace_id=trace_id,
             status="success",
             answer=result.answer,
             citations=citations,
@@ -469,6 +662,18 @@ def create_app(
                 )
             ],
             latency_ms=0,
+            retrieved_chunk_ids=list(result.retrieval_chunk_ids),
+            shadow_audit=(
+                _shadow_audit_record(
+                    request_id=request_id,
+                    kb_id=kb_id,
+                    generation=getattr(kb_settings, "qdrant_generation", None),
+                    result=result,
+                )
+                if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true"
+                and request.headers.get("x-debug-audit") == "1"
+                else None
+            ),
         )
 
     # ------------------------------------------------------------------
