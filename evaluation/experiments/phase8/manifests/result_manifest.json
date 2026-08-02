@@ -1,0 +1,168 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T21:32:00+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "target_environment": "local_staging",
+  "phase8_status": "completed",
+  "staging_deployment_approved": true,
+  "release_tag_created": false,
+  "release_tag_pushed": false,
+  "production_deployment_performed": false,
+  "final_decision": {
+    "phase7_closeout_completed": true,
+    "phase8_status": "completed",
+    "target_environment": "local_staging",
+    "staging_deployment_approved": true,
+    "release_tag_created": false,
+    "release_tag_pushed": false,
+    "production_deployment_performed": false,
+    "selection_reason": "Approved RC package passed controlled local staging deployment and rollback gates"
+  },
+  "canonical_metrics": {
+    "answerable_question_count": 18,
+    "negative_question_count": 2,
+    "answer_citation_accuracy": {
+      "numerator": 15,
+      "denominator": 18,
+      "decimal": 0.8333,
+      "percentage": 83.33
+    },
+    "answer_citation_precision": {
+      "numerator": 5.0,
+      "denominator": 18,
+      "decimal": 0.2778,
+      "percentage": 27.78
+    },
+    "answer_citation_recall": {
+      "numerator": 12.8333,
+      "denominator": 18,
+      "decimal": 0.713,
+      "percentage": 71.3
+    },
+    "false_rejection_rate": {
+      "numerator": 3,
+      "denominator": 18,
+      "decimal": 0.1667,
+      "percentage": 16.67
+    },
+    "answered_without_evidence_rate": {
+      "numerator": 0,
+      "denominator": 18,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "citation_traceability_emitted": {
+      "numerator": 15,
+      "denominator": 15,
+      "decimal": 1.0,
+      "percentage": 100.0
+    }
+  },
+  "engineering_metrics": {
+    "http_success_rate": {
+      "numerator": 20,
+      "denominator": 20,
+      "decimal": 1.0
+    },
+    "request_trace_id_complete_rate": {
+      "numerator": 20,
+      "denominator": 20,
+      "decimal": 1.0
+    },
+    "p50_latency_seconds": 3.626,
+    "p95_latency_seconds": 5.861,
+    "max_latency_seconds": 5.861,
+    "error_rate": {
+      "numerator": 0,
+      "denominator": 20,
+      "decimal": 0.0
+    },
+    "fallback_count": 0,
+    "cache_hit_count": 0
+  },
+  "gates": {
+    "rc_package_verification_passed": true,
+    "smoke_test_passed": true,
+    "golden_subset_complete_20": true,
+    "n001_n002_refused": true,
+    "citation_traceability_emitted_1_0": true,
+    "http_success_rate_1_0": true,
+    "error_rate_zero": true,
+    "fallback_zero": true,
+    "warm_restart_passed": true,
+    "graceful_shutdown_passed": true,
+    "rollback_rehearsal_passed": true,
+    "qdrant_collections_unchanged": true,
+    "log_secret_scan_confirmed_zero": true,
+    "production_db_unchanged": true,
+    "pytest_passed": true,
+    "ruff_passed": true,
+    "all_hard_gates_passed": true
+  },
+  "final_test_results": {
+    "initial": {
+      "collected": 546,
+      "passed": 534,
+      "skipped": 12,
+      "failed": 0,
+      "duration_seconds": 18.3,
+      "ruff": "All checks passed!"
+    },
+    "final": {
+      "collected": 546,
+      "passed": 534,
+      "skipped": 12,
+      "failed": 0,
+      "duration_seconds": 20.91,
+      "ruff": "All checks passed!"
+    },
+    "skip_classification": {
+      "real_mineru_opt_in": 1,
+      "real_qdrant_e2e_opt_in": 2,
+      "real_qdrant_integration_opt_in": 9,
+      "all_external_opt_in": true
+    }
+  },
+  "artifacts": {
+    "release_manifest.json": "b3ec93c2ede9fb5c335c98cddb3155589cdf4742f849b4182d7943afbacec99d",
+    "config/staging_config_manifest.json": "59edc3be803948f7442eb2ef43f8638c8c27d685ef510ae2d63e2f6f13c47f36",
+    "backup/pre_deploy_backup.json": "e373abd8b0002a569c2bd31bffdb7f06f7964e5f6ea8d23146fc9802aba87f29",
+    "deployment/deployment_steps.json": "4368c31a7ab6797d88e3922cb2ac26d71a66d2ef5a431b4ff81a4de9f50df1d2",
+    "acceptance/smoke_results.jsonl": "cba4f77017b23643c6feb248ba64290038cad5200966a2b57272b6b93ce09811",
+    "acceptance/robustness_results.jsonl": "ca6451fe167b4f4ebf753d607bb8f5635a7061c82e2ee839756896c207b32331",
+    "acceptance/golden_subset_results.jsonl": "692b1f97e4b8c4e342bc526afd3d7a96da70b835a81364e3450bb0cd82b8ad62",
+    "acceptance/metrics.json": "9f5c5675bdbb5f34acdfb4a75641d0f9204feb64ae173af9336409c1bf27c7b0",
+    "rehearsal/warm_restart.json": "c9c376ee9d1b38f86882f69d03d7774af716413d2ba78f28007010bfc4c736e8",
+    "rehearsal/graceful_shutdown.json": "e8450fc7a9a26dafe54bd1f01a64eb3aa3372af06ccbf3ac89e1a4d587f5996a",
+    "rollback/rollback_rehearsal.json": "77e7267859a88e8b911ccf25070ae2603533839b7442a5a6409a8fdc488f267f",
+    "security/log_secret_scan.json": "349abfed35ab14906ce7b06b1d46bbea72f16fb8252c2fbbd80a12d28186d1a4",
+    "docs/phase-8-staging-deployment-report.md": "cdb4153ce7f670ffd69c4477f727fb89ffef455c5b6b7ef9c0b6ccf76223bd51"
+  },
+  "qdrant_snapshots_identical": {
+    "chunks": 453,
+    "entities": 1012,
+    "relationships": 1061,
+    "before_deploy": true,
+    "after_deploy": true,
+    "after_rollback": true
+  },
+  "sanitization": {
+    "api_key_logged": false,
+    "authorization_header_logged": false,
+    "workspace_endpoint_logged": false,
+    "local_user_dir_in_committed_artifacts": false
+  }
+}
