@@ -4,19 +4,25 @@ from __future__ import annotations
 
 import logging
 import os
+import time
 from collections.abc import Awaitable, Callable, Mapping
 from contextlib import asynccontextmanager
 from typing import Annotated, Any, Literal, Protocol
 from uuid import uuid4
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StringConstraints
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
-from industrial_rag.auth import authenticate_bearer, local_development_actor
+from industrial_rag.auth import (
+    AuthenticatedActor,
+    authenticate_bearer,
+    local_development_actor,
+    require_admin_actor,
+)
 from industrial_rag.citation_formatter import Citation
 from industrial_rag.config import Settings
 from industrial_rag.db.session import close_db, get_session, init_db
@@ -60,6 +66,8 @@ class CitationResponse(BaseModel):
     document_name: str
     page: int
     chunk_id: str
+    document_id: str | None = None
+    generation_id: str | None = None
 
 
 class ClaimResponse(BaseModel):
@@ -78,6 +86,7 @@ class QueryResponse(BaseModel):
     latency_ms: int
     retrieved_chunk_ids: list[str] = []
     shadow_audit: dict[str, Any] | None = None
+    generation_id: str | None = None
 
 
 class PublicError(BaseModel):
@@ -155,12 +164,18 @@ def _error_response(
     )
 
 
-def _citation_response(citation: Citation, index: int) -> CitationResponse:
+def _citation_response(
+    citation: Citation,
+    index: int,
+    *,
+    generation_id: str | None = None,
+) -> CitationResponse:
     return CitationResponse(
         citation_id=f"cite_{index}",
         document_name=citation.source_file,
         page=citation.page_number,
         chunk_id=citation.chunk_id,
+        generation_id=generation_id,
     )
 
 
@@ -501,7 +516,9 @@ def create_app(
     # Legacy query (backward compatible)
     # ------------------------------------------------------------------
 
-    @application.post("/v1/query", response_model=QueryResponse)
+    @application.post(
+        "/v1/query", response_model=QueryResponse, response_model_exclude_none=True
+    )
     def query(
         payload: QueryRequest,
         request: Request,
@@ -607,11 +624,12 @@ def create_app(
     # KB-scoped query
     # ------------------------------------------------------------------
 
-    @application.post("/v1/knowledge-bases/{kb_id}/query", response_model=QueryResponse)
-    async def query_kb(
+    async def _execute_kb_query(
         kb_id: str,
         payload: QueryRequest,
         request: Request,
+        *,
+        generation_id: str | None = None,
     ) -> QueryResponse | JSONResponse:
         request_id = _request_id_for(request)
         trace_id = _trace_id_for(request)
@@ -622,43 +640,66 @@ def create_app(
             return _error_response(
                 "SAFETY_POLICY_BLOCKED",
                 request_id=request_id,
+                trace_id=trace_id,
                 status_code=403,
             )
         runtime_manager = getattr(request.app.state, "runtime_manager", None)
         base_settings = getattr(request.app.state, "resolved_settings", None)
         if runtime_manager is None or base_settings is None:
-            return _error_response("INDEX_NOT_READY", request_id=request_id)
+            return _error_response(
+                "INDEX_NOT_READY", request_id=request_id, trace_id=trace_id
+            )
 
         from industrial_rag.db.session import get_session_factory
-        from industrial_rag.errors import AppErrorCode
-        from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
-        from industrial_rag.repositories.knowledge_base_repository import (
-            KnowledgeBaseRepository,
+        from industrial_rag.services.query_application_service import (
+            QueryApplicationService,
         )
 
-        async with get_session_factory()() as session:
-            kb = await KnowledgeBaseRepository(session).get(kb_id)
-            if kb is None or kb.status.value in {"deleting", "deleted"}:
-                raise AppError(AppErrorCode.knowledge_base_not_found, "知识库不存在")
-            try:
-                kb_settings = settings_for_knowledge_base(base_settings, kb)
-            except RuntimeError:
-                # No active generation yet: stable, non-leaking readiness error.
-                return _error_response("INDEX_NOT_READY", request_id=request_id)
+        started = time.perf_counter()
         try:
-            result = await (await runtime_manager.get_runtime(kb_id, kb_settings)).query(
-                payload.query,
-                mode="mix",
-            )
+            async with get_session_factory()() as session:
+                service = QueryApplicationService(
+                    session,
+                    base_settings=base_settings,
+                    runtime_manager=runtime_manager,
+                )
+                if generation_id is None:
+                    execution = await service.query_active(kb_id, payload.query)
+                else:
+                    execution = await service.query_generation(
+                        kb_id, generation_id, payload.query
+                    )
+        except AppError as error:
+            if error.code == "index_not_ready":
+                return _error_response(
+                    "INDEX_NOT_READY", request_id=request_id, trace_id=trace_id
+                )
+            raise
         except TimeoutError:
             _log_result(request_id=request_id, status="TIMEOUT", latency_ms=0)
-            return _error_response("TIMEOUT", request_id=request_id)
-        except AppError:
-            raise
+            return _error_response(
+                "TIMEOUT", request_id=request_id, trace_id=trace_id
+            )
         except Exception:
             _log_result(request_id=request_id, status="UPSTREAM_UNAVAILABLE", latency_ms=0)
-            return _error_response("UPSTREAM_UNAVAILABLE", request_id=request_id)
+            return _error_response(
+                "UPSTREAM_UNAVAILABLE", request_id=request_id, trace_id=trace_id
+            )
 
+        result = execution.result
+        latency_ms = round((time.perf_counter() - started) * 1000)
+        audit = (
+            _shadow_audit_record(
+                request_id=request_id,
+                kb_id=kb_id,
+                generation=execution.generation_name,
+                result=result,
+            )
+            if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower()
+            == "true"
+            and request.headers.get("x-debug-audit") == "1"
+            else None
+        )
         if result.answer == INSUFFICIENT_EVIDENCE_MESSAGE or not result.citations:
             return QueryResponse(
                 request_id=request_id,
@@ -667,22 +708,17 @@ def create_app(
                 answer=INSUFFICIENT_EVIDENCE_MESSAGE,
                 citations=[],
                 claims=[],
-                latency_ms=0,
+                latency_ms=latency_ms,
                 retrieved_chunk_ids=list(result.retrieval_chunk_ids),
-                shadow_audit=(
-                    _shadow_audit_record(
-                        request_id=request_id,
-                        kb_id=kb_id,
-                        generation=getattr(kb_settings, "qdrant_generation", None),
-                        result=result,
-                    )
-                    if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true"
-                    and request.headers.get("x-debug-audit") == "1"
-                    else None
-                ),
+                shadow_audit=audit,
+                generation_id=execution.generation_id,
             )
         citations = [
-            _citation_response(citation, index)
+            _citation_response(
+                citation,
+                index,
+                generation_id=execution.generation_id,
+            )
             for index, citation in enumerate(result.citations, start=1)
         ]
         return QueryResponse(
@@ -698,19 +734,41 @@ def create_app(
                     citation_ids=[citation.citation_id for citation in citations],
                 )
             ],
-            latency_ms=0,
+            latency_ms=latency_ms,
             retrieved_chunk_ids=list(result.retrieval_chunk_ids),
-            shadow_audit=(
-                _shadow_audit_record(
-                    request_id=request_id,
-                    kb_id=kb_id,
-                    generation=getattr(kb_settings, "qdrant_generation", None),
-                    result=result,
-                )
-                if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true"
-                and request.headers.get("x-debug-audit") == "1"
-                else None
-            ),
+            shadow_audit=audit,
+            generation_id=execution.generation_id,
+        )
+
+    @application.post(
+        "/v1/knowledge-bases/{kb_id}/query",
+        response_model=QueryResponse,
+        response_model_exclude_none=True,
+    )
+    async def query_kb(
+        kb_id: str,
+        payload: QueryRequest,
+        request: Request,
+    ) -> QueryResponse | JSONResponse:
+        return await _execute_kb_query(kb_id, payload, request)
+
+    @application.post(
+        "/v1/knowledge-bases/{kb_id}/generations/{generation_id}/query",
+        response_model=QueryResponse,
+        response_model_exclude_none=True,
+    )
+    async def query_candidate_generation(
+        kb_id: str,
+        generation_id: str,
+        payload: QueryRequest,
+        request: Request,
+        _actor: AuthenticatedActor = Depends(require_admin_actor),
+    ) -> QueryResponse | JSONResponse:
+        return await _execute_kb_query(
+            kb_id,
+            payload,
+            request,
+            generation_id=generation_id,
         )
 
     # ------------------------------------------------------------------

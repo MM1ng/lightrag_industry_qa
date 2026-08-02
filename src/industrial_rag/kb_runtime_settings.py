@@ -43,6 +43,7 @@ def settings_for_knowledge_base(
             active_generation if selected_backend is VectorBackend.qdrant else None
         ),
         qdrant_kb_id=knowledge_base.id if selected_backend is VectorBackend.qdrant else None,
+        generation_epoch=int(getattr(knowledge_base, "generation_epoch", 0) or 0),
         vector_workspace=(
             f"{selected_backend.value}-{active_generation}"
             if active_generation is not None

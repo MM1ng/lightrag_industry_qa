@@ -50,6 +50,7 @@ class RuntimeCacheKey:
     kb_id: str
     vector_backend: str
     generation: str | None
+    generation_epoch: int
     workspace: str
     embedding_model: str
     embedding_dim: int
@@ -61,6 +62,7 @@ class RuntimeCacheKey:
             kb_id=kb_id,
             vector_backend=settings.vector_backend.value,
             generation=settings.qdrant_generation,
+            generation_epoch=settings.generation_epoch,
             workspace=str(settings.working_dir.resolve()),
             embedding_model=settings.embedding_model,
             embedding_dim=settings.embedding_dim,

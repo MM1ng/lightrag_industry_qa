@@ -57,6 +57,7 @@ class Settings:
     qdrant_collection_prefix: str = "ira_qdrant"
     qdrant_generation: str | None = None
     qdrant_kb_id: str | None = None
+    generation_epoch: int = 0
     # LightRAG per-generation isolation token. Derived per knowledge base by
     # settings_for_knowledge_base(); None keeps the legacy layout (workspace="")
     # used by pre-generation knowledge bases.
