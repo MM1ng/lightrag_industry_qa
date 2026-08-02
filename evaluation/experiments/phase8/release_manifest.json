@@ -1,0 +1,53 @@
+{
+  "phase": "Phase 8",
+  "phase_name": "RC Tagging & Controlled Staging Deployment",
+  "created_at": "2026-08-02T20:22:52+08:00",
+  "git_commit": "5051647ee2e377e3ea94f70eca1c0eded832e42b",
+  "rc_version": "0.1.0-rc.1",
+  "phase7_closeout_completed": true,
+  "phase8_status": "blocked",
+  "staging_deployment_approved": false,
+  "production_deployment_performed": false,
+  "release_tag_created": false,
+  "release_tag_pushed": false,
+  "blocked_reason": "IRA_PHASE8_TARGET_ENV is not configured",
+  "environment_variables": {
+    "IRA_PHASE8_TARGET_ENV": "missing",
+    "IRA_PHASE8_CREATE_TAG": "missing",
+    "IRA_PHASE8_PUSH_TAG": "missing",
+    "IRA_PHASE8_DEPLOY_STAGING": "missing",
+    "IRA_PHASE8_STAGING_HOST": "missing",
+    "IRA_PHASE8_STAGING_USER": "missing",
+    "IRA_PHASE8_STAGING_PATH": "missing"
+  },
+  "tag": {
+    "name": "v0.1.0-rc.1",
+    "exists_in_repo": false,
+    "created": false,
+    "pushed": false,
+    "creation_blocked_by": "IRA_PHASE8_CREATE_TAG=1 not set"
+  },
+  "package_verification": {
+    "zip_path": "dist/industrial-energy-agent-0.1.0-rc.1.zip",
+    "zip_sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+    "zip_sha256_matches_manifest": true,
+    "size": 187429,
+    "frozen_strategy_sha256": "f468b7afed2c5f3a68c6365ef564392b8aa0dd567faf604f9a61609ea6e610de",
+    "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
+    "confirmed_secret_count": 0,
+    "package_type_declared": true
+  },
+  "artifacts_not_generated": [
+    "evaluation/experiments/phase8/config/staging_config_manifest.json",
+    "evaluation/experiments/phase8/backup/pre_deploy_backup.json",
+    "evaluation/experiments/phase8/deployment/deployment_steps.json",
+    "evaluation/experiments/phase8/acceptance/smoke_results.jsonl",
+    "evaluation/experiments/phase8/acceptance/golden_subset_results.jsonl",
+    "evaluation/experiments/phase8/acceptance/metrics.json",
+    "evaluation/experiments/phase8/rollback/rollback_rehearsal.json",
+    "evaluation/experiments/phase8/security/log_secret_scan.json",
+    "evaluation/experiments/phase8/manifests/result_manifest.json"
+  ],
+  "not_generated_reason": "Phase 8 deployment is blocked by the missing IRA_PHASE8_TARGET_ENV deployment target; staging configuration, backup, deployment, acceptance, rollback and observability artifacts require an authorized target environment and were not fabricated.",
+  "next_action": "Set IRA_PHASE8_TARGET_ENV to local_staging (or remote_staging with IRA_PHASE8_STAGING_HOST/USER/PATH and IRA_PHASE8_DEPLOY_STAGING=1), then rerun Phase 8. Tag creation additionally requires IRA_PHASE8_CREATE_TAG=1 (and IRA_PHASE8_PUSH_TAG=1 to push)."
+}
