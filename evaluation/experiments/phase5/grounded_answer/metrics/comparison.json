@@ -45,11 +45,17 @@
         "decimal": 0.7708333333333334,
         "percentage": 77.08
       },
-      "unsupported_citation_reference_rate": {
+      "non_gold_citation_reference_rate": {
         "numerator": 93,
         "denominator": 136,
         "decimal": 0.6838235294117647,
         "percentage": 68.38
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 43,
+        "denominator": 136,
+        "decimal": 0.3161764705882353,
+        "percentage": 31.62
       },
       "answered_without_evidence_rate": {
         "numerator": 0,
@@ -393,11 +399,17 @@
         "decimal": 0.3333333333333333,
         "percentage": 33.33
       },
-      "unsupported_citation_reference_rate": {
+      "non_gold_citation_reference_rate": {
         "numerator": 3,
         "denominator": 21,
         "decimal": 0.14285714285714285,
         "percentage": 14.29
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 18,
+        "denominator": 21,
+        "decimal": 0.8571428571428571,
+        "percentage": 85.71
       },
       "answered_without_evidence_rate": {
         "numerator": 0,
@@ -1109,5 +1121,13 @@
     "replacement_approved": false,
     "replacement_gates_passed": false,
     "selection_reason": "Grounded Answer Pipeline did not pass Phase 5 replacement gates"
-  }
+  },
+  "cn1_production_decision": {
+    "offline_gates_passed": true,
+    "answer_level_evaluation_completed": true,
+    "answer_level_approved": false,
+    "production_enabled": false,
+    "selection_reason": "Stable dedup preserved retrieval metrics, but answer-level evaluation showed no benefit over current_rows; cross-page questions were refused 6/6 in BOTH the CN0 and CN1 answer stages (Phase 4 R0 answers), so the earlier claim of CN1-caused cross-page regression was retracted. Production stays current_rows."
+  },
+  "production_context_strategy": "current_rows"
 }

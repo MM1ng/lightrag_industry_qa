@@ -4,7 +4,7 @@
   "code_commit": "dd9ce808b7ea32071c5e1db043e118d741dc5750",
   "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
   "prompt_bundle_sha256": "a39582ea101251af23051727ed9a746ea597e5acd8cc3b168520219a55182719",
-  "context_strategy": "stable_unique_fill",
+  "context_strategy": "current_rows",
   "answer_strategy": "current",
   "baseline_answers_sha256": "521a38f03a05ebd20311046b8e9bfeb690d99aedd435b958bcf0e74897ba3821",
   "grounded_answers_sha256": "d5e4c92eba2f4daa495e2b33a0c2a16a1bd4c9a89f57e03c65f2776899b5adce",
@@ -1124,5 +1124,15 @@
   "sanitization": {
     "api_key_logged": false,
     "authorization_header_logged": false
+  },
+  "closeout": {
+    "cn1": {
+      "offline_gates_passed": true,
+      "answer_level_evaluation_completed": true,
+      "answer_level_approved": false,
+      "production_enabled": false,
+      "selection_reason": "Stable dedup preserved retrieval metrics, but answer-level evaluation showed no benefit over current_rows; cross-page questions were refused 6/6 in BOTH the CN0 and CN1 answer stages (Phase 4 R0 answers), so the earlier claim of CN1-caused cross-page regression was retracted. Production stays current_rows."
+    },
+    "canonical_metric_name": "non_gold_citation_reference_rate"
   }
 }

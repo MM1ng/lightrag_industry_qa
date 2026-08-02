@@ -108,11 +108,22 @@ def _citation_metrics(
         "gold_evidence_citation_rate": _fmt(
             {"numerator": gold_evidence_rows, "denominator": n, "decimal": gold_evidence_rows / n}
         ),
-        "unsupported_citation_reference_rate": _fmt(
+        "non_gold_citation_reference_rate": _fmt(
             {
                 "numerator": wrong_citations,
                 "denominator": total_citations,
                 "decimal": wrong_citations / total_citations if total_citations else 0,
+            }
+        ),
+        "gold_citation_reference_rate": _fmt(
+            {
+                "numerator": total_citations - wrong_citations,
+                "denominator": total_citations,
+                "decimal": (
+                    (total_citations - wrong_citations) / total_citations
+                    if total_citations
+                    else 0
+                ),
             }
         ),
         "answered_without_evidence_rate": _fmt(
@@ -519,8 +530,8 @@ def _replacement_gates(
             >= ga0["answer_citation_recall"]["decimal"] + 0.02
         ),
         "unsupported_citation_down_010": (
-            ga0["unsupported_citation_reference_rate"]["decimal"]
-            - ga1["unsupported_citation_reference_rate"]["decimal"]
+            ga0["non_gold_citation_reference_rate"]["decimal"]
+            - ga1["non_gold_citation_reference_rate"]["decimal"]
             >= 0.10
         ),
             "uncited_claim_rate_down_010": (

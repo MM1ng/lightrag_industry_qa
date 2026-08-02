@@ -16,7 +16,8 @@ Phase 4D-R2 阶段二中的 `Citation Accuracy`（0.8958）与 `Unsupported Cita
 | Citation Precision | answer_citation_precision | per-question mean |
 | Citation Recall | answer_citation_recall | per-question mean |
 | Citation Traceability | citation_traceability | per-question |
-| Unsupported Citation Rate | unsupported_citation_reference_rate | per-citation |
+| Unsupported Citation Rate | non_gold_citation_reference_rate（historical: unsupported_citation_reference_rate） | per-citation |
+| （新增） | gold_citation_reference_rate | per-citation（与 non_gold 同分母互补） |
 | Unsupported Answer Rate | negative_unsupported_answer_rate | per-question (N=2) |
 
 历史 Phase 4 指标原值未修改；`metrics_definition.json` 同时保留 historical_name 与 canonical_name，并输出原始计数。

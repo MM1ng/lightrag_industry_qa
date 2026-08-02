@@ -9,10 +9,12 @@
 ## 1. 阶段结论
 
 - Phase 5A 上下文规范化 **CN1（stable_unique_fill）通过全部离线门禁**，冻结为 `selected_context_strategy=stable_unique_fill`（仅实验配置，不直接改生产默认）。
-- Grounded Answer Pipeline（GA1）**结构性引用验证 100% 通过**（50/50 schema 合法、所有发出引用均可追溯、Invalid Chunk/Page/Document Rate=0、Uncited Claim Rate=0），且 Unsupported Citation Reference Rate 从 0.6838 大幅降至 0.1429。
+- Grounded Answer Pipeline（GA1）**结构性引用验证 100% 通过**（50/50 schema 合法、所有发出引用均可追溯、Invalid Chunk/Page/Document Rate=0、Uncited Claim Rate=0），且 non_gold_citation_reference_rate（historical: Unsupported Citation Reference Rate）从 0.6838 大幅降至 0.1429。
 - 但 GA1 **误拒答从 0.3125 升至 0.6042**，Answer Citation Accuracy 0.8333→0.3542、Citation Recall 0.7212→0.3090，安全警告类 0.8→0.2，参数类 0.85→0.50，P95 延迟为基线 6.4 倍。
 - **替换门禁未通过**：`replacement_approved=false`、`answer_strategy=current`、`citation_validation_enabled=false`、`max_repair_attempts=0`。
 - 生产默认未修改；Phase 5 按要求**立即停止**，不自动进入下一阶段。
+
+**Closeout 修正（Phase 5B 前置，2026-08-01）**：CN1（stable_unique_fill）虽然通过离线检索门禁，但答案层评估显示其相对 current_rows 无收益；**跨页类 6 题在 CN0（Phase 4 R0 答案）与 CN1（Phase 5 GA0）两个答案阶段均全部拒答**，早期报告中"CN1 导致跨页退化"的说法依据错误，已撤回。结论保持不变：**CN1 离线通过不等于生产批准**，最终生产上下文策略固定为 `current_rows`，`CONTEXT_STABLE_DEDUP_ENABLED=false`。详见 Phase 5B 报告。
 
 ## 2. Git commit
 
@@ -73,10 +75,11 @@ qwen3-rerank 仅作为历史研究结果保留，不进入生产默认。
 | Citation Recall | answer_citation_recall | per-question mean |
 | Citation Traceability | citation_traceability | per-question |
 | （新增） | citation_traceability_emitted | 仅含发出引用的题 |
-| Unsupported Citation Rate | unsupported_citation_reference_rate | per-citation |
+| Unsupported Citation Rate | non_gold_citation_reference_rate（historical: unsupported_citation_reference_rate） | per-citation |
+| （新增） | gold_citation_reference_rate（互补，同分母） | per-citation |
 | Unsupported Answer Rate | negative_unsupported_answer_rate | per-question（N=2） |
 
-Phase 4D-R2（R1 臂）原始计数：Answer Citation Accuracy 43/48=0.8958；Unsupported Citation Reference Rate 93/139=0.6691；Citation Precision 16.1667/48=0.3368；Citation Recall 37.9167/48=0.7899；Traceability 48/48=1.0；False Rejection 14/48=0.2917；Negative Rejection 2/2=1.0。
+Phase 4D-R2（R1 臂）原始计数：Answer Citation Accuracy 43/48=0.8958；non_gold_citation_reference_rate（historical: unsupported_citation_reference_rate）93/139=0.6691；gold_citation_reference_rate 46/139=0.3309；Citation Precision 16.1667/48=0.3368；Citation Recall 37.9167/48=0.7899；Traceability 48/48=1.0；False Rejection 14/48=0.2917；Negative Rejection 2/2=1.0。
 
 ## 7. Context Normalization 实验（CN0 vs CN1）
 
@@ -162,7 +165,7 @@ Phase 4D-R2（R1 臂）原始计数：Answer Citation Accuracy 43/48=0.8958；Un
 
 - Answer Citation Accuracy 40/48=0.8333；Precision 15.8333/48=0.3299；Recall 34.6167/48=0.7212；
 - Traceability（per-question）48/48=1.0；Gold Page Citation 40/48=0.8333；Gold Evidence Citation 37/48=0.7708；
-- Unsupported Citation Reference Rate 93/136=0.6838；Answered Without Evidence 0/48；
+- non_gold_citation_reference_rate 93/136=0.6838（gold 43/136=0.3162）；Answered Without Evidence 0/48；
 - False Rejection 15/48=0.3125；Negative Rejection 2/2=1.0；Unsupported Answer 0/2=0；
 - 分类：参数 0.85、表格 0.6667、操作 0.5556、故障 0.6667、安全 0.8、普通 0.5、跨页 0.0（6 题全部拒答）、证据不足 2/2 拒答；
 - Token：input 43,220 / output 4,066 / total 47,286；延迟 mean 1.885s / P50 1.75s / P95 3.875s（来自原始调用记录）。
@@ -173,7 +176,7 @@ Phase 4D-R2（R1 臂）原始计数：Answer Citation Accuracy 43/48=0.8958；Un
 
 - Answer Citation Accuracy 17/48=0.3542；Precision 16.5/48=0.3438；Recall 14.8333/48=0.3090；
 - Traceability（per-question）19/48=0.3958；**Traceability（emitted）19/19=1.0**；Gold Page Citation 17/48=0.3542；Gold Evidence Citation 16/48=0.3333；
-- **Unsupported Citation Reference Rate 3/21=0.1429**；Answered Without Evidence 0/48；
+- **non_gold_citation_reference_rate 3/21=0.1429（gold 18/21=0.8571）**；Answered Without Evidence 0/48；
 - False Rejection 29/48=0.6042；Negative Rejection 2/2=1.0；Unsupported Answer 0/2=0；
 - 结构：Schema Valid 50/50=1.0；Structural Citation Valid 50/50=1.0；Invalid Chunk/Page/Document Rate=0/21；Uncited Claim Rate=0/46；Repair Trigger 20/50=0.40；Repair Success 3/20=0.15；Safe Fallback 17/50=0.34；
 - Token：input 136,511 / output 29,765 / repair 55,276 / total 166,276；延迟 mean 6.483s / P50 7.453s / P95 24.625s。
@@ -189,7 +192,8 @@ Phase 4D-R2（R1 臂）原始计数：Answer Citation Accuracy 43/48=0.8958；Un
 | citation_traceability_emitted | 48/48=1.0 | 19/19=1.0 |
 | gold_page_citation_rate | 40/48=0.8333 | 17/48=0.3542 |
 | gold_evidence_citation_rate | 37/48=0.7708 | 16/48=0.3333 |
-| unsupported_citation_reference_rate | 93/136=0.6838 | **3/21=0.1429** |
+| non_gold_citation_reference_rate | 93/136=0.6838 | **3/21=0.1429** |
+| gold_citation_reference_rate（互补） | 43/136=0.3162 | 18/21=0.8571 |
 | answered_without_evidence_rate | 0/48=0 | 0/48=0 |
 
 ## 16. 拒答指标
@@ -226,7 +230,7 @@ GA1 安全类**退化**（0.8→0.2），是替换门禁失败的主要原因之
 | 跨页问题（6） | 0.0000 | 0.3333 |
 | 证据不足（2） | 2/2 拒答 | 2/2 拒答 |
 
-注意：GA0（CN1 上下文）的跨页类 6 题全部拒答（Phase 4 CN0 时为 0.6667），说明去重填充改变了证据选择，使该类别基线变差；GA1 在跨页类反而优于 GA0（0.3333）。
+注意：GA0（CN1 上下文）的跨页类 6 题全部拒答；核对 Phase 4 R0（CN0 上下文）答案后确认 CN0 同样 6/6 拒答，因此这不是 CN1 引入的退化。GA1 在跨页类优于 GA0（0.3333）。
 
 ## 19. 配对统计（48 题，1000 次，seed=20260801，95% CI）
 
@@ -258,7 +262,7 @@ GA1 总 Token 为 GA0 的 3.5 倍，P95 延迟为 6.4 倍（硬门禁要求 <=2 
 
 - **无一题**在 Citation Accuracy（≥1 条黄金页引用）上由失败转成功（improved=0）；
 - 结构层面：所有发出引用 100% 可追溯、无池外引用、无未引用 Claim（GA0 无此结构保证）；
-- Unsupported Citation Reference Rate 下降 0.5409（93/136 → 3/21），引用"干净度"显著提升；
+- non_gold_citation_reference_rate 下降 0.5409（93/136 → 3/21），引用与黄金标注一致度显著提升；
 - 跨页类 0.0→0.3333（2/6 题从拒答变为有正确引用回答）。
 
 ## 22. 退化问题
@@ -282,7 +286,7 @@ S003、S005、S007、S011、S012、S015、S017、S019、S020、D003、D004、D00
 
 硬门禁失败项：安全警告类 Citation Accuracy 下降（0.8→0.2）；参数查询类下降超过 0.02（0.85→0.50）；False Rejection 恶化超过 0.05（+0.2917）；P95 延迟超过基线 2 倍（24.625s vs 3.875s）。
 
-价值门禁仅满足 1/7：Unsupported Citation Reference Rate 降低 >=0.10（实际 -0.5409）。
+价值门禁仅满足 1/7：non_gold_citation_reference_rate 降低 >=0.10（实际 -0.5409）。
 
 ## 24. 是否替换默认策略
 
@@ -301,7 +305,7 @@ python -m ruff check .
 ## 26. 已知限制
 
 - GA1 拒答率高（60.4%）主要来自严格规则 + 固定 repair 低成功率（15%）：模型在"只回答可支持部分/证据不足即拒答"约束下过度保守；未引入 LLM Judge，Claim Support 确定性部分为 N/A；
-- GA0 的跨页类在 CN1 上下文下 6 题全拒答（与 Phase 4 CN0 不同），说明上下文规范化改变了 Evidence Policy 的选择结果；本报告 GA0/GA1 均基于 CN1，与 Phase 4D-R2 的 R0/R1 不完全可比；
+- GA0 的跨页类在 CN1 与 CN0（Phase 4 R0 答案）两个答案阶段均 6/6 拒答；本报告 GA0/GA1 均基于 CN1，与 Phase 4D-R2 的 R0/R1 不完全可比；
 - `citation_traceability`（per-question）对无引用拒答计 0，而 `citation_traceability_emitted` 只统计发出引用的题；两指标并存并分别报告；
 - 费用：LLM SDK 未提供人民币金额，费用 N/A，仅记录真实 Token；
 - 冻结池 C003/C004/C007/C008 的既有重复行如实保留，未修改；

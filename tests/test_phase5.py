@@ -551,7 +551,7 @@ def test_replacement_gates_fail_without_value_or_violations() -> None:
         "answer_citation_recall": {"decimal": 0.7},
         "citation_traceability": {"decimal": 1.0},
         "citation_traceability_emitted": {"decimal": 1.0},
-        "unsupported_citation_reference_rate": {"decimal": 0.5},
+            "non_gold_citation_reference_rate": {"decimal": 0.5},
         "answered_without_evidence_rate": {"decimal": 0.0},
         "insufficient_evidence_rejection_rate": {"decimal": 1.0},
         "negative_unsupported_answer_rate": {"decimal": 0.0},

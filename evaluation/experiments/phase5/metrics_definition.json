@@ -111,9 +111,9 @@
       }
     },
     {
-      "metric_name": "unsupported_citation_reference_rate",
-      "historical_name": "Unsupported Citation Rate",
-      "definition": "Per-citation: share of emitted citation references whose (document, page) pair is not in the gold set. Counts every cited reference; a question with N citations contributes N references.",
+      "metric_name": "non_gold_citation_reference_rate",
+      "historical_name": "Unsupported Citation Rate / unsupported_citation_reference_rate",
+      "definition": "Per-citation: share of emitted citation references whose (document, page) pair does not match the human gold-evidence annotation. Counts every cited reference. non-gold != unsupported: gold evidence may not be exhaustive, and without a Claim Support Judge this metric only measures agreement with the gold annotation, not whether a citation supports the claim text.",
       "numerator": "wrong citation references (document/page not gold)",
       "denominator": "total emitted citation references",
       "included_questions": "S/D/C (48 answerable)",
@@ -130,7 +130,36 @@
         "decimal": 0.6691
       },
       "phase4d_r2_r1_value": 0.6691,
-      "phase4d_r2_cn0_value": 0.6838
+      "phase4d_r2_cn0_value": 0.6838,
+      "explicit_declaration": [
+        "non-gold 不等于 unsupported",
+        "黄金证据可能不是穷尽标注",
+        "没有 Claim Support Judge 时，不得声称引用一定不支持答案",
+        "该指标只用于衡量引用与黄金标注的一致性"
+      ]
+    },
+    {
+      "metric_name": "gold_citation_reference_rate",
+      "historical_name": null,
+      "definition": "Per-citation complement of non_gold_citation_reference_rate: share of emitted citation references whose (document, page) pair matches the gold annotation. Only meaningful on the same denominator (total emitted citations); gold + non_gold = 1.0.",
+      "numerator": "gold-matching citation references",
+      "denominator": "total emitted citation references",
+      "included_questions": "S/D/C (48 answerable)",
+      "excluded_questions": "N001/N002",
+      "range": [
+        0,
+        1
+      ],
+      "higher_is_better": true,
+      "complement_metric": "non_gold_citation_reference_rate",
+      "raw_counts": {
+        "numerator": 46,
+        "denominator": 139,
+        "decimal": 0.3309
+      },
+      "phase4d_r2_r1_value": 0.3309,
+      "phase4d_r2_cn0_value": 0.3162,
+      "complement_identity": "gold_citation_reference_rate + non_gold_citation_reference_rate = 1.0 （仅在相同分母 total emitted citations 下成立）"
     },
     {
       "metric_name": "false_rejection_rate",
