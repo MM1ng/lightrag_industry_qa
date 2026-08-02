@@ -76,3 +76,6 @@ data/processed/**
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local process pid files (Phase 7 scripts)
+.run/

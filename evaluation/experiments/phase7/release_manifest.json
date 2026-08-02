@@ -1,0 +1,17 @@
+{
+  "rc_version": "0.1.0-rc.1",
+  "release_channel": "rc",
+  "git_commit": "7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60",
+  "source_commit": "7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60",
+  "build_time": "2026-08-02T18:45:25+0800",
+  "frozen_strategy_sha256": "f468b7afed2c5f3a68c6365ef564392b8aa0dd567faf604f9a61609ea6e610de",
+  "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
+  "package": {
+    "path": "dist/industrial-energy-agent-0.1.0-rc.1.zip",
+    "sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+    "size": 187429
+  },
+  "deployment_performed": false,
+  "tag_created": false,
+  "tag_pushed": false
+}

@@ -396,17 +396,20 @@ def create_app(
     async def version(request: Request) -> dict[str, object]:
         """Version surface (no secrets)."""
         from industrial_rag.production_config import ProductionQASettings
+        from industrial_rag.version import version_info
 
+        info = version_info()
         try:
             qa = ProductionQASettings.from_env()
-            config_version = "phase6-v1"
         except Exception:
             qa = None
-            config_version = "unresolved"
         return {
-            "app_version": "industrial-rag-qa-rc1",
-            "git_commit": os.environ.get("GIT_COMMIT", ""),
-            "config_version": config_version,
+            "app_version": info["app_version"],
+            "release_channel": info["release_channel"],
+            "git_commit": info["git_commit"],
+            "config_version": info["config_version"],
+            "strategy_version": info["strategy_version"],
+            "build_time": info["build_time"],
             "parser_pipeline": qa.parser_pipeline if qa else None,
             "query_mode": qa.query_mode if qa else None,
             "answer_model": qa.answer_model if qa else None,

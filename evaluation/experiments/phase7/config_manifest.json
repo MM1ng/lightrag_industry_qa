@@ -1,0 +1,12 @@
+{
+  "config_version": "phase6-v1",
+  "files": {
+    "evaluation/experiments/phase6/frozen_strategy.json": "f468b7afed2c5f3a68c6365ef564392b8aa0dd567faf604f9a61609ea6e610de",
+    "evaluation/experiments/phase6/config/runtime.json": "061a6869e765a4226e3694c6b2267648c8389ccd703dba6d16fe5b9cf64a4e65",
+    "evaluation/experiments/phase6/config/observability.json": "28feb3d8329d5329858b2a9d97351e5e89853e59f036383de85224d266af3003",
+    "evaluation/experiments/phase6/config/safety.json": "1d1b394a1768e20baf37e976d41894727fb8011c372d01a30fd34896ab96c253",
+    "evaluation/experiments/phase6/config/release_gates.json": "6857722b3b21f653fc6f77ee4333b6332dd4bf994fbe302fd5d9787dc32560c8",
+    ".env.example": "f3d07134b39a1dbc488e7c540a3c1cab086802caf328f9d97310d8435d88b481"
+  },
+  "production_defaults_unchanged": true
+}
