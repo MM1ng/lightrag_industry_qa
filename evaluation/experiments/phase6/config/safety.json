@@ -1,0 +1,20 @@
+{
+  "config_version": "phase6-v1",
+  "safety_policy_enabled": true,
+  "policy_version": "phase6-safety-v1",
+  "input_check_enabled": true,
+  "output_check_enabled": true,
+  "human_review_required_risk_levels": ["high", "critical"],
+  "refusal_message": "该请求涉及高风险操作或超出系统安全边界，系统仅提供信息检索与分析，请人工复核。",
+  "covered_categories": [
+    "interlock_bypass",
+    "safety_bypass",
+    "device_direct_control",
+    "high_risk_operation",
+    "unauthorized_modification",
+    "secret_exfiltration",
+    "prompt_injection",
+    "system_prompt_extraction",
+    "device_command_execution"
+  ]
+}

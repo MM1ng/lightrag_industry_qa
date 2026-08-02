@@ -1,0 +1,18 @@
+{
+  "config_version": "phase6-v1",
+  "observability_enabled": true,
+  "log_request_metadata": true,
+  "log_context_body": false,
+  "debug_context_body_max_chars": 500,
+  "sanitize_secrets": true,
+  "trace_id_header": "x-trace-id",
+  "request_id_header": "x-request-id",
+  "shadow_audit_records_enabled": true,
+  "forbidden_log_fields": [
+    "api_key",
+    "authorization",
+    "workspace_endpoint",
+    "system_prompt",
+    "raw_document_body"
+  ]
+}

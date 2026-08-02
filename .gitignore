@@ -56,6 +56,7 @@ evaluation/experiments/phase4/parent_expansion/cache/
 evaluation/experiments/phase4/rerank/cache/
 evaluation/experiments/phase5/cache/
 evaluation/experiments/phase5b/cache/
+evaluation/experiments/phase6/cache/
 
 # Protected source data and generated processing outputs
 data/raw_dataset/**

@@ -1,0 +1,21 @@
+{
+  "artifacts": {
+    "frozen_strategy.json": "f468b7afed2c5f3a68c6365ef564392b8aa0dd567faf604f9a61609ea6e610de",
+    "baseline_manifest.json": "c88b5ca173c13dbfa78afcac922ede6293866484beb6616a821f2da8c5a25b5c",
+    "config/runtime.json": "061a6869e765a4226e3694c6b2267648c8389ccd703dba6d16fe5b9cf64a4e65",
+    "config/observability.json": "28feb3d8329d5329858b2a9d97351e5e89853e59f036383de85224d266af3003",
+    "config/safety.json": "1d1b394a1768e20baf37e976d41894727fb8011c372d01a30fd34896ab96c253",
+    "config/release_gates.json": "6857722b3b21f653fc6f77ee4333b6332dd4bf994fbe302fd5d9787dc32560c8",
+    "shadow_audit/citation_audit.jsonl": "dcc0c0a44e3702d1c55fcc327f511aca945125c1f79fe6e115a863014af94cd9",
+    "shadow_audit/validation_summary.json": "5af27aaf63a88b0f0bb3079108fe7d067e7556c740d55e0be3d388a661251f83",
+    "shadow_audit/metrics.json": "3d61b670114889288d7fd3b8e3b660f1ae1272aea0cd15fe4a6510bd074272b4",
+    "e2e/golden_results.jsonl": "32d4c1c5274d7fa2ad3bff010aba4795d3069a8bb576d5adae0cea9e9c67ffaf",
+    "e2e/robustness_results.jsonl": "47f9b78ea1ef623bdc2ab83215a0e11b4c3a4696754b5815e3b3b64abcabd6a3",
+    "e2e/smoke_results.jsonl": "df0a3afc44d04faf0af7a8d1bbcffa4418c24cee10fa2bbcd4229a620780c779",
+    "e2e/metrics.json": "1bedc3e3d7ba11976908153857d9c5efea4c46a70223391cc6316494ba3efdbd",
+    "load/raw_results.jsonl": "6ec0c7faf8ba912a67c1a1a6527fc55fe67afa89a6e2842c437692f095663694",
+    "load/summary.json": "e2d55c21ba2372b2ce8d065cf34f003f4b596ee8ccfd2eaeb00beafafe155ded",
+    "manifests/environment_manifest.json": "3de960320541ddc1eb1beb8febf9cdbc4fa56f09e0152a65832e0920f4a554cb",
+    "manifests/artifact_manifest.json": "012b40c4ff6788f9b718ff35010b4d047d8505fc4997a0a763b46685ca555945"
+  }
+}

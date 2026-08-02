@@ -1,0 +1,39 @@
+{
+  "python_version": "3.11.15",
+  "operating_system": "Windows 10",
+  "conda_env": "industrial-rag",
+  "python_executable": "C:\\Users\\12189\\.conda\\envs\\industrial-rag\\python.exe",
+  "versions": {
+    "lightrag": "1.5.4",
+    "fastapi": "0.140.0",
+    "uvicorn": "0.51.0",
+    "qdrant_client": "1.18.0",
+    "pydantic": "2.13.4",
+    "sqlalchemy": "2.0.51",
+    "alembic": "1.18.5",
+    "openai": "2.46.0",
+    "httpx": "0.28.1",
+    "streamlit": "1.60.0"
+  },
+  "qdrant_server_version": "1.13.6",
+  "git": {
+    "commit": "90429f89d44cf1143a6d2eacb6b5768eb0e4d514",
+    "branch": "codex/knowledge-qa-platform-design"
+  },
+  "hashes": {
+    "config_runtime": "061a6869e765a4226e3694c6b2267648c8389ccd703dba6d16fe5b9cf64a4e65",
+    "config_observability": "28feb3d8329d5329858b2a9d97351e5e89853e59f036383de85224d266af3003",
+    "config_safety": "1d1b394a1768e20baf37e976d41894727fb8011c372d01a30fd34896ab96c253",
+    "config_release_gates": "6857722b3b21f653fc6f77ee4333b6332dd4bf994fbe302fd5d9787dc32560c8",
+    "prompt_bundle": "49dc71741343c208ca6fceafeef789bc5fbdd5cd921a29ebb1a6cf54aae69c3e",
+    "golden_set": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf",
+    "frozen_strategy": "f468b7afed2c5f3a68c6365ef564392b8aa0dd567faf604f9a61609ea6e610de"
+  },
+  "secrets": {
+    "api_key_configured": true,
+    "api_key_source": "DASHSCOPE_API_KEY",
+    "service_api_key_configured": true,
+    "qdrant_api_key_configured": false,
+    "qdrant_url": "98b4d37134418c49d8a6bee494dda5ba1c1d971160f0934c40d67d252945e8b9"
+  }
+}
