@@ -1,5 +1,14 @@
 # Local Startup Runbook（Phase 6 Release Candidate）
 
+## 0. RC 包类型与外部依赖
+
+RC 包 `dist/industrial-energy-agent-0.1.0-rc.1.zip` 是**应用发布候选包（application_release_candidate）**，不是完全独立的离线安装包：
+
+- 包内不含：正式应用数据库、Qdrant 数据目录、冻结索引、LLM 缓存、用户上传原始文档；
+- 部署依赖宿主机提供：Qdrant、应用数据库、环境变量、模型 API，以及冻结知识库或测试 KB；
+- 安装模式：`local_conda_application_with_docker_qdrant`（FastAPI/Streamlit 在本机 Conda/Uvicorn 运行，Qdrant 仅作为 Docker 基础设施）；
+- 完整声明见 `evaluation/experiments/phase7/closeout/package_type.json`。
+
 ## 1. 启动 Qdrant（仅基础设施）
 
 ```powershell

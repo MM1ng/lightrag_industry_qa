@@ -3,6 +3,7 @@
 **日期**: 2026-08-02
 **分支**: `codex/knowledge-qa-platform-design`
 **阶段**: Phase 7（RC 打包、冷/温启动、优雅停止、故障与备份恢复演练、验收）
+**Closeout 更新**: 2026-08-02T20:22:52+08:00；HEAD=`5051647ee2e377e3ea94f70eca1c0eded832e42b`
 
 ---
 
@@ -19,6 +20,7 @@
 
 - 基线：`7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60`。
 - 本阶段提交：`fix(phase6b): reconcile release gates and freeze canonical baselines`、`chore(phase7): package local release candidate`、`test(phase7): validate cold start backup and recovery rehearsal`、`docs(phase7): report release packaging and local deployment rehearsal`。
+- Closeout 提交 HEAD：`5051647ee2e377e3ea94f70eca1c0eded832e42b`（指标分母修正、最终测试结果、RC 包类型声明、Closeout 决策）。
 
 ## 3. Phase 6B Closeout
 
@@ -114,29 +116,47 @@ requested_model / configured_model / provider_reported_model(null) / provider_re
 | 指标 | 结果 |
 |---|---|
 | HTTP 成功率 | 20/20=1.0 |
-| answer_citation_accuracy | 14/20=0.70 |
+| answer_citation_accuracy（历史口径，superseded） | 14/20=0.70 |
+| answer_citation_accuracy（canonical 18 分母） | 14/18=0.7778 |
 | citation_traceability_emitted | 1.0 |
-| false_rejection_rate | 6/20=0.30（含 S007/D005/C001/C002/N001/N002 拒答） |
+| false_rejection_rate（历史口径，superseded） | 6/20=0.30（含 N001/N002） |
+| false_rejection_rate（canonical 18 分母） | 4/18=0.2222（S007/D005/C001/C002） |
 | insufficient_evidence_rejection_rate | 2/2=1.0 |
 | negative_unsupported_answer_rate | 0/2=0 |
+| answer_citation_precision | 4.6667/18=0.2593 |
+| answer_citation_recall | 12.3333/18=0.6852 |
+| gold_page_citation_rate | 14/18=0.7778 |
+| gold_evidence_citation_rate | 12/18=0.6667 |
+| answered_without_evidence_rate | 0/18=0 |
 | request_id/trace_id 完整率 | 20/20=1.0 |
-| P95 延迟 / error rate | 2.96s / 0 |
+| P95 延迟 / error rate | 2.72s / 0 |
+
+> 历史值（14/20=0.70、6/20=0.30）已保留在 `closeout/acceptance_metric_correction.json` 的 `historical_metrics` 中并标记 superseded；canonical 指标以 18 题可回答 / 2 题负样本为分母，N001/N002 不计入 answer_citation_accuracy 与 false_rejection_rate。
 
 ## 25. Release Gates
 
 `acceptance/release_gates.json`：smoke、20 题完整、引用可追溯、N 题拒答、安全零风险、fallback=0、trace 完整、安全零泄漏、http 1.0、error 0——全部通过（passed=true）。
 
+Closeout 复评（2026-08-02）：使用 canonical 18/2 分母重新评估全部门禁，并新增 `answerable_denominator_correct`、`negative_denominator_correct`、`n001_n002_excluded_from_answerable_denominator`、`n001_n002_excluded_from_false_rejection` 等门禁；全部 passed=true，`release_package_approved=true`。
+
 ## 26. 测试与 Ruff
 
-初始基线：532 collected / 520 passed / 12 skipped / 0 failed。最终结果：见提交时输出（新增 Phase 7 测试 14 项：门禁映射、基线分层、权威路径、C007 技术债、模型字段、版本源、包清单与 ZIP、Secret 扫描、演练、验收、.env.example、脚本；另修复三个测试模块的 DB 隔离）。Ruff 通过。
+最终结果（Closeout 实测，`C:\Users\12189\.conda\envs\industrial-rag\python.exe`）：
+
+- `python -m pytest --collect-only -q`：546 collected（5.10s）；
+- `python -m pytest -q`：534 passed / 12 skipped / 0 failed，耗时 20.61s；
+- skip 分类（全部为真实外部 opt-in，非静默跳过）：Real MinerU opt-in 1 项（IRA_MINERU_REAL=1）、Real DashScope+Qdrant E2E opt-in 2 项（IRA_QDRANT_E2E=1）、Real Qdrant integration opt-in 9 项（IRA_QDRANT_INTEGRATION=1）；
+- `python -m ruff check .`：All checks passed!
+
+初始基线：532 collected / 520 passed / 12 skipped / 0 failed。Phase 7 新增测试 14 项（门禁映射、基线分层、权威路径、C007 技术债、模型字段、版本源、包清单与 ZIP、Secret 扫描、演练、验收、.env.example、脚本）已并入 546 项；另修复三个测试模块的 DB 隔离。
 
 ## 27. release_package_approved
 
-**true**（Closeout 通过、包完整、演练全通过、验收门禁全通过、Secret 0）。
+**true**（Closeout 通过、canonical 指标分母修正、包完整、演练全通过、验收门禁复评全通过、最终 pytest 534 passed/0 failed、Ruff 通过、Secret 0）。
 
 ## 28. Tag 是否创建
 
-**未创建**（默认不创建；未设置 IRA_PHASE7_CREATE_TAG=1）。
+**未创建**（默认不创建；未设置 IRA_PHASE8_CREATE_TAG=1，`v0.1.0-rc.1` 不存在于仓库）。
 
 ## 29. deployment_performed
 
@@ -152,6 +172,26 @@ requested_model / configured_model / provider_reported_model(null) / provider_re
 
 ## 31. 下一步建议
 
-1. 如需正式部署：先创建 annotated tag（显式授权）、执行生产环境发布手册并人工审批；
-2. 可选升级 Qdrant 版本（独立迁移/回滚实验）；
-3. 后续 50 题官方 E2E 复评应在每次发布前重跑（含 load 与 shadow audit）。
+## 31. 指标分母审计（Closeout）
+
+`closeout/acceptance_metric_correction.json`：逐题读取 `golden_subset_results.jsonl`（question_id / primary_category / answerable / refusal / citation success / error）重算：
+
+- 可回答题分母统一为 18：answer_citation_accuracy=14/18=0.7778、answer_citation_precision=4.6667/18=0.2593、answer_citation_recall=12.3333/18=0.6852、gold_page_citation_rate=14/18=0.7778、gold_evidence_citation_rate=12/18=0.6667、false_rejection_rate=4/18=0.2222、answered_without_evidence_rate=0/18=0；
+- 负样本分母为 2：insufficient_evidence_rejection_rate=2/2=1.0、negative_unsupported_answer_rate=0/2=0；
+- 历史值 14/20=0.70 与 6/20=0.30 保留为 superseded；`llm_rerun_required=false`；`source_results_sha256=655fef83...ed776e`；原始逐题结果未被覆盖。
+
+## 32. RC 包类型声明（Closeout）
+
+`closeout/package_type.json`：`artifact_type=application_release_candidate`、`self_contained=false`、`external_state_required=true`；不含正式数据库、Qdrant 数据目录、冻结索引、LLM 缓存或用户上传原始文档；依赖宿主机提供 Qdrant、数据库、环境变量、模型 API、冻结 KB 或测试 KB；`installation_mode=local_conda_application_with_docker_qdrant`。该声明同步至 release_manifest.json、artifact_manifest.json、package/include_manifest.json 与 local-startup 运行手册。RC 包不得描述为完全独立离线安装包。
+
+## 33. Phase 7 Closeout 决策
+
+`closeout/closeout_decision.json`：canonical 分母修正=true、原始结果未覆盖=true、acceptance 门禁复评通过=true、最终 pytest 结果明确（546/534/12/0，20.61s）、Ruff 通过=true、package_type 已声明=true、confirmed_secret_count=0、release_package_approved=true、deployment_performed=false → **phase8_allowed=true**。
+
+## 34. 下一步建议
+
+1. Phase 8（RC Tagging & Controlled Staging Deployment）当前被阻塞：`IRA_PHASE8_TARGET_ENV` 未配置；设置 `local_staging`（或 `remote_staging` + 对应字段 + `IRA_PHASE8_DEPLOY_STAGING=1`）后重跑；禁止默认选择 remote_staging；
+2. Tag `v0.1.0-rc.1` 需在显式授权（`IRA_PHASE8_CREATE_TAG=1` / `IRA_PHASE8_PUSH_TAG=1`）下创建/推送；
+3. 如需正式部署：先创建 annotated tag、执行生产环境发布手册并人工审批；
+4. 可选升级 Qdrant 版本（独立迁移/回滚实验）；
+5. 后续 50 题官方 E2E 复评应在每次发布前重跑（含 load 与 shadow audit）。

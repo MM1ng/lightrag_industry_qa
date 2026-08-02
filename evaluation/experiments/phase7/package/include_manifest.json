@@ -1,5 +1,17 @@
 {
   "rc_version": "0.1.0-rc.1",
+  "package_type": {
+    "artifact_type": "application_release_candidate",
+    "self_contained": false,
+    "external_state_required": true,
+    "database_included": false,
+    "qdrant_index_included": false,
+    "llm_cache_included": false,
+    "user_documents_included": false,
+    "frozen_index_included": false,
+    "installation_mode": "local_conda_application_with_docker_qdrant",
+    "note": "The frozen RC ZIP is an application release candidate, not a self-contained offline installer. Deployment relies on host-provided Qdrant, application database, environment variables, model API, and a frozen knowledge base or test KB. Phase 7 Closeout package_type declaration: evaluation/experiments/phase7/closeout/package_type.json (repo-side record; the frozen ZIP content and checksums are unchanged)."
+  },
   "include_globs": [
     "src/industrial_rag/**/*.py",
     "app/**/*.py",

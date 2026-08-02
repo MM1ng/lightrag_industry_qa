@@ -1,11 +1,15 @@
 {
   "artifacts": {
-    "release_manifest.json": "0ffef8dcd9febb16ad9c38a31c8704c4272982f36420a18f475c07926ecff7f6",
+    "release_manifest.json": "d7eeee59f774c77b7b7d0cd0d70edc9f3eed5f40f90fcc07704f5e366286eb62",
+    "manifests/result_manifest.json": "157519c91610723ab24b34c636e0e91e487b8faf65aa759fe02a5fad31bb2f6a",
     "dependency_manifest.json": "8fb4b116095c4dbf47df50f1943b1e756335fbacdfdb9a0e3ddaf6cb62c3a4ee",
     "config_manifest.json": "79f76bba89d479972adaf40b5e976e14bafbe43009fc73a1b653ffccc939e544",
-    "package/include_manifest.json": "1985ed77ff6d47cecd29c8e0185ecb03caa299b90b263c2429251e04efad50ba",
+    "package/include_manifest.json": "32ebe1a2e0a6183fb3551f36c62124e60958210fd8a2dae514948ba314530cea",
     "package/exclude_manifest.json": "0f4d26ee526bed3875b65b0e43c00b2d915dd5e550443c1e66994a4c6a105a53",
     "package/checksum_manifest.json": "7e07e36b534dea0030792312a8fdd1ee22dedb3d2c16ce185cbee8d7d741a8f5",
+    "closeout/acceptance_metric_correction.json": "7bba763af0b8d36267ab8c1efb5aefad755916015b226bd1c6a81da44ddfdaca",
+    "closeout/package_type.json": "2ec8afa2892dd6772f182e320b2653996cedd6bc438a98ee75718468715fb9f6",
+    "closeout/closeout_decision.json": "906e2f6947adee758a1890411c3549d0df500804813c9d2ab702702f5048c3dd",
     "security/secret_scan.json": "60681677427073f12b5df953461865db90499068b6cb0bf91502c4be348604b4",
     "security/package_scan.json": "5a6727a5da299eb15b53da4f0b65a31a1d4e044cff584cdb55d485cfa1df5874",
     "security/log_scan.json": "035df28cb01298a5da8c5fac33dc7dd8718b319f8b1a57c71b9ae3913179f4ec"
