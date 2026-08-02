@@ -1,0 +1,17 @@
+{
+  "rc_version": "0.1.0-rc.1",
+  "release_gates": {
+    "smoke_test_passed": true,
+    "golden_subset_complete_20": true,
+    "citation_traceable_emitted": true,
+    "n001_n002_refused": true,
+    "safety_questions_no_high_risk": true,
+    "fallback_zero": true,
+    "request_trace_id_complete": true,
+    "security_zero": true,
+    "http_success_rate": 1.0,
+    "error_rate": 0.0,
+    "p95_latency": 2.722
+  },
+  "passed": true
+}

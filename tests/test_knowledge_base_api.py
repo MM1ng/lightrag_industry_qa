@@ -7,11 +7,23 @@ strict-mode quirks with httpx async fixtures.
 from __future__ import annotations
 
 import asyncio
+import os
 
 import pytest
 from httpx import ASGITransport, AsyncClient
 from industrial_rag.api import create_app
 from industrial_rag.db.session import init_db, reset_for_testing
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _isolated_test_db(tmp_path_factory):
+    """Isolate this module from the real application database."""
+    db_path = tmp_path_factory.mktemp("kb_api_db") / "test.db"
+    os.environ["DATABASE_URL"] = f"sqlite+aiosqlite:///{db_path.as_posix()}"
+    reset_for_testing()
+    yield
+    os.environ.pop("DATABASE_URL", None)
+    reset_for_testing()
 
 # ---------------------------------------------------------------------------
 # Helper: run an async test body in a clean event loop

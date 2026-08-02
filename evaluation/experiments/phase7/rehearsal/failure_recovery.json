@@ -1,0 +1,48 @@
+{
+  "scenario": "failure_recovery",
+  "steps": [
+    {
+      "step": "missing_env_detected",
+      "status": "passed",
+      "detail": "gured: EMBEDDING_MODEL\nmissing: QDRANT_URL\nconfigured: QDRANT_COLLECTION_PREFIX\nmissing: DASHSCOPE_API_KEY\nRESULT=FAIL missing_or_invalid=MODEL_FALLBACK_ENABLED,LLM_MODEL,QDRANT_URL,DASHSCOPE_API_KEY\n",
+      "exit_code": 1,
+      "timestamp": "2026-08-02T19:19:14+0800"
+    },
+    {
+      "step": "api_refuses_when_qdrant_down",
+      "status": "passed",
+      "detail": "NABLED\nconfigured: LLM_MODEL\nconfigured: EMBEDDING_DIM\nconfigured: EMBEDDING_MODEL\nconfigured: QDRANT_URL\nconfigured: QDRANT_COLLECTION_PREFIX\nconfigured: DASHSCOPE_API_KEY\nRESULT=OK\nQDRANT_NOT_READY\n",
+      "exit_code": 1,
+      "timestamp": "2026-08-02T19:19:23+0800"
+    },
+    {
+      "step": "stale_pid_handled",
+      "status": "passed",
+      "detail": "ui: no pid file\napi: stale pid (not running)\nstop_local done (Qdrant data untouched)\n",
+      "exit_code": 0,
+      "timestamp": "2026-08-02T19:19:28+0800"
+    },
+    {
+      "step": "fresh_db_migration_recovers",
+      "status": "passed",
+      "detail": "les\nINFO  [alembic.runtime.migration] Running upgrade d7e568c55ad8 -> 4f2c7d9a8b1e, add Qdrant vector backend generation metadata\nINFO  [alembic.runtime.migration] Running upgrade 4f2c7d9a8b1e -> 9e6f0a2c3b4d, add normalized vector index generations\n",
+      "exit_code": 0,
+      "timestamp": "2026-08-02T19:19:30+0800"
+    },
+    {
+      "step": "fresh_db_api_starts",
+      "status": "passed",
+      "detail": "pid=20832",
+      "exit_code": null,
+      "timestamp": "2026-08-02T19:19:35+0800"
+    },
+    {
+      "step": "cleanup_after_recovery",
+      "status": "passed",
+      "detail": "ui: no pid file\napi: no pid file\nstop_local done (Qdrant data untouched)\n",
+      "exit_code": 0,
+      "timestamp": "2026-08-02T19:19:36+0800"
+    }
+  ],
+  "passed": true
+}

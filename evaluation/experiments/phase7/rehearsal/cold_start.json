@@ -1,0 +1,85 @@
+{
+  "scenario": "cold_start",
+  "started_at": 17004.6000062,
+  "total_seconds": 18.18,
+  "steps": [
+    {
+      "step": "unzip_and_relative_paths",
+      "status": "passed",
+      "detail": "extracted 96 files",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:25+0800"
+    },
+    {
+      "step": "checksum_verify",
+      "status": "passed",
+      "detail": "mismatches=[]",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:25+0800"
+    },
+    {
+      "step": "alembic_upgrade",
+      "status": "passed",
+      "detail": "INFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.\n",
+      "exit_code": 0,
+      "timestamp": "2026-08-02T18:45:28+0800"
+    },
+    {
+      "step": "qdrant_ready",
+      "status": "passed",
+      "detail": "collections endpoint",
+      "exit_code": 0,
+      "timestamp": "2026-08-02T18:45:33+0800"
+    },
+    {
+      "step": "api_health",
+      "status": "passed",
+      "detail": "uvicorn pid=29536",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:38+0800"
+    },
+    {
+      "step": "api_ready",
+      "status": "passed",
+      "detail": "{'status': 'ready', 'components': {'config': 'ok', 'db': 'ok', 'qdrant': 'n/a'}}",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:38+0800"
+    },
+    {
+      "step": "api_version",
+      "status": "passed",
+      "detail": "{\"app_version\": \"0.1.0-rc.1\", \"release_channel\": \"rc\", \"git_commit\": \"\", \"config_version\": \"phase6-v1\", \"strategy_version\": \"phase6b-v1\", \"build_time\": \"2026-08-02T18:45:38+0800\", \"parser_pipeline\": \"pymupdf_standard_adapter\", \"query_mode\": \"mix\", \"answer_model\": \"qwen-plus-2025-07-28\", \"embedding_model\": \"text-embedding-v4\"}",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:38+0800"
+    },
+    {
+      "step": "smoke_query_detail",
+      "status": "passed",
+      "detail": "http=200 citations=3",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:42+0800"
+    },
+    {
+      "step": "smoke_query_detail",
+      "status": "passed",
+      "detail": "http=200 citations=0",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:43+0800"
+    },
+    {
+      "step": "cold_start_smoke_queries",
+      "status": "passed",
+      "detail": "2 queries via official API",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:43+0800"
+    },
+    {
+      "step": "api_stopped",
+      "status": "passed",
+      "detail": "pid cleaned",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:45:43+0800"
+    }
+  ],
+  "passed": true
+}

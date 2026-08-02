@@ -1,0 +1,255 @@
+{
+  "rc_version": "0.1.0-rc.1",
+  "results": {
+    "cold_start": {
+      "scenario": "cold_start",
+      "started_at": 17004.6000062,
+      "total_seconds": 18.18,
+      "steps": [
+        {
+          "step": "unzip_and_relative_paths",
+          "status": "passed",
+          "detail": "extracted 96 files",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:25+0800"
+        },
+        {
+          "step": "checksum_verify",
+          "status": "passed",
+          "detail": "mismatches=[]",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:25+0800"
+        },
+        {
+          "step": "alembic_upgrade",
+          "status": "passed",
+          "detail": "INFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.\n",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T18:45:28+0800"
+        },
+        {
+          "step": "qdrant_ready",
+          "status": "passed",
+          "detail": "collections endpoint",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T18:45:33+0800"
+        },
+        {
+          "step": "api_health",
+          "status": "passed",
+          "detail": "uvicorn pid=29536",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:38+0800"
+        },
+        {
+          "step": "api_ready",
+          "status": "passed",
+          "detail": "{'status': 'ready', 'components': {'config': 'ok', 'db': 'ok', 'qdrant': 'n/a'}}",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:38+0800"
+        },
+        {
+          "step": "api_version",
+          "status": "passed",
+          "detail": "{\"app_version\": \"0.1.0-rc.1\", \"release_channel\": \"rc\", \"git_commit\": \"\", \"config_version\": \"phase6-v1\", \"strategy_version\": \"phase6b-v1\", \"build_time\": \"2026-08-02T18:45:38+0800\", \"parser_pipeline\": \"pymupdf_standard_adapter\", \"query_mode\": \"mix\", \"answer_model\": \"qwen-plus-2025-07-28\", \"embedding_model\": \"text-embedding-v4\"}",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:38+0800"
+        },
+        {
+          "step": "smoke_query_detail",
+          "status": "passed",
+          "detail": "http=200 citations=3",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:42+0800"
+        },
+        {
+          "step": "smoke_query_detail",
+          "status": "passed",
+          "detail": "http=200 citations=0",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:43+0800"
+        },
+        {
+          "step": "cold_start_smoke_queries",
+          "status": "passed",
+          "detail": "2 queries via official API",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:43+0800"
+        },
+        {
+          "step": "api_stopped",
+          "status": "passed",
+          "detail": "pid cleaned",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:45:43+0800"
+        }
+      ],
+      "passed": true
+    },
+    "warm_restart": {
+      "scenario": "warm_restart",
+      "steps": [
+        {
+          "step": "first_start",
+          "status": "passed",
+          "detail": "pid=28208",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:01+0800"
+        },
+        {
+          "step": "second_start",
+          "status": "passed",
+          "detail": "pid=7536",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:06+0800"
+        },
+        {
+          "step": "ready_after_restart",
+          "status": "passed",
+          "detail": "{'status': 'ready', 'components': {'config': 'ok', 'db': 'ok', 'qdrant': 'n/a'}}",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:06+0800"
+        },
+        {
+          "step": "health_after_restart",
+          "status": "passed",
+          "detail": "ok",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:06+0800"
+        }
+      ],
+      "passed": true
+    },
+    "graceful_shutdown": {
+      "scenario": "graceful_shutdown",
+      "steps": [
+        {
+          "step": "start_before_shutdown",
+          "status": "passed",
+          "detail": "pid=28788",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:11+0800"
+        },
+        {
+          "step": "stop_local_script",
+          "status": "passed",
+          "detail": "ui: no pid file\napi: stopped pid=28788\nstop_local done (Qdrant data untouched)\n",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T18:46:12+0800"
+        },
+        {
+          "step": "process_stopped",
+          "status": "passed",
+          "detail": "pid=28788 poll=4294967295",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:16+0800"
+        },
+        {
+          "step": "qdrant_collections_untouched",
+          "status": "passed",
+          "detail": "3->3",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:16+0800"
+        },
+        {
+          "step": "restart_after_shutdown",
+          "status": "passed",
+          "detail": "pid=24092",
+          "exit_code": null,
+          "timestamp": "2026-08-02T18:46:21+0800"
+        }
+      ],
+      "passed": true
+    },
+    "failure_recovery": {
+      "scenario": "failure_recovery",
+      "steps": [
+        {
+          "step": "missing_env_detected",
+          "status": "passed",
+          "detail": "gured: EMBEDDING_MODEL\nmissing: QDRANT_URL\nconfigured: QDRANT_COLLECTION_PREFIX\nmissing: DASHSCOPE_API_KEY\nRESULT=FAIL missing_or_invalid=MODEL_FALLBACK_ENABLED,LLM_MODEL,QDRANT_URL,DASHSCOPE_API_KEY\n",
+          "exit_code": 1,
+          "timestamp": "2026-08-02T19:19:14+0800"
+        },
+        {
+          "step": "api_refuses_when_qdrant_down",
+          "status": "passed",
+          "detail": "NABLED\nconfigured: LLM_MODEL\nconfigured: EMBEDDING_DIM\nconfigured: EMBEDDING_MODEL\nconfigured: QDRANT_URL\nconfigured: QDRANT_COLLECTION_PREFIX\nconfigured: DASHSCOPE_API_KEY\nRESULT=OK\nQDRANT_NOT_READY\n",
+          "exit_code": 1,
+          "timestamp": "2026-08-02T19:19:23+0800"
+        },
+        {
+          "step": "stale_pid_handled",
+          "status": "passed",
+          "detail": "ui: no pid file\napi: stale pid (not running)\nstop_local done (Qdrant data untouched)\n",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T19:19:28+0800"
+        },
+        {
+          "step": "fresh_db_migration_recovers",
+          "status": "passed",
+          "detail": "les\nINFO  [alembic.runtime.migration] Running upgrade d7e568c55ad8 -> 4f2c7d9a8b1e, add Qdrant vector backend generation metadata\nINFO  [alembic.runtime.migration] Running upgrade 4f2c7d9a8b1e -> 9e6f0a2c3b4d, add normalized vector index generations\n",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T19:19:30+0800"
+        },
+        {
+          "step": "fresh_db_api_starts",
+          "status": "passed",
+          "detail": "pid=20832",
+          "exit_code": null,
+          "timestamp": "2026-08-02T19:19:35+0800"
+        },
+        {
+          "step": "cleanup_after_recovery",
+          "status": "passed",
+          "detail": "ui: no pid file\napi: no pid file\nstop_local done (Qdrant data untouched)\n",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T19:19:36+0800"
+        }
+      ],
+      "passed": true
+    },
+    "backup_restore": {
+      "scenario": "backup_restore",
+      "steps": [
+        {
+          "step": "backup_created",
+          "status": "passed",
+          "detail": "db_sha=14bb75f2ad917ac7 collections=3",
+          "exit_code": null,
+          "timestamp": "2026-08-02T19:19:55+0800"
+        },
+        {
+          "step": "restore_db_migration",
+          "status": "passed",
+          "detail": "INFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.\n",
+          "exit_code": 0,
+          "timestamp": "2026-08-02T19:19:56+0800"
+        },
+        {
+          "step": "restored_api_ready",
+          "status": "passed",
+          "detail": "pid=5988",
+          "exit_code": null,
+          "timestamp": "2026-08-02T19:20:01+0800"
+        },
+        {
+          "step": "restored_query_and_citations",
+          "status": "passed",
+          "detail": "http=200 citations=3",
+          "exit_code": null,
+          "timestamp": "2026-08-02T19:20:06+0800"
+        },
+        {
+          "step": "collection_points_match",
+          "status": "passed",
+          "detail": "points=453",
+          "exit_code": null,
+          "timestamp": "2026-08-02T19:20:06+0800"
+        }
+      ],
+      "passed": true
+    }
+  },
+  "passed": true
+}
