@@ -1,0 +1,18 @@
+{
+  "request_count": 50,
+  "structural_valid": 50,
+  "invalid_chunk_count": 0,
+  "invalid_page_count": 0,
+  "invalid_document_count": 0,
+  "duplicate_citation_count": 0,
+  "emitted_citation_count": 143,
+  "answer_without_citation": 1,
+  "citation_traceability": 49,
+  "audit_status": {
+    "ok": 49,
+    "warning": 1
+  },
+  "audit_mode": "shadow_non_blocking",
+  "llm_called": false,
+  "gold_used": false
+}
