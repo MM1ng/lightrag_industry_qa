@@ -1,0 +1,13 @@
+{
+  "python_version": "3.11.15",
+  "operating_system": "Windows 10",
+  "conda_env": "industrial-rag",
+  "git": {
+    "commit": "56e5550921fb68802c0ea57537c2983ed122484e",
+    "branch": "codex/knowledge-qa-platform-design"
+  },
+  "secrets": {
+    "api_key_configured": true,
+    "api_key_source": "DASHSCOPE_API_KEY"
+  }
+}

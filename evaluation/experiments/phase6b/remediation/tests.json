@@ -1,0 +1,11 @@
+{
+  "added_tests": [
+    "test_phase6b_parity_trace_fields",
+    "test_phase6b_canonical_refusal_clears_citations",
+    "test_phase6b_retrieval_metrics_require_k",
+    "test_phase6b_gold_page_at_12_equal_both_paths",
+    "test_phase6b_gate_uses_canonical_convention",
+    "test_phase6b_actual_model_observability",
+    "test_phase6b_qdrant_tech_debt_documented"
+  ]
+}

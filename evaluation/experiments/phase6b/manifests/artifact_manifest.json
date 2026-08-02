@@ -1,0 +1,28 @@
+{
+  "artifacts": {
+    "baseline_manifest.json": "7eccd7821b5c1ea37eaa165f7dfa4cf3793f58b046edd5a8ffda7b7280fd9500",
+    "parity/harness_traces.jsonl": "03dbba47567e89da4f471579343d45da5c8ef2b7cd937050c15eee6497747431",
+    "parity/fastapi_traces.jsonl": "460645fb578be5125f1f4ccde754c9dfbe97878a579ba02e3041fbcbed00d13b",
+    "parity/per_question_diff.jsonl": "a31b5f770ff23efff00672bfca918599cc5b0a4b6bd75e25d3f28d8483162f1e",
+    "parity/stage_diff_summary.json": "2c034d3813a7bf2d9167077afe6983b8249a2d6b97f438b43ddfdc152d0ca1ec",
+    "metric_audit/retrieval_metric_definitions.json": "6d74078b96926430942c40a29144a691b8d39594c0df0c067aa71bae662ccd88",
+    "metric_audit/citation_metric_definitions.json": "24c92e01e2851b660e6b395884d60f99ddab77945e1ce585ac7c0e51eb294101",
+    "metric_audit/denominator_audit.json": "fef2b5f51e7bb5123002948456c588f820ede7be12653f6db84814b0ac7b9140",
+    "metric_audit/recomputed_metrics.json": "93faf562ed8a41ba509fddd510c8f9fe5859b2af9d626f79f8ffeb79e9da3962",
+    "regression/citation_regressions.json": "2243f00e6d6019b64951fd6f084ec306d52ecc36f8a53608bf9211a61a556814",
+    "regression/refusal_regressions.json": "3b7cc51788cb9aecb21b8324bd373911f07bbdce5c8e344c9f4ac706aeed906b",
+    "regression/context_regressions.json": "cb0122087055f33cfeb5e32562a6a351f812d3e2271095b1bc1640e1ed350f94",
+    "regression/parser_regressions.json": "e5c218cf0d65bddbb98baea2f275640810344e85215f4d98b6fa43c5be7b7fbf",
+    "replay/saved_input_replay.jsonl": "656b3799e2f4729a1bba9a7386d6e22f5d795657b54ba74a9cdf0709182653a3",
+    "replay/saved_answer_reparse.jsonl": "267873b7e936400f5b84238638e180762c5b07a9209ce825fdfffb3058cc830f",
+    "replay/replay_summary.json": "f3955a0ff497ad38ee06314d38a3195ae221e8e64bcfefd39601e77bf3c34ac0",
+    "remediation/selected_fix.json": "98311d44158b4d4ed436a8b29253ffb36f155485e67311eb310893f99e7cf48f",
+    "remediation/before_after.json": "97f217b7207309bd11f105603f3e6e8804df9628d9b8b24371c88fc4678a069e",
+    "remediation/tests.json": "5fdff3631bff5f82c6665e629d781639500670a21aa943264698943fac937d72",
+    "rc_retest/golden_results.jsonl": "32d4c1c5274d7fa2ad3bff010aba4795d3069a8bb576d5adae0cea9e9c67ffaf",
+    "rc_retest/metrics.json": "0a63118f70bf6d8b2cf4406495610204b5caad681dc5e2da02c6aff50d319eb0",
+    "rc_retest/shadow_audit.jsonl": "dcc0c0a44e3702d1c55fcc327f511aca945125c1f79fe6e115a863014af94cd9",
+    "rc_retest/release_gates.json": "d0bd2f216d52479a82f823350fdbe4bd31c8f1c23e9b82001b4dae02c3935cbb",
+    "manifests/result_manifest.json": "e73dd1cbd31fbcbc2c532609bad89fb90fbb025de8c235060fdec3840838f615"
+  }
+}
