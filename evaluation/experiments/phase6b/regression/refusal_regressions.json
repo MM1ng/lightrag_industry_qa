@@ -1,0 +1,250 @@
+{
+  "counts": {
+    "both_refused": 9,
+    "harness_only_refused": 6,
+    "fastapi_only_refused": 1,
+    "both_answered": 32
+  },
+  "per_question": {
+    "C001": {
+      "category": "跨页问题",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "C002": {
+      "category": "跨页问题",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "C003": {
+      "category": "跨页问题",
+      "harness_refusal": true,
+      "fastapi_refusal": false
+    },
+    "C004": {
+      "category": "跨页问题",
+      "harness_refusal": true,
+      "fastapi_refusal": false
+    },
+    "C005": {
+      "category": "跨页问题",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "C006": {
+      "category": "跨页问题",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "C007": {
+      "category": "安全警告",
+      "harness_refusal": false,
+      "fastapi_refusal": true
+    },
+    "C008": {
+      "category": "故障诊断",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D001": {
+      "category": "普通事实",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D002": {
+      "category": "普通事实",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "D003": {
+      "category": "安全警告",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D004": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D005": {
+      "category": "安全警告",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "D006": {
+      "category": "操作步骤",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D007": {
+      "category": "安全警告",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D008": {
+      "category": "参数查询",
+      "harness_refusal": true,
+      "fastapi_refusal": false
+    },
+    "D009": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D010": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D011": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D012": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D013": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D014": {
+      "category": "参数查询",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "D015": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D016": {
+      "category": "操作步骤",
+      "harness_refusal": true,
+      "fastapi_refusal": false
+    },
+    "D017": {
+      "category": "表格查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D018": {
+      "category": "操作步骤",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "D019": {
+      "category": "操作步骤",
+      "harness_refusal": true,
+      "fastapi_refusal": false
+    },
+    "D020": {
+      "category": "操作步骤",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S001": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S002": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S003": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S004": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S005": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S006": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S007": {
+      "category": "表格查询",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    },
+    "S008": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S009": {
+      "category": "表格查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S010": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S011": {
+      "category": "操作步骤",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S012": {
+      "category": "操作步骤",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S013": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S014": {
+      "category": "操作步骤",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S015": {
+      "category": "故障诊断",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S016": {
+      "category": "故障诊断",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S017": {
+      "category": "安全警告",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S018": {
+      "category": "参数查询",
+      "harness_refusal": false,
+      "fastapi_refusal": false
+    },
+    "S019": {
+      "category": "参数查询",
+      "harness_refusal": true,
+      "fastapi_refusal": false
+    },
+    "S020": {
+      "category": "操作步骤",
+      "harness_refusal": true,
+      "fastapi_refusal": true
+    }
+  }
+}

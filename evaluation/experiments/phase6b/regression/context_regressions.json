@@ -1,0 +1,388 @@
+{
+  "context_different_count": 23,
+  "entries": [
+    {
+      "question_id": "C001",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-和关闭-7f491d84dcb4-000-7f491d84dcb4",
+        "cchunk-pymupdf-v1-修计划-74723e840378-000-74723e840378"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-时存放-d566b9b2e7f0-000-d566b9b2e7f0",
+        "cchunk-pymupdf-v1-和关闭-7f491d84dcb4-000-7f491d84dcb4",
+        "cchunk-pymupdf-v1-修计划-74723e840378-000-74723e840378"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "C003",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+        "cchunk-pymupdf-v1-障诊断-150d65b3f4c3-000-150d65b3f4c3",
+        "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+        "cchunk-pymupdf-v1-和关闭-2020c244c35a-000-2020c244c35a",
+        "cchunk-pymupdf-v1-障诊断-150d65b3f4c3-000-150d65b3f4c3"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "C006",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf",
+        "cchunk-pymupdf-v1--安装-aab311a2a8ce-000-aab311a2a8ce"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D003",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安全-1cfb2c984ef7-000-1cfb2c984ef7",
+        "cchunk-pymupdf-v1--目录-ad404fcfe9d1-000-ad404fcfe9d1",
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安全-1cfb2c984ef7-000-1cfb2c984ef7",
+        "cchunk-pymupdf-v1-和关闭-98af0d342570-000-98af0d342570",
+        "cchunk-pymupdf-v1--目录-ad404fcfe9d1-000-ad404fcfe9d1"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D004",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1-术规格-7318227c6dad-000-7318227c6dad",
+        "cchunk-pymupdf-v1--安装-17ce9c469745-000-17ce9c469745"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1--安装-73e13cfb6828-000-73e13cfb6828",
+        "cchunk-pymupdf-v1-术规格-7318227c6dad-000-7318227c6dad"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D005",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c",
+        "cchunk-pymupdf-v1-和关闭-0cdb66a95926-000-0cdb66a95926"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D006",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c",
+        "cchunk-pymupdf-v1-和关闭-0cdb66a95926-000-0cdb66a95926",
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c",
+        "cchunk-pymupdf-v1--目录-c493e2a39742-000-c493e2a39742",
+        "cchunk-pymupdf-v1-和关闭-0cdb66a95926-000-0cdb66a95926"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D007",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-时存放-d566b9b2e7f0-000-d566b9b2e7f0",
+        "cchunk-pymupdf-v1-卸泵组-d94509f9b71d-000-d94509f9b71d",
+        "cchunk-pymupdf-v1--安装-17ce9c469745-000-17ce9c469745"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-时存放-d566b9b2e7f0-000-d566b9b2e7f0",
+        "cchunk-pymupdf-v1-卸泵组-d94509f9b71d-000-d94509f9b71d",
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D009",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-术规格-8feed9ec71ae-000-8feed9ec71ae",
+        "cchunk-pymupdf-v1--安装-17ce9c469745-000-17ce9c469745",
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-术规格-8feed9ec71ae-000-8feed9ec71ae",
+        "cchunk-pymupdf-v1-和关闭-0cdb66a95926-000-0cdb66a95926",
+        "cchunk-pymupdf-v1-术规格-7318227c6dad-000-7318227c6dad"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D012",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安装-4c0decacc13b-000-4c0decacc13b",
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf",
+        "cchunk-pymupdf-v1-障诊断-150d65b3f4c3-000-150d65b3f4c3"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安装-4c0decacc13b-000-4c0decacc13b",
+        "cchunk-pymupdf-v1--安装-c79b53d407c9-000-c79b53d407c9",
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D013",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安装-23fbf21e5cf5-000-23fbf21e5cf5",
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf",
+        "cchunk-pymupdf-v1--安装-ee9e71b6148a-000-ee9e71b6148a"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安装-23fbf21e5cf5-000-23fbf21e5cf5",
+        "cchunk-pymupdf-v1--安装-73e13cfb6828-000-73e13cfb6828",
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D014",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1--安装-23fbf21e5cf5-000-23fbf21e5cf5",
+        "cchunk-pymupdf-v1--目录-ad404fcfe9d1-000-ad404fcfe9d1"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-和关闭-98af0d342570-000-98af0d342570",
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1--安装-4c0decacc13b-000-4c0decacc13b"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D015",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安装-73e13cfb6828-000-73e13cfb6828",
+        "cchunk-pymupdf-v1--安装-17ce9c469745-000-17ce9c469745",
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安装-73e13cfb6828-000-73e13cfb6828",
+        "cchunk-pymupdf-v1--安装-17ce9c469745-000-17ce9c469745",
+        "cchunk-pymupdf-v1-和关闭-0cdb66a95926-000-0cdb66a95926"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D016",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1--安装-ee9e71b6148a-000-ee9e71b6148a",
+        "cchunk-pymupdf-v1--安装-a9a63e1e9e9c-000-a9a63e1e9e9c",
+        "cchunk-pymupdf-v1--安装-17ce9c469745-000-17ce9c469745"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b",
+        "cchunk-pymupdf-v1--安装-ee9e71b6148a-000-ee9e71b6148a",
+        "cchunk-pymupdf-v1--安装-a9a63e1e9e9c-000-a9a63e1e9e9c"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "D018",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-和关闭-db01d9f3b0b4-000-db01d9f3b0b4",
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c",
+        "cchunk-pymupdf-v1-和关闭-2fc3d4695355-000-2fc3d4695355"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-和关闭-2a44c976502c-000-2a44c976502c",
+        "cchunk-pymupdf-v1--目录-c493e2a39742-000-c493e2a39742",
+        "cchunk-pymupdf-v1-和关闭-84d31a6bae34-000-84d31a6bae34"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S001",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-ac65104a0a87-000-ac65104a0a87"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+        "cchunk-pymupdf-v1-护手册-847dedb676cd-000-847dedb676cd",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S004",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+        "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd",
+        "cchunk-pymupdf-v1-护手册-70af961007ec-000-70af961007ec"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+        "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142",
+        "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S010",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S012",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-2328c2b8800f-000-2328c2b8800f"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f",
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S015",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S016",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a",
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f",
+        "cchunk-pymupdf-v1-护手册-e112e31e2351-000-e112e31e2351"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142",
+        "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a",
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S017",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-5d8e22b0294d-000-5d8e22b0294d"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    },
+    {
+      "question_id": "S019",
+      "context_equal": false,
+      "harness_context_ids": [
+        "cchunk-pymupdf-v1-护手册-e112e31e2351-000-e112e31e2351",
+        "cchunk-pymupdf-v1-护手册-99d80f6fd8a0-000-99d80f6fd8a0",
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f"
+      ],
+      "fastapi_context_ids": [
+        "cchunk-pymupdf-v1-护手册-e112e31e2351-000-e112e31e2351",
+        "cchunk-pymupdf-v1-护手册-99d80f6fd8a0-000-99d80f6fd8a0",
+        "cchunk-pymupdf-v1-护手册-ac65104a0a87-000-ac65104a0a87"
+      ],
+      "evidence_policy_equal": false,
+      "prompt_equal": false,
+      "earliest_diff_stage": "final_context"
+    }
+  ]
+}

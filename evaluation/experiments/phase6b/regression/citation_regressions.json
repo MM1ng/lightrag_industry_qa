@@ -1,0 +1,237 @@
+{
+  "scope": "baseline-only success questions (legacy convention)",
+  "count": 6,
+  "canonical_baseline_only_success": [
+    "C007"
+  ],
+  "entries": [
+    {
+      "question_id": "C005",
+      "category": "跨页问题",
+      "harness_success_legacy": true,
+      "fastapi_success_legacy": false,
+      "harness_success_canonical": false,
+      "fastapi_success_canonical": false,
+      "harness_refusal": true,
+      "fastapi_refusal": true,
+      "harness_citations": [
+        [
+          "t1739cn.pdf",
+          3
+        ],
+        [
+          "t1739cn.pdf",
+          33
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          53
+        ]
+      ],
+      "fastapi_citations": [],
+      "gold_pages": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          18
+        ],
+        [
+          "t1739cn.pdf",
+          32
+        ],
+        [
+          "t1739cn.pdf",
+          33
+        ]
+      ],
+      "primary_root_cause": "evaluator_convention_difference",
+      "notes": "Harness attached evidence-policy citations to a refused answer; the official path correctly emits zero citations on refusal. Under the canonical (production) convention this is a both_failure, not a regression.",
+      "canonical_classification": "both_failure"
+    },
+    {
+      "question_id": "C006",
+      "category": "跨页问题",
+      "harness_success_legacy": true,
+      "fastapi_success_legacy": false,
+      "harness_success_canonical": false,
+      "fastapi_success_canonical": false,
+      "harness_refusal": true,
+      "fastapi_refusal": true,
+      "harness_citations": [
+        [
+          "t1739cn.pdf",
+          21
+        ]
+      ],
+      "fastapi_citations": [],
+      "gold_pages": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          10
+        ],
+        [
+          "t1739cn.pdf",
+          21
+        ],
+        [
+          "t1739cn.pdf",
+          22
+        ],
+        [
+          "t1739cn.pdf",
+          23
+        ]
+      ],
+      "primary_root_cause": "evaluator_convention_difference",
+      "notes": "Harness attached evidence-policy citations to a refused answer; the official path correctly emits zero citations on refusal. Under the canonical (production) convention this is a both_failure, not a regression.",
+      "canonical_classification": "both_failure"
+    },
+    {
+      "question_id": "C007",
+      "category": "安全警告",
+      "harness_success_legacy": true,
+      "fastapi_success_legacy": false,
+      "harness_success_canonical": true,
+      "fastapi_success_canonical": false,
+      "harness_refusal": false,
+      "fastapi_refusal": true,
+      "harness_citations": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          24
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          49
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          23
+        ]
+      ],
+      "fastapi_citations": [],
+      "gold_pages": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          23
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          25
+        ],
+        [
+          "t1739cn.pdf",
+          12
+        ],
+        [
+          "t1739cn.pdf",
+          48
+        ],
+        [
+          "t1739cn.pdf",
+          49
+        ]
+      ],
+      "primary_root_cause": "additional_refusal",
+      "notes": "Harness answered with gold-matching citations; the official path refused (context/prompt rendering differs).",
+      "canonical_classification": "baseline_only_success"
+    },
+    {
+      "question_id": "D005",
+      "category": "安全警告",
+      "harness_success_legacy": true,
+      "fastapi_success_legacy": false,
+      "harness_success_canonical": false,
+      "fastapi_success_canonical": false,
+      "harness_refusal": true,
+      "fastapi_refusal": true,
+      "harness_citations": [
+        [
+          "t1739cn.pdf",
+          10
+        ],
+        [
+          "t1739cn.pdf",
+          12
+        ]
+      ],
+      "fastapi_citations": [],
+      "gold_pages": [
+        [
+          "t1739cn.pdf",
+          12
+        ]
+      ],
+      "primary_root_cause": "evaluator_convention_difference",
+      "notes": "Harness attached evidence-policy citations to a refused answer; the official path correctly emits zero citations on refusal. Under the canonical (production) convention this is a both_failure, not a regression.",
+      "canonical_classification": "both_failure"
+    },
+    {
+      "question_id": "S007",
+      "category": "表格查询",
+      "harness_success_legacy": true,
+      "fastapi_success_legacy": false,
+      "harness_success_canonical": false,
+      "fastapi_success_canonical": false,
+      "harness_refusal": true,
+      "fastapi_refusal": true,
+      "harness_citations": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          14
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          14
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          14
+        ]
+      ],
+      "fastapi_citations": [],
+      "gold_pages": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          14
+        ]
+      ],
+      "primary_root_cause": "evaluator_convention_difference",
+      "notes": "Harness attached evidence-policy citations to a refused answer; the official path correctly emits zero citations on refusal. Under the canonical (production) convention this is a both_failure, not a regression.",
+      "canonical_classification": "both_failure"
+    },
+    {
+      "question_id": "S020",
+      "category": "操作步骤",
+      "harness_success_legacy": true,
+      "fastapi_success_legacy": false,
+      "harness_success_canonical": false,
+      "fastapi_success_canonical": false,
+      "harness_refusal": true,
+      "fastapi_refusal": true,
+      "harness_citations": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          26
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          24
+        ],
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          29
+        ]
+      ],
+      "fastapi_citations": [],
+      "gold_pages": [
+        [
+          "2196-ANSI-Manual-Chinese.pdf",
+          29
+        ]
+      ],
+      "primary_root_cause": "evaluator_convention_difference",
+      "notes": "Harness attached evidence-policy citations to a refused answer; the official path correctly emits zero citations on refusal. Under the canonical (production) convention this is a both_failure, not a regression.",
+      "canonical_classification": "both_failure"
+    }
+  ]
+}

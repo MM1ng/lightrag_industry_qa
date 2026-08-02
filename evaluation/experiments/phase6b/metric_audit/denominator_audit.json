@@ -1,0 +1,11 @@
+{
+  "answerable_denominator": 48,
+  "negative_denominator": 2,
+  "n001_n002_excluded_from_retrieval_and_citation": true,
+  "n001_n002_included_in_rejection_metrics": true,
+  "harness_uses_r0_baseline_not_reranked": true,
+  "fastapi_uses_official_golden_not_reranked": true,
+  "rerank_enabled": false,
+  "context_strategy": "current_rows",
+  "universe_mismatch_explanation": "Phase 6 published Gold Page 0.9375 / Gold Evidence 0.8750 used the full official retrieval (up to 20 identity-deduped ids); canonical @12 metrics are 0.8542 / 0.7917, identical to the frozen pool top-12 values. The earlier published numbers were not wrong for their universe, but the release gate uses @12."
+}

@@ -1,0 +1,9 @@
+{
+  "harness_citation_parser": "structured_response_citations",
+  "fastapi_citation_parser": "structured_response_citations",
+  "canonical_citation_parser": "structured_response_citations",
+  "parser_version": "structured-v1",
+  "citations_equal_count": 1,
+  "parser_level_loss": false,
+  "note": "Both paths emit program-rendered citations (evidence policy), not model prose; a single structured parser is used, so no parser difference can explain the citation gap."
+}

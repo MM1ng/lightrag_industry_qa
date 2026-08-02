@@ -1,0 +1,49 @@
+[
+  {
+    "canonical_name": "answer_citation_accuracy",
+    "definition": "per-question accuracy/precision/recall over answer-emitted citations; refusal clears citations (production convention)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "answer_citation_precision",
+    "definition": "per-question accuracy/precision/recall over answer-emitted citations; refusal clears citations (production convention)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "answer_citation_recall",
+    "definition": "per-question accuracy/precision/recall over answer-emitted citations; refusal clears citations (production convention)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "citation_traceability",
+    "definition": "per-question accuracy/precision/recall over answer-emitted citations; refusal clears citations (production convention)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "citation_traceability_emitted",
+    "definition": "per-question accuracy/precision/recall over answer-emitted citations; refusal clears citations (production convention)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "gold_citation_reference_rate",
+    "definition": "per-citation gold/non-gold alignment (same denominator)",
+    "denominator": "emitted citations",
+    "complement": true
+  },
+  {
+    "canonical_name": "non_gold_citation_reference_rate",
+    "definition": "per-citation gold/non-gold alignment (same denominator)",
+    "denominator": "emitted citations",
+    "complement": true
+  }
+]
