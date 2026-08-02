@@ -294,7 +294,7 @@ def create_app(
             if (
                 resolved_settings.deployment_environment
                 in {"local_staging", "staging", "production"}
-                and resolved_settings.vector_backend.value == "qdrant"
+                and resolved_settings.qdrant_url is not None
             ):
                 from industrial_rag.qdrant_compatibility import (
                     check_qdrant_compatibility,
