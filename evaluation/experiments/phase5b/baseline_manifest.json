@@ -1,0 +1,60 @@
+{
+  "source_phase": "Phase 5",
+  "source_commit": "2ff697a9d356d99ea8431e74311f5c78229982a5",
+  "head_commit": "2ff697a9d356d99ea8431e74311f5c78229982a5",
+  "parser_pipeline": "pymupdf_standard_adapter",
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "parent_expansion": "none",
+  "rerank_enabled": false,
+  "context_strategy": "current_rows",
+  "answer_model": "qwen-plus-2025-07-28",
+  "fallback_enabled": false,
+  "thinking_enabled": false,
+  "golden_set": {
+    "path": "D:\\industrial_energy_agent\\data\\evaluation\\industrial_pump_golden_set_50.jsonl",
+    "sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf"
+  },
+  "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
+  "evidence_limit": 3,
+  "max_context_tokens": 6000,
+  "max_citations_per_sentence": 2,
+  "citation_repair_max_attempts": 1,
+  "grounded_answer_lite_enabled": false,
+  "inline_chunk_citation_enabled": false,
+  "citation_only_repair_enabled": false,
+  "claim_level_guard_enabled": false,
+  "frozen_candidate_pool": {
+    "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\frozen_child_results.jsonl",
+    "sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0"
+  },
+  "phase4_frozen_index": {
+    "kb_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation": "g5162e7fb4208635103ff4ebb",
+    "points": {
+      "chunks": 453,
+      "entities": 1012,
+      "relationships": 1061
+    },
+    "role": "phase4_frozen_index"
+  },
+  "prompts": {
+    "inline_citation_prompt": {
+      "file": "prompts/inline_citation_prompt.txt",
+      "sha256": "308fd5bb31ad14bc7986e9e2f9dbac34d4b989b66afd53b90661069bab2990fa"
+    },
+    "citation_repair_prompt": {
+      "file": "prompts/citation_repair_prompt.txt",
+      "sha256": "c90c60b544db954d1eb6a3c511c5ceee0cd4b74d000f0236ae9840106f0ab3a9"
+    },
+    "frozen_common_config": {
+      "file": "config/frozen_common.json",
+      "sha256": "d34527995ec88df49cdcd60227be146b2ee65dd5b98876c8e264232de4d24b69"
+    }
+  },
+  "gl0_reuse": {
+    "source": "Phase 4D-R2 R0 answers (current_rows, same prompt/pool/policy)",
+    "verified_by": "phase4 answer cache key match per question"
+  }
+}

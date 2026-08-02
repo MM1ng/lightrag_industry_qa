@@ -1,0 +1,25 @@
+请为下面的答案句子补充引用映射。只输出一个 JSON 对象，不要输出任何其他文本。
+
+=== 问题 ===
+{question}
+
+=== chunk_id 白名单 ===
+{whitelist}
+
+=== 证据 ===
+{evidence}
+
+=== 答案 ===
+{answer}
+
+=== 需要修复的句子 ===
+{sentences}
+
+=== 输出格式 ===
+{"sentence_citations": [{"sentence_index": 0, "chunk_ids": ["abc123"]}]}
+
+要求：
+1. sentence_index 必须对应"需要修复的句子"中的序号（从 0 开始）。
+2. chunk_ids 只能来自白名单（可用引用别名 E1/E2 或完整 chunk_id）；每个句子最多 2 个。
+3. 不得输出新答案、改写后的句子、新事实或拒答文本。
+4. 不得输出文档名和页码。
