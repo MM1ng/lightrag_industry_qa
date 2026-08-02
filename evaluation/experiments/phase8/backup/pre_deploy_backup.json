@@ -1,0 +1,68 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T20:47:00+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "previous_staging_version": null,
+  "previous_staging_version_note": "First controlled local staging environment; no previous staging version exists. The RC version directory is the first release under releases/.",
+  "staging_database_backup": {
+    "backup_path": "D:/industrial_energy_agent_staging/backups/pre_deploy_industrial_rag_staging.db",
+    "backup_path_hash": "5f4e292926224f686022f2c72fae5a1c6155da983cb45df1a1805345d0ab0eb8",
+    "backup_file_sha256": "cebffbb6c8acb255d4b773e08ac77ea7266f26beac3921f3c2f64ebde9f50a45",
+    "size": 94208,
+    "source_file_sha256": "cf54ff27471ab348e327a28ec3ede3ed1fcef242da12a1bfb66b6f53c164fabb",
+    "source_match": true,
+    "created_at": "2026-08-02T20:47:00+08:00"
+  },
+  "staging_config_hash": "0cfca1989172b7b7a7cc8caa09263195e3394d6a14610143cdebe6962b937053",
+  "staging_config_hash_source": "sha256 of D:/industrial_energy_agent_staging/runtime/staging.env variable names+values (non-committed)",
+  "current_version_pointer": {
+    "path": "D:/industrial_energy_agent_staging/runtime/current_version.json",
+    "exists": false,
+    "value_before_deploy": null
+  },
+  "qdrant_snapshot": {
+    "captured_at": "2026-08-02T20:41:00+08:00",
+    "collection_count": 3,
+    "collections": [
+      {
+        "name": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_chunks",
+        "points_count": 453,
+        "status": "green"
+      },
+      {
+        "name": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_entities",
+        "points_count": 1012,
+        "status": "green"
+      },
+      {
+        "name": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_relationships",
+        "points_count": 1061,
+        "status": "green"
+      }
+    ]
+  },
+  "rc_package_sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+  "release_directory_state": {
+    "release_directory": "D:/industrial_energy_agent_staging/releases/0.1.0-rc.1",
+    "existed_before_deploy": false
+  },
+  "alembic_revision": {
+    "staging_copy_before_upgrade": "9e6f0a2c3b4d",
+    "head_expected": "9e6f0a2c3b4d"
+  },
+  "not_backed_up": [
+    "api_key_plaintext",
+    "authorization_header",
+    "full_secrets",
+    "unredacted_endpoints"
+  ],
+  "restore_steps": [
+    "stop staging API/UI",
+    "copy D:/industrial_energy_agent_staging/backups/pre_deploy_industrial_rag_staging.db over D:/industrial_energy_agent_staging/runtime/industrial_rag_staging.db",
+    "verify sha256 equals cebffbb6c8acb255d4b773e08ac77ea7266f26beac3921f3c2f64ebde9f50a45",
+    "run alembic current from the version directory with the staging DATABASE_URL",
+    "restart staging services and verify /health /ready /version"
+  ],
+  "verification_status": "verified"
+}

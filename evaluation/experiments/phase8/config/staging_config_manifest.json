@@ -1,0 +1,123 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T20:45:00+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "target_env": "local_staging",
+  "deployment_mode": "controlled_local_staging",
+  "directories": {
+    "staging_root": "D:/industrial_energy_agent_staging",
+    "release_directory": "D:/industrial_energy_agent_staging/releases/0.1.0-rc.1",
+    "release_directory_hash": "42fb0c84a3602fb6e8cabce6a1c385ca138a4fc108f9ba884f7491062ea345a8",
+    "runtime_directory": "D:/industrial_energy_agent_staging/runtime",
+    "runtime_directory_hash": "a4d8d5991b73e65438736fea615893c44077275fd65dddddd5e5508791bda341",
+    "backup_directory": "D:/industrial_energy_agent_staging/backups",
+    "log_directory": "D:/industrial_energy_agent_staging/logs",
+    "work_directory": "D:/industrial_energy_agent_staging/work"
+  },
+  "ports": {
+    "api_port": 8110,
+    "ui_port": 8511,
+    "port_selection": "first free checked port (8110/8511 free at setup; no existing 3000/8000/8501 service occupied)",
+    "qdrant_port": 16333
+  },
+  "endpoints": {
+    "qdrant_url_hash": "98b4d37134418c49d8a6bee494dda5ba1c1d971160f0934c40d67d252945e8b9",
+    "api_url": "http://127.0.0.1:8110",
+    "ui_url": "http://127.0.0.1:8511"
+  },
+  "database": {
+    "type": "sqlite",
+    "staging_db_path": "D:/industrial_energy_agent_staging/runtime/industrial_rag_staging.db",
+    "staging_db_path_hash": "0cbe488be2b8cbc8e9c8ba76cf26385c3f5360994591f3dd8a057c44a87edc97",
+    "source_db_path": "D:/industrial_energy_agent/src/data/db/industrial_rag.db",
+    "source_db_sha256": "14bb75f2ad917ac70db68bd0c75b8fe875146119e5b13bba31e495a3939526e4",
+    "staging_db_sha256": "cf54ff27471ab348e327a28ec3ede3ed1fcef242da12a1bfb66b6f53c164fabb",
+    "isolation": "read-only source copy; staging app connects only to the staging copy",
+    "alembic_target": "staging copy only; production DB untouched"
+  },
+  "environment_variables": {
+    "configured": [
+      "DASHSCOPE_API_KEY",
+      "SERVICE_API_KEY",
+      "LLM_BASE_URL",
+      "LLM_MODEL",
+      "MODEL_FALLBACK_ENABLED",
+      "EMBEDDING_MODEL",
+      "EMBEDDING_DIM",
+      "VECTOR_BACKEND",
+      "QDRANT_URL",
+      "QDRANT_COLLECTION_PREFIX",
+      "DATABASE_URL",
+      "QA_LOCKED",
+      "QA_QUERY_MODE",
+      "QA_TOP_K",
+      "QA_CHUNK_TOP_K",
+      "QA_PARENT_EXPANSION_ENABLED",
+      "QA_RERANK_ENABLED",
+      "QA_CONTEXT_STRATEGY",
+      "QA_ANSWER_STRATEGY",
+      "QA_ANSWER_MODEL",
+      "QA_EMBEDDING_MODEL",
+      "QA_EMBEDDING_DIMENSION",
+      "QA_FALLBACK_ENABLED",
+      "QA_THINKING_ENABLED",
+      "QA_SAFETY_POLICY_ENABLED",
+      "QA_OBSERVABILITY_ENABLED",
+      "QA_REQUEST_TIMEOUT_SECONDS",
+      "QA_MAX_RETRIES",
+      "CITATION_SHADOW_AUDIT_ENABLED",
+      "MINERU_ENABLED",
+      "MINERU_FALLBACK_TO_PYMUPDF",
+      "LOG_LEVEL",
+      "STREAMLIT_API_URL",
+      "GIT_COMMIT"
+    ],
+    "missing": [],
+    "secret_fields": {
+      "DASHSCOPE_API_KEY_configured": true,
+      "SERVICE_API_KEY_configured": true,
+      "QDRANT_API_KEY_configured": false
+    },
+    "note": "Variable names only; real values are kept in the non-committed staging env file and never recorded here."
+  },
+  "frozen_strategy": {
+    "parser_pipeline": "pymupdf_standard_adapter",
+    "query_mode": "mix",
+    "top_k": 12,
+    "chunk_top_k": 20,
+    "parent_expansion": "none",
+    "rerank_enabled": false,
+    "context_strategy": "current_rows",
+    "answer_strategy": "current",
+    "answer_model": "qwen-plus-2025-07-28",
+    "fallback_enabled": false,
+    "thinking_enabled": false,
+    "citation_shadow_audit_enabled": true,
+    "safety_policy_enabled": true,
+    "locked_strategy": true,
+    "explicitly_disabled": [
+      "mineru_automatic_routing",
+      "parent_expansion",
+      "rerank",
+      "stable_unique_fill",
+      "grounded_answer",
+      "grounded_answer_lite",
+      "citation_only_repair",
+      "claim_level_guard",
+      "automatic_model_downgrade",
+      "automatic_prompt_switch",
+      "llm_judge"
+    ]
+  },
+  "rc_package": {
+    "zip_path": "dist/industrial-energy-agent-0.1.0-rc.1.zip",
+    "zip_sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+    "verification": "passed (96 files, per-file checksum, no forbidden files, secret=0, package_type approved)"
+  },
+  "check_env": {
+    "result": "RESULT=OK",
+    "exit_code": 0
+  },
+  "qa_locked_strategy": true
+}

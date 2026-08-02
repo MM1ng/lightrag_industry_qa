@@ -1,0 +1,57 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T20:55:09+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "source_zip": "dist/industrial-energy-agent-0.1.0-rc.1.zip",
+  "source_zip_sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+  "release_directory": "D:/industrial_energy_agent_staging/releases/0.1.0-rc.1",
+  "deployment_input_policy": "deployment input came only from the approved RC ZIP; no extra files were copied from the source workspace",
+  "steps": [
+    {
+      "step": "unzip_to_temp",
+      "started_at": "2026-08-02T20:55:09+08:00",
+      "status": "passed",
+      "finished_at": "2026-08-02T20:55:09+08:00",
+      "duration": 0.11,
+      "exit_code": 0,
+      "sanitized_error": null,
+      "detail": "extracted to D:/industrial_energy_agent_staging/work/deploy_20260802205509",
+      "artifact_hash": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59"
+    },
+    {
+      "step": "verify_entries_and_checksums",
+      "started_at": "2026-08-02T20:55:09+08:00",
+      "status": "passed",
+      "finished_at": "2026-08-02T20:55:09+08:00",
+      "duration": 0.16,
+      "exit_code": 0,
+      "sanitized_error": null,
+      "detail": "96 files, all relative paths, no forbidden files, exact checksum_manifest names, zero hash/size mismatches",
+      "artifact_hash": "7e07e36b534dea0030792312a8fdd1ee22dedb3d2c16ce185cbee8d7d741a8f5"
+    },
+    {
+      "step": "verify_version_and_assets",
+      "started_at": "2026-08-02T20:55:09+08:00",
+      "status": "passed",
+      "finished_at": "2026-08-02T20:55:09+08:00",
+      "duration": 0.16,
+      "exit_code": 0,
+      "sanitized_error": null,
+      "detail": "version_file=APP_VERSION 0.1.0-rc.1, .env.example present, alembic.ini + migrations present, 6 startup scripts present",
+      "artifact_hash": "99b5b05bee72a67db8069addb642a8a5d7f155d6c7943c242bb1346c01bf4d28"
+    },
+    {
+      "step": "move_to_release_directory",
+      "started_at": "2026-08-02T20:55:09+08:00",
+      "status": "passed",
+      "finished_at": "2026-08-02T20:55:09+08:00",
+      "duration": 0.16,
+      "exit_code": 0,
+      "sanitized_error": null,
+      "detail": "verified temp directory moved to releases/0.1.0-rc.1; no overwrite, no old version deleted",
+      "artifact_hash": ""
+    }
+  ],
+  "passed": true
+}
