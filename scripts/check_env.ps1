@@ -19,8 +19,19 @@ $required = @{
     "EMBEDDING_DIM" = "must be 1024"
     "QDRANT_URL" = "must be configured"
     "QDRANT_COLLECTION_PREFIX" = "must be configured"
+    "SERVICE_API_KEY" = "must be configured"
+    "ADMIN_API_KEY" = "must be configured and differ from SERVICE_API_KEY"
 }
 $fail = @()
+if (
+    [System.Environment]::GetEnvironmentVariable("SERVICE_API_KEY", "Process") -and
+    [System.Environment]::GetEnvironmentVariable("ADMIN_API_KEY", "Process") -and
+    [System.Environment]::GetEnvironmentVariable("SERVICE_API_KEY", "Process") -ceq
+        [System.Environment]::GetEnvironmentVariable("ADMIN_API_KEY", "Process")
+) {
+    Write-Output "invalid: SERVICE_API_KEY and ADMIN_API_KEY must differ"
+    $fail += "SERVICE_API_KEY_ADMIN_API_KEY_EQUAL"
+}
 foreach ($name in $required.Keys) {
     $value = [System.Environment]::GetEnvironmentVariable($name, "Process")
     if (-not $value) {

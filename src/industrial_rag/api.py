@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import os
-import secrets
 from collections.abc import Awaitable, Callable, Mapping
 from contextlib import asynccontextmanager
 from typing import Annotated, Any, Literal, Protocol
@@ -17,6 +16,7 @@ from pydantic import BaseModel, Field, StringConstraints
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
+from industrial_rag.auth import authenticate_bearer, local_development_actor
 from industrial_rag.citation_formatter import Citation
 from industrial_rag.config import Settings
 from industrial_rag.db.session import close_db, get_session, init_db
@@ -82,6 +82,7 @@ class QueryResponse(BaseModel):
 
 class PublicError(BaseModel):
     request_id: str
+    trace_id: str
     code: str
     message: str
     retryable: bool
@@ -90,6 +91,7 @@ class PublicError(BaseModel):
 _ERRORS: dict[str, tuple[int, str, bool]] = {
     "INVALID_REQUEST": (422, "请求内容不合法，请检查后重试。", False),
     "UNAUTHORIZED": (401, "未提供有效的服务凭据。", False),
+    "ADMIN_PERMISSION_REQUIRED": (403, "该操作需要管理员权限。", False),
     "INDEX_NOT_READY": (503, "知识库索引尚未就绪，请稍后重试。", True),
     "TIMEOUT": (504, "知识库查询超时，请稍后重试。", True),
     "UPSTREAM_UNAVAILABLE": (502, "知识库服务暂时不可用，请稍后重试。", True),
@@ -134,12 +136,14 @@ def _error_response(
     code: str,
     *,
     request_id: str | None = None,
+    trace_id: str | None = None,
     status_code: int | None = None,
     headers: Mapping[str, str] | None = None,
 ) -> JSONResponse:
     default_status_code, message, retryable = _ERRORS[code]
     body = PublicError(
         request_id=request_id or _request_id(),
+        trace_id=trace_id or _trace_id(),
         code=code,
         message=message,
         retryable=retryable,
@@ -201,8 +205,11 @@ def _log_result(*, request_id: str, status: str, latency_ms: int) -> None:
     )
 
 
-def _service_api_key_from_environment() -> str | None:
-    return (os.environ.get("SERVICE_API_KEY") or "").strip() or None
+def _api_keys_from_environment() -> tuple[str | None, str | None]:
+    return (
+        (os.environ.get("SERVICE_API_KEY") or "").strip() or None,
+        (os.environ.get("ADMIN_API_KEY") or "").strip() or None,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -247,6 +254,7 @@ def create_app(
         application.state.runtime = None
         application.state.resolved_settings = None
         application.state.service_api_key = None
+        application.state.admin_api_key = None
         application.state.runtime_manager = None
 
         # Init DB
@@ -256,6 +264,7 @@ def create_app(
             resolved_settings = settings or Settings.from_env()
             application.state.resolved_settings = resolved_settings
             application.state.service_api_key = resolved_settings.service_api_key
+            application.state.admin_api_key = resolved_settings.admin_api_key
             runtime = runtime_factory(resolved_settings)
             application.state.runtime = runtime
 
@@ -283,7 +292,10 @@ def create_app(
             application.state.task_executor = _executor
         except Exception:
             if resolved_settings is None and settings is None:
-                application.state.service_api_key = _service_api_key_from_environment()
+                (
+                    application.state.service_api_key,
+                    application.state.admin_api_key,
+                ) = _api_keys_from_environment()
         try:
             yield
         finally:
@@ -309,24 +321,30 @@ def create_app(
         request: Request,
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
-        # Authenticate mutation endpoints (POST/PATCH/DELETE to v1/knowledge-bases, v1/tasks)
-        # and legacy /v1/query
-        if request.method in ("GET", "OPTIONS", "HEAD"):
-            return await call_next(request)
         request_id = _request_id_for(request)
-        _trace_id_for(request)
-        service_api_key: str | None = request.app.state.service_api_key
-        if service_api_key is None:
+        trace_id = _trace_id_for(request)
+        service_api_key: str | None = getattr(
+            request.app.state, "service_api_key", None
+        )
+        admin_api_key: str | None = getattr(request.app.state, "admin_api_key", None)
+        if service_api_key is None and admin_api_key is None:
+            request.state.authenticated_actor = local_development_actor()
             return await call_next(request)
         path = request.url.path
-        if path == "/readyz" or path == "/healthz":
+        if path in {"/readyz", "/healthz", "/ready", "/health", "/version"}:
             return await call_next(request)
-        expected = f"Bearer {service_api_key}".encode()
-        supplied = (request.headers.get("Authorization") or "").encode()
-        if secrets.compare_digest(supplied, expected):
+        actor = authenticate_bearer(
+            request.headers.get("Authorization"),
+            service_api_key=service_api_key,
+            admin_api_key=admin_api_key,
+        )
+        if actor is not None:
+            request.state.authenticated_actor = actor
             return await call_next(request)
         _log_result(request_id=request_id, status="UNAUTHORIZED", latency_ms=0)
-        return _error_response("UNAUTHORIZED", request_id=request_id)
+        return _error_response(
+            "UNAUTHORIZED", request_id=request_id, trace_id=trace_id
+        )
 
     # ------------------------------------------------------------------
     # Exception handlers
@@ -340,6 +358,7 @@ def create_app(
         return _error_response(
             "INVALID_REQUEST",
             request_id=_request_id_for(request),
+            trace_id=_trace_id_for(request),
             status_code=error.status_code,
             headers=error.headers,
         )
@@ -349,13 +368,24 @@ def create_app(
         request: Request,
         _error: RequestValidationError,
     ) -> JSONResponse:
-        return _error_response("INVALID_REQUEST", request_id=_request_id_for(request))
+        return _error_response(
+            "INVALID_REQUEST",
+            request_id=_request_id_for(request),
+            trace_id=_trace_id_for(request),
+        )
 
     @application.exception_handler(AppError)
     async def app_error_handler(
         request: Request,
         error: AppError,
     ) -> JSONResponse:
+        if error.code in _ERRORS:
+            return _error_response(
+                error.code,
+                request_id=_request_id_for(request),
+                trace_id=_trace_id_for(request),
+                status_code=error.status_code,
+            )
         return JSONResponse(
             status_code=error.status_code,
             content={

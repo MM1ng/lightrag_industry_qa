@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from industrial_rag.auth import AuthenticatedActor, require_admin_actor
 from industrial_rag.db.session import get_session
 from industrial_rag.routers.schemas import (
     DeleteTaskResponse,
@@ -75,6 +76,7 @@ def _kb_to_detail(kb) -> KnowledgeBaseDetail:
 @router.post("", response_model=KnowledgeBaseDetail, status_code=201)
 async def create_knowledge_base(
     body: KnowledgeBaseCreate,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> KnowledgeBaseDetail:
     svc = KnowledgeBaseService(session)
@@ -119,6 +121,7 @@ async def get_knowledge_base(
 async def update_knowledge_base(
     kb_id: str,
     body: KnowledgeBaseUpdate,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> KnowledgeBaseDetail:
     svc = KnowledgeBaseService(session)
@@ -134,6 +137,7 @@ async def update_knowledge_base(
 async def request_vector_backend_change(
     kb_id: str,
     body: VectorBackendUpdateRequest,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> VectorBackendTaskResponse:
     svc = KnowledgeBaseService(session)
@@ -147,6 +151,7 @@ async def request_vector_backend_change(
 @router.delete("/{kb_id}", status_code=202, response_model=DeleteTaskResponse)
 async def delete_knowledge_base(
     kb_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DeleteTaskResponse:
     svc = KnowledgeBaseService(session)

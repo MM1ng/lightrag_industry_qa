@@ -6,6 +6,8 @@ from typing import Any
 
 
 class AppErrorCode:
+    unauthorized = "UNAUTHORIZED"
+    admin_permission_required = "ADMIN_PERMISSION_REQUIRED"
     knowledge_base_not_found = "knowledge_base_not_found"
     document_not_found = "document_not_found"
     generation_not_found = "generation_not_found"
@@ -31,6 +33,8 @@ class AppErrorCode:
 
 
 HTTP_STATUS_MAP: dict[str, int] = {
+    AppErrorCode.unauthorized: 401,
+    AppErrorCode.admin_permission_required: 403,
     AppErrorCode.knowledge_base_not_found: 404,
     AppErrorCode.document_not_found: 404,
     AppErrorCode.generation_not_found: 404,

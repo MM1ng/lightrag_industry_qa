@@ -41,6 +41,8 @@ class Settings:
 
     api_key: str = field(repr=False)
     service_api_key: str | None = field(default=None, repr=False)
+    admin_api_key: str | None = field(default=None, repr=False)
+    deployment_environment: str = "local_dev"
     llm_base_url: str = DEFAULT_BAILIAN_BASE_URL
     llm_model: str = "kimi-k2.6"
     llm_fallback_models: tuple[str, ...] = ()
@@ -71,6 +73,16 @@ class Settings:
     mineru_save_raw_response: bool = True
 
     def __post_init__(self) -> None:
+        if (
+            self.service_api_key is not None
+            and self.admin_api_key is not None
+            and self.service_api_key == self.admin_api_key
+        ):
+            raise ValueError("SERVICE_API_KEY 与 ADMIN_API_KEY 不得配置为相同值")
+        if self.deployment_environment in {"local_staging", "staging", "production"} and (
+            self.service_api_key is None or self.admin_api_key is None
+        ):
+            raise ValueError("staging/production 必须同时配置 SERVICE_API_KEY 和 ADMIN_API_KEY")
         if not isinstance(self.vector_backend, VectorBackend):
             object.__setattr__(self, "vector_backend", VectorBackend(self.vector_backend))
         if self.vector_backend is VectorBackend.qdrant and not self.qdrant_url:
@@ -98,6 +110,10 @@ class Settings:
     def from_mapping(cls, values: Mapping[str, str | None]) -> Settings:
         api_key = (values.get("DASHSCOPE_API_KEY") or "").strip()
         service_api_key = (values.get("SERVICE_API_KEY") or "").strip() or None
+        admin_api_key = (values.get("ADMIN_API_KEY") or "").strip() or None
+        deployment_environment = (
+            values.get("IRA_DEPLOYMENT_ENVIRONMENT") or "local_dev"
+        ).strip().lower()
         base_url = (values.get("LLM_BASE_URL") or DEFAULT_BAILIAN_BASE_URL).rstrip("/")
         llm_model = (values.get("LLM_MODEL") or DEFAULT_LLM_MODELS[0]).strip()
         model_fallback_enabled = (
@@ -172,6 +188,8 @@ class Settings:
         return cls(
             api_key=api_key,
             service_api_key=service_api_key,
+            admin_api_key=admin_api_key,
+            deployment_environment=deployment_environment,
             llm_base_url=base_url,
             llm_model=llm_model,
             llm_fallback_models=llm_fallback_models,

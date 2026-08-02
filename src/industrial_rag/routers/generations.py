@@ -7,6 +7,7 @@ import logging
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from industrial_rag.auth import AuthenticatedActor, require_admin_actor
 from industrial_rag.db.session import get_session
 from industrial_rag.routers.schemas import (
     GenerationActionResponse,
@@ -50,13 +51,14 @@ async def validate_generation(
     kb_id: str,
     generation_id: str,
     request: Request,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> GenerationValidateResponse:
     svc = IncrementalUpdateService(session)
     result = await svc.validate_generation(
         kb_id,
         generation_id,
-        approved_by=request.headers.get("x-approved-by"),
+        approved_by=actor.actor,
     )
     return GenerationValidateResponse(**result)
 
@@ -66,13 +68,14 @@ async def promote_generation(
     kb_id: str,
     generation_id: str,
     request: Request,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> GenerationActionResponse:
     svc = IncrementalUpdateService(session)
     result = await svc.promote_generation(
         kb_id,
         generation_id,
-        approved_by=request.headers.get("x-approved-by"),
+        approved_by=actor.actor,
     )
     runtime_manager = getattr(request.app.state, "runtime_manager", None)
     if runtime_manager is not None:
@@ -85,13 +88,14 @@ async def rollback_generation(
     kb_id: str,
     generation_id: str,
     request: Request,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> GenerationActionResponse:
     svc = IncrementalUpdateService(session)
     result = await svc.rollback_generation(
         kb_id,
         generation_id,
-        approved_by=request.headers.get("x-approved-by"),
+        approved_by=actor.actor,
     )
     runtime_manager = getattr(request.app.state, "runtime_manager", None)
     if runtime_manager is not None:

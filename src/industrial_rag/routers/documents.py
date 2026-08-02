@@ -7,6 +7,7 @@ import logging
 from fastapi import APIRouter, Depends, Query, Request, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from industrial_rag.auth import AuthenticatedActor, require_admin_actor
 from industrial_rag.db.session import get_session
 from industrial_rag.routers.schemas import (
     DocumentSummary,
@@ -49,6 +50,7 @@ async def upload_document(
     kb_id: str,
     file: UploadFile,
     request: Request,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentUpdateResponse:
     if file.filename is None:
@@ -62,6 +64,7 @@ async def upload_document(
         mime_type=file.content_type or "application/pdf",
         request_id=getattr(request.state, "request_id", None),
         trace_id=getattr(request.state, "trace_id", None),
+        created_by=actor.actor,
     )
     result["operation"] = "add"
     return DocumentUpdateResponse(**result)
@@ -73,6 +76,7 @@ async def replace_document(
     doc_id: str,
     file: UploadFile,
     request: Request,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentUpdateResponse:
     content = await file.read()
@@ -85,6 +89,7 @@ async def replace_document(
         mime_type=file.content_type or "application/pdf",
         request_id=getattr(request.state, "request_id", None),
         trace_id=getattr(request.state, "trace_id", None),
+        created_by=actor.actor,
     )
     result["operation"] = "replace"
     return DocumentUpdateResponse(**result)
@@ -130,6 +135,7 @@ async def get_document(
 async def reparse_document(
     kb_id: str,
     doc_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentTaskResponse:
     svc = DocumentService(session)
@@ -141,6 +147,7 @@ async def reparse_document(
 async def reindex_document(
     kb_id: str,
     doc_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentTaskResponse:
     svc = DocumentService(session)
@@ -153,6 +160,7 @@ async def delete_document(
     kb_id: str,
     doc_id: str,
     request: Request,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentUpdateResponse:
     svc = IncrementalUpdateService(session)
@@ -161,6 +169,7 @@ async def delete_document(
         doc_id,
         request_id=getattr(request.state, "request_id", None),
         trace_id=getattr(request.state, "trace_id", None),
+        created_by=actor.actor,
     )
     result["operation"] = "delete"
     return DocumentUpdateResponse(**result)

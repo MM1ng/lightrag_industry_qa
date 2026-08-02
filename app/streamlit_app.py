@@ -64,6 +64,7 @@ ENTITY_SEARCH_EXAMPLES = (
 
 API_BASE_URL = os.environ.get("KNOWLEDGE_API_URL", "http://127.0.0.1:8000")
 API_KEY = os.environ.get("SERVICE_API_KEY", "")
+ADMIN_API_KEY = os.environ.get("ADMIN_API_KEY", "")
 WORKING_DIR = Path(os.environ.get("LIGHTRAG_WORKING_DIR", PROJECT_ROOT / "lightrag_storage"))
 
 
@@ -422,8 +423,8 @@ def _render_qa_tab() -> None:
 
 def _mgmt_headers() -> dict[str, str]:
     headers = {"Content-Type": "application/json"}
-    if API_KEY.strip():
-        headers["Authorization"] = f"Bearer {API_KEY.strip()}"
+    if ADMIN_API_KEY.strip():
+        headers["Authorization"] = f"Bearer {ADMIN_API_KEY.strip()}"
     return headers
 
 
@@ -452,7 +453,11 @@ def _mgmt_post(path: str) -> dict:
 def _mgmt_upload(path: str, file) -> dict:
     import httpx
 
-    headers = {"Authorization": f"Bearer {API_KEY.strip()}"} if API_KEY.strip() else {}
+    headers = (
+        {"Authorization": f"Bearer {ADMIN_API_KEY.strip()}"}
+        if ADMIN_API_KEY.strip()
+        else {}
+    )
     with httpx.Client(
         base_url=API_BASE_URL.rstrip("/"), headers=headers, timeout=600.0
     ) as client:
@@ -573,8 +578,8 @@ def _render_update_tab() -> None:
                 import httpx
 
                 headers = (
-                    {"Authorization": f"Bearer {API_KEY.strip()}"}
-                    if API_KEY.strip()
+                    {"Authorization": f"Bearer {ADMIN_API_KEY.strip()}"}
+                    if ADMIN_API_KEY.strip()
                     else {}
                 )
                 with httpx.Client(
