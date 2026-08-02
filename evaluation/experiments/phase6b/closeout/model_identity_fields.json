@@ -1,0 +1,42 @@
+{
+  "schema_version": "phase6b-model-identity-v1",
+  "fields": {
+    "requested_model": {
+      "type": "string",
+      "source": "frozen strategy answer_model",
+      "required": true
+    },
+    "configured_model": {
+      "type": "string",
+      "source": "runtime configuration",
+      "required": true
+    },
+    "provider_reported_model": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "source": "provider response (null when not returned)",
+      "required": true
+    },
+    "provider_reported_model_available": {
+      "type": "boolean",
+      "source": "whether provider returned a model identity",
+      "required": true
+    },
+    "fallback_enabled": {
+      "type": "boolean",
+      "source": "frozen strategy",
+      "required": true
+    },
+    "fallback_detected": {
+      "type": "boolean",
+      "source": "runtime observation",
+      "required": true
+    },
+    "actual_model": {
+      "deprecated": true,
+      "note": "Historical alias of configured_model when the value is not a provider response; must never be presented as a provider returned model. New code and manifests must not rely on it for model identity."
+    }
+  }
+}

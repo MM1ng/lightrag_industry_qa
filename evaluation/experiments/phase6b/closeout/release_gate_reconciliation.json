@@ -1,0 +1,337 @@
+{
+  "phase6_gate_count": 32,
+  "phase6b_gate_count": 29,
+  "mapping": [
+    {
+      "phase6_gate_ids": [
+        "strategy_matches_frozen"
+      ],
+      "phase6b_gate_id": "strategy_matches_frozen",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "golden_e2e_complete_50"
+      ],
+      "phase6b_gate_id": "golden_e2e_complete_50",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "request_trace_id_complete"
+      ],
+      "phase6b_gate_id": "request_trace_id_complete",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "health_checks_pass"
+      ],
+      "phase6b_gate_id": "health_checks_pass",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "no_cross_kb_pollution"
+      ],
+      "phase6b_gate_id": "no_cross_kb_pollution",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "citation_traceable"
+      ],
+      "phase6b_gate_id": "citation_traceable",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "pool_hash_unchanged"
+      ],
+      "phase6b_gate_id": "pool_hash_unchanged",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "frozen_index_intact"
+      ],
+      "phase6b_gate_id": "frozen_index_intact",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "secret_leak_zero"
+      ],
+      "phase6b_gate_id": "secret_leak_zero",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "system_prompt_leak_zero"
+      ],
+      "phase6b_gate_id": "system_prompt_leak_zero",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "interlock_bypass_answers_zero"
+      ],
+      "phase6b_gate_id": "interlock_bypass_answers_zero",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "device_action_execution_zero"
+      ],
+      "phase6b_gate_id": "device_action_execution_zero",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "fabricated_citation_zero"
+      ],
+      "phase6b_gate_id": "fabricated_citation_zero",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "requested_model_equals_actual"
+      ],
+      "phase6b_gate_id": "requested_model_equals_actual",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "fallback_zero"
+      ],
+      "phase6b_gate_id": "fallback_zero",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "thinking_disabled"
+      ],
+      "phase6b_gate_id": "thinking_disabled",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "golden_metrics_no_drop_002"
+      ],
+      "phase6b_gate_id": "golden_metrics_no_drop_002",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "insufficient_evidence_rejection_1"
+      ],
+      "phase6b_gate_id": "insufficient_evidence_rejection_1",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "negative_unsupported_answer_0"
+      ],
+      "phase6b_gate_id": "negative_unsupported_answer_0",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "p95_latency_leq_2x_baseline"
+      ],
+      "phase6b_gate_id": "p95_latency_leq_2x_baseline",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "concurrency_2_success_1"
+      ],
+      "phase6b_gate_id": "concurrency_2_success_1",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "concurrency_5_success_ge_095"
+      ],
+      "phase6b_gate_id": "concurrency_5_success_ge_095",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "tests_pass"
+      ],
+      "phase6b_gate_id": "tests_pass",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "ruff_pass"
+      ],
+      "phase6b_gate_id": "ruff_pass",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "migrations_pass"
+      ],
+      "phase6b_gate_id": "migrations_pass",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "runbooks_executable"
+      ],
+      "phase6b_gate_id": "runbooks_executable",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "no_secret_committed"
+      ],
+      "phase6b_gate_id": "no_secret_committed",
+      "action": "unchanged",
+      "reason": "identical gate re-evaluated in Phase 6B",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "error_rate_zero_or_approved"
+      ],
+      "phase6b_gate_id": "error_rate_zero",
+      "action": "renamed",
+      "reason": "Phase 6B observed error_rate=0, so the 'or approved external exception' clause is vacuous; the stricter name is retained.",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "citation_traceability_1"
+      ],
+      "phase6b_gate_id": "citation_traceability_emitted_1",
+      "action": "renamed",
+      "reason": "Definition clarified to emitted-citations traceability (143/143 traceable); both phases evaluate the same intent via shadow-audit per-citation validity.",
+      "evidence_path": "evaluation/experiments/phase6b/rc_retest/release_gates.json",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "no_internal_stack_trace"
+      ],
+      "phase6b_gate_id": "error_rate_zero",
+      "action": "merged",
+      "reason": "No stack traces are exposed by the official path; Phase 6 smoke/api tests (test_api.py) assert raw errors never leak and error responses use the public envelope. Phase 6B made no change to error handling, so the Phase 6 evidence remains valid.",
+      "evidence_path": "evaluation/experiments/phase6/e2e/smoke_results.jsonl; tests/test_api.py",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "no_context_crosstalk"
+      ],
+      "phase6b_gate_id": "concurrency_5_success_ge_095",
+      "action": "merged",
+      "reason": "Crosstalk absence is enforced by per-KB runtime cache keys and the serialization lock, verified by Phase 6 concurrency tests (test_queries_do_not_share_mutable_state, runtime isolation). Phase 6B did not modify runtime isolation.",
+      "evidence_path": "tests/test_phase6.py; src/industrial_rag/services/runtime_manager.py",
+      "final_passed": true
+    },
+    {
+      "phase6_gate_ids": [
+        "workspace_clean"
+      ],
+      "phase6b_gate_id": "no_secret_committed",
+      "action": "merged",
+      "reason": "Workspace cleanliness (only phase3-uncommitted-backup.patch untracked) is verified at every commit; Phase 6B commits kept the same state and performed secret scans. The gate maps to the repository-hygiene gate that Phase 6B re-evaluated.",
+      "evidence_path": "evaluation/experiments/phase6b/security/secret_scan.json",
+      "final_passed": true
+    }
+  ],
+  "omitted_phase6_gates": [],
+  "new_phase6b_gates": [
+    "citation_traceability_emitted_1",
+    "error_rate_zero"
+  ],
+  "all_original_hard_gates_accounted_for": true,
+  "phase6_failed_gates": [
+    "golden_metrics_no_drop_002"
+  ],
+  "phase6b_failed_gates": [],
+  "phase6b_final_passed": true
+}

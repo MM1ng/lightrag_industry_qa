@@ -192,3 +192,14 @@ canonical 答案指标（FastAPI）：Accuracy=37/48=0.7708、Precision=0.2812�
 ## 32. 是否需要 Phase 6C
 
 **不需要**：差距由口径/管线差异解释，不是模型输出波动；无需确定性采样实验来通过本门禁。若未来追求严格可复现采样，可另行发起。
+
+---
+
+## 33. Phase 6B-Closeout 补充（2026-08-02）
+
+- **权威运行路径**：官方 FastAPI 为唯一权威发布路径；Harness 仅用于历史实验与离线诊断，且不是逐输入等价替代（`phase6b/closeout/authoritative_path.json`）。后续正式答案质量与发布门禁必须通过官方 FastAPI，不得用 Harness 高分覆盖 FastAPI 退化，不得混合两路径基线。
+- **门禁对账**：Phase 6 的 32 项硬门禁逐项映射到 Phase 6B 的 29 项（27 unchanged + 2 renamed + 3 merged），`omitted_phase6_gates=[]`、`all_original_hard_gates_accounted_for=true`（`closeout/release_gate_reconciliation.json`）；安全、数据隔离、性能、测试、迁移、生命周期门禁均保留。
+- **Canonical 基线分层**：历史 Harness v0=0.8333（保留、不用于发布比较）、canonical Harness v1=0.6458、official FastAPI v1=0.7708；差值表达 candidate-baseline=+0.1250、baseline-candidate=-0.1250、阈值 0.02、passed=true（`closeout/canonical_baselines.json`）。
+- **C007 技术债**：`tech_debt/OFFICIAL-PATH-CONTEXT-001.md` 登记（候选范围/上下文渲染/Prompt 不同导致额外拒答；非模型波动；不按 question_id 特判；不阻塞 RC）。
+- **模型身份字段**：正式区分 requested_model / configured_model / provider_reported_model(null) / provider_reported_model_available(false) / fallback_enabled / fallback_detected；`actual_model` 标记 deprecated 并说明其为 configured_model 的历史别名（`closeout/model_identity_fields.json`）。
+- **Closeout 决策**：`closeout/closeout_decision.json` 全部条件满足 → release_candidate_approved=true、deployment_performed=false、phase7_allowed=true。

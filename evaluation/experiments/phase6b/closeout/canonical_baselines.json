@@ -1,0 +1,41 @@
+{
+  "answer_citation_accuracy": {
+    "historical_harness_v0": {
+      "value": 0.8333,
+      "numerator": 40,
+      "denominator": 48,
+      "refusal_clears_citations": false,
+      "used_for_release_comparison": false,
+      "superseded_for_release_comparison": true,
+      "reason": "Rejected answers retained Evidence Policy citations"
+    },
+    "canonical_harness_v1": {
+      "value": 0.6458,
+      "numerator": 31,
+      "denominator": 48,
+      "refusal_clears_citations": true,
+      "used_for_release_comparison": true
+    },
+    "official_fastapi_v1": {
+      "value": 0.7708,
+      "numerator": 37,
+      "denominator": 48,
+      "refusal_clears_citations": true,
+      "authoritative_runtime_path": true
+    }
+  },
+  "gate_difference": {
+    "canonical_baseline": 0.6458,
+    "official_fastapi": 0.7708,
+    "candidate_minus_baseline": 0.125,
+    "baseline_minus_candidate": -0.125,
+    "maximum_allowed_drop": 0.02,
+    "passed": true
+  },
+  "retrieval_gold_page_at_12": {
+    "harness": 0.8542,
+    "official_fastapi": 0.8542,
+    "published_all_retrieved_universe": 0.9375,
+    "note": "0.9375 was computed over the full official retrieval universe (up to 20 deduped ids); canonical release metric is @12."
+  }
+}
