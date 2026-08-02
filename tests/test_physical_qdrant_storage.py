@@ -280,10 +280,14 @@ async def test_upsert_keeps_only_meta_fields_content_and_stable_point_ids(
     assert len(points) == 2
     first = points[0]
     assert first.id == _point_id("chunk-1")
-    assert set(first.payload) == {"id", "content", "full_doc_id"}
+    # Phase 9: provenance fields (kb_id/generation) are part of the payload
+    # contract so every point is traceable to its KB and generation.
+    assert set(first.payload) == {"id", "content", "full_doc_id", "kb_id", "generation"}
     assert first.payload["id"] == "chunk-1"
     assert first.payload["content"] == "泵轴温度检查。"
     assert first.payload["full_doc_id"] == "doc-a"
+    assert first.payload["kb_id"] == KB_ID
+    assert first.payload["generation"] == GENERATION
     assert len(first.vector) == 1024
 
 

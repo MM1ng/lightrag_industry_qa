@@ -4,16 +4,18 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, Depends, Query, UploadFile
+from fastapi import APIRouter, Depends, Query, Request, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from industrial_rag.db.session import get_session
 from industrial_rag.routers.schemas import (
     DocumentSummary,
     DocumentTaskResponse,
+    DocumentUpdateResponse,
     PaginatedResponse,
 )
 from industrial_rag.services.document_service import DocumentService
+from industrial_rag.services.incremental_update_service import IncrementalUpdateService
 
 logger = logging.getLogger(__name__)
 
@@ -42,23 +44,50 @@ def _doc_to_summary(doc) -> DocumentSummary:
     )
 
 
-@router.post("", status_code=202, response_model=DocumentSummary)
+@router.post("", status_code=202, response_model=DocumentUpdateResponse)
 async def upload_document(
     kb_id: str,
     file: UploadFile,
+    request: Request,
     session: AsyncSession = Depends(get_session),
-) -> DocumentSummary:
+) -> DocumentUpdateResponse:
     if file.filename is None:
         raise ValueError("文件名不能为空")
     content = await file.read()
-    svc = DocumentService(session)
-    doc = await svc.upload(
+    svc = IncrementalUpdateService(session)
+    result = await svc.add_document(
         kb_id,
         original_file_name=file.filename,
         content=content,
         mime_type=file.content_type or "application/pdf",
+        request_id=getattr(request.state, "request_id", None),
+        trace_id=getattr(request.state, "trace_id", None),
     )
-    return _doc_to_summary(doc)
+    result["operation"] = "add"
+    return DocumentUpdateResponse(**result)
+
+
+@router.put("/{doc_id}", status_code=202, response_model=DocumentUpdateResponse)
+async def replace_document(
+    kb_id: str,
+    doc_id: str,
+    file: UploadFile,
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+) -> DocumentUpdateResponse:
+    content = await file.read()
+    svc = IncrementalUpdateService(session)
+    result = await svc.replace_document(
+        kb_id,
+        doc_id,
+        content=content,
+        original_file_name=file.filename,
+        mime_type=file.content_type or "application/pdf",
+        request_id=getattr(request.state, "request_id", None),
+        trace_id=getattr(request.state, "trace_id", None),
+    )
+    result["operation"] = "replace"
+    return DocumentUpdateResponse(**result)
 
 
 @router.get("", response_model=PaginatedResponse)
@@ -119,12 +148,19 @@ async def reindex_document(
     return DocumentTaskResponse(**result)
 
 
-@router.delete("/{doc_id}", status_code=202, response_model=DocumentTaskResponse)
+@router.delete("/{doc_id}", status_code=202, response_model=DocumentUpdateResponse)
 async def delete_document(
     kb_id: str,
     doc_id: str,
+    request: Request,
     session: AsyncSession = Depends(get_session),
-) -> DocumentTaskResponse:
-    svc = DocumentService(session)
-    result = await svc.request_delete(kb_id, doc_id)
-    return DocumentTaskResponse(**result)
+) -> DocumentUpdateResponse:
+    svc = IncrementalUpdateService(session)
+    result = await svc.delete_document(
+        kb_id,
+        doc_id,
+        request_id=getattr(request.state, "request_id", None),
+        trace_id=getattr(request.state, "trace_id", None),
+    )
+    result["operation"] = "delete"
+    return DocumentUpdateResponse(**result)

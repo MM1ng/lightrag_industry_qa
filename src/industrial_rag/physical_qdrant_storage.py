@@ -31,6 +31,8 @@ class PhysicalQdrantVectorDBStorage(BaseVectorStorage):
         prefix = str(options.get("qdrant_collection_prefix", "ira_qdrant"))
         generation = str(options.get("qdrant_generation", ""))
         kb_id = str(options.get("qdrant_kb_id", self.workspace))
+        self._qdrant_kb_id = kb_id
+        self._qdrant_generation = generation
         self._collection_name = CollectionNameResolver(prefix=prefix).names_for(
             kb_id=kb_id, generation=generation
         )[self.namespace]
@@ -156,6 +158,8 @@ class PhysicalQdrantVectorDBStorage(BaseVectorStorage):
                 vector=vector.tolist() if hasattr(vector, "tolist") else vector,
                 payload={
                     "id": doc_id,
+                    "kb_id": self._qdrant_kb_id,
+                    "generation": self._qdrant_generation,
                     **{
                         key: value
                         for key, value in data[doc_id].items()

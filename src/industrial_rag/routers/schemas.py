@@ -133,3 +133,66 @@ class ErrorDetail(BaseModel):
     message: str
     request_id: str
     details: dict[str, Any] | None = None
+
+
+class DocumentUpdateResponse(BaseModel):
+    status: str
+    knowledge_base_id: str
+    document_id: str
+    operation: str = "add"
+    job_id: str | None = None
+    candidate_generation_id: str | None = None
+    candidate_generation: str | None = None
+    metrics: dict[str, Any] | None = None
+    reason: str | None = None
+
+
+class GenerationSummary(BaseModel):
+    id: str
+    knowledge_base_id: str
+    generation: str
+    status: str
+    backend: str
+    collections: dict[str, str] | None = None
+    created_at: datetime | str | None = None
+    activated_at: datetime | str | None = None
+    last_error: str | None = None
+
+
+class GenerationActionResponse(BaseModel):
+    status: str
+    knowledge_base_id: str
+    generation_id: str
+    idempotent: bool = False
+    active_generation_id: str | None = None
+    previous_generation_id: str | None = None
+
+
+class GenerationValidateResponse(BaseModel):
+    generation_id: str
+    knowledge_base_id: str
+    passed: bool
+    gates: dict[str, Any]
+    report: dict[str, Any] | None = None
+
+
+class UpdateJobSummary(BaseModel):
+    job_id: str
+    knowledge_base_id: str
+    base_generation_id: str | None = None
+    candidate_generation_id: str | None = None
+    operation: str
+    document_id: str | None = None
+    old_content_sha256: str | None = None
+    new_content_sha256: str | None = None
+    status: str
+    current_stage: str | None = None
+    retry_count: int = 0
+    error_code: str | None = None
+    sanitized_error_message: str | None = None
+    started_at: datetime | str | None = None
+    finished_at: datetime | str | None = None
+    created_by: str = "api"
+    approved_by: str | None = None
+    metrics: dict[str, Any] | None = None
+    result: dict[str, Any] | None = None

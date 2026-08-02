@@ -416,6 +416,289 @@ def _render_qa_tab() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Knowledge base update tab (Phase 9)
+# ---------------------------------------------------------------------------
+
+
+def _mgmt_headers() -> dict[str, str]:
+    headers = {"Content-Type": "application/json"}
+    if API_KEY.strip():
+        headers["Authorization"] = f"Bearer {API_KEY.strip()}"
+    return headers
+
+
+def _mgmt_get(path: str) -> dict:
+    import httpx
+
+    with httpx.Client(
+        base_url=API_BASE_URL.rstrip("/"), headers=_mgmt_headers(), timeout=60.0
+    ) as client:
+        resp = client.get(path)
+        resp.raise_for_status()
+        return resp.json()
+
+
+def _mgmt_post(path: str) -> dict:
+    import httpx
+
+    with httpx.Client(
+        base_url=API_BASE_URL.rstrip("/"), headers=_mgmt_headers(), timeout=600.0
+    ) as client:
+        resp = client.post(path)
+        resp.raise_for_status()
+        return resp.json()
+
+
+def _mgmt_upload(path: str, file) -> dict:
+    import httpx
+
+    headers = {"Authorization": f"Bearer {API_KEY.strip()}"} if API_KEY.strip() else {}
+    with httpx.Client(
+        base_url=API_BASE_URL.rstrip("/"), headers=headers, timeout=600.0
+    ) as client:
+        resp = client.post(path, files={"file": (file.name, file.getvalue(), "application/pdf")})
+        resp.raise_for_status()
+        return resp.json()
+
+
+def _mgmt_delete(path: str) -> dict:
+    import httpx
+
+    with httpx.Client(
+        base_url=API_BASE_URL.rstrip("/"), headers=_mgmt_headers(), timeout=600.0
+    ) as client:
+        resp = client.delete(path)
+        resp.raise_for_status()
+        return resp.json()
+
+
+def _render_update_tab() -> None:
+    import pandas as pd
+
+    st.subheader("知识库更新（增量 Generation 生命周期）")
+    try:
+        kbs = _mgmt_get("/v1/knowledge-bases")
+    except Exception as error:
+        st.error(f"无法读取知识库列表：{error}")
+        return
+    kb_items = kbs.get("items") or []
+    if not kb_items:
+        st.info("暂无知识库。请先在 API 创建知识库。")
+        return
+    kb_labels = {f"{kb['name']}（{kb['id'][:8]}）": kb["id"] for kb in kb_items}
+    selected_label = st.selectbox(
+        "选择知识库", list(kb_labels), key="update-kb-select"
+    )
+    kb_id = kb_labels[selected_label]
+
+    try:
+        detail = _mgmt_get(f"/v1/knowledge-bases/{kb_id}")
+        generations = _mgmt_get(f"/v1/knowledge-bases/{kb_id}/generations")
+        documents = _mgmt_get(f"/v1/knowledge-bases/{kb_id}/documents")
+        jobs = _mgmt_get(f"/v1/knowledge-bases/{kb_id}/update-jobs")
+    except Exception as error:
+        st.error(f"读取知识库详情失败：{error}")
+        return
+
+    st.metric(
+        "当前 Active Generation",
+        detail.get("active_vector_generation") or "无",
+    )
+    col1, col2, col3 = st.columns(3)
+    col1.metric("文档数", detail.get("active_document_count", 0))
+    col2.metric("Chunk 数", detail.get("chunk_count", 0))
+    col3.metric("Generation 数", len(generations))
+
+    # 1. Documents list
+    with st.expander("文档列表与版本", expanded=True):
+        doc_items = documents.get("items") or []
+        if doc_items:
+            st.dataframe(
+                pd.DataFrame(
+                    [
+                        {
+                            "document_id": d["id"],
+                            "文件名": d["original_file_name"],
+                            "版本": d["version"],
+                            "状态": d["status"],
+                            "chunk 数": d["child_chunk_count"],
+                            "Hash": d["file_hash"][:12],
+                        }
+                        for d in doc_items
+                    ]
+                ),
+                use_container_width=True,
+                hide_index=True,
+            )
+        else:
+            st.info("暂无文档。")
+
+    # 2. Upload new document
+    with st.expander("上传新文档（新增）"):
+        uploaded = st.file_uploader("选择 PDF", type=["pdf"], key="update-upload")
+        if uploaded is not None:
+            st.caption(f"文件：{uploaded.name}，{len(uploaded.getvalue())} bytes")
+            if st.button("上传并创建 Candidate Generation", key="update-do-upload"):
+                try:
+                    result = _mgmt_upload(f"/v1/knowledge-bases/{kb_id}/documents", uploaded)
+                    st.success(
+                        f"任务已创建：{result.get('status')} job={result.get('job_id')}"
+                    )
+                    st.rerun()
+                except Exception as error:
+                    st.error(f"上传失败：{error}")
+
+    # 3. Replace / delete selected document (high risk, must confirm)
+    if doc_items:
+        with st.expander("替换 / 删除文档（高风险，需二次确认）"):
+            doc_labels = {
+                f"{d['original_file_name']} v{d['version']}（{d['id'][:8]}）": d["id"]
+                for d in doc_items
+            }
+            selected_doc_label = st.selectbox("选择文档", list(doc_labels), key="update-doc-select")
+            selected_doc_id = doc_labels[selected_doc_label]
+            st.caption(
+                f"影响范围：KB={kb_id[:8]}…，将修改文档 {selected_doc_id[:8]}… "
+                f"（当前文档数 {len(doc_items)}）"
+            )
+            replace_file = st.file_uploader(
+                "选择新版本 PDF（替换）", type=["pdf"], key="update-replace-file"
+            )
+            replace_confirm = st.checkbox(
+                "我确认替换该文档（旧版本将在发布后停止检索）", key="update-replace-confirm"
+            )
+            if replace_file is not None and replace_confirm and st.button(
+                "执行替换", key="update-do-replace"
+            ):
+                import httpx
+
+                headers = (
+                    {"Authorization": f"Bearer {API_KEY.strip()}"}
+                    if API_KEY.strip()
+                    else {}
+                )
+                with httpx.Client(
+                    base_url=API_BASE_URL.rstrip("/"), headers=headers, timeout=600.0
+                ) as client:
+                    resp = client.put(
+                        f"/v1/knowledge-bases/{kb_id}/documents/{selected_doc_id}",
+                        files={
+                            "file": (
+                                replace_file.name,
+                                replace_file.getvalue(),
+                                "application/pdf",
+                            )
+                        },
+                    )
+                    resp.raise_for_status()
+                    result = resp.json()
+                st.success(f"替换任务已创建：{result.get('status')} job={result.get('job_id')}")
+                st.rerun()
+            delete_confirm = st.checkbox(
+                "我确认删除该文档（发布后正式查询将拒答该内容）", key="update-delete-confirm"
+            )
+            if delete_confirm and st.button("执行删除", key="update-do-delete"):
+                try:
+                    result = _mgmt_delete(
+                        f"/v1/knowledge-bases/{kb_id}/documents/{selected_doc_id}"
+                    )
+                    st.success(
+                        f"删除任务已创建：{result.get('status')} job={result.get('job_id')}"
+                    )
+                    st.rerun()
+                except Exception as error:
+                    st.error(f"删除失败：{error}")
+
+    # 4. Update jobs
+    with st.expander("更新任务进度与审计"):
+        job_items = jobs.get("items") or []
+        if job_items:
+            st.dataframe(
+                pd.DataFrame(
+                    [
+                        {
+                            "job_id": j["job_id"][:12],
+                            "操作": j["operation"],
+                            "状态": j["status"],
+                            "阶段": j["current_stage"],
+                            "document_id": (j["document_id"] or "")[:12],
+                            "candidate": (j["candidate_generation_id"] or "")[:12],
+                            "重试": j["retry_count"],
+                            "错误": j["error_code"],
+                        }
+                        for j in job_items
+                    ]
+                ),
+                use_container_width=True,
+                hide_index=True,
+            )
+        else:
+            st.info("暂无更新任务。")
+
+    # 5. Generations: validate / promote / rollback / diff
+    with st.expander("Generation 生命周期（验收 / 发布 / 回滚）"):
+        gen_items = generations or []
+        if not gen_items:
+            st.info("暂无 Generation。")
+        else:
+            gen_labels = {
+                f"{g['generation']}（{g['status']}）": g["id"] for g in gen_items
+            }
+            selected_gen_label = st.selectbox(
+                "选择 Generation", list(gen_labels), key="update-gen-select"
+            )
+            selected_gen_id = gen_labels[selected_gen_label]
+            selected_gen = next(g for g in gen_items if g["id"] == selected_gen_id)
+            st.caption(
+                f"影响范围：KB={kb_id[:8]}…，Generation={selected_gen['generation']}，"
+                f"状态={selected_gen['status']}"
+            )
+            vcol, pcol, rcol, dcol = st.columns(4)
+            if vcol.button("验收 Validate", key="update-do-validate"):
+                try:
+                    result = _mgmt_post(
+                        f"/v1/knowledge-bases/{kb_id}/generations/{selected_gen_id}/validate"
+                    )
+                    st.success(f"验收通过：{result.get('passed')}")
+                    st.json(result.get("gates") or {})
+                    st.rerun()
+                except Exception as error:
+                    st.error(f"验收失败：{error}")
+            promote_confirm = st.checkbox(
+                "确认发布该 Candidate（原子切换 Active 指针）", key="update-promote-confirm"
+            )
+            if pcol.button("发布 Promote", key="update-do-promote", disabled=not promote_confirm):
+                try:
+                    result = _mgmt_post(
+                        f"/v1/knowledge-bases/{kb_id}/generations/{selected_gen_id}/promote"
+                    )
+                    st.success(f"发布结果：{result.get('status')}")
+                    st.rerun()
+                except Exception as error:
+                    st.error(f"发布失败：{error}")
+            rollback_confirm = st.checkbox(
+                "确认回滚到该 Generation（无需重新解析）", key="update-rollback-confirm"
+            )
+            if rcol.button("回滚 Rollback", key="update-do-rollback", disabled=not rollback_confirm):
+                try:
+                    result = _mgmt_post(
+                        f"/v1/knowledge-bases/{kb_id}/generations/{selected_gen_id}/rollback"
+                    )
+                    st.success(f"回滚结果：{result.get('status')}")
+                    st.rerun()
+                except Exception as error:
+                    st.error(f"回滚失败：{error}")
+            if dcol.button("查看 Diff", key="update-do-diff"):
+                try:
+                    diff = _mgmt_get(
+                        f"/v1/knowledge-bases/{kb_id}/generations/{selected_gen_id}/diff"
+                    )
+                    st.json(diff)
+                except Exception as error:
+                    st.error(f"Diff 失败：{error}")
+
+
+# ---------------------------------------------------------------------------
 # Page shell
 # ---------------------------------------------------------------------------
 
@@ -435,7 +718,7 @@ if not api_ready:
 graph_stats = _get_status_bar_graph_stats(WORKING_DIR)
 _render_status_bar(WORKING_DIR, graph_stats)
 
-qa_tab, graph_tab = st.tabs(["智能问答", "知识图谱"])
+qa_tab, graph_tab, update_tab = st.tabs(["智能问答", "知识图谱", "知识库更新"])
 with qa_tab:
     _render_qa_tab()
 with graph_tab:
@@ -443,3 +726,5 @@ with graph_tab:
         _render_graph_tab(WORKING_DIR)
     except Exception as error:
         st.error(f"知识图谱页面异常：{error}")
+with update_tab:
+    _render_update_tab()

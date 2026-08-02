@@ -22,7 +22,7 @@ from industrial_rag.config import Settings
 from industrial_rag.db.session import close_db, get_session, init_db
 from industrial_rag.errors import AppError
 from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
-from industrial_rag.routers import documents, knowledge_bases, tasks
+from industrial_rag.routers import documents, generations, knowledge_bases, tasks, update_jobs
 from industrial_rag.runtime import LightRAGRuntime
 
 logger = logging.getLogger(__name__)
@@ -610,7 +610,11 @@ def create_app(
             kb = await KnowledgeBaseRepository(session).get(kb_id)
             if kb is None or kb.status.value in {"deleting", "deleted"}:
                 raise AppError(AppErrorCode.knowledge_base_not_found, "知识库不存在")
-            kb_settings = settings_for_knowledge_base(base_settings, kb)
+            try:
+                kb_settings = settings_for_knowledge_base(base_settings, kb)
+            except RuntimeError:
+                # No active generation yet: stable, non-leaking readiness error.
+                return _error_response("INDEX_NOT_READY", request_id=request_id)
         try:
             result = await (await runtime_manager.get_runtime(kb_id, kb_settings)).query(
                 payload.query,
@@ -686,6 +690,8 @@ def create_app(
     application.include_router(knowledge_bases.router)
     application.include_router(documents.router)
     application.include_router(tasks.router)
+    application.include_router(generations.router)
+    application.include_router(update_jobs.router)
 
     return application
 

@@ -79,8 +79,13 @@ class TaskType(enum.StrEnum):
 
 class VectorIndexGenerationStatus(enum.StrEnum):
     shadow = "shadow"
+    building = "building"
+    validating = "validating"
+    ready = "ready"
     active = "active"
     retired = "retired"
+    archived = "archived"
+    rolled_back = "rolled_back"
     failed = "failed"
     deleted = "deleted"
 
@@ -93,6 +98,22 @@ class TaskStatus(enum.StrEnum):
     retrying = "retrying"
     cancelling = "cancelling"
     cancelled = "cancelled"
+
+
+class UpdateOperation(enum.StrEnum):
+    add = "add"
+    replace = "replace"
+    delete = "delete"
+
+
+class UpdateJobStatus(enum.StrEnum):
+    pending = "pending"
+    building = "building"
+    validating = "validating"
+    ready = "ready"
+    failed = "failed"
+    promoted = "promoted"
+    rolled_back = "rolled_back"
 
 
 # ---------------------------------------------------------------------------
@@ -241,6 +262,8 @@ class Document(Base):
 
     # File info
     original_file_name: Mapped[str] = mapped_column(String(500), nullable=False)
+    logical_name: Mapped[str | None] = mapped_column(String(500), nullable=True, default=None)
+    source_type: Mapped[str | None] = mapped_column(String(50), nullable=True, default=None)
     stored_file_name: Mapped[str] = mapped_column(String(200), nullable=False)
     file_path: Mapped[str] = mapped_column(Text, nullable=False, default="")
     file_hash: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -359,3 +382,66 @@ class LifecycleTask(Base):
             f"<LifecycleTask id={self.id!r} type={self.task_type.value!r} "
             f"status={self.status.value!r}>"
         )
+
+
+class UpdateJob(Base):
+    """One incremental knowledge-base update operation (add / replace / delete).
+
+    Each job owns a candidate generation.  The candidate inherits unchanged
+    documents from the active generation and only processes the changed
+    document.  Promote/rollback operate on generation pointers; physical data
+    cleanup is an explicit maintenance task and never part of this flow.
+    """
+
+    __tablename__ = "update_jobs"
+
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_uuid)
+    knowledge_base_id: Mapped[str] = mapped_column(
+        String(32), ForeignKey("knowledge_bases.id"), nullable=False, index=True
+    )
+    base_generation_id: Mapped[str | None] = mapped_column(
+        String(32), ForeignKey("vector_index_generations.id"), nullable=True, index=True
+    )
+    candidate_generation_id: Mapped[str | None] = mapped_column(
+        String(32), ForeignKey("vector_index_generations.id"), nullable=True, index=True
+    )
+    operation: Mapped[UpdateOperation] = mapped_column(Enum(UpdateOperation), nullable=False)
+    document_id: Mapped[str | None] = mapped_column(
+        String(32), ForeignKey("documents.id"), nullable=True, index=True
+    )
+    old_content_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    new_content_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    status: Mapped[UpdateJobStatus] = mapped_column(
+        Enum(UpdateJobStatus), nullable=False, default=UpdateJobStatus.pending, index=True
+    )
+    current_stage: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    retry_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    error_code: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    sanitized_error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    request_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    trace_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    created_by: Mapped[str] = mapped_column(String(50), nullable=False, default="api")
+    approved_by: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    metrics: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
+    result: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow, onupdate=_utcnow
+    )
+
+    knowledge_base: Mapped[KnowledgeBase] = relationship(
+        "KnowledgeBase", foreign_keys=[knowledge_base_id]
+    )
+    document: Mapped[Document | None] = relationship(
+        "Document", foreign_keys=[document_id]
+    )
+    base_generation: Mapped[VectorIndexGeneration | None] = relationship(
+        "VectorIndexGeneration", foreign_keys=[base_generation_id]
+    )
+    candidate_generation: Mapped[VectorIndexGeneration | None] = relationship(
+        "VectorIndexGeneration", foreign_keys=[candidate_generation_id]
+    )
