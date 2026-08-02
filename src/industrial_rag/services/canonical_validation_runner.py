@@ -68,13 +68,20 @@ class CanonicalValidationRunner:
                     and trace.get("generation_id") == generation.id
                     for trace in traces
                 )
-                expected_chunks = {
-                    str(value.get("chunk_id"))
+                expected_locations = {
+                    (str(value.get("source_file")), int(value.get("page_number") or 0))
                     for value in item.get("expected_citations", [])
-                    if value.get("chunk_id")
+                    if value.get("source_file") and value.get("page_number")
                 }
-                actual_chunks = {str(value.get("chunk_id")) for value in traces}
-                citation_match = bool(expected_chunks & actual_chunks) if expects_evidence else not traces
+                actual_locations = {
+                    (str(value.get("document_name")), int(value.get("page") or 0))
+                    for value in traces
+                }
+                citation_match = (
+                    bool(expected_locations & actual_locations)
+                    if expects_evidence
+                    else not traces
+                )
                 answer = str(body.get("answer") or "")
                 negative_ok = (
                     expects_evidence
@@ -112,7 +119,7 @@ class CanonicalValidationRunner:
         emitted_trace_complete = all(item["trace_complete"] for item in emitted)
         negative_passed = all(item["negative_case_passed"] for item in negatives)
         fabricated = sum(
-            bool(item["citation_trace"]) and not item["citation_match"]
+            bool(item["citation_trace"]) and not item["trace_complete"]
             for item in positives
         )
         return {

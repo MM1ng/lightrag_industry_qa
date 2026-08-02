@@ -436,6 +436,11 @@ class IncrementalUpdateService:
                     error_code="generation_validation_failed",
                     sanitized_error_message="validation failed",
                 )
+                if job.operation in {UpdateOperation.add, UpdateOperation.replace} and job.document_id:
+                    failed_document = await self._doc_repo.get(job.document_id)
+                    if failed_document is not None:
+                        failed_document.status = DocumentStatus.failed
+                        failed_document.is_active = False
         await self._session.commit()
         return {
             "generation_id": generation_id,
@@ -752,6 +757,11 @@ class IncrementalUpdateService:
                 if candidate is not None and candidate.status != VectorIndexGenerationStatus.active:
                     candidate.status = VectorIndexGenerationStatus.failed
                     candidate.last_error = "update job cancelled; retained for GC"
+            if job.operation in {UpdateOperation.add, UpdateOperation.replace} and job.document_id:
+                cancelled_document = await self._doc_repo.get(job.document_id)
+                if cancelled_document is not None:
+                    cancelled_document.status = DocumentStatus.failed
+                    cancelled_document.is_active = False
             await self._session.commit()
             return {"status": "cancelled", "job_id": job_id, "idempotent": False}
 
@@ -940,6 +950,11 @@ class IncrementalUpdateService:
                 "metrics": metrics,
             }
         except Exception as error:
+            if job.operation in {UpdateOperation.add, UpdateOperation.replace} and job.document_id:
+                failed_document = await self._doc_repo.get(job.document_id)
+                if failed_document is not None:
+                    failed_document.status = DocumentStatus.failed
+                    failed_document.is_active = False
             await self._job_repo.mark_failed(
                 job_id,
                 error_code="build_failed",
