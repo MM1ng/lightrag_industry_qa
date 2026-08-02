@@ -82,6 +82,18 @@ def test_query_allows_both_authenticated_roles(client, token) -> None:
     assert response.json()["answer"] == "测试答案"
 
 
+@pytest.mark.parametrize("token", [SERVICE_KEY, ADMIN_KEY])
+def test_operational_metrics_allow_both_read_roles_without_secret_material(
+    client, token
+) -> None:
+    response = client.get("/metrics", headers=_auth(token))
+    assert response.status_code == 200
+    payload = response.json()
+    assert len(payload["instance_id"]) == 12
+    assert SERVICE_KEY not in response.text
+    assert ADMIN_KEY not in response.text
+
+
 @pytest.mark.parametrize("token", [None, "wrong-token"])
 def test_management_route_rejects_unauthenticated_credentials(client, token) -> None:
     response = client.post(
@@ -101,6 +113,26 @@ def test_service_role_receives_403_on_management_route(client) -> None:
         headers=_auth(SERVICE_KEY),
     )
 
+    assert response.status_code == 403
+    assert response.json()["code"] == "ADMIN_PERMISSION_REQUIRED"
+
+
+@pytest.mark.parametrize(
+    ("path", "payload"),
+    [
+        (f"/v1/knowledge-bases/{'a' * 32}/gc/plans", {}),
+        (f"/v1/knowledge-bases/{'a' * 32}/update-jobs/{'b' * 32}/resume", {}),
+        (f"/v1/knowledge-bases/{'a' * 32}/update-jobs/{'b' * 32}/cancel", {}),
+        (
+            f"/v1/knowledge-bases/{'a' * 32}/generations/{'b' * 32}/query",
+            {"query": "测试问题"},
+        ),
+    ],
+)
+def test_service_role_is_forbidden_from_every_phase9b_management_route(
+    client, path, payload
+) -> None:
+    response = client.post(path, json=payload, headers=_auth(SERVICE_KEY))
     assert response.status_code == 403
     assert response.json()["code"] == "ADMIN_PERMISSION_REQUIRED"
 

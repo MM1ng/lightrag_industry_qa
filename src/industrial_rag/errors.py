@@ -19,6 +19,8 @@ class AppErrorCode:
     invalid_state_transition = "invalid_state_transition"
     generation_invalid_state = "generation_invalid_state"
     generation_validation_failed = "generation_validation_failed"
+    generation_validation_required = "generation_validation_required"
+    generation_validation_stale = "generation_validation_stale"
     concurrent_promote = "concurrent_promote"
     unsupported_file_type = "unsupported_file_type"
     file_too_large = "file_too_large"
@@ -47,6 +49,8 @@ HTTP_STATUS_MAP: dict[str, int] = {
     AppErrorCode.invalid_state_transition: 409,
     AppErrorCode.generation_invalid_state: 409,
     AppErrorCode.generation_validation_failed: 422,
+    AppErrorCode.generation_validation_required: 409,
+    AppErrorCode.generation_validation_stale: 409,
     AppErrorCode.concurrent_promote: 409,
     AppErrorCode.knowledge_base_deleting: 423,
     AppErrorCode.kb_protected_from_delete: 403,

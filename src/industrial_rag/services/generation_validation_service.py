@@ -8,6 +8,7 @@ import os
 import sqlite3
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -15,13 +16,12 @@ from qdrant_client import AsyncQdrantClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from industrial_rag.config import Settings
-from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
 from industrial_rag.repositories.document_repository import DocumentRepository
 from industrial_rag.repositories.update_job_repository import UpdateJobRepository
+from industrial_rag.repositories.validation_run_repository import ValidationRunRepository
 from industrial_rag.repositories.vector_index_generation_repository import (
     VectorIndexGenerationRepository,
 )
-from industrial_rag.vector_collections import VectorBackend
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +44,7 @@ class GenerationValidationService:
         self._generation_repo = VectorIndexGenerationRepository(session)
         self._job_repo = UpdateJobRepository(session)
         self._doc_repo = DocumentRepository(session)
+        self._validation_runs = ValidationRunRepository(session)
 
     async def validate(
         self,
@@ -56,6 +57,45 @@ class GenerationValidationService:
         started = time.perf_counter()
         gates: dict[str, Any] = {}
 
+        from industrial_rag.services.canonical_validation_runner import (
+            CanonicalValidationRunner,
+            write_validation_artifact,
+        )
+        from industrial_rag.services.generation_content_fingerprint import (
+            GenerationContentFingerprintService,
+            stable_hash,
+        )
+        from industrial_rag.services.golden_set_policy import (
+            RUNNER_VERSION,
+            load_canonical_policy,
+        )
+
+        policy = load_canonical_policy()
+        client_factory = self._qdrant_client_factory or self._new_qdrant_client
+        evidence = await GenerationContentFingerprintService(
+            self._session,
+            settings=self._settings,
+            qdrant_client_factory=client_factory,
+        ).calculate(kb_id, generation)
+        now = datetime.now(UTC)
+        validation_run = await self._validation_runs.create(
+            knowledge_base_id=kb_id,
+            generation_id=generation.id,
+            golden_set_version=policy.version,
+            golden_set_sha256=policy.source_sha256,
+            runner_version=RUNNER_VERSION,
+            app_git_commit=evidence.app_git_commit,
+            configured_model=self._settings.llm_model,
+            strategy_fingerprint=evidence.strategy_fingerprint,
+            generation_manifest_hash=evidence.generation_manifest_hash,
+            qdrant_content_fingerprint=evidence.qdrant_content_fingerprint,
+            document_registry_fingerprint=evidence.document_registry_fingerprint,
+            generation_content_epoch=evidence.generation_content_epoch,
+            actor=approved_by or "admin:local-dev",
+            expires_at=now + timedelta(seconds=self._settings.validation_max_age_seconds),
+        )
+        await self._session.commit()
+
         gates["db_integrity"] = self._db_integrity()
         gates["document_registration_consistency"] = await self._doc_registration(
             kb_id, generation
@@ -66,8 +106,13 @@ class GenerationValidationService:
             kb_id, generation, generation_mix_only=True
         )
 
-        runner = golden_runner or self._default_runner
+        runner = golden_runner or CanonicalValidationRunner(self._settings, policy)
         run_report = await runner(kb_id, generation)
+        gates["canonical_question_count"] = (
+            run_report.get("question_count") == 20
+            if golden_runner is None
+            else True
+        )
         gates["citation_traceability"] = run_report.get("citation_traceability", True)
         gates["golden_subset_regression"] = run_report.get(
             "golden_subset_regression", True
@@ -91,7 +136,7 @@ class GenerationValidationService:
             (value is True) or (isinstance(value, dict) and value.get("passed"))
             for value in gates.values()
         )
-        return {
+        report = {
             "knowledge_base_id": kb_id,
             "generation_id": generation.id,
             "generation": generation.generation,
@@ -103,7 +148,48 @@ class GenerationValidationService:
             "run": run_report,
             "passed": passed,
             "duration_seconds": round(time.perf_counter() - started, 3),
+            "validation_run_id": validation_run.id,
+            "golden_set_version": policy.version,
+            "golden_set_sha256": policy.source_sha256,
+            "runner_version": RUNNER_VERSION,
+            "fingerprints": {
+                "app_git_commit": evidence.app_git_commit,
+                "strategy": evidence.strategy_fingerprint,
+                "generation_manifest": evidence.generation_manifest_hash,
+                "qdrant_content": evidence.qdrant_content_fingerprint,
+                "document_registry": evidence.document_registry_fingerprint,
+                "generation_content_epoch": evidence.generation_content_epoch,
+                "qdrant_point_count": evidence.qdrant_point_count,
+            },
         }
+        artifact_path = (
+            self._settings.validation_artifact_dir
+            / kb_id
+            / generation.id
+            / f"{validation_run.id}.jsonl"
+        )
+        artifact_records = run_report.get("results") or [{"summary": report}]
+        artifact_sha256 = write_validation_artifact(artifact_path, artifact_records)
+        await self._validation_runs.finalize(
+            validation_run.id,
+            passed=passed,
+            metrics={
+                "gates": report["gates"],
+                "run_summary": {
+                    key: value
+                    for key, value in run_report.items()
+                    if key != "results"
+                },
+                "evidence_fingerprint": stable_hash(report["fingerprints"]),
+            },
+            artifact_path=str(artifact_path.resolve()),
+            artifact_sha256=artifact_sha256,
+            finished_at=datetime.now(UTC),
+        )
+        if passed:
+            generation.validated_fingerprint = stable_hash(report["fingerprints"])
+        await self._session.flush()
+        return report
 
     # ------------------------------------------------------------------
     # Gates
@@ -255,56 +341,3 @@ class GenerationValidationService:
         return AsyncQdrantClient(
             url=self._settings.qdrant_url, api_key=self._settings.qdrant_api_key
         )
-
-    # ------------------------------------------------------------------
-    # Default probe runner (real LLM path used by staging)
-    # ------------------------------------------------------------------
-
-    async def _default_runner(self, kb_id: str, generation: Any) -> dict[str, Any]:
-        """Run a lightweight probe set against the candidate runtime.
-
-        Uses the same official LightRAG query path as the API but bound to the
-        candidate generation settings.  The full 20-question canonical golden
-        regression is supplied by the caller (orchestrator/staging) through the
-        ``golden_runner`` hook; this default runner performs structural checks
-        plus one add/replace/delete probe derived from the update job.
-        """
-        from industrial_rag.repositories.knowledge_base_repository import (
-            KnowledgeBaseRepository,
-        )
-
-        kb = await KnowledgeBaseRepository(self._session).get(kb_id)
-        if kb is None:
-            return {"http_success_rate": 0.0, "no_5xx": False}
-        settings = settings_for_knowledge_base(
-            self._settings,
-            kb,
-            backend=VectorBackend(kb.vector_backend),
-            generation=generation.generation,
-            working_dir=Path(generation.workspace_path),
-        )
-        from industrial_rag.lightrag_service import LightRAGService
-
-        service = LightRAGService(settings)
-        await service.initialize()
-        try:
-            probe = "这份手册中，SUMMIT 2196 系列泵长期存放时，泵轴转动频率有什么要求？"
-            result = await service.query(probe, mode="mix")
-            answered = bool(result.citations) and result.answer != ""
-            return {
-                "probe_answered": answered,
-                "citation_traceability": True,
-                "golden_subset_regression": True,
-                "add_specific": True,
-                "replace_specific": True,
-                "delete_specific": True,
-                "http_success_rate": 1.0,
-                "trace_complete_rate": 1.0,
-                "negative_unsupported_answer_rate": 0.0,
-                "no_5xx": True,
-                "fabricated_citation": 0,
-                "secret_leak": 0,
-                "old_document_references": 0,
-            }
-        finally:
-            await service.close()

@@ -7,6 +7,7 @@ import logging
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from industrial_rag.auth import AuthenticatedActor, require_admin_actor
 from industrial_rag.db.session import get_session
 from industrial_rag.routers.schemas import PaginatedResponse, UpdateJobSummary
 from industrial_rag.services.incremental_update_service import IncrementalUpdateService
@@ -39,3 +40,31 @@ async def get_update_job(
 ) -> UpdateJobSummary:
     svc = IncrementalUpdateService(session)
     return UpdateJobSummary(**await svc.get_job(kb_id, job_id))
+
+
+@router.post("/{job_id}/resume")
+async def resume_update_job(
+    kb_id: str,
+    job_id: str,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
+    session: AsyncSession = Depends(get_session),
+) -> dict:
+    return await IncrementalUpdateService(session).resume_job(
+        kb_id,
+        job_id,
+        actor=actor.actor,
+    )
+
+
+@router.post("/{job_id}/cancel")
+async def cancel_update_job(
+    kb_id: str,
+    job_id: str,
+    actor: AuthenticatedActor = Depends(require_admin_actor),
+    session: AsyncSession = Depends(get_session),
+) -> dict:
+    return await IncrementalUpdateService(session).cancel_job(
+        kb_id,
+        job_id,
+        actor=actor.actor,
+    )

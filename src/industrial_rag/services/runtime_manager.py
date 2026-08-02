@@ -10,6 +10,7 @@ from typing import Any
 
 from industrial_rag.config import Settings
 from industrial_rag.lightrag_service import LightRAGService, QueryMode, QueryResult
+from industrial_rag.operational_metrics import operational_metrics
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,7 @@ class RuntimeCacheKey:
     vector_backend: str
     generation: str | None
     generation_epoch: int
+    enable_llm_cache: bool
     workspace: str
     embedding_model: str
     embedding_dim: int
@@ -63,6 +65,7 @@ class RuntimeCacheKey:
             vector_backend=settings.vector_backend.value,
             generation=settings.qdrant_generation,
             generation_epoch=settings.generation_epoch,
+            enable_llm_cache=settings.enable_llm_cache,
             workspace=str(settings.working_dir.resolve()),
             embedding_model=settings.embedding_model,
             embedding_dim=settings.embedding_dim,
@@ -88,11 +91,14 @@ class KnowledgeBaseRuntimeManager:
         key = RuntimeCacheKey.from_settings(kb_id, settings)
         cached = self._runtimes.get(key)
         if cached is not None and cached.initialized:
+            operational_metrics.increment("runtime_cache_hit_total")
             return cached
+        operational_metrics.increment("runtime_cache_miss_total")
         lock = self._locks.setdefault(kb_id, asyncio.Lock())
         async with lock:
             cached = self._runtimes.get(key)
             if cached is not None and cached.initialized:
+                operational_metrics.increment("runtime_cache_hit_after_lock_total")
                 return cached
             await self._close_mismatched_kb_runtimes(kb_id, keep=key)
             if len(self._runtimes) >= self._max_cached:

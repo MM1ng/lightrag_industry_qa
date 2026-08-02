@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from industrial_rag.db.models import VectorIndexGenerationStatus
+from industrial_rag.operational_metrics import operational_metrics
 from industrial_rag.repositories.kb_lease_repository import KBLeaseRepository
 
 
@@ -47,7 +48,11 @@ class KBLeaseService:
             expires_at=expires_at,
         )
         if row is None:
+            operational_metrics.increment("kb_lease_acquire_conflict_total")
             return None
+        operational_metrics.increment("kb_lease_acquire_total")
+        operational_metrics.set("last_lease_owner", owner)
+        operational_metrics.set("last_fencing_token", row.fencing_token)
         return LeaseHandle(
             kb_id=kb_id,
             owner=owner,
@@ -107,3 +112,24 @@ class KBLeaseService:
             now=now,
         )
 
+    async def switch_active_generation(
+        self,
+        handle: LeaseHandle,
+        *,
+        target_generation_id: str,
+        expected_active_generation_id: str | None,
+        target_workspace_path: str,
+        now: datetime,
+        rollback: bool = False,
+    ) -> bool:
+        return await self._repository.switch_active_generation(
+            kb_id=handle.kb_id,
+            target_generation_id=target_generation_id,
+            expected_active_generation_id=expected_active_generation_id,
+            target_workspace_path=target_workspace_path,
+            owner=handle.owner,
+            lease_token=handle.lease_token,
+            fencing_token=handle.fencing_token,
+            now=now,
+            rollback=rollback,
+        )

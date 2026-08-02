@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 import time
@@ -28,7 +29,15 @@ from industrial_rag.config import Settings
 from industrial_rag.db.session import close_db, get_session, init_db
 from industrial_rag.errors import AppError
 from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
-from industrial_rag.routers import documents, generations, knowledge_bases, tasks, update_jobs
+from industrial_rag.operational_metrics import operational_metrics
+from industrial_rag.routers import (
+    documents,
+    generation_gc,
+    generations,
+    knowledge_bases,
+    tasks,
+    update_jobs,
+)
 from industrial_rag.runtime import LightRAGRuntime
 
 logger = logging.getLogger(__name__)
@@ -169,12 +178,14 @@ def _citation_response(
     index: int,
     *,
     generation_id: str | None = None,
+    document_id: str | None = None,
 ) -> CitationResponse:
     return CitationResponse(
         citation_id=f"cite_{index}",
         document_name=citation.source_file,
         page=citation.page_number,
         chunk_id=citation.chunk_id,
+        document_id=document_id,
         generation_id=generation_id,
     )
 
@@ -280,6 +291,21 @@ def create_app(
             application.state.resolved_settings = resolved_settings
             application.state.service_api_key = resolved_settings.service_api_key
             application.state.admin_api_key = resolved_settings.admin_api_key
+            if (
+                resolved_settings.deployment_environment
+                in {"local_staging", "staging", "production"}
+                and resolved_settings.vector_backend.value == "qdrant"
+            ):
+                from industrial_rag.qdrant_compatibility import (
+                    check_qdrant_compatibility,
+                )
+
+                application.state.qdrant_compatibility = (
+                    await check_qdrant_compatibility(
+                        resolved_settings.qdrant_url or "",
+                        expected_minor=resolved_settings.qdrant_expected_minor,
+                    )
+                )
             runtime = runtime_factory(resolved_settings)
             application.state.runtime = runtime
 
@@ -305,7 +331,55 @@ def create_app(
             )
             await _executor.start()
             application.state.task_executor = _executor
+            from datetime import UTC, datetime
+
+            from industrial_rag.repositories.update_job_repository import (
+                UpdateJobRepository,
+            )
+            from industrial_rag.services.incremental_update_service import (
+                IncrementalUpdateService,
+            )
+
+            factory = get_session_factory()
+            async with factory() as recovery_session:
+                repository = UpdateJobRepository(recovery_session)
+                await repository.mark_expired_for_recovery(now=datetime.now(UTC))
+                job_ids = await repository.list_recoverable_ids()
+
+            async def recover_update_jobs() -> None:
+                for job_id in job_ids:
+                    async with factory() as recovery_session:
+                        job = await UpdateJobRepository(recovery_session).get(job_id)
+                        if job is None:
+                            continue
+                        try:
+                            await IncrementalUpdateService(
+                                recovery_session,
+                                settings=resolved_settings,
+                                runtime_manager=_runtime_manager,
+                            ).resume_job(
+                                job.knowledge_base_id,
+                                job.id,
+                                actor="system:startup-recovery",
+                            )
+                        except Exception as error:
+                            logger.error(
+                                "Startup recovery failed for update job %s: %s",
+                                job.id,
+                                type(error).__name__,
+                            )
+
+            application.state.update_recovery_task = asyncio.create_task(
+                recover_update_jobs()
+            )
         except Exception:
+            deployment_environment = (
+                resolved_settings.deployment_environment
+                if resolved_settings is not None
+                else os.environ.get("IRA_DEPLOYMENT_ENVIRONMENT", "local_dev").lower()
+            )
+            if deployment_environment in {"local_staging", "staging", "production"}:
+                raise
             if resolved_settings is None and settings is None:
                 (
                     application.state.service_api_key,
@@ -314,6 +388,13 @@ def create_app(
         try:
             yield
         finally:
+            recovery_task = getattr(application.state, "update_recovery_task", None)
+            if recovery_task is not None and not recovery_task.done():
+                recovery_task.cancel()
+                try:
+                    await recovery_task
+                except asyncio.CancelledError:
+                    pass
             executor = getattr(application.state, "task_executor", None)
             if executor is not None:
                 await executor.stop()
@@ -326,6 +407,16 @@ def create_app(
             application.state.resolved_settings = None
 
     application = FastAPI(lifespan=lifespan)
+
+    @application.middleware("http")
+    async def collect_operational_metrics(
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
+    ) -> Response:
+        response = await call_next(request)
+        operational_metrics.increment("http_request_total")
+        operational_metrics.increment(f"http_status_{response.status_code}_total")
+        return response
 
     # ------------------------------------------------------------------
     # Middleware
@@ -403,14 +494,13 @@ def create_app(
             )
         return JSONResponse(
             status_code=error.status_code,
-            content={
-                "error": {
-                    "code": error.code,
-                    "message": error.message,
-                    "request_id": _request_id_for(request),
-                    "details": error.details,
-                }
-            },
+            content=PublicError(
+                request_id=_request_id_for(request),
+                trace_id=_trace_id_for(request),
+                code=error.code,
+                message="请求无法完成，请检查当前资源状态后重试。",
+                retryable=error.status_code >= 500,
+            ).model_dump(),
         )
 
     # ------------------------------------------------------------------
@@ -460,6 +550,10 @@ def create_app(
             "answer_model": qa.answer_model if qa else None,
             "embedding_model": qa.embedding_model if qa else None,
         }
+
+    @application.get("/metrics")
+    async def metrics() -> dict[str, Any]:
+        return operational_metrics.snapshot()
 
     @application.get("/ready", response_model=None)
     def ready(request: Request) -> dict[str, object] | JSONResponse:
@@ -667,7 +761,12 @@ def create_app(
                     execution = await service.query_active(kb_id, payload.query)
                 else:
                     execution = await service.query_generation(
-                        kb_id, generation_id, payload.query
+                        kb_id,
+                        generation_id,
+                        payload.query,
+                        disable_llm_cache=(
+                            request.headers.get("x-validation-disable-llm-cache") == "1"
+                        ),
                     )
         except AppError as error:
             if error.code == "index_not_ready":
@@ -718,6 +817,7 @@ def create_app(
                 citation,
                 index,
                 generation_id=execution.generation_id,
+                document_id=execution.citation_document_ids.get(citation.source_file),
             )
             for index, citation in enumerate(result.citations, start=1)
         ]
@@ -780,6 +880,7 @@ def create_app(
     application.include_router(tasks.router)
     application.include_router(generations.router)
     application.include_router(update_jobs.router)
+    application.include_router(generation_gc.router)
 
     return application
 

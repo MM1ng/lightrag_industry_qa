@@ -11,6 +11,7 @@ from industrial_rag.citation_formatter import Citation
 from industrial_rag.config import Settings
 from industrial_rag.db.models import (
     Base,
+    Document,
     KnowledgeBase,
     VectorIndexGeneration,
     VectorIndexGenerationStatus,
@@ -242,6 +243,19 @@ async def test_admin_candidate_query_route_returns_actual_generation_without_swi
                     embedding_config_hash="7" * 64,
                     chunking_config_hash="8" * 64,
                 ),
+                Document(
+                    id="1" * 32,
+                    knowledge_base_id=kb_id,
+                    original_file_name="manual.pdf",
+                    logical_name="manual.pdf",
+                    stored_file_name="manual.pdf",
+                    file_path=str(tmp_path / "manual.pdf"),
+                    file_hash="9" * 64,
+                    status="indexed",
+                    is_active=True,
+                    parse_status="done",
+                    index_status="done",
+                ),
             ]
         )
         await session.commit()
@@ -273,6 +287,8 @@ async def test_admin_candidate_query_route_returns_actual_generation_without_swi
     assert response.status_code == 200
     assert response.json()["generation_id"] == candidate_id
     assert response.json()["answer"] == "candidate:g-candidate"
+    assert response.json()["citations"][0]["document_id"] == "1" * 32
+    assert response.json()["citations"][0]["generation_id"] == candidate_id
     async with factory() as session:
         kb = await session.get(KnowledgeBase, kb_id)
         assert kb is not None

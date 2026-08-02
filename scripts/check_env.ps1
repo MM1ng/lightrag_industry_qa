@@ -21,6 +21,10 @@ $required = @{
     "QDRANT_COLLECTION_PREFIX" = "must be configured"
     "SERVICE_API_KEY" = "must be configured"
     "ADMIN_API_KEY" = "must be configured and differ from SERVICE_API_KEY"
+    "IRA_DEPLOYMENT_ENVIRONMENT" = "must be local_staging"
+    "VALIDATION_BASE_URL" = "must be configured"
+    "VALIDATION_ARTIFACT_DIR" = "must be configured"
+    "QDRANT_EXPECTED_MINOR" = "must be 1.13"
 }
 $fail = @()
 if (
@@ -44,6 +48,8 @@ foreach ($name in $required.Keys) {
         "MODEL_FALLBACK_ENABLED" { $value.ToLower() -eq "false" }
         "EMBEDDING_MODEL" { $value -eq "text-embedding-v4" }
         "EMBEDDING_DIM" { $value -eq "1024" }
+        "IRA_DEPLOYMENT_ENVIRONMENT" { $value -eq "local_staging" }
+        "QDRANT_EXPECTED_MINOR" { $value -eq "1.13" }
         default { $true }
     }
     if (-not $ok) {

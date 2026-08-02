@@ -57,7 +57,12 @@ class Settings:
     qdrant_collection_prefix: str = "ira_qdrant"
     qdrant_generation: str | None = None
     qdrant_kb_id: str | None = None
+    qdrant_expected_minor: str = "1.13"
     generation_epoch: int = 0
+    enable_llm_cache: bool = True
+    validation_base_url: str | None = None
+    validation_artifact_dir: Path = PROJECT_ROOT / "artifacts" / "validation-runs"
+    validation_max_age_seconds: int = 3600
     # LightRAG per-generation isolation token. Derived per knowledge base by
     # settings_for_knowledge_base(); None keeps the legacy layout (workspace="")
     # used by pre-generation knowledge bases.
@@ -152,6 +157,31 @@ class Settings:
         ).strip()
         qdrant_generation = (values.get("QDRANT_GENERATION") or "").strip() or None
         qdrant_kb_id = (values.get("QDRANT_KB_ID") or "").strip() or None
+        qdrant_expected_minor = (
+            values.get("QDRANT_EXPECTED_MINOR") or "1.13"
+        ).strip()
+        enable_llm_cache = (
+            (values.get("ENABLE_LLM_CACHE") or "true").strip().lower() != "false"
+        )
+        validation_base_url = (
+            values.get("VALIDATION_BASE_URL") or ""
+        ).strip().rstrip("/") or None
+        raw_validation_dir = values.get("VALIDATION_ARTIFACT_DIR") or (
+            str(Path(values["KB_DATA_ROOT"]) / "artifacts" / "validation-runs")
+            if values.get("KB_DATA_ROOT")
+            else "./artifacts/validation-runs"
+        )
+        validation_artifact_dir = Path(raw_validation_dir)
+        if not validation_artifact_dir.is_absolute():
+            validation_artifact_dir = PROJECT_ROOT / validation_artifact_dir
+        try:
+            validation_max_age_seconds = int(
+                values.get("VALIDATION_MAX_AGE_SECONDS") or "3600"
+            )
+        except ValueError as error:
+            raise ValueError("VALIDATION_MAX_AGE_SECONDS 必须是整数") from error
+        if validation_max_age_seconds < 60:
+            raise ValueError("VALIDATION_MAX_AGE_SECONDS 不能小于 60")
 
         if not api_key:
             raise ValueError("必须通过环境变量 DASHSCOPE_API_KEY 提供百炼密钥")
@@ -205,6 +235,11 @@ class Settings:
             qdrant_collection_prefix=qdrant_collection_prefix,
             qdrant_generation=qdrant_generation,
             qdrant_kb_id=qdrant_kb_id,
+            qdrant_expected_minor=qdrant_expected_minor,
+            enable_llm_cache=enable_llm_cache,
+            validation_base_url=validation_base_url,
+            validation_artifact_dir=validation_artifact_dir.resolve(),
+            validation_max_age_seconds=validation_max_age_seconds,
             mineru_enabled=mineru_enabled,
             mineru_api_base_url=mineru_api_base_url,
             mineru_api_key=mineru_api_key,

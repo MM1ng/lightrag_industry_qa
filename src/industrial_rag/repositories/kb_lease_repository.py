@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from industrial_rag.db.models import (
     KBOperationLease,
+    KnowledgeBase,
     VectorIndexGeneration,
     VectorIndexGenerationStatus,
 )
@@ -180,3 +181,82 @@ class KBLeaseRepository:
         await self._session.commit()
         return result.rowcount == 1
 
+    async def switch_active_generation(
+        self,
+        *,
+        kb_id: str,
+        target_generation_id: str,
+        expected_active_generation_id: str | None,
+        target_workspace_path: str,
+        owner: str,
+        lease_token: str,
+        fencing_token: int,
+        now: datetime,
+        rollback: bool,
+    ) -> bool:
+        """Stage an Active pointer switch guarded by the exact current lease."""
+        current_lease = exists(
+            select(KBOperationLease.knowledge_base_id).where(
+                KBOperationLease.knowledge_base_id == kb_id,
+                KBOperationLease.lock_owner == owner,
+                KBOperationLease.lease_token == lease_token,
+                KBOperationLease.fencing_token == fencing_token,
+                KBOperationLease.expires_at > now,
+            )
+        )
+        pointer_match = (
+            KnowledgeBase.active_vector_generation_id.is_(None)
+            if expected_active_generation_id is None
+            else KnowledgeBase.active_vector_generation_id == expected_active_generation_id
+        )
+        values = {
+            "active_vector_generation_id": target_generation_id,
+            "workspace_path": target_workspace_path,
+            "generation_epoch": KnowledgeBase.generation_epoch + 1,
+            "updated_at": now,
+        }
+        if rollback:
+            values["last_rollback_target_generation_id"] = target_generation_id
+        changed = await self._session.execute(
+            update(KnowledgeBase)
+            .where(
+                KnowledgeBase.id == kb_id,
+                pointer_match,
+                current_lease,
+            )
+            .values(**values)
+            .execution_options(synchronize_session=False)
+        )
+        if changed.rowcount != 1:
+            await self._session.rollback()
+            return False
+        await self._session.execute(
+            update(VectorIndexGeneration)
+            .where(
+                VectorIndexGeneration.knowledge_base_id == kb_id,
+                VectorIndexGeneration.id != target_generation_id,
+                VectorIndexGeneration.status == VectorIndexGenerationStatus.active,
+                current_lease,
+            )
+            .values(status=VectorIndexGenerationStatus.archived, retired_at=now)
+            .execution_options(synchronize_session=False)
+        )
+        target = await self._session.execute(
+            update(VectorIndexGeneration)
+            .where(
+                VectorIndexGeneration.id == target_generation_id,
+                VectorIndexGeneration.knowledge_base_id == kb_id,
+                current_lease,
+            )
+            .values(
+                status=VectorIndexGenerationStatus.active,
+                activated_at=now,
+                retired_at=None,
+            )
+            .execution_options(synchronize_session=False)
+        )
+        if target.rowcount != 1:
+            await self._session.rollback()
+            return False
+        await self._session.flush()
+        return True

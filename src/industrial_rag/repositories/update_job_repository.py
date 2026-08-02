@@ -59,8 +59,11 @@ class UpdateJobRepository:
                 UpdateJob.status.in_(
                     [
                         UpdateJobStatus.pending,
+                        UpdateJobStatus.claimed,
+                        UpdateJobStatus.running,
                         UpdateJobStatus.building,
                         UpdateJobStatus.validating,
+                        UpdateJobStatus.recovery_required,
                     ]
                 ),
             )
@@ -151,6 +154,19 @@ class UpdateJobRepository:
         )
         return (await self._session.execute(statement)).scalars().first()
 
+    async def list_recoverable_ids(self) -> list[str]:
+        statement = (
+            select(UpdateJob.id)
+            .where(
+                UpdateJob.status.in_(
+                    [UpdateJobStatus.pending, UpdateJobStatus.recovery_required]
+                ),
+                UpdateJob.attempt < UpdateJob.max_attempts,
+            )
+            .order_by(UpdateJob.created_at.asc(), UpdateJob.id.asc())
+        )
+        return list((await self._session.execute(statement)).scalars().all())
+
     async def claim_specific(
         self,
         job_id: str,
@@ -211,6 +227,7 @@ class UpdateJobRepository:
                     [
                         UpdateJobStatus.claimed,
                         UpdateJobStatus.running,
+                        UpdateJobStatus.building,
                         UpdateJobStatus.validating,
                     ]
                 ),

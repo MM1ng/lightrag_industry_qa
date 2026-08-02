@@ -20,7 +20,8 @@ import shutil
 import time
 import uuid
 from collections.abc import Callable
-from datetime import UTC, datetime
+from contextlib import asynccontextmanager
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,7 @@ from industrial_rag.db.models import (
 )
 from industrial_rag.errors import AppError, AppErrorCode
 from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
+from industrial_rag.operational_metrics import operational_metrics
 from industrial_rag.repositories.document_repository import DocumentRepository
 from industrial_rag.repositories.knowledge_base_repository import (
     KnowledgeBaseRepository,
@@ -45,6 +47,7 @@ from industrial_rag.repositories.update_job_repository import UpdateJobRepositor
 from industrial_rag.repositories.vector_index_generation_repository import (
     VectorIndexGenerationRepository,
 )
+from industrial_rag.services.kb_lease_service import KBLeaseService
 from industrial_rag.storage_layout import (
     document_stored_path,
     kb_parsed_documents_dir,
@@ -106,6 +109,43 @@ class IncrementalUpdateService:
         self._runtime_manager = runtime_manager
         self._qdrant_client_factory = qdrant_client_factory
         self._lightrag_service_factory = lightrag_service_factory
+
+    @asynccontextmanager
+    async def _writer_lease(
+        self,
+        kb_id: str,
+        *,
+        actor: str | None,
+        operation: str,
+        ttl: timedelta,
+    ):
+        service = KBLeaseService(self._session)
+        handle = None
+        for attempt in range(20):
+            handle = await service.acquire(
+                kb_id,
+                owner=actor or "admin:local-dev",
+                operation=operation,
+                now=_utcnow(),
+                ttl=ttl,
+            )
+            if handle is not None:
+                break
+            if attempt < 19:
+                await asyncio.sleep(0.05)
+        if handle is None:
+            raise AppError(
+                AppErrorCode.knowledge_base_busy,
+                "知识库正在执行其他管理操作。",
+                status_code=409,
+            )
+        try:
+            yield handle
+        except Exception:
+            await self._session.rollback()
+            raise
+        finally:
+            await service.release(handle)
 
     # ------------------------------------------------------------------
     # Document operations
@@ -177,10 +217,8 @@ class IncrementalUpdateService:
             trace_id=trace_id,
             created_by=created_by,
         )
-        await self._session.flush()
-        result = await self._run_job(kb_id, job.id)
         await self._session.commit()
-        return result
+        return await self._execute_persisted_job(kb_id, job.id)
 
     async def replace_document(
         self,
@@ -254,11 +292,10 @@ class IncrementalUpdateService:
             request_id=request_id,
             trace_id=trace_id,
             created_by=created_by,
+            metrics={"replaced_document_id": old_doc.id},
         )
-        await self._session.flush()
-        result = await self._run_job(kb_id, job.id, old_doc=old_doc)
         await self._session.commit()
-        return result
+        return await self._execute_persisted_job(kb_id, job.id, old_doc=old_doc)
 
     async def delete_document(
         self,
@@ -293,10 +330,8 @@ class IncrementalUpdateService:
             trace_id=trace_id,
             created_by=created_by,
         )
-        await self._session.flush()
-        result = await self._run_job(kb_id, job.id, old_doc=doc)
         await self._session.commit()
-        return result
+        return await self._execute_persisted_job(kb_id, job.id, old_doc=doc)
 
     # ------------------------------------------------------------------
     # Generations
@@ -317,6 +352,27 @@ class IncrementalUpdateService:
         return self._generation_summary(generation)
 
     async def validate_generation(
+        self,
+        kb_id: str,
+        generation_id: str,
+        *,
+        approved_by: str | None = None,
+        golden_runner: Any = None,
+    ) -> dict[str, Any]:
+        async with self._writer_lease(
+            kb_id,
+            actor=approved_by,
+            operation="validate_generation",
+            ttl=timedelta(hours=2),
+        ):
+            return await self._validate_generation_under_lease(
+                kb_id,
+                generation_id,
+                approved_by=approved_by,
+                golden_runner=golden_runner,
+            )
+
+    async def _validate_generation_under_lease(
         self,
         kb_id: str,
         generation_id: str,
@@ -359,6 +415,10 @@ class IncrementalUpdateService:
             golden_runner=golden_runner,
             approved_by=approved_by,
         )
+        operational_metrics.increment("validation_run_total")
+        operational_metrics.increment(
+            "validation_pass_total" if report["passed"] else "validation_fail_total"
+        )
         job = await self._job_repo.find_by_candidate(generation_id)
         if report["passed"]:
             generation.status = VectorIndexGenerationStatus.ready
@@ -392,6 +452,27 @@ class IncrementalUpdateService:
         *,
         approved_by: str | None = None,
     ) -> dict[str, Any]:
+        async with self._writer_lease(
+            kb_id,
+            actor=approved_by,
+            operation="promote_generation",
+            ttl=timedelta(minutes=2),
+        ) as lease:
+            return await self._promote_generation_under_lease(
+                kb_id,
+                generation_id,
+                approved_by=approved_by,
+                lease=lease,
+            )
+
+    async def _promote_generation_under_lease(
+        self,
+        kb_id: str,
+        generation_id: str,
+        *,
+        approved_by: str | None = None,
+        lease,
+    ) -> dict[str, Any]:
         await self._require_kb(kb_id)
         async with _kb_lock(kb_id):
             generation = await self._generation_repo.get(generation_id)
@@ -412,7 +493,6 @@ class IncrementalUpdateService:
                 }
             if generation.status not in (
                 VectorIndexGenerationStatus.ready,
-                VectorIndexGenerationStatus.validating,
             ):
                 raise AppError(
                     AppErrorCode.generation_invalid_state,
@@ -426,23 +506,37 @@ class IncrementalUpdateService:
                     "Generation 没有关联的增量更新任务，无法发布",
                     status_code=409,
                 )
+            from industrial_rag.services.validation_gate_service import (
+                ValidationGateService,
+            )
+
+            validation_run = await ValidationGateService(
+                self._session,
+                settings=self._settings,
+                qdrant_client_factory=(
+                    self._qdrant_client_factory or self._new_qdrant_client
+                ),
+            ).require_eligible(kb_id, generation)
             now = _utcnow()
-            if active is not None:
-                active.status = VectorIndexGenerationStatus.archived
-                active.retired_at = now
-            generation.status = VectorIndexGenerationStatus.active
-            generation.activated_at = now
-            generation.retired_at = None
-            kb = await self._kb_repo.get(kb_id)
-            if kb is not None:
-                kb.active_vector_generation_id = generation.id
-                kb.workspace_path = generation.workspace_path
-                kb.updated_at = now
+            switched = await KBLeaseService(self._session).switch_active_generation(
+                lease,
+                target_generation_id=generation.id,
+                expected_active_generation_id=active.id if active else None,
+                target_workspace_path=generation.workspace_path,
+                now=now,
+            )
+            if not switched:
+                raise AppError(
+                    AppErrorCode.concurrent_promote,
+                    "Active Generation 已被其他实例修改。",
+                    status_code=409,
+                )
             await self._apply_document_state(job, active_now=True)
             await self._job_repo.mark_promoted(job.id, approved_by=approved_by)
             if self._runtime_manager is not None:
                 await self._runtime_manager.close_runtime(kb_id)
             await self._session.commit()
+            operational_metrics.increment("promote_total")
             return {
                 "status": "promoted",
                 "idempotent": False,
@@ -450,6 +544,7 @@ class IncrementalUpdateService:
                 "knowledge_base_id": kb_id,
                 "active_generation_id": generation_id,
                 "previous_generation_id": active.id if active else None,
+                "validation_run_id": validation_run.id,
             }
 
     async def rollback_generation(
@@ -458,6 +553,27 @@ class IncrementalUpdateService:
         target_generation_id: str,
         *,
         approved_by: str | None = None,
+    ) -> dict[str, Any]:
+        async with self._writer_lease(
+            kb_id,
+            actor=approved_by,
+            operation="rollback_generation",
+            ttl=timedelta(minutes=2),
+        ) as lease:
+            return await self._rollback_generation_under_lease(
+                kb_id,
+                target_generation_id,
+                approved_by=approved_by,
+                lease=lease,
+            )
+
+    async def _rollback_generation_under_lease(
+        self,
+        kb_id: str,
+        target_generation_id: str,
+        *,
+        approved_by: str | None = None,
+        lease,
     ) -> dict[str, Any]:
         await self._require_kb(kb_id)
         async with _kb_lock(kb_id):
@@ -487,17 +603,20 @@ class IncrementalUpdateService:
                     status_code=409,
                 )
             now = _utcnow()
-            if active is not None:
-                active.status = VectorIndexGenerationStatus.archived
-                active.retired_at = now
-            target.status = VectorIndexGenerationStatus.active
-            target.activated_at = now
-            target.retired_at = None
-            kb = await self._kb_repo.get(kb_id)
-            if kb is not None:
-                kb.active_vector_generation_id = target.id
-                kb.workspace_path = target.workspace_path
-                kb.updated_at = now
+            switched = await KBLeaseService(self._session).switch_active_generation(
+                lease,
+                target_generation_id=target.id,
+                expected_active_generation_id=active.id if active else None,
+                target_workspace_path=target.workspace_path,
+                now=now,
+                rollback=True,
+            )
+            if not switched:
+                raise AppError(
+                    AppErrorCode.concurrent_promote,
+                    "Active Generation 已被其他实例修改。",
+                    status_code=409,
+                )
             job = await self._job_repo.find_by_candidate(target.id)
             if job is not None:
                 await self._apply_document_state(job, active_now=True)
@@ -506,6 +625,7 @@ class IncrementalUpdateService:
             if self._runtime_manager is not None:
                 await self._runtime_manager.close_runtime(kb_id)
             await self._session.commit()
+            operational_metrics.increment("rollback_total")
             return {
                 "status": "rolled_back",
                 "generation_id": target_generation_id,
@@ -553,7 +673,13 @@ class IncrementalUpdateService:
             raise AppError(AppErrorCode.update_job_not_found, f"更新任务不存在: {job_id}")
         return self._job_summary(job)
 
-    async def resume_job(self, kb_id: str, job_id: str) -> dict[str, Any]:
+    async def resume_job(
+        self,
+        kb_id: str,
+        job_id: str,
+        *,
+        actor: str | None = None,
+    ) -> dict[str, Any]:
         """Resume an interrupted update job (pending/building with no ready
         candidate) after a service restart."""
         await self._require_kb(kb_id)
@@ -569,10 +695,65 @@ class IncrementalUpdateService:
                 VectorIndexGenerationStatus.active,
             ):
                 return {"status": "already_complete", "job_id": job_id}
+        old_doc = None
+        if job.operation == UpdateOperation.replace:
+            replaced_id = (job.metrics or {}).get("replaced_document_id")
+            if replaced_id:
+                old_doc = await self._doc_repo.get(str(replaced_id))
+        elif job.operation == UpdateOperation.delete and job.document_id:
+            old_doc = await self._doc_repo.get(job.document_id)
+        if job.candidate_generation_id is not None:
+            candidate = await self._generation_repo.get(job.candidate_generation_id)
+            if candidate is not None:
+                candidate.status = VectorIndexGenerationStatus.failed
+                candidate.last_error = "superseded by deterministic recovery rebuild"
         job.retry_count += 1
-        result = await self._run_job(kb_id, job.id)
+        job.status = UpdateJobStatus.recovery_required
+        job.candidate_generation_id = None
         await self._session.commit()
-        return result
+        return await self._execute_persisted_job(
+            kb_id,
+            job.id,
+            old_doc=old_doc,
+            actor=actor,
+        )
+
+    async def cancel_job(
+        self,
+        kb_id: str,
+        job_id: str,
+        *,
+        actor: str | None = None,
+    ) -> dict[str, Any]:
+        await self._require_kb(kb_id)
+        async with self._writer_lease(
+            kb_id,
+            actor=actor,
+            operation="cancel_update_job",
+            ttl=timedelta(minutes=2),
+        ):
+            job = await self._job_repo.get_by_kb_and_id(kb_id, job_id)
+            if job is None:
+                raise AppError(AppErrorCode.update_job_not_found, "更新任务不存在。")
+            if job.status == UpdateJobStatus.cancelled:
+                return {"status": "cancelled", "job_id": job_id, "idempotent": True}
+            if job.status in {UpdateJobStatus.promoted, UpdateJobStatus.rolled_back}:
+                raise AppError(
+                    AppErrorCode.invalid_state_transition,
+                    "已发布或已回滚的任务不能取消。",
+                    status_code=409,
+                )
+            job.status = UpdateJobStatus.cancelled
+            job.current_stage = "cancelled"
+            job.approved_by = actor or "admin:local-dev"
+            job.finished_at = _utcnow()
+            if job.candidate_generation_id:
+                candidate = await self._generation_repo.get(job.candidate_generation_id)
+                if candidate is not None and candidate.status != VectorIndexGenerationStatus.active:
+                    candidate.status = VectorIndexGenerationStatus.failed
+                    candidate.last_error = "update job cancelled; retained for GC"
+            await self._session.commit()
+            return {"status": "cancelled", "job_id": job_id, "idempotent": False}
 
     async def list_jobs(self, kb_id: str) -> list[dict[str, Any]]:
         await self._require_kb(kb_id)
@@ -582,6 +763,49 @@ class IncrementalUpdateService:
     # ------------------------------------------------------------------
     # Candidate build
     # ------------------------------------------------------------------
+
+    async def _execute_persisted_job(
+        self,
+        kb_id: str,
+        job_id: str,
+        *,
+        old_doc: Any | None = None,
+        actor: str | None = None,
+    ) -> dict[str, Any]:
+        job = await self._job_repo.get(job_id)
+        if job is None:
+            raise AppError(AppErrorCode.update_job_not_found, "更新任务不存在。")
+        worker_id = f"sync:{actor or job.created_by}"[:100]
+        async with self._writer_lease(
+            kb_id,
+            actor=worker_id,
+            operation="update_job",
+            ttl=timedelta(hours=2),
+        ) as lease:
+            claimed = await self._job_repo.claim_specific(
+                job_id,
+                worker_id=worker_id,
+                lease_token=lease.lease_token,
+                fencing_token=lease.fencing_token,
+                now=_utcnow(),
+                lease_expires_at=lease.expires_at,
+            )
+            if claimed is None:
+                raise AppError(
+                    AppErrorCode.invalid_state_transition,
+                    "更新任务无法被当前 worker 领取。",
+                    status_code=409,
+                )
+            result = await self._run_job(kb_id, job_id, old_doc=old_doc)
+            if not await KBLeaseService(self._session).is_current(lease, now=_utcnow()):
+                await self._session.rollback()
+                raise AppError(
+                    AppErrorCode.knowledge_base_busy,
+                    "更新任务租约已失效，结果未提交。",
+                    status_code=409,
+                )
+            await self._session.commit()
+            return result
 
     async def _run_job(
         self,

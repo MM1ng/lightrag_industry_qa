@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,9 +12,12 @@ from industrial_rag.db.models import KBStatus, VectorIndexGenerationStatus
 from industrial_rag.errors import AppError, AppErrorCode
 from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
 from industrial_rag.lightrag_service import QueryResult
+from industrial_rag.operational_metrics import operational_metrics
+from industrial_rag.repositories.document_repository import DocumentRepository
 from industrial_rag.repositories.knowledge_base_repository import (
     KnowledgeBaseRepository,
 )
+from industrial_rag.repositories.update_job_repository import UpdateJobRepository
 from industrial_rag.repositories.vector_index_generation_repository import (
     VectorIndexGenerationRepository,
 )
@@ -27,6 +30,7 @@ class GenerationQueryResult:
     generation_name: str
     generation_epoch: int
     result: QueryResult
+    citation_document_ids: dict[str, str]
 
 
 class QueryApplicationService:
@@ -44,6 +48,8 @@ class QueryApplicationService:
         self._runtime_manager = runtime_manager
         self._kb_repository = KnowledgeBaseRepository(session)
         self._generation_repository = VectorIndexGenerationRepository(session)
+        self._document_repository = DocumentRepository(session)
+        self._job_repository = UpdateJobRepository(session)
 
     async def query_active(self, kb_id: str, question: str) -> GenerationQueryResult:
         kb = await self._require_kb(kb_id)
@@ -56,11 +62,25 @@ class QueryApplicationService:
         kb_id: str,
         generation_id: str,
         question: str,
+        *,
+        disable_llm_cache: bool = False,
     ) -> GenerationQueryResult:
         kb = await self._require_kb(kb_id)
-        return await self._query(kb, generation_id, question)
+        return await self._query(
+            kb,
+            generation_id,
+            question,
+            disable_llm_cache=disable_llm_cache,
+        )
 
-    async def _query(self, kb, generation_id: str, question: str) -> GenerationQueryResult:
+    async def _query(
+        self,
+        kb,
+        generation_id: str,
+        question: str,
+        *,
+        disable_llm_cache: bool = False,
+    ) -> GenerationQueryResult:
         generation = await self._generation_repository.get(generation_id)
         if generation is None or generation.knowledge_base_id != kb.id:
             raise AppError(
@@ -84,14 +104,35 @@ class QueryApplicationService:
             generation=generation.generation,
             working_dir=Path(generation.workspace_path),
         )
+        if disable_llm_cache:
+            settings = replace(settings, enable_llm_cache=False)
         runtime = await self._runtime_manager.get_runtime(kb.id, settings)
+        operational_metrics.set(f"active_generation.{kb.id}", generation.id)
         result = await runtime.query(question, mode="mix")
+        document_ids = await self._citation_document_ids(kb.id, generation)
         return GenerationQueryResult(
             generation_id=generation.id,
             generation_name=generation.generation,
             generation_epoch=int(kb.generation_epoch or 0),
             result=result,
+            citation_document_ids=document_ids,
         )
+
+    async def _citation_document_ids(self, kb_id: str, generation) -> dict[str, str]:
+        mapping: dict[str, str] = {}
+        job = await self._job_repository.find_by_candidate(generation.id)
+        snapshot = (job.result or {}).get("documents", []) if job is not None else []
+        for entry in snapshot:
+            if entry.get("is_active") and entry.get("logical_name") and entry.get("document_id"):
+                mapping[str(entry["logical_name"])] = str(entry["document_id"])
+        docs = await self._document_repository.list_by_kb(kb_id, include_deleted=True)
+        for doc in sorted(docs, key=lambda item: (item.version, item.created_at)):
+            if snapshot and doc.id not in {str(item.get("document_id")) for item in snapshot if item.get("is_active")}:
+                continue
+            mapping[doc.original_file_name] = doc.id
+            if doc.logical_name:
+                mapping[doc.logical_name] = doc.id
+        return mapping
 
     async def _require_kb(self, kb_id: str):
         kb = await self._kb_repository.get(kb_id)
@@ -102,4 +143,3 @@ class QueryApplicationService:
                 status_code=404,
             )
         return kb
-
