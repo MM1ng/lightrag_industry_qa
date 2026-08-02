@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from industrial_rag.db.models import UpdateJob, UpdateJobStatus
@@ -87,6 +87,258 @@ class UpdateJobRepository:
         job.updated_at = datetime.now(tz=UTC)
         await self._session.flush()
         return job
+
+    async def claim_next(
+        self,
+        *,
+        worker_id: str,
+        lease_token: str,
+        fencing_token: int,
+        now: datetime,
+        lease_expires_at: datetime,
+    ) -> UpdateJob | None:
+        """Atomically claim one pending or recovery-required job."""
+        eligible_statuses = [
+            UpdateJobStatus.pending,
+            UpdateJobStatus.recovery_required,
+        ]
+        candidate_id = (
+            select(UpdateJob.id)
+            .where(
+                UpdateJob.status.in_(eligible_statuses),
+                UpdateJob.attempt < UpdateJob.max_attempts,
+            )
+            .order_by(UpdateJob.created_at.asc(), UpdateJob.id.asc())
+            .limit(1)
+            .scalar_subquery()
+        )
+        statement = (
+            update(UpdateJob)
+            .where(
+                UpdateJob.id == candidate_id,
+                UpdateJob.status.in_(eligible_statuses),
+            )
+            .values(
+                status=UpdateJobStatus.claimed,
+                worker_id=worker_id,
+                lease_token=lease_token,
+                fencing_token=fencing_token,
+                claimed_at=now,
+                heartbeat_at=now,
+                lease_expires_at=lease_expires_at,
+                attempt=UpdateJob.attempt + 1,
+                current_stage="claimed",
+                updated_at=now,
+            )
+            .returning(UpdateJob)
+        )
+        result = await self._session.execute(statement)
+        job = result.scalar_one_or_none()
+        await self._session.commit()
+        return job
+
+    async def next_eligible(self) -> UpdateJob | None:
+        statement = (
+            select(UpdateJob)
+            .where(
+                UpdateJob.status.in_(
+                    [UpdateJobStatus.pending, UpdateJobStatus.recovery_required]
+                ),
+                UpdateJob.attempt < UpdateJob.max_attempts,
+            )
+            .order_by(UpdateJob.created_at.asc(), UpdateJob.id.asc())
+            .limit(1)
+        )
+        return (await self._session.execute(statement)).scalars().first()
+
+    async def claim_specific(
+        self,
+        job_id: str,
+        *,
+        worker_id: str,
+        lease_token: str,
+        fencing_token: int,
+        now: datetime,
+        lease_expires_at: datetime,
+    ) -> UpdateJob | None:
+        statement = (
+            update(UpdateJob)
+            .where(
+                UpdateJob.id == job_id,
+                UpdateJob.status.in_(
+                    [UpdateJobStatus.pending, UpdateJobStatus.recovery_required]
+                ),
+                UpdateJob.attempt < UpdateJob.max_attempts,
+            )
+            .values(
+                status=UpdateJobStatus.claimed,
+                worker_id=worker_id,
+                lease_token=lease_token,
+                fencing_token=fencing_token,
+                claimed_at=now,
+                heartbeat_at=now,
+                lease_expires_at=lease_expires_at,
+                attempt=UpdateJob.attempt + 1,
+                current_stage="claimed",
+                updated_at=now,
+            )
+            .returning(UpdateJob)
+        )
+        result = await self._session.execute(statement)
+        job = result.scalar_one_or_none()
+        await self._session.commit()
+        return job
+
+    async def heartbeat_claim(
+        self,
+        job_id: str,
+        *,
+        worker_id: str,
+        lease_token: str,
+        fencing_token: int,
+        now: datetime,
+        lease_expires_at: datetime,
+    ) -> bool:
+        statement = (
+            update(UpdateJob)
+            .where(
+                UpdateJob.id == job_id,
+                UpdateJob.worker_id == worker_id,
+                UpdateJob.lease_token == lease_token,
+                UpdateJob.fencing_token == fencing_token,
+                UpdateJob.lease_expires_at > now,
+                UpdateJob.status.in_(
+                    [
+                        UpdateJobStatus.claimed,
+                        UpdateJobStatus.running,
+                        UpdateJobStatus.validating,
+                    ]
+                ),
+            )
+            .values(
+                heartbeat_at=now,
+                lease_expires_at=lease_expires_at,
+                updated_at=now,
+            )
+            .execution_options(synchronize_session=False)
+        )
+        result = await self._session.execute(statement)
+        await self._session.commit()
+        return result.rowcount == 1
+
+    async def save_checkpoint(
+        self,
+        job_id: str,
+        *,
+        worker_id: str,
+        lease_token: str,
+        fencing_token: int,
+        checkpoint: dict[str, Any],
+        status: UpdateJobStatus,
+        now: datetime,
+    ) -> bool:
+        statement = (
+            update(UpdateJob)
+            .where(
+                UpdateJob.id == job_id,
+                UpdateJob.worker_id == worker_id,
+                UpdateJob.lease_token == lease_token,
+                UpdateJob.fencing_token == fencing_token,
+                UpdateJob.lease_expires_at > now,
+                UpdateJob.status.in_(
+                    [
+                        UpdateJobStatus.claimed,
+                        UpdateJobStatus.running,
+                        UpdateJobStatus.validating,
+                    ]
+                ),
+            )
+            .values(
+                checkpoint=checkpoint,
+                status=status,
+                current_stage=str(checkpoint.get("stage") or status.value),
+                heartbeat_at=now,
+                updated_at=now,
+            )
+            .execution_options(synchronize_session=False)
+        )
+        result = await self._session.execute(statement)
+        await self._session.commit()
+        return result.rowcount == 1
+
+    async def mark_succeeded_fenced(
+        self,
+        job_id: str,
+        *,
+        worker_id: str,
+        lease_token: str,
+        fencing_token: int,
+        result: dict[str, Any],
+        now: datetime,
+    ) -> bool:
+        statement = (
+            update(UpdateJob)
+            .where(
+                UpdateJob.id == job_id,
+                UpdateJob.worker_id == worker_id,
+                UpdateJob.lease_token == lease_token,
+                UpdateJob.fencing_token == fencing_token,
+                UpdateJob.lease_expires_at > now,
+                UpdateJob.status.in_(
+                    [
+                        UpdateJobStatus.claimed,
+                        UpdateJobStatus.running,
+                        UpdateJobStatus.validating,
+                    ]
+                ),
+            )
+            .values(
+                status=UpdateJobStatus.succeeded,
+                current_stage="succeeded",
+                result=result,
+                finished_at=now,
+                heartbeat_at=now,
+                lease_expires_at=None,
+                updated_at=now,
+            )
+            .execution_options(synchronize_session=False)
+        )
+        changed = await self._session.execute(statement)
+        await self._session.commit()
+        return changed.rowcount == 1
+
+    async def mark_expired_for_recovery(self, *, now: datetime) -> list[str]:
+        statement = (
+            update(UpdateJob)
+            .where(
+                UpdateJob.status.in_(
+                    [
+                        UpdateJobStatus.claimed,
+                        UpdateJobStatus.running,
+                        UpdateJobStatus.validating,
+                    ]
+                ),
+                UpdateJob.lease_expires_at.is_not(None),
+                UpdateJob.lease_expires_at <= now,
+            )
+            .values(
+                status=UpdateJobStatus.recovery_required,
+                current_stage="recovery_required",
+                worker_id=None,
+                lease_token=None,
+                fencing_token=None,
+                claimed_at=None,
+                heartbeat_at=None,
+                lease_expires_at=None,
+                updated_at=now,
+            )
+            .execution_options(synchronize_session=False)
+            .returning(UpdateJob.id)
+        )
+        result = await self._session.execute(statement)
+        job_ids = list(result.scalars().all())
+        await self._session.commit()
+        return job_ids
 
     async def mark_building(self, job_id: str, candidate_generation_id: str) -> UpdateJob | None:
         return await self.update(
