@@ -1,0 +1,51 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T21:14:11+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "scenario": "graceful_shutdown",
+  "stop_method": "no in-flight requests at stop time; standard staging stop procedure (process termination via stop script, PID files cleaned); Qdrant and database untouched",
+  "pre_state": {
+    "api_pid": 30256,
+    "ui_pid": 29300,
+    "health": "ok"
+  },
+  "qdrant_before": {
+    "chunks": 453,
+    "entities": 1012,
+    "relationships": 1061
+  },
+  "stop_output": [
+    "stopped ui pid=29300",
+    "stopped api pid=30256",
+    "stop done (Qdrant untouched)"
+  ],
+  "stopped": {
+    "api_listening": false,
+    "ui_listening": false,
+    "api_pid_file_exists": false,
+    "ui_pid_file_exists": false
+  },
+  "qdrant_after": {
+    "chunks": 453,
+    "entities": 1012,
+    "relationships": 1061
+  },
+  "qdrant_points_unchanged": true,
+  "db_integrity": "ok",
+  "restart_after_shutdown": {
+    "status": "passed",
+    "api_pid": 27944,
+    "health": "ok",
+    "ready": "ready",
+    "version": "0.1.0-rc.1",
+    "ui_http": 200,
+    "post_restart_query": {
+      "http": 200,
+      "status": "success",
+      "citations": 3,
+      "latency_seconds": 5.996
+    }
+  },
+  "passed": true
+}

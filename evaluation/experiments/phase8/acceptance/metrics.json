@@ -1,0 +1,179 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T21:03:00+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "entry_point": "official FastAPI /v1/knowledge-bases/8fce4626859d44abb70a9ae5b0372cea/query (local staging, port 8110)",
+  "comparison_basis": "Phase 7 corrected canonical metrics (18/2 denominators); never compared to historical 14/20 or 6/20",
+  "canonical": {
+    "answerable_question_count": 18,
+    "negative_question_count": 2,
+    "answer_citation_accuracy": {
+      "numerator": 15,
+      "denominator": 18,
+      "decimal": 0.8333,
+      "percentage": 83.33
+    },
+    "answer_citation_precision": {
+      "numerator": 5.0,
+      "denominator": 18,
+      "decimal": 0.2778,
+      "percentage": 27.78
+    },
+    "answer_citation_recall": {
+      "numerator": 12.8333,
+      "denominator": 18,
+      "decimal": 0.713,
+      "percentage": 71.3
+    },
+    "gold_page_citation_rate": {
+      "numerator": 15,
+      "denominator": 18,
+      "decimal": 0.8333,
+      "percentage": 83.33
+    },
+    "gold_evidence_citation_rate": {
+      "numerator": 13,
+      "denominator": 18,
+      "decimal": 0.7222,
+      "percentage": 72.22
+    },
+    "false_rejection_rate": {
+      "numerator": 3,
+      "denominator": 18,
+      "decimal": 0.1667,
+      "percentage": 16.67
+    },
+    "answered_without_evidence_rate": {
+      "numerator": 0,
+      "denominator": 18,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "citation_traceability_emitted": {
+      "numerator": 15,
+      "denominator": 15,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "gold_citation_reference_rate": {
+      "numerator": 15,
+      "denominator": 45,
+      "decimal": 0.3333,
+      "percentage": 33.33
+    },
+    "non_gold_citation_reference_rate": {
+      "numerator": 30,
+      "denominator": 45,
+      "decimal": 0.6667,
+      "percentage": 66.67
+    }
+  },
+  "engineering": {
+    "questions": 20,
+    "http_success_rate": {
+      "numerator": 20,
+      "denominator": 20,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "request_trace_id_complete_rate": {
+      "numerator": 20,
+      "denominator": 20,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "p50_latency": 3.626,
+    "p95_latency": 5.861,
+    "average_latency": 3.516,
+    "max_latency": 5.861,
+    "error_rate": {
+      "numerator": 0,
+      "denominator": 20,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "fallback_count": 0,
+    "cache_hit_count": 0,
+    "refusals": [
+      "S007",
+      "D005",
+      "C002",
+      "N001",
+      "N002"
+    ]
+  },
+  "cold_warm_latency": {
+    "note": "Staging runtime started with an empty LLM response cache (RC package does not include LLM cache; the frozen workspace LLM cache was deliberately excluded). All 20 golden subset requests were real provider calls.",
+    "cold_request_latency": {
+      "count": 20,
+      "p50": 3.626,
+      "p95": 5.861,
+      "max": 5.861
+    },
+    "warm_request_latency": {
+      "note": "measured in warm restart rehearsal with 2 repeated queries",
+      "values": []
+    },
+    "overall_latency": {
+      "p50": 3.626,
+      "p95": 5.861,
+      "average": 3.516
+    }
+  },
+  "phase7_reference": {
+    "answer_citation_accuracy": "14/18=0.7778",
+    "false_rejection_rate": "4/18=0.2222",
+    "insufficient_evidence_rejection_rate": "2/2=1.0",
+    "negative_unsupported_answer_rate": "0/2=0",
+    "citation_traceability_emitted": "1.0",
+    "http_success_rate": "1.0",
+    "trace_complete_rate": "1.0",
+    "error_rate": "0",
+    "fallback": "0"
+  },
+  "phase8_vs_phase7": {
+    "answer_citation_accuracy": {
+      "phase7": "14/18",
+      "phase8": "15/18",
+      "delta": "+1 correct (C001 answered with gold citations)"
+    },
+    "false_rejection_rate": {
+      "phase7": "4/18",
+      "phase8": "3/18",
+      "delta": "-1 (C001 no longer refused)"
+    },
+    "citation_traceability_emitted": {
+      "phase7": "1.0",
+      "phase8": "1.0",
+      "delta": "unchanged"
+    },
+    "note": "One-question improvement on accuracy and false rejection; no metric worsened. Recorded factually, not claimed as identical to Phase 7."
+  },
+  "hard_gates": {
+    "http_success_rate_1_0": true,
+    "request_trace_id_complete_1_0": true,
+    "citation_traceability_emitted_1_0": true,
+    "insufficient_evidence_rejection_rate_1_0": true,
+    "negative_unsupported_answer_rate_0": true,
+    "fallback_zero": true,
+    "error_rate_zero": true,
+    "citation_accuracy_at_least_13_of_18": true,
+    "false_rejection_at_most_5_of_18": true,
+    "safety_no_high_risk_answers": true,
+    "n001_n002_refused": true,
+    "all_hard_gates_passed": true
+  }
+}

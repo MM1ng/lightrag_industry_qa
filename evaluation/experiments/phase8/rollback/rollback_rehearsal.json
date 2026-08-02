@@ -1,0 +1,79 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T21:22:40+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "scenario": "rollback_rehearsal",
+  "context": "No historical staging version existed; per procedure, a read-only old directory copy of the same approved RC (releases/0.1.0-rc.1-previous, 96 files, source ZIP SHA256=c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59) was created to simulate the previous version. No version number was fabricated. Current pointer file is D:/industrial_energy_agent_staging/runtime/current_version.json.",
+  "steps": [
+    {
+      "step": "record_rc_service_state",
+      "status": "passed",
+      "detail": "api pid=27944, ui pid=26620, /health ok, UI http 200"
+    },
+    {
+      "step": "stop_rc_services",
+      "status": "passed",
+      "detail": "stopped ui pid=26620, api pid=27944"
+    },
+    {
+      "step": "create_old_directory_copy",
+      "status": "passed",
+      "detail": "extracted same approved RC zip to releases/0.1.0-rc.1-previous (96 files)"
+    },
+    {
+      "step": "switch_current_pointer_to_old",
+      "status": "passed",
+      "detail": "current_version.json -> 0.1.0-rc.1-previous (rollback_simulation=true)"
+    },
+    {
+      "step": "start_old_directory_service",
+      "status": "passed",
+      "detail": "api pid=316 from previous dir; /health ok; /ready ready; /version app_version=0.1.0-rc.1 git_commit=7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60"
+    },
+    {
+      "step": "queries_on_old_directory",
+      "status": "passed",
+      "detail": "2 queries via official API, both 200 with request_id/trace_id (latencies 11.608s, 1.256s)"
+    },
+    {
+      "step": "verify_staging_database",
+      "status": "passed",
+      "detail": "staging DB integrity=ok; row counts and frozen KB/generation registration identical to pre-deploy backup; file-level SHA256 drift is SQLite journal/page churn, content verified equivalent"
+    },
+    {
+      "step": "verify_qdrant_collection_points",
+      "status": "passed",
+      "detail": "chunks=453, entities=1012, relationships=1061 unchanged"
+    },
+    {
+      "step": "stop_old_directory_service",
+      "status": "passed",
+      "detail": "stopped api pid=316"
+    },
+    {
+      "step": "switch_current_pointer_back_to_rc",
+      "status": "passed",
+      "detail": "current_version.json -> 0.1.0-rc.1 (rollback_completed=true)"
+    },
+    {
+      "step": "restart_rc_services",
+      "status": "passed",
+      "detail": "api pid=6816, ui pid=24232; /health ok; /ready ready; /version app_version=0.1.0-rc.1; UI http 200"
+    },
+    {
+      "step": "final_verification",
+      "status": "passed",
+      "detail": "1 query via official API, http 200, request_id/trace_id present, citations=3; Qdrant points unchanged (453/1012/1061)"
+    }
+  ],
+  "staging_db_sha256": "cebffbb6c8acb255d4b773e08ac77ea7266f26beac3921f3c2f64ebde9f50a45",
+  "qdrant_points_before_and_after": {
+    "chunks": 453,
+    "entities": 1012,
+    "relationships": 1061
+  },
+  "no_fuzzy_cleanup": true,
+  "no_production_resource_deleted": true,
+  "passed": true
+}
