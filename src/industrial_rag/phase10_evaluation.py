@@ -94,12 +94,19 @@ def _metric_group(cases: list[dict[str, Any]]) -> dict[str, Any]:
     metrics["graded_ndcg_at_10"] = _rate(ndcg_sum, len(positives))
 
     false_rejections = sum(
-        case["response"].get("status") == "insufficient_evidence" for case in positives
+        case["response"].get("status") in {"insufficient_evidence", "safety_blocked"}
+        for case in positives
     )
     negative_rejections = sum(
         case["response"].get("status") == "insufficient_evidence" for case in negatives
     )
-    answered = [case for case in cases if case["response"].get("status") == "success"]
+    # Both complete and partial answers are substantive answers.  Refusals and
+    # failed executions must not disappear from the quality denominators.
+    answered = [
+        case
+        for case in cases
+        if case["response"].get("status") in {"success", "partial_answer"}
+    ]
     unsupported = 0
     citation_correct = 0
     citation_denominator = 0
