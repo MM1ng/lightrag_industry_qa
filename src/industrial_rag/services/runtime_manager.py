@@ -31,10 +31,19 @@ class AsyncLightRAGService:
             await self._svc.close()
             self._initialized = False
 
-    async def query(self, question: str, *, mode: QueryMode = "mix") -> QueryResult:
+    async def query(
+        self,
+        question: str,
+        *,
+        mode: QueryMode = "mix",
+        top_k: int = 12,
+        chunk_top_k: int = 20,
+    ) -> QueryResult:
         if not self._initialized:
             raise RuntimeError("Service not initialized")
-        return await self._svc.query(question, mode=mode)
+        return await self._svc.query(
+            question, mode=mode, top_k=top_k, chunk_top_k=chunk_top_k
+        )
 
     async def ingest(self, chunks: Any) -> str:
         if not self._initialized:
