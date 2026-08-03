@@ -6,6 +6,11 @@
 
 `phase10b3a_approved=false`，`phase10c_allowed=false`。
 
+## 版本
+
+- 最终 Git HEAD：`b0757ac`
+- 本阶段提交：`b0757ac test(phase10b3a): record real acceptance blocker`
+
 ## 开始前检查
 
 - 分支：`codex/knowledge-qa-platform-design`
@@ -85,4 +90,3 @@ Active workspace 中发现两份 child chunks 文件，共 453 个 Child Chunk�
 ```
 
 下一次执行前必须先提供完整且不写入报告的 local_staging 运行配置，启动当前代码对应的 FastAPI、Streamlit 和 Qdrant，并确认 ADMIN-only Trace 路径可用；之后才能重新执行完整 52 题 POST + Trace GET 验收。
-
