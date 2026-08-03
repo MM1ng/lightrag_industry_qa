@@ -2,7 +2,7 @@
   "manifest_version": "phase10a-golden-manifest-v1",
   "annotation_policy_version": "phase10a-multi-evidence-v1",
   "dataset_path": "evaluation/phase10/expanded_golden_set.jsonl",
-  "dataset_sha256": "123b6bee9e2777591a776717eb52694b0b8fcf3b4d39f1bc1bdaa49f1843d203",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
   "record_count": 64,
   "positive_count": 60,
   "negative_count": 4,
@@ -39,15 +39,15 @@
   ],
   "child_chunk_artifacts": [
     {
-      "path": "evaluation/experiments/parser_backend/fixed_model/P1_mineru/2196-ANSI-Manual-Chinese.pdf/child_chunks.jsonl",
-      "sha256": "98d79d93d53ac4441801ff90d6480d0bb1568b65f834614f274b2b7b2441fc05"
+      "path": "evaluation/experiments/parser_backend/P0/2196-ANSI-Manual-Chinese.pdf/child_chunks.jsonl",
+      "sha256": "1c13df50995743f53ab0be41e66c5f6e2756b515f6a2aa7dd09ed2b491d3d8e0"
     },
     {
-      "path": "evaluation/experiments/parser_backend/fixed_model/P1_mineru/t1739cn.pdf/child_chunks.jsonl",
-      "sha256": "33c6e1a65cfac430d0b4b7b801ead6403e91195e7fac052d3ad8760540a5b6ae"
+      "path": "evaluation/experiments/parser_backend/P0/t1739cn.pdf/child_chunks.jsonl",
+      "sha256": "be38970c1538dc884e190f760de5058bf77657a7cdad38fded7cb5685433c620"
     }
   ],
-  "creation_commit": "66683af7dc9e4452cb86bac1e940fa1a2de664b8",
+  "creation_commit": "98173cc436dd189cc0274cdca9d682e525d3b583",
   "holdout_not_used_for_tuning": true,
   "metric_policy": {
     "metrics": [

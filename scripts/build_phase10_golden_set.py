@@ -17,9 +17,9 @@ OUTPUT_DIR = PROJECT_ROOT / "evaluation/phase10"
 GOLDEN_PATH = OUTPUT_DIR / "expanded_golden_set.jsonl"
 MANIFEST_PATH = OUTPUT_DIR / "golden_set_manifest.json"
 CHILD_PATHS = (
-    "evaluation/experiments/parser_backend/fixed_model/P1_mineru/"
+    "evaluation/experiments/parser_backend/P0/"
     "2196-ANSI-Manual-Chinese.pdf/child_chunks.jsonl",
-    "evaluation/experiments/parser_backend/fixed_model/P1_mineru/"
+    "evaluation/experiments/parser_backend/P0/"
     "t1739cn.pdf/child_chunks.jsonl",
 )
 PDF_PATHS = (
@@ -101,7 +101,7 @@ ADDITIONAL_POSITIVES = (
     ("A009", "DESMI 泵长期停机但保持安装时，建议以什么频率启动、每次运行多久？", "t1739cn.pdf", (35,)),
     ("A010", "DESMI 重载结构前后轴承的加脂量和重润滑周期分别是多少？", "t1739cn.pdf", (45,)),
     ("A011", "DESMI 泵处理过有毒、爆炸或高温液体后，排水清洗和转移前有哪些要求？", "t1739cn.pdf", (47,)),
-    ("A012", "DESMI 扭矩表中 M24 的 12.9 级螺栓螺母与 A2-50 级螺栓螺母锁紧扭矩范围分别是多少？", "t1739cn.pdf", (56, 57)),
+    ("A012", "DESMI 两张扭矩表中，M24 螺栓螺母与旋入不同基体材料时的锁紧扭矩范围分别是什么？", "t1739cn.pdf", (56, 57)),
 )
 
 NEGATIVES = (
@@ -208,8 +208,8 @@ def _positive_row(
             seen.add(chunk["chunk_id"])
     if question_id == "A012":
         forced = (
-            "cchunk-pymupdf-v1-oot-5b8e825d8f7f-000-305096907bbe",
-            "cchunk-pymupdf-v1-oot-5b8e825d8f7f-001-505a3713c38e",
+            "cchunk-pymupdf-v1-卸泵组-00210867202f-002-88314e6ac0d0",
+            "cchunk-pymupdf-v1-卸泵组-00210867202f-003-21c9c64d310f",
         )
         by_id = {row["chunk_id"]: row for row in chunks}
         selected = [(by_id[forced[0]], 56), (by_id[forced[1]], 57)]
@@ -218,9 +218,6 @@ def _positive_row(
     for index, (chunk, page) in enumerate(selected, start=1):
         evidence_id = f"{question_id}-e{index}"
         evidence_text = _excerpt(question, chunk["content"])
-        if question_id == "A012" and index == 2:
-            anchor = chunk["content"].find("行9：M20")
-            evidence_text = chunk["content"][anchor : anchor + 520].strip()
         expected_evidence.append(
             {
                 "evidence_id": evidence_id,

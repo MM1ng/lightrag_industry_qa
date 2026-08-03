@@ -11,9 +11,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 GOLDEN_PATH = PROJECT_ROOT / "evaluation" / "phase10" / "expanded_golden_set.jsonl"
 MANIFEST_PATH = PROJECT_ROOT / "evaluation" / "phase10" / "golden_set_manifest.json"
 CHILD_PATHS = (
-    "evaluation/experiments/parser_backend/fixed_model/P1_mineru/"
+    "evaluation/experiments/parser_backend/P0/"
     "2196-ANSI-Manual-Chinese.pdf/child_chunks.jsonl",
-    "evaluation/experiments/parser_backend/fixed_model/P1_mineru/"
+    "evaluation/experiments/parser_backend/P0/"
     "t1739cn.pdf/child_chunks.jsonl",
 )
 
@@ -107,4 +107,3 @@ def test_golden_manifest_freezes_exact_sources_hashes_and_metric_policy() -> Non
         "unsupported_answer_rate",
         "question_level_citation_accuracy",
     } <= set(policy["metrics"])
-
