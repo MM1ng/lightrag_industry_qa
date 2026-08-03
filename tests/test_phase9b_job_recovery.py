@@ -138,7 +138,7 @@ async def test_expired_job_becomes_recoverable_and_success_is_not_reclaimed(job_
             lease_token="token-a",
             fencing_token=1,
             checkpoint={"stage": "parsed", "document_id": "d" * 32},
-            status=UpdateJobStatus.running,
+            status=UpdateJobStatus.building,
             now=started,
         )
 

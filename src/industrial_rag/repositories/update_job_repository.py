@@ -266,6 +266,7 @@ class UpdateJobRepository:
                     [
                         UpdateJobStatus.claimed,
                         UpdateJobStatus.running,
+                        UpdateJobStatus.building,
                         UpdateJobStatus.validating,
                     ]
                 ),
@@ -332,6 +333,7 @@ class UpdateJobRepository:
                     [
                         UpdateJobStatus.claimed,
                         UpdateJobStatus.running,
+                        UpdateJobStatus.building,
                         UpdateJobStatus.validating,
                     ]
                 ),
