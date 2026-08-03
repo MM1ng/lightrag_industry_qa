@@ -1,0 +1,22 @@
+{
+  "status": "not_measured",
+  "initial_metrics_unchanged": true,
+  "effective_evidence_recall_after_completion": {
+    "numerator": null,
+    "denominator": null,
+    "value": null
+  },
+  "completion_contribution_rate": {
+    "numerator": null,
+    "denominator": null,
+    "value": null
+  },
+  "completion_evidence_precision": {
+    "numerator": null,
+    "denominator": null,
+    "value": null
+  },
+  "completion_wrong_document_count": null,
+  "completion_wrong_generation_count": null,
+  "reason": "Completion experiments were not eligible before replay gate passed."
+}

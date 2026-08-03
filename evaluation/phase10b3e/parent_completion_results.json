@@ -1,0 +1,8 @@
+{
+  "status": "blocked_before_experiment",
+  "replay_gate_passed": false,
+  "recovery_count": 0,
+  "reason": "Replay cannot improve the 9 refusal cases because all 9 contain no saved answer text; synthesizing from Golden Set is prohibited.",
+  "holdout_used": false,
+  "golden_set_modified": false
+}

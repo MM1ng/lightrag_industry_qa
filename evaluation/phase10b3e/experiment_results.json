@@ -1,0 +1,18 @@
+{
+  "phase": "10B-3E",
+  "status": "blocked_at_offline_replay_gate",
+  "experiments_run": [
+    "replay-baseline-001"
+  ],
+  "experiments_not_run": [
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "real-52-rerun"
+  ],
+  "variables_changed": [],
+  "holdout_used": false,
+  "candidate_activated": false,
+  "reason": "Replay cannot improve the 9 refusal cases because all 9 contain no saved answer text; synthesizing from Golden Set is prohibited."
+}

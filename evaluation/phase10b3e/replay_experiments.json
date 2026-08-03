@@ -1,0 +1,17 @@
+{
+  "experiments": [
+    {
+      "experiment_id": "phase10b3e-replay-baseline-001",
+      "total_count": 52,
+      "positive_count": 50,
+      "negative_count": 2,
+      "replayable_count": 40,
+      "non_replayable_count": 12,
+      "false_rejection_candidates": 10,
+      "recovered_false_rejections": 0,
+      "unsupported_emitted_point_count": 0,
+      "eligible_for_real_52_rerun": false,
+      "reason": "Replay cannot improve the 9 refusal cases because all 9 contain no saved answer text; synthesizing from Golden Set is prohibited."
+    }
+  ]
+}
