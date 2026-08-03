@@ -11,6 +11,7 @@
 ## 标识与版本
 
 - 分支：`codex/knowledge-qa-platform-design`
+- `final_git_head`：`2c25e41fb8352d383e72628df724c04674e9cd02`
 - `code_under_test_commit`：`4214998`
 - `report_commit`：`dace692`（本报告修订版的 docs 提交；最终 Git HEAD 另见交付记录）
 - KB：`8fce4626859d44abb70a9ae5b0372cea`
