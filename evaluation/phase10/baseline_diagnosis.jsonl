@@ -1,0 +1,20 @@
+{"question_id": "S001", "question": "SUMMIT 2196 系列泵长期存放时，存放环境和泵轴转动频率有什么要求？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S002", "question": "SUMMIT 2196 系列泵的入口管路应如何选择和布置？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S003", "question": "SUMMIT 2196 系列泵出口管路中的止回阀、隔离阀和异径接头应怎样布置？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S004", "question": "SUMMIT 2196 系列泵联轴器平行和角度对正误差应控制在多少以内？高温工况还要注意什么？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S005", "question": "SUMMIT 2196 系列泵启动后，填料函的正常滴漏速度应调整到多少？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S007", "question": "SUMMIT 手册中，轴承温度不超过 150°F、150–200°F、超过 200°F 时分别应选什么 ISO 润滑油等级？", "failure_layer": "Refusal Decision Error", "failure_category": "evidence_threshold_too_high", "failure_reason": "evidence threshold too high", "execution_status": "completed"}
+{"question_id": "S009", "question": "SUMMIT 手册对润滑脂的适用温度、稠度和重新润滑周期有什么规定？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S011", "question": "按 SUMMIT 手册，离心泵的标准启动步骤是什么？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S012", "question": "SUMMIT 2196 系列泵的停机步骤是什么？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S014", "question": "用塞尺法设置 2196-R 型泵叶轮间隙时，最终塞尺厚度如何确定？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S015", "question": "SUMMIT 手册中，泵不输送液体的常见原因和对应处理方法有哪些？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "S016", "question": "SUMMIT 手册中，轴承高温运行通常由什么原因造成，如何处理？", "failure_layer": "Ranking Error", "failure_category": "correct_chunk_rank_too_low", "failure_reason": "correct chunk rank too low", "execution_status": "completed"}
+{"question_id": "S017", "question": "按 SUMMIT 手册，在尝试维修离心泵之前必须完成哪些安全步骤？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "D003", "question": "DESMI 手册中的“危险”“警告”“小心”分别代表什么风险等级和后果？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "D005", "question": "DESMI 手册规定进行维护、检查或安装前，泵组必须处于什么状态？", "failure_layer": "Refusal Decision Error", "failure_category": "evidence_threshold_too_high", "failure_reason": "evidence threshold too high", "execution_status": "completed"}
+{"question_id": "C001", "question": "两份手册对泵的存放环境和泵轴定期转动频率分别有什么规定？", "failure_layer": "Retrieval Error", "failure_category": "page_not_recalled", "failure_reason": "page not recalled", "execution_status": "completed"}
+{"question_id": "C002", "question": "SUMMIT 与 DESMI 手册对泵和电机联轴器对中精度的要求有什么不同？", "failure_layer": "Ranking Error", "failure_category": "correct_chunk_rank_too_low", "failure_reason": "correct chunk rank too low", "execution_status": "completed"}
+{"question_id": "C003", "question": "两份手册对离心泵干运行和启动前灌注有哪些共同要求？", "failure_layer": "Refusal Decision Error", "failure_category": "evidence_threshold_too_high", "failure_reason": "evidence threshold too high", "execution_status": "completed"}
+{"question_id": "N001", "question": "这两份泵手册中，Wi-Fi 配网和无线网络密码应该如何设置？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "N002", "question": "两份手册指定必须购买哪个品牌、哪个型号的变频器？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
