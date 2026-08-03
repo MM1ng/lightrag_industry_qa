@@ -48,6 +48,8 @@ async def test_query_captures_initial_order_scores_sources_and_selected_flags():
     assert result.retrieval_trace.rerank_applied is False
     assert result.retrieval_trace.reranked_results == ()
     assert all(x.reranked_rank is None for x in result.retrieval_trace.initial_results)
+    assert result.retrieval_trace.final_selected_chunks[0].final_rank == 1
+    assert result.retrieval_trace.final_selected_chunks[0].initial_rank == 1
 
 def test_trace_payload_omits_forbidden_content():
     payload = trace.to_public_payload()
@@ -90,14 +92,14 @@ class RetrievalExecutionTrace:
     initial_results: tuple[RetrievalTraceItem, ...]
     rerank_applied: bool
     reranked_results: tuple[RetrievalTraceItem, ...]
-    final_selected_chunks: tuple[str, ...]
+    final_selected_chunks: tuple[SelectedEvidenceTrace, ...]
     normalization_ms: float
     retrieval_ms: float
     rerank_ms: float
     evidence_selection_ms: float
 ```
 
-Use explicit score lookup so `0.0` is preserved. Derive matched terms from the evidence text already returned by `aquery_data`, then discard that text. Use `lightrag_mix_unspecified` only when upstream does not label a source. Measure stages with `time.perf_counter()` and keep Rerank fields false/empty/null.
+Add frozen `SelectedEvidenceTrace` with final rank, chunk/document IDs and name, page, initial/reranked rank, and used/cited flags. Define `initial_results` only as the ordered candidates from the real `aquery_data` result before project Evidence Selection/Rerank. Use explicit score lookup so `0.0` is preserved; absent score is null and absent source is exactly `lightrag_mix_unspecified`, without inference. Derive Chinese matched terms only through an existing deterministic tokenizer or explicit substring matching; otherwise return empty. Measure stages with `time.perf_counter()` and keep Rerank fields false/empty/null.
 
 - [ ] **Step 4: Attach trusted KB/Generation metadata without changing query behavior**
 
@@ -157,7 +159,7 @@ Run: `python -m pytest tests/test_phase10a_trace_persistence.py tests/test_phase
 
 - [ ] **Step 3: Add model, migration, repository, and TTL setting**
 
-Create an insert-only model keyed by request ID with JSON payload and indexed expiry. Migration down_revision is `b9c4e7f2a6d1`; upgrade creates the table and indexes, downgrade drops only those objects. Repository commits nothing implicitly so callers retain transaction control.
+Create an insert-only model keyed by request ID with JSON payload and indexed expiry. Migration down_revision is `b9c4e7f2a6d1`; upgrade creates the table and indexes, downgrade drops only those objects. Repository commits nothing implicitly so callers retain transaction control. Provide a dedicated Trace Session factory so trace writes cannot share the ordinary query transaction.
 
 - [ ] **Step 4: Run migration round-trip and persistence tests**
 
@@ -209,7 +211,7 @@ Run: `python -m pytest tests/test_phase10a_diagnostics_api.py -q`
 
 - [ ] **Step 3: Implement best-effort persistence at the KB ordinary-query boundary**
 
-Build the payload only from the internal trace and trusted query result. Supply request ID, trace ID, KB ID, Generation ID/epoch, and end-to-end latency. Wrap only persistence in `try/except`; log a warning with IDs and exception class, increment the failure counter, roll back the failed insert transaction, and return the already-built ordinary response.
+Build the payload only from the internal trace and trusted query result. Supply request ID, trace ID, KB ID, Generation ID/epoch, and end-to-end latency. After the ordinary query transaction and response object are complete, open a separate SQLAlchemy Trace Session and transaction. Wrap only this persistence transaction in `try/except`; roll back and close only that session, log IDs and exception class without payload/query/credentials/stack, increment the failure counter, and return the already-built ordinary response.
 
 - [ ] **Step 4: Implement admin router and sanitized 404**
 
@@ -252,12 +254,15 @@ def test_phase10_golden_set_is_frozen_and_provenance_backed():
     assert len({x["question_id"] for x in rows}) == 64
     for row in rows:
         if row["answerable"]:
-            chunk = ACTUAL_CHUNKS[(row["document_name"], row["chunk_id"])]
-            assert chunk["page_start"] <= row["page_number"] <= chunk["page_end"]
-            assert row["evidence_text"] in chunk["content"]
+            assert any(x["role"] == "primary" for x in row["expected_evidence"])
+            for evidence in row["expected_evidence"]:
+                chunk = ACTUAL_CHUNKS[(evidence["document_name"], evidence["chunk_id"])]
+                assert chunk["page_start"] <= evidence["page_number"] <= chunk["page_end"]
+                assert evidence["evidence_text"] in chunk["content"]
             assert row["expected_answer_points"]
         else:
-            assert row["document_name"] is None
+            assert row["expected_evidence"] == []
+            assert row["expected_answer_points"] == []
             assert row["negative_reason"]
 ```
 
@@ -267,11 +272,11 @@ Run: `python -m pytest tests/test_phase10a_golden_set.py -q`
 
 - [ ] **Step 3: Build the annotation inventory from actual chunks**
 
-Run the validator in inventory mode against `evaluation/experiments/parser_backend/fixed_model/P1_mineru/*/child_chunks.jsonl` and the frozen PDFs. It outputs candidate evidence locations and exact excerpts but does not generate questions or answers.
+Run the validator in inventory mode against the two explicit child artifact paths named in the design and the frozen PDFs. It outputs candidate evidence locations and exact excerpts but does not generate questions or answers; manifest path ordering is explicit rather than wildcard-derived.
 
 - [ ] **Step 4: Annotate and commit exactly 64 records**
 
-Migrate the existing 50 questions to the richer schema using actual current chunk IDs, add 14 evidence-backed questions so all required types are represented, and assign the fixed 36/16/12 split. Copy bounded evidence excerpts verbatim and write factual answer-point clauses manually from those excerpts. Keep at least four negative/manual-not-covered cases and preserve every difficult fixed-20 question.
+Migrate the existing 50 questions to the multi-evidence schema using actual current chunk IDs, add 14 evidence-backed questions so all required types are represented, and assign the fixed 36/16/12 split. Every answer point references its supporting evidence IDs. Copy bounded evidence excerpts verbatim and write factual answer-point clauses manually from those excerpts. Cross-page and multi-evidence questions must reference multiple real chunks. Keep at least four negative/manual-not-covered cases and preserve every difficult fixed-20 question.
 
 - [ ] **Step 5: Generate the hash-addressed manifest and validate it**
 
@@ -310,6 +315,7 @@ def test_metrics_use_exact_denominators_and_rank_order():
     assert report["overall"]["chunk_recall_at_3"]["value"] == 1.0
     assert report["overall"]["mrr"]["value"] == 0.5
     assert report["overall"]["negative_rejection_rate"]["value"] == 1.0
+    assert report["overall"]["claim_level_citation_accuracy"]["available"] is False
 
 def test_diagnosis_separates_retrieval_ranking_refusal_and_citation():
     assert diagnose_case(no_expected_page())["failure_category"] == "page_not_recalled"
@@ -324,7 +330,7 @@ Run: `python -m pytest tests/test_phase10a_evaluation.py -q`
 
 - [ ] **Step 3: Implement Recall, MRR, nDCG, answer metrics, and breakdowns**
 
-Return numerator/denominator/value for every rate. Compute nDCG@10 with binary relevance over all expected chunks, first correct rank from initial results, latency percentiles from observed milliseconds, and breakdowns by split/type/difficulty/document/answerability. Return null for empty denominators.
+Freeze the metric policy in the manifest and return numerator/denominator/value for every rate, with null value for empty denominators. Compute Chunk, Any Evidence, Complete Evidence, Document, and Page Recall@K; MRR; graded nDCG@10 from evidence relevance grades; false/negative rejection; unsupported-answer; question-level citation accuracy; and explicit claim-level citation accuracy availability. Retrieval Recall and MRR use answerable positives only; negatives never enter those denominators. Add latency percentiles and breakdowns by split/type/difficulty/document/answerability.
 
 - [ ] **Step 4: Implement deterministic diagnosis precedence**
 
@@ -380,7 +386,7 @@ Require base URL, KB ID, both role keys, dataset path, output directory, expecte
 
 - [ ] **Step 4: Add fixed-20 and expanded-set output generation**
 
-Generate the fixed-20 diagnosis from the corresponding frozen question IDs and aggregate all 64 records into retrieval metrics and baseline summary. Include HTTP failures and missing traces explicitly; never drop a failed case.
+Generate the fixed-20 diagnosis from the corresponding frozen question IDs and aggregate all 64 records into retrieval metrics and baseline summary. Include HTTP failures and missing traces explicitly; never drop or synthesize a failed case. After a trace-missing fix, rerun the complete ordinary POST plus admin GET for every affected execution; diagnostic-only retries are forbidden.
 
 - [ ] **Step 5: Run runner unit tests**
 
@@ -401,7 +407,7 @@ Start API instances from the committed code with `ENABLE_LLM_CACHE=false`, `RETR
 
 Run: `python scripts/run_phase10a_baseline.py --verify-only`
 
-Expected: 64/64 result records, fixed20 diagnosis 20/20, trace completeness 100%, dataset/result SHA matches, credentials absent.
+Expected: 64/64 successful ordinary requests each have a readable trace, fixed20 diagnosis 20/20, trace completeness numerator=64 denominator=64 value=1.0, dataset/result SHA matches, credentials absent.
 
 ```powershell
 git add evaluation/phase10/baseline_results.jsonl evaluation/phase10/baseline_diagnosis.jsonl evaluation/phase10/baseline_summary.json evaluation/phase10/retrieval_metrics.json
