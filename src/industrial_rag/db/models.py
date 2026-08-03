@@ -592,3 +592,20 @@ class GCPlan(Base):
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
     approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     executed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class RetrievalTraceRecord(Base):
+    """Insert-only retrieval diagnosis payload keyed by the ordinary request ID."""
+
+    __tablename__ = "retrieval_traces"
+
+    request_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    trace_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    knowledge_base_id: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
+    generation_id: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
+    trace_version: Mapped[str] = mapped_column(String(80), nullable=False)
+    payload: Mapped[dict] = mapped_column(JSON, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, index=True
+    )

@@ -23,6 +23,7 @@ DEFAULT_DB_URL = f"sqlite+aiosqlite:///{DEFAULT_DB_DIR / 'industrial_rag.db'}"
 
 _engine = None
 _session_factory: async_sessionmaker[AsyncSession] | None = None
+_trace_session_factory: async_sessionmaker[AsyncSession] | None = None
 
 
 def _database_url() -> str:
@@ -63,6 +64,18 @@ def get_session_factory() -> async_sessionmaker[AsyncSession]:
     return _session_factory
 
 
+def get_trace_session_factory() -> async_sessionmaker[AsyncSession]:
+    """Return a distinct factory so trace writes never reuse request sessions."""
+    global _trace_session_factory
+    if _trace_session_factory is None:
+        _trace_session_factory = async_sessionmaker(
+            get_engine(),
+            class_=AsyncSession,
+            expire_on_commit=False,
+        )
+    return _trace_session_factory
+
+
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
     """FastAPI dependency: yields an async DB session."""
     factory = get_session_factory()
@@ -86,18 +99,20 @@ async def init_db(*, drop_all: bool = False) -> None:
 
 async def close_db() -> None:
     """Dispose the engine on shutdown."""
-    global _engine, _session_factory
+    global _engine, _session_factory, _trace_session_factory
     if _engine is not None:
         await _engine.dispose()
         _engine = None
         _session_factory = None
+        _trace_session_factory = None
 
 
 def reset_for_testing() -> None:
     """Reset globals so each test can reconfigure the engine."""
-    global _engine, _session_factory
+    global _engine, _session_factory, _trace_session_factory
     _engine = None
     _session_factory = None
+    _trace_session_factory = None
 
 
 # ---------------------------------------------------------------------------

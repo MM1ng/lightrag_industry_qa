@@ -63,6 +63,7 @@ class Settings:
     validation_base_url: str | None = None
     validation_artifact_dir: Path = PROJECT_ROOT / "artifacts" / "validation-runs"
     validation_max_age_seconds: int = 3600
+    retrieval_trace_ttl_seconds: int = 86_400
     # LightRAG per-generation isolation token. Derived per knowledge base by
     # settings_for_knowledge_base(); None keeps the legacy layout (workspace="")
     # used by pre-generation knowledge bases.
@@ -182,6 +183,16 @@ class Settings:
             raise ValueError("VALIDATION_MAX_AGE_SECONDS 必须是整数") from error
         if validation_max_age_seconds < 60:
             raise ValueError("VALIDATION_MAX_AGE_SECONDS 不能小于 60")
+        try:
+            retrieval_trace_ttl_seconds = int(
+                values.get("RETRIEVAL_TRACE_TTL_SECONDS") or "86400"
+            )
+        except ValueError as error:
+            raise ValueError("RETRIEVAL_TRACE_TTL_SECONDS 必须是整数") from error
+        if not 60 <= retrieval_trace_ttl_seconds <= 604_800:
+            raise ValueError(
+                "RETRIEVAL_TRACE_TTL_SECONDS 必须在 60 到 604800 之间"
+            )
 
         if not api_key:
             raise ValueError("必须通过环境变量 DASHSCOPE_API_KEY 提供百炼密钥")
@@ -240,6 +251,7 @@ class Settings:
             validation_base_url=validation_base_url,
             validation_artifact_dir=validation_artifact_dir.resolve(),
             validation_max_age_seconds=validation_max_age_seconds,
+            retrieval_trace_ttl_seconds=retrieval_trace_ttl_seconds,
             mineru_enabled=mineru_enabled,
             mineru_api_base_url=mineru_api_base_url,
             mineru_api_key=mineru_api_key,
