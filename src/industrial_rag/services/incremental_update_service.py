@@ -56,6 +56,7 @@ from industrial_rag.storage_layout import (
 from industrial_rag.vector_collections import CollectionNameResolver, VectorBackend
 
 logger = logging.getLogger(__name__)
+LIGHTRAG_CLOSE_TIMEOUT_SECONDS = 30.0
 
 MAX_UPLOAD_SIZE = 20 * 1024 * 1024
 ALLOWED_EXTENSIONS = {".pdf"}
@@ -1163,7 +1164,15 @@ class IncrementalUpdateService:
                 split_by_character_only=True,
             )
         finally:
-            await service.close()
+            try:
+                await asyncio.wait_for(
+                    service.close(), timeout=LIGHTRAG_CLOSE_TIMEOUT_SECONDS
+                )
+            except TimeoutError:
+                logger.warning(
+                    "LightRAG close exceeded %.0fs after finalized storage; continuing",
+                    LIGHTRAG_CLOSE_TIMEOUT_SECONDS,
+                )
         await self._doc_repo.update(
             doc.id,
             index_status="done",

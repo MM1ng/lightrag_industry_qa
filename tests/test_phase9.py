@@ -318,6 +318,26 @@ def ctx(tmp_path: Path) -> Phase9Ctx:
 # ---------------------------------------------------------------------------
 
 
+def test_lightrag_close_timeout_does_not_block_candidate_completion(
+    ctx: Phase9Ctx, monkeypatch
+):
+    async def hanging_close(_self) -> None:
+        await asyncio.Event().wait()
+
+    monkeypatch.setattr(FakeLightRAGService, "close", hanging_close)
+    monkeypatch.setattr(
+        "industrial_rag.services.incremental_update_service.LIGHTRAG_CLOSE_TIMEOUT_SECONDS",
+        0.01,
+    )
+
+    async def _test():
+        kb_id = await ctx.create_kb()
+        result = await ctx.add(kb_id, "P9-CLOSE-TIMEOUT 可恢复构建。", "timeout.pdf")
+        assert result["status"] == "candidate_built"
+
+    _run(_test())
+
+
 def test_01_upload_same_file_twice_returns_no_change(ctx: Phase9Ctx):
     async def _test():
         kb_id = await ctx.create_kb()
