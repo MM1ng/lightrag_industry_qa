@@ -1,0 +1,13 @@
+{
+  "base_url": "http://127.0.0.1:8010",
+  "version": {
+    "app_version": "0.1.0-rc.1",
+    "git_commit": "fcbf6fcfbd804666899425e2fa98770d57cab533",
+    "query_mode": "mix",
+    "embedding_model": "text-embedding-v4"
+  },
+  "code_under_test_commit": "fcbf6fcfbd804666899425e2fa98770d57cab533",
+  "openapi_has_kb_query": true,
+  "openapi_has_admin_trace": true,
+  "kb_count": 1
+}

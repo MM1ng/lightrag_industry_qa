@@ -1,0 +1,27 @@
+{
+  "schema_version": "phase10b3b-context-registry-v1",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "parser_name": "PyMuPDF",
+  "parser_version": "1.28.0",
+  "chunking_strategy": "pymupdf-v1",
+  "chunking_version": "0.1.0",
+  "source_artifacts": [
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\parsed\\documents\\80bb03f00a854376a339767099da6013\\current\\child_chunks.jsonl",
+      "sha256": "1c13df50995743f53ab0be41e66c5f6e2756b515f6a2aa7dd09ed2b491d3d8e0"
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\parsed\\documents\\ee3fff9976534edda393da71b73f587b\\current\\child_chunks.jsonl",
+      "sha256": "be38970c1538dc884e190f760de5058bf77657a7cdad38fded7cb5685433c620"
+    }
+  ],
+  "chunks_sha256": "0c6fcf257e6f4fea3e60f952a4280bd251a316e08e1f32cf52d7b019643aac9b",
+  "relationships_sha256": "4ebf1e708c1268d2bad448f9cac3c84f68a58da3150cee7b491d20cd84578949",
+  "record_count": 453,
+  "relationship_count": 902,
+  "parent_supported": false,
+  "table_supported": false,
+  "created_at": "2026-08-03T09:45:06.437174+00:00",
+  "creation_commit": "fcbf6fcfbd804666899425e2fa98770d57cab533"
+}

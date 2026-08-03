@@ -1,0 +1,21 @@
+{
+  "phase": "10B-3B",
+  "branch": "codex/knowledge-qa-platform-design",
+  "code_under_test_commit": "fcbf6fcfbd804666899425e2fa98770d57cab533",
+  "python": "C:/Users/12189/.conda/envs/industrial-rag/python.exe",
+  "python_version": "3.11.15",
+  "api_port": 8010,
+  "streamlit_port": 8510,
+  "old_port_8000": "docker container industrial-rag-p3-api (legacy OpenAPI; not stopped because new service query gate failed)",
+  "qdrant_url": "http://127.0.0.1:17333",
+  "qdrant_status": null,
+  "qdrant_container_image": "qdrant/qdrant:v1.13.6",
+  "database_path": "runtime/phase10b3b/industrial_rag_staging.db",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "knowledge_base_name": "Phase4-Frozen-PyMuPDF-Qdrant",
+  "active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_generation": "g5162e7fb4208635103ff4ebb",
+  "active_generation_workspace": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\g5162e7fb4208635103ff4ebb\\workspace",
+  "context_registry": "materialized in active generation workspace; integrity gate failed duplicate/self links",
+  "secrets": "configured booleans only; values omitted"
+}

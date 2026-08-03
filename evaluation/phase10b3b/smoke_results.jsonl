@@ -1,0 +1,5 @@
+{"case": "openapi", "status_code": 200, "has_kb_query": true, "has_admin_trace": true}
+{"case": "trace_missing_auth", "status_code": 401}
+{"case": "trace_service_forbidden", "status_code": 403}
+{"case": "trace_admin_authenticated", "status_code": 404}
+{"case": "kb_query_service", "status_code": 502}
