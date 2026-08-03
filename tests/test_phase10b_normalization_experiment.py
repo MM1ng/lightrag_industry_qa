@@ -16,12 +16,17 @@ def test_normalization_experiment_manifest_is_single_variable_and_dev_validation
     assert result["model_config_unchanged"] is True
     assert result["holdout_used_for_tuning"] is False
     assert result["holdout_rows_loaded"] is False
+    assert result["retained_on_validation"] is True
+    assert result["run_duration_seconds"] >= 0
     assert result["baseline"]["record_count"] == 52
     assert result["normalization"]["record_count"] == 52
     assert set(result["normalization"]["metrics_by_split"]) == {
         "development",
         "validation",
     }
+    assert "metric_deltas_by_split" in result["normalization"]
+    assert "latency_by_split" in result["normalization"]
+    assert result["normalization"]["llm_call_count"] is None
 
 
 def test_normalization_traces_record_metadata_without_changing_response_contract() -> None:

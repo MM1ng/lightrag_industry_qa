@@ -8,6 +8,8 @@ import hashlib
 import json
 import os
 import subprocess
+import time
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -89,6 +91,8 @@ async def _run_live(
 
 
 async def _run(args: argparse.Namespace) -> int:
+    started_at = datetime.now(UTC).isoformat()
+    started = time.perf_counter()
     if os.environ.get("ENABLE_LLM_CACHE", "").strip().lower() != "false":
         raise ValueError("ENABLE_LLM_CACHE=false is required for the experiment")
     if os.environ.get("QA_QUERY_NORMALIZATION_ENABLED", "").strip().lower() != "true":
@@ -122,6 +126,36 @@ async def _run(args: argparse.Namespace) -> int:
     if len(baseline_rows) != 52:
         raise ValueError("Phase 10A baseline must contain exactly 52 comparable dev/validation rows")
     dataset_sha = _sha256(GOLDEN_PATH)
+    baseline_metrics = _metrics_by_split(baseline_rows)
+    normalized_metrics = _metrics_by_split(normalized_rows)
+    comparison_keys = (
+        "chunk_recall_at_5",
+        "chunk_recall_at_20",
+        "any_evidence_recall_at_5",
+        "mrr",
+        "graded_ndcg_at_10",
+        "false_rejection_rate",
+        "unsupported_answer_rate",
+        "question_level_citation_accuracy",
+    )
+    validation_baseline = baseline_metrics["validation"]["overall"]
+    validation_normalized = normalized_metrics["validation"]["overall"]
+    metric_deltas = {
+        split: {
+            key: normalized_metrics[split]["overall"][key]["value"]
+            - baseline_metrics[split]["overall"][key]["value"]
+            for key in comparison_keys
+        }
+        for split in sorted(ANALYZED_SPLITS)
+    }
+    retained = all(
+        validation_normalized[key]["value"] >= validation_baseline[key]["value"]
+        for key in comparison_keys
+        if key not in {"false_rejection_rate", "unsupported_answer_rate"}
+    ) and all(
+        validation_normalized[key]["value"] <= validation_baseline[key]["value"]
+        for key in {"false_rejection_rate", "unsupported_answer_rate"}
+    )
     payload = {
         "experiment_id": "phase10b-normalization-001",
         "parent_experiment_id": "phase10a-real-baseline",
@@ -140,6 +174,15 @@ async def _run(args: argparse.Namespace) -> int:
         "model_config_unchanged": True,
         "holdout_used_for_tuning": False,
         "holdout_rows_loaded": False,
+        "retained_on_validation": retained,
+        "retention_reason": (
+            "validation improves all selected retrieval/quality metrics and does not worsen refusal guardrails"
+            if retained
+            else "validation guardrail or quality metric did not improve"
+        ),
+        "run_started_at": started_at,
+        "run_finished_at": datetime.now(UTC).isoformat(),
+        "run_duration_seconds": round(time.perf_counter() - started, 3),
         "configuration": {
             "query_normalization_enabled": True,
             "mode": "mix",
@@ -149,11 +192,19 @@ async def _run(args: argparse.Namespace) -> int:
         },
         "baseline": {
             "record_count": len(baseline_rows),
-            "metrics_by_split": _metrics_by_split(baseline_rows),
+            "metrics_by_split": baseline_metrics,
         },
         "normalization": {
             "record_count": len(normalized_rows),
-            "metrics_by_split": _metrics_by_split(normalized_rows),
+            "metrics_by_split": normalized_metrics,
+            "metric_deltas_by_split": metric_deltas,
+            "latency_by_split": {
+                split: normalized_metrics[split]["overall"]["latency_ms"]
+                for split in sorted(ANALYZED_SPLITS)
+            },
+            "llm_call_count": None,
+            "embedding_call_count": None,
+            "call_count_note": "ordinary query API does not expose provider call counters",
             "trace_completeness": {
                 "numerator": sum(row.get("trace") is not None for row in normalized_rows),
                 "denominator": len(normalized_rows),
