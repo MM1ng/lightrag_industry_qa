@@ -1,0 +1,35 @@
+{
+  "failed_candidate": {
+    "status_code": 409,
+    "code": "generation_invalid_state",
+    "active_before": "a2d1c77ce08b414495e9d845cc42f799",
+    "active_after": "a2d1c77ce08b414495e9d845cc42f799",
+    "unchanged": true
+  },
+  "concurrent_promote": [
+    {
+      "port": 8111,
+      "status_code": 200,
+      "body": {
+        "status": "promoted",
+        "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+        "generation_id": "a55adad410e644ceb82de96022321633",
+        "idempotent": false,
+        "active_generation_id": "a55adad410e644ceb82de96022321633",
+        "previous_generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      }
+    },
+    {
+      "port": 8112,
+      "status_code": 409,
+      "body": {
+        "request_id": "e9059f9b1edc4934ba440f662883f0e3",
+        "trace_id": "4d18a0dc33354b19a8a0caa53b2c0968",
+        "code": "knowledge_base_busy",
+        "message": "请求无法完成，请检查当前资源状态后重试。",
+        "retryable": false
+      }
+    }
+  ],
+  "active_after_promote": "a55adad410e644ceb82de96022321633"
+}

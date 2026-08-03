@@ -1,0 +1,13 @@
+{
+  "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "question_count": 20,
+  "http_success_rate": 1.0,
+  "positive_match_count": 14,
+  "positive_question_count": 18,
+  "negative_pass_count": 2,
+  "negative_question_count": 2,
+  "emitted_trace_incomplete_count": 0,
+  "request_id_missing_count": 0,
+  "trace_id_missing_count": 0,
+  "artifact_sha256": "62ec34ab65372222e92c912ebc310dd46458714c04dedfd694e0e177780477f0"
+}

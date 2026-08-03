@@ -1,0 +1,65 @@
+{
+  "rollback_to_old": {
+    "status": "rolled_back",
+    "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+    "idempotent": false,
+    "active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+    "previous_generation_id": "a55adad410e644ceb82de96022321633"
+  },
+  "queries_after_old": [
+    {
+      "port": 8111,
+      "role": "service",
+      "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+      "expected_generation_seen": true,
+      "citation_count": 3,
+      "trace_complete": true
+    },
+    {
+      "port": 8112,
+      "role": "admin",
+      "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+      "expected_generation_seen": true,
+      "citation_count": 3,
+      "trace_complete": true
+    }
+  ],
+  "rollback_to_candidate": {
+    "status": "rolled_back",
+    "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation_id": "a55adad410e644ceb82de96022321633",
+    "idempotent": false,
+    "active_generation_id": "a55adad410e644ceb82de96022321633",
+    "previous_generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+  },
+  "queries_after_candidate": [
+    {
+      "port": 8111,
+      "role": "service",
+      "generation_id": "a55adad410e644ceb82de96022321633",
+      "expected_generation_seen": true,
+      "citation_count": 3,
+      "trace_complete": true
+    },
+    {
+      "port": 8112,
+      "role": "admin",
+      "generation_id": "a55adad410e644ceb82de96022321633",
+      "expected_generation_seen": true,
+      "citation_count": 3,
+      "trace_complete": true
+    }
+  ],
+  "candidate_job_approved_by": "admin:0a794bbf4880",
+  "forged_actor_absent": true,
+  "final_rollback": {
+    "status": "rolled_back",
+    "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+    "idempotent": false,
+    "active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+    "previous_generation_id": "a55adad410e644ceb82de96022321633"
+  },
+  "final_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+}

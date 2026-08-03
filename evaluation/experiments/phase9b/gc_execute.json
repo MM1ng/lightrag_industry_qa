@@ -1,0 +1,13 @@
+{
+  "plan_id": "a93e810ea9934b84a63d7918d6072aa0",
+  "execute_status": "completed",
+  "approved_by": "admin:0a794bbf4880",
+  "deleted_count": 5,
+  "failed_count": 0,
+  "active_before": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_after": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_unchanged": true,
+  "before_status": "success",
+  "after_status": "success",
+  "after_trace_complete": true
+}
