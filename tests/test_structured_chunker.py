@@ -61,6 +61,12 @@ def test_child_chunk_id_differs_by_ordinal() -> None:
     assert c1 != c2
 
 
+def test_child_chunk_id_differs_when_parent_position_differs() -> None:
+    c1 = make_child_chunk_id("pchunk-doc-p1-1", 0, "same content")
+    c2 = make_child_chunk_id("pchunk-doc-p2-2", 0, "same content")
+    assert c1 != c2
+
+
 def test_document_id_deterministic() -> None:
     id1 = make_document_id("2196-ANSI-Manual-Chinese.pdf")
     id2 = make_document_id("2196-ANSI-Manual-Chinese.pdf")

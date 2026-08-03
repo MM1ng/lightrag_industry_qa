@@ -85,13 +85,14 @@ def make_parent_chunk_id(
     *,
     strategy: str = "pymupdf-v1",
     version: str = "0.1.0",
+    group_ordinal: int = 0,
 ) -> str:
     """Deterministic parent chunk ID."""
     norm = _normalized_text_for_id(content)
     h = _content_hash(norm)
     sp = "-".join(s.replace(" ", "_")[:20] for s in section_path[:3]) or "root"
     pages = f"p{page_start or 0}-{page_end or 0}"
-    return f"pchunk-{strategy}-{document_id[:12]}-{pages}-{sp}-{h}"
+    return f"pchunk-{strategy}-{document_id[:12]}-{pages}-g{group_ordinal}-{sp}-{h}"
 
 
 def make_child_chunk_id(
@@ -102,10 +103,18 @@ def make_child_chunk_id(
     strategy: str = "pymupdf-v1",
     version: str = "0.1.0",
 ) -> str:
-    """Deterministic child chunk ID."""
+    """Deterministic child ID including the complete parent identity.
+
+    The legacy implementation used only the last 16 characters of the parent
+    ID. Since that suffix was content-derived, identical text in different
+    page ranges collided. The full parent identity plus ordinal and normalized
+    content now participates in the digest, keeping repeated text at distinct
+    document positions distinct without using paths or randomness.
+    """
     norm = _normalized_text_for_id(content)
-    h = _content_hash(norm)
-    return f"cchunk-{strategy}-{parent_chunk_id[-16:]}-{ordinal:03d}-{h}"
+    identity = f"{parent_chunk_id}|{strategy}|{version}|{ordinal}|{norm}"
+    digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
+    return f"cchunk-{strategy}-{digest}-{ordinal:03d}"
 
 
 def make_document_id(source_file: str) -> str:
@@ -365,7 +374,7 @@ def build_parent_child_chunks(
         parent_tokens = count_tokens(full_text)
         parent_id = make_parent_chunk_id(
             doc_id, section_path, page_start, page_end,
-            full_text, strategy=cfg.strategy, version=cfg.version,
+            full_text, strategy=cfg.strategy, version=cfg.version, group_ordinal=group_idx,
         )
         parent_hash = _content_hash(full_text)
 
