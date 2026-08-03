@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase10a-retrieval-trace-v1",
+  "title": "Phase 10A Retrieval Trace",
+  "type": "object",
+  "required": [
+    "request_id",
+    "trace_id",
+    "trace_version",
+    "knowledge_base_id",
+    "generation_id",
+    "original_query",
+    "normalized_query",
+    "retrieval_config",
+    "initial_results",
+    "rerank_applied",
+    "reranked_results",
+    "final_selected_chunks",
+    "normalization_ms",
+    "retrieval_ms",
+    "rerank_ms",
+    "evidence_selection_ms"
+  ],
+  "properties": {
+    "trace_version": {"const": "phase10a-retrieval-trace-v1"},
+    "initial_results": {"type": "array"},
+    "rerank_applied": {"type": "boolean"},
+    "reranked_results": {"type": "array"},
+    "final_selected_chunks": {"type": "array"}
+  },
+  "additionalProperties": true
+}
