@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, Depends, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from industrial_rag.auth import AuthenticatedActor, require_admin_actor
 from industrial_rag.errors import AppError, AppErrorCode
@@ -51,6 +51,10 @@ class RetrievalTraceResponse(BaseModel):
     generation_epoch: int
     original_query: str
     normalized_query: str
+    detected_model: str | None = None
+    detected_component: str | None = None
+    detected_parameter: str | None = None
+    added_aliases: list[str] = Field(default_factory=list)
     retrieval_config: dict[str, Any]
     initial_results: list[RetrievalResultResponse]
     rerank_applied: bool

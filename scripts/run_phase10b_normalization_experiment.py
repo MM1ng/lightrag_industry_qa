@@ -83,6 +83,7 @@ async def _run_live(
             admin_api_key=admin_key,
             dataset_sha256=_sha256(GOLDEN_PATH),
             output_dir=EXPERIMENT_DIR,
+            required_trace_keys=("detected_model", "added_aliases"),
         )
         return await runner.run(golden_rows)
 

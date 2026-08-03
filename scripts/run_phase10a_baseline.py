@@ -62,6 +62,7 @@ class Phase10BaselineRunner:
         admin_api_key: str,
         dataset_sha256: str,
         output_dir: Path,
+        required_trace_keys: tuple[str, ...] = (),
     ) -> None:
         if not service_api_key or not admin_api_key:
             raise ValueError("both role credentials are required")
@@ -74,6 +75,7 @@ class Phase10BaselineRunner:
         self._admin_key = admin_api_key
         self._dataset_sha256 = dataset_sha256
         self._output_dir = output_dir
+        self._required_trace_keys = required_trace_keys
 
     async def run_case(self, golden: dict[str, Any]) -> dict[str, Any]:
         base = {
@@ -157,6 +159,7 @@ class Phase10BaselineRunner:
             if row.get("dataset_sha256") == self._dataset_sha256
             and row.get("execution_status") == "completed"
             and row.get("trace") is not None
+            and all(key in row["trace"] for key in self._required_trace_keys)
         }
         results: list[dict[str, Any]] = []
         for golden in golden_rows:
