@@ -22,7 +22,7 @@ for import_path in (PROJECT_ROOT, PROJECT_ROOT / "src"):
 from industrial_rag import graph_visualizer as gv  # noqa: E402
 from industrial_rag.config import INDEX_METADATA_FILENAME  # noqa: E402
 
-from app.api_client import ApiError, KnowledgeApiClient  # noqa: E402
+from app.api_client import ApiError, ApiKnowledgeBase, KnowledgeApiClient  # noqa: E402
 from app.chat_state import (  # noqa: E402
     AssistantMessage,
     ChatSession,
@@ -31,6 +31,10 @@ from app.chat_state import (  # noqa: E402
     add_user_message,
     clear_session,
     create_empty_session,
+)
+from app.components.knowledge_base_selector import (  # noqa: E402
+    knowledge_base_label,
+    queryable_knowledge_bases,
 )
 from app.p3_chat import append_p3_answer, build_p3_history  # noqa: E402
 from app.ui_theme import inject_theme_css  # noqa: E402
@@ -83,12 +87,46 @@ def _get_client(base_url: str, api_key: str, timeout: float) -> KnowledgeApiClie
     return KnowledgeApiClient(base_url, api_key=api_key, timeout=timeout)
 
 
-def _ask_api(question: str, history: list[dict[str, str]]):
+def _ask_api(kb_id: str, question: str, history: list[dict[str, str]]):
     """Execute one P3 query through the configured API boundary."""
-    return _get_client(API_BASE_URL, API_KEY, _api_timeout_seconds()).query(
+    return _get_client(API_BASE_URL, API_KEY, _api_timeout_seconds()).query_knowledge_base(
+        kb_id,
         question,
-        history=history,
+        history,
     )
+
+
+def _load_queryable_knowledge_bases() -> tuple[ApiKnowledgeBase, ...]:
+    """Load only ready KBs through the service credential."""
+    try:
+        items = _get_client(API_BASE_URL, API_KEY, _api_timeout_seconds()).list_knowledge_bases()
+    except ApiError:
+        return ()
+    return queryable_knowledge_bases(items)
+
+
+def _render_knowledge_base_selector() -> ApiKnowledgeBase | None:
+    """Render the ordinary-user KB selector and isolate chat on changes."""
+    items = _load_queryable_knowledge_bases()
+    previous_id = st.session_state.get("selected_kb_id")
+    if not items:
+        st.session_state["selected_kb_id"] = None
+        st.warning("当前没有可查询的知识库，请稍后再试或联系管理员。")
+        return None
+
+    ids = [item.id for item in items]
+    selected_id = previous_id if previous_id in ids else ids[0]
+    selected_id = st.selectbox(
+        "选择知识库",
+        ids,
+        index=ids.index(selected_id),
+        format_func=lambda value: knowledge_base_label(next(item for item in items if item.id == value)),
+        key="selected_kb_id",
+    )
+    if previous_id is not None and selected_id != previous_id:
+        st.session_state["chat_session"] = clear_session()
+        st.info("已切换知识库，当前对话已隔离。")
+    return next(item for item in items if item.id == selected_id)
 
 
 @st.cache_data(show_spinner=False)
@@ -140,6 +178,11 @@ def _submit_question(prompt: str) -> None:
     if not normalized:
         return
 
+    kb_id = st.session_state.get("selected_kb_id")
+    if not isinstance(kb_id, str) or not kb_id.strip():
+        st.warning("请先选择一个可查询的知识库。")
+        return
+
     session = st.session_state["chat_session"]
     history = build_p3_history(session)
     new_session, user_msg = add_user_message(session, normalized)
@@ -151,7 +194,7 @@ def _submit_question(prompt: str) -> None:
 
     try:
         with st.spinner("正在检索离心泵手册……"):
-            result = _ask_api(normalized, history)
+            result = _ask_api(kb_id, normalized, history)
         new_session, _ = append_p3_answer(new_session, result)
     except ApiError as exc:
         new_session, _ = add_error_message(new_session, f"查询失败 [{exc.code}]：{exc.message}")
@@ -395,6 +438,12 @@ def _render_graph_tab(working_dir: Path) -> None:
 
 def _render_qa_tab() -> None:
     with st.container(key="qa-shell"):
+        selected_kb = _render_knowledge_base_selector()
+        if selected_kb is not None:
+            st.caption(
+                f"当前知识库：{selected_kb.name} · Active Generation："
+                f"{(selected_kb.active_generation or '未激活')[:12]}"
+            )
         with st.container(key="qa-toolbar"):
             col1, col2 = st.columns([3, 1], vertical_alignment="bottom", gap="small")
             with col1:
