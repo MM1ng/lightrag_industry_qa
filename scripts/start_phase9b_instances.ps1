@@ -3,6 +3,7 @@ param(
     [int[]]$Ports = @(8111, 8112),
     [switch]$DisableLlmCache,
     [switch]$EnableQueryNormalization,
+    [switch]$EnableAnswerGrounding,
     [ValidateSet("mix", "naive", "hybrid", "local", "global")]
     [string]$Phase10bQueryMode,
     [ValidateRange(1, 1000)]
@@ -35,6 +36,9 @@ if ($DisableLlmCache) {
 }
 if ($EnableQueryNormalization) {
     $env:QA_QUERY_NORMALIZATION_ENABLED = "true"
+}
+if ($EnableAnswerGrounding) {
+    $env:QA_ANSWER_GROUNDING_ENABLED = "true"
 }
 if ($Phase10bQueryMode) {
     $env:PHASE10B_QUERY_MODE = $Phase10bQueryMode

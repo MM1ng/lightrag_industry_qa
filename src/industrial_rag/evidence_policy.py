@@ -156,6 +156,27 @@ def select_evidence(question: str, payload: object, *, limit: int = 3) -> Eviden
     return EvidenceDecision(True, routed_document, selected)
 
 
+def select_partial_evidence(
+    question: str, payload: object, *, limit: int = 2, minimum_overlap: int = 1
+) -> EvidenceDecision:
+    """Select a narrow fallback set for partial answers when the strict gate fails."""
+    question_tokens = _tokens(question)
+    matched_documents = _matched_documents(question_tokens)
+    candidates = _extract_candidates(payload)
+    if matched_documents:
+        candidates = [candidate for candidate in candidates if candidate.citation.source_file in matched_documents]
+    scored = [
+        (_overlap(question, question_tokens, _conditions(question), candidate.text), candidate)
+        for candidate in candidates
+    ]
+    selected = tuple(
+        candidate
+        for overlap, candidate in sorted(scored, key=lambda item: (-item[0], item[1].rank))
+        if overlap >= minimum_overlap
+    )[:limit]
+    return EvidenceDecision(bool(selected), next(iter(matched_documents)) if len(matched_documents) == 1 else None, selected)
+
+
 def _tokens(value: str) -> frozenset[str]:
     normalized = unicodedata.normalize("NFKC", value).casefold()
     normalized = normalized.replace("阀门", "截断装置")

@@ -55,6 +55,7 @@ class RetrievalTraceResponse(BaseModel):
     detected_component: str | None = None
     detected_parameter: str | None = None
     added_aliases: list[str] = Field(default_factory=list)
+    answer_plan: list[dict[str, Any]] = Field(default_factory=list)
     retrieval_config: dict[str, Any]
     initial_results: list[RetrievalResultResponse]
     rerank_applied: bool

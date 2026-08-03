@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from functools import partial
 from typing import Any, Literal, Protocol, cast
 
+from industrial_rag.answer_grounding import AnswerPoint, build_answer_plan
 from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
 from industrial_rag.config import (
     SUPPORTED_QUERY_MODES,
@@ -18,7 +19,12 @@ from industrial_rag.config import (
     write_storage_metadata,
 )
 from industrial_rag.document_parser import DocumentChunk
-from industrial_rag.evidence_policy import EvidenceCandidate, _tokens, select_evidence
+from industrial_rag.evidence_policy import (
+    EvidenceCandidate,
+    _tokens,
+    select_evidence,
+    select_partial_evidence,
+)
 from industrial_rag.query_normalization import NormalizationResult, normalize_query
 from industrial_rag.retrieval_trace import (
     TRACE_VERSION,
@@ -56,6 +62,9 @@ class QueryResult:
     retrieval_chunk_ids: tuple[str, ...] = ()
     retrieval_meta: tuple[tuple[str, str, int], ...] = ()
     retrieval_trace: RetrievalExecutionTrace | None = None
+    answer_status: Literal["success", "partial_answer", "insufficient_evidence", "safety_blocked"] = "success"
+    answer_points: tuple[AnswerPoint, ...] = ()
+    grounding_failure_categories: tuple[str, ...] = ()
 
 
 class LightRAGBackend(Protocol):
@@ -327,6 +336,7 @@ def _build_retrieval_trace(
     retrieval_ms: float,
     evidence_selection_ms: float,
     normalization: NormalizationResult | None = None,
+    answer_plan: Sequence[AnswerPoint] = (),
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -401,6 +411,7 @@ def _build_retrieval_trace(
         detected_component=normalization.detected_component if normalization else None,
         detected_parameter=normalization.detected_parameter if normalization else None,
         added_aliases=normalization.added_aliases if normalization else (),
+        answer_plan=tuple(item.to_payload() for item in answer_plan),
     )
 
 
@@ -513,6 +524,14 @@ class LightRAGService:
         )
         selection_started = time.perf_counter()
         decision = select_evidence(normalized_question, evidence)
+        if not decision.allowed and self.settings.answer_grounding_enabled:
+            partial_decision = select_partial_evidence(normalized_question, evidence)
+            if not partial_decision.allowed:
+                partial_decision = select_partial_evidence(
+                    normalized_question, evidence, minimum_overlap=0
+                )
+            if partial_decision.allowed:
+                decision = partial_decision
         evidence_selection_ms = (time.perf_counter() - selection_started) * 1000
         if not decision.allowed:
             trace = _build_retrieval_trace(
@@ -537,6 +556,11 @@ class LightRAGService:
             )
         context = _selected_context(decision.selected)
         system_prompt = _generation_system_prompt(context)
+        if self.settings.answer_grounding_enabled:
+            system_prompt += (
+                "答案可靠性要求：将每个可验证答案点绑定到证据中的具体内容；"
+                "未覆盖内容必须明确说明，不得补充常识或推断。\n"
+            )
         answer = (await self._backend.generate(normalized_question, context, system_prompt)).strip()
         if not answer:
             trace = _build_retrieval_trace(
@@ -560,23 +584,32 @@ class LightRAGService:
                 trace,
             )
         citations = tuple(item.citation for item in decision.selected)
+        grounded = (
+            build_answer_plan(answer, decision.selected, citations)
+            if self.settings.answer_grounding_enabled
+            else None
+        )
         trace = _build_retrieval_trace(
             original_query=question,
             normalized_query=normalized_question,
             options=options,
             retrieved=retrieved,
             selected=decision.selected,
-            cited=citations,
+            cited=grounded.citations if grounded else citations,
             normalization_ms=normalization_ms,
             retrieval_ms=retrieval_ms,
             evidence_selection_ms=evidence_selection_ms,
             normalization=normalization,
+            answer_plan=grounded.answer_points if grounded else (),
         )
         return QueryResult(
-            answer,
-            citations,
+            grounded.answer if grounded else answer,
+            grounded.citations if grounded else citations,
             mode,
             retrieval_chunk_ids,
             retrieval_meta,
             trace,
+            grounded.status if grounded else "success",
+            grounded.answer_points if grounded else (),
+            grounded.failure_categories if grounded else (),
         )

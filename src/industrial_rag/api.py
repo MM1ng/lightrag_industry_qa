@@ -89,7 +89,7 @@ class ClaimResponse(BaseModel):
 class QueryResponse(BaseModel):
     request_id: str
     trace_id: str = ""
-    status: Literal["success", "insufficient_evidence"]
+    status: Literal["success", "partial_answer", "insufficient_evidence"]
     answer: str
     citations: list[CitationResponse]
     claims: list[ClaimResponse]
@@ -238,6 +238,26 @@ def _api_keys_from_environment() -> tuple[str | None, str | None]:
         (os.environ.get("SERVICE_API_KEY") or "").strip() or None,
         (os.environ.get("ADMIN_API_KEY") or "").strip() or None,
     )
+
+
+def _claims_for_result(result: QueryResult, citations: list[CitationResponse]) -> list[ClaimResponse]:
+    points = [point for point in result.answer_points if point.support_status == "supported"]
+    if not points:
+        return [
+            ClaimResponse(
+                claim_id="claim_1",
+                text=result.answer,
+                citation_ids=[citation.citation_id for citation in citations],
+            )
+        ]
+    return [
+        ClaimResponse(
+            claim_id=point.point_id,
+            text=point.content,
+            citation_ids=[citation.citation_id for citation in citations],
+        )
+        for point in points
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -682,16 +702,10 @@ def create_app(
             status="success",
             answer=result.answer,
             citations=citations,
-            claims=[
-                ClaimResponse(
-                    claim_id="claim_1",
-                    text=result.answer,
-                    citation_ids=[citation.citation_id for citation in citations],
-                )
-            ],
+            claims=_claims_for_result(result, citations),
             latency_ms=latency_ms,
         )
-        _log_result(request_id=request_id, status="success", latency_ms=latency_ms)
+        _log_result(request_id=request_id, status=result.answer_status, latency_ms=latency_ms)
         if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true":
             from industrial_rag.shadow_audit import CitationShadowAudit
 
@@ -827,16 +841,10 @@ def create_app(
             response = QueryResponse(
                 request_id=request_id,
                 trace_id=trace_id,
-                status="success",
+                status=result.answer_status,
                 answer=result.answer,
                 citations=citations,
-                claims=[
-                    ClaimResponse(
-                        claim_id="claim_1",
-                        text=result.answer,
-                        citation_ids=[citation.citation_id for citation in citations],
-                    )
-                ],
+                claims=_claims_for_result(result, citations),
                 latency_ms=latency_ms,
                 retrieved_chunk_ids=list(result.retrieval_chunk_ids),
                 shadow_audit=audit,

@@ -88,6 +88,7 @@ class RetrievalExecutionTrace:
     detected_component: str | None = None
     detected_parameter: str | None = None
     added_aliases: tuple[str, ...] = ()
+    answer_plan: tuple[dict[str, object], ...] = ()
 
     def with_document_ids(self, document_ids: Mapping[str, str]) -> RetrievalExecutionTrace:
         return replace(
@@ -126,4 +127,5 @@ class RetrievalExecutionTrace:
             "detected_component": self.detected_component,
             "detected_parameter": self.detected_parameter,
             "added_aliases": list(self.added_aliases),
+            "answer_plan": list(self.answer_plan),
         }

@@ -1,0 +1,14 @@
+{
+  "config_id": "phase10b2-grounding-001",
+  "parent_config": "phase10b-final-001",
+  "normalization_enabled": true,
+  "query_mode": "naive",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "rerank_enabled": false,
+  "answer_grounding_enabled": true,
+  "chunking_unchanged": true,
+  "generation_unchanged": true,
+  "holdout_rerun": false,
+  "holdout_analysis": "historical saved results only"
+}

@@ -1,0 +1,10 @@
+{
+  "configuration": "grounding3",
+  "holdout_rerun": false,
+  "status_counts": {
+    "success": 4,
+    "partial_answer": 36,
+    "insufficient_evidence": 12
+  },
+  "partial_answer_rule": "unsupported answer points are removed; supported points remain with citations; empty support becomes insufficient_evidence"
+}
