@@ -1,0 +1,517 @@
+{
+  "analysis_version": "phase10b-failure-matrix-v1",
+  "analyzed_question_count": 52,
+  "split_counts": {
+    "validation": 16,
+    "development": 36
+  },
+  "holdout_rows_loaded": false,
+  "failure_category_counts": {
+    "chunk_not_recalled": 1,
+    "citation_binding_failure": 0,
+    "correct_chunk_rank_too_low": 3,
+    "cross_page_context_missing": 7,
+    "evidence_not_selected": 2,
+    "evidence_threshold_too_high": 4,
+    "generation_extraction_failure": 0,
+    "metadata_filter_failure": 0,
+    "none": 32,
+    "page_not_recalled": 3,
+    "query_term_mismatch": 0,
+    "table_parse_failure": 0,
+    "wrong_document": 0
+  },
+  "failure_layer_counts": {
+    "Citation": 0,
+    "Evidence Selection": 3,
+    "Generation": 0,
+    "None": 32,
+    "Ranking": 3,
+    "Refusal": 3,
+    "Retrieval": 11
+  },
+  "groupings": {
+    "question_type": {
+      "component_description": {
+        "question_count": 2,
+        "failure_count": 1,
+        "failure_rate": {
+          "numerator": 1,
+          "denominator": 2,
+          "value": 0.5
+        },
+        "failure_layers": {
+          "None": 1,
+          "Refusal": 1
+        },
+        "failure_categories": {
+          "none": 1,
+          "evidence_threshold_too_high": 1
+        }
+      },
+      "condition_limit": {
+        "question_count": 6,
+        "failure_count": 2,
+        "failure_rate": {
+          "numerator": 2,
+          "denominator": 6,
+          "value": 0.3333333333333333
+        },
+        "failure_layers": {
+          "Evidence Selection": 1,
+          "None": 4,
+          "Retrieval": 1
+        },
+        "failure_categories": {
+          "evidence_not_selected": 1,
+          "none": 4,
+          "page_not_recalled": 1
+        }
+      },
+      "confusing_device": {
+        "question_count": 1,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 1,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 1
+        },
+        "failure_categories": {
+          "none": 1
+        }
+      },
+      "cross_page": {
+        "question_count": 5,
+        "failure_count": 4,
+        "failure_rate": {
+          "numerator": 4,
+          "denominator": 5,
+          "value": 0.8
+        },
+        "failure_layers": {
+          "None": 1,
+          "Retrieval": 1,
+          "Evidence Selection": 1,
+          "Ranking": 2
+        },
+        "failure_categories": {
+          "none": 1,
+          "cross_page_context_missing": 1,
+          "evidence_not_selected": 1,
+          "correct_chunk_rank_too_low": 2
+        }
+      },
+      "maintenance_interval": {
+        "question_count": 4,
+        "failure_count": 1,
+        "failure_rate": {
+          "numerator": 1,
+          "denominator": 4,
+          "value": 0.25
+        },
+        "failure_layers": {
+          "Retrieval": 1,
+          "None": 3
+        },
+        "failure_categories": {
+          "page_not_recalled": 1,
+          "none": 3
+        }
+      },
+      "multi_evidence": {
+        "question_count": 8,
+        "failure_count": 8,
+        "failure_rate": {
+          "numerator": 8,
+          "denominator": 8,
+          "value": 1.0
+        },
+        "failure_layers": {
+          "Retrieval": 7,
+          "Ranking": 1
+        },
+        "failure_categories": {
+          "page_not_recalled": 1,
+          "cross_page_context_missing": 6,
+          "correct_chunk_rank_too_low": 1
+        }
+      },
+      "negative": {
+        "question_count": 1,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 1,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 1
+        },
+        "failure_categories": {
+          "none": 1
+        }
+      },
+      "parameter": {
+        "question_count": 4,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 4,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 4
+        },
+        "failure_categories": {
+          "none": 4
+        }
+      },
+      "procedure": {
+        "question_count": 9,
+        "failure_count": 1,
+        "failure_rate": {
+          "numerator": 1,
+          "denominator": 9,
+          "value": 0.1111111111111111
+        },
+        "failure_layers": {
+          "None": 8,
+          "Evidence Selection": 1
+        },
+        "failure_categories": {
+          "none": 8,
+          "evidence_threshold_too_high": 1
+        }
+      },
+      "safety_warning": {
+        "question_count": 4,
+        "failure_count": 2,
+        "failure_rate": {
+          "numerator": 2,
+          "denominator": 4,
+          "value": 0.5
+        },
+        "failure_layers": {
+          "Retrieval": 1,
+          "Refusal": 1,
+          "None": 2
+        },
+        "failure_categories": {
+          "chunk_not_recalled": 1,
+          "evidence_threshold_too_high": 1,
+          "none": 2
+        }
+      },
+      "table": {
+        "question_count": 3,
+        "failure_count": 1,
+        "failure_rate": {
+          "numerator": 1,
+          "denominator": 3,
+          "value": 0.3333333333333333
+        },
+        "failure_layers": {
+          "None": 2,
+          "Refusal": 1
+        },
+        "failure_categories": {
+          "none": 2,
+          "evidence_threshold_too_high": 1
+        }
+      },
+      "terminology": {
+        "question_count": 1,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 1,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 1
+        },
+        "failure_categories": {
+          "none": 1
+        }
+      },
+      "troubleshooting": {
+        "question_count": 2,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 2
+        },
+        "failure_categories": {
+          "none": 2
+        }
+      },
+      "unit_expression": {
+        "question_count": 2,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 2
+        },
+        "failure_categories": {
+          "none": 2
+        }
+      }
+    },
+    "difficulty": {
+      "hard": {
+        "question_count": 13,
+        "failure_count": 12,
+        "failure_rate": {
+          "numerator": 12,
+          "denominator": 13,
+          "value": 0.9230769230769231
+        },
+        "failure_layers": {
+          "Retrieval": 8,
+          "Ranking": 3,
+          "None": 1,
+          "Evidence Selection": 1
+        },
+        "failure_categories": {
+          "page_not_recalled": 1,
+          "cross_page_context_missing": 7,
+          "correct_chunk_rank_too_low": 3,
+          "none": 1,
+          "evidence_not_selected": 1
+        }
+      },
+      "medium": {
+        "question_count": 39,
+        "failure_count": 8,
+        "failure_rate": {
+          "numerator": 8,
+          "denominator": 39,
+          "value": 0.20512820512820512
+        },
+        "failure_layers": {
+          "Evidence Selection": 2,
+          "None": 31,
+          "Retrieval": 3,
+          "Refusal": 3
+        },
+        "failure_categories": {
+          "evidence_not_selected": 1,
+          "none": 31,
+          "chunk_not_recalled": 1,
+          "evidence_threshold_too_high": 4,
+          "page_not_recalled": 2
+        }
+      }
+    },
+    "document": {
+      "2196-ANSI-Manual-Chinese.pdf": {
+        "question_count": 30,
+        "failure_count": 14,
+        "failure_rate": {
+          "numerator": 14,
+          "denominator": 30,
+          "value": 0.4666666666666667
+        },
+        "failure_layers": {
+          "Evidence Selection": 2,
+          "None": 16,
+          "Retrieval": 7,
+          "Ranking": 3,
+          "Refusal": 2
+        },
+        "failure_categories": {
+          "evidence_not_selected": 1,
+          "none": 16,
+          "page_not_recalled": 1,
+          "cross_page_context_missing": 6,
+          "correct_chunk_rank_too_low": 3,
+          "evidence_threshold_too_high": 3
+        }
+      },
+      "none": {
+        "question_count": 2,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 2
+        },
+        "failure_categories": {
+          "none": 2
+        }
+      },
+      "t1739cn.pdf": {
+        "question_count": 28,
+        "failure_count": 14,
+        "failure_rate": {
+          "numerator": 14,
+          "denominator": 28,
+          "value": 0.5
+        },
+        "failure_layers": {
+          "Retrieval": 11,
+          "Ranking": 1,
+          "None": 14,
+          "Refusal": 1,
+          "Evidence Selection": 1
+        },
+        "failure_categories": {
+          "page_not_recalled": 3,
+          "cross_page_context_missing": 7,
+          "correct_chunk_rank_too_low": 1,
+          "none": 14,
+          "chunk_not_recalled": 1,
+          "evidence_threshold_too_high": 1,
+          "evidence_not_selected": 1
+        }
+      }
+    },
+    "split": {
+      "development": {
+        "question_count": 36,
+        "failure_count": 9,
+        "failure_rate": {
+          "numerator": 9,
+          "denominator": 36,
+          "value": 0.25
+        },
+        "failure_layers": {
+          "None": 27,
+          "Retrieval": 3,
+          "Refusal": 3,
+          "Ranking": 2,
+          "Evidence Selection": 1
+        },
+        "failure_categories": {
+          "none": 27,
+          "chunk_not_recalled": 1,
+          "evidence_threshold_too_high": 4,
+          "page_not_recalled": 2,
+          "correct_chunk_rank_too_low": 2
+        }
+      },
+      "validation": {
+        "question_count": 16,
+        "failure_count": 11,
+        "failure_rate": {
+          "numerator": 11,
+          "denominator": 16,
+          "value": 0.6875
+        },
+        "failure_layers": {
+          "Evidence Selection": 2,
+          "None": 5,
+          "Retrieval": 8,
+          "Ranking": 1
+        },
+        "failure_categories": {
+          "evidence_not_selected": 2,
+          "none": 5,
+          "page_not_recalled": 1,
+          "cross_page_context_missing": 7,
+          "correct_chunk_rank_too_low": 1
+        }
+      }
+    },
+    "failure_layer": {
+      "Evidence Selection": {
+        "question_count": 3,
+        "failure_count": 3,
+        "failure_rate": {
+          "numerator": 3,
+          "denominator": 3,
+          "value": 1.0
+        },
+        "failure_layers": {
+          "Evidence Selection": 3
+        },
+        "failure_categories": {
+          "evidence_not_selected": 2,
+          "evidence_threshold_too_high": 1
+        }
+      },
+      "None": {
+        "question_count": 32,
+        "failure_count": 0,
+        "failure_rate": {
+          "numerator": 0,
+          "denominator": 32,
+          "value": 0.0
+        },
+        "failure_layers": {
+          "None": 32
+        },
+        "failure_categories": {
+          "none": 32
+        }
+      },
+      "Ranking": {
+        "question_count": 3,
+        "failure_count": 3,
+        "failure_rate": {
+          "numerator": 3,
+          "denominator": 3,
+          "value": 1.0
+        },
+        "failure_layers": {
+          "Ranking": 3
+        },
+        "failure_categories": {
+          "correct_chunk_rank_too_low": 3
+        }
+      },
+      "Refusal": {
+        "question_count": 3,
+        "failure_count": 3,
+        "failure_rate": {
+          "numerator": 3,
+          "denominator": 3,
+          "value": 1.0
+        },
+        "failure_layers": {
+          "Refusal": 3
+        },
+        "failure_categories": {
+          "evidence_threshold_too_high": 3
+        }
+      },
+      "Retrieval": {
+        "question_count": 11,
+        "failure_count": 11,
+        "failure_rate": {
+          "numerator": 11,
+          "denominator": 11,
+          "value": 1.0
+        },
+        "failure_layers": {
+          "Retrieval": 11
+        },
+        "failure_categories": {
+          "page_not_recalled": 3,
+          "cross_page_context_missing": 7,
+          "chunk_not_recalled": 1
+        }
+      }
+    }
+  },
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "dataset_sha256_verified": true,
+  "source_results": "evaluation/phase10/baseline_results.jsonl",
+  "source_diagnoses": "evaluation/phase10/baseline_diagnosis.jsonl",
+  "source_git_commit": "f0e59c4612553fa43b86be840714f6efa2991f17",
+  "holdout_tuning": false
+}
