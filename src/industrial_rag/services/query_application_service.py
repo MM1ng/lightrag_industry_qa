@@ -108,7 +108,12 @@ class QueryApplicationService:
             settings = replace(settings, enable_llm_cache=False)
         runtime = await self._runtime_manager.get_runtime(kb.id, settings)
         operational_metrics.set(f"active_generation.{kb.id}", generation.id)
-        result = await runtime.query(question, mode="mix")
+        result = await runtime.query(
+            question,
+            mode=self._base_settings.phase10b_query_mode,  # type: ignore[arg-type]
+            top_k=self._base_settings.phase10b_top_k,
+            chunk_top_k=self._base_settings.phase10b_chunk_top_k,
+        )
         document_ids = await self._citation_document_ids(kb.id, generation)
         if result.retrieval_trace is not None:
             result = replace(

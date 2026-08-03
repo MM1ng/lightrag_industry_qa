@@ -61,6 +61,9 @@ class Settings:
     generation_epoch: int = 0
     enable_llm_cache: bool = True
     query_normalization_enabled: bool = False
+    phase10b_query_mode: str = "mix"
+    phase10b_top_k: int = 12
+    phase10b_chunk_top_k: int = 20
     validation_base_url: str | None = None
     validation_artifact_dir: Path = PROJECT_ROOT / "artifacts" / "validation-runs"
     validation_max_age_seconds: int = 3600
@@ -95,6 +98,12 @@ class Settings:
             object.__setattr__(self, "vector_backend", VectorBackend(self.vector_backend))
         if self.vector_backend is VectorBackend.qdrant and not self.qdrant_url:
             raise ValueError("VECTOR_BACKEND=qdrant 时必须配置 QDRANT_URL")
+        if self.phase10b_query_mode not in SUPPORTED_QUERY_MODES:
+            raise ValueError(
+                f"PHASE10B_QUERY_MODE 必须为 {SUPPORTED_QUERY_MODES} 之一"
+            )
+        if self.phase10b_top_k <= 0 or self.phase10b_chunk_top_k < self.phase10b_top_k:
+            raise ValueError("PHASE10B_TOP_K 必须为正数且 CHUNK_TOP_K 必须不小于 TOP_K")
         if not self.llm_model.strip():
             raise ValueError("LLM_MODEL 不能为空")
         if not self.llm_fallback_models:
@@ -169,6 +178,12 @@ class Settings:
             (values.get("QA_QUERY_NORMALIZATION_ENABLED") or "false").strip().lower()
             == "true"
         )
+        phase10b_query_mode = (values.get("PHASE10B_QUERY_MODE") or "mix").strip().lower()
+        try:
+            phase10b_top_k = int(values.get("PHASE10B_TOP_K") or "12")
+            phase10b_chunk_top_k = int(values.get("PHASE10B_CHUNK_TOP_K") or "20")
+        except ValueError as error:
+            raise ValueError("PHASE10B_TOP_K 和 PHASE10B_CHUNK_TOP_K 必须是整数") from error
         validation_base_url = (
             values.get("VALIDATION_BASE_URL") or ""
         ).strip().rstrip("/") or None
@@ -254,6 +269,9 @@ class Settings:
             qdrant_expected_minor=qdrant_expected_minor,
             enable_llm_cache=enable_llm_cache,
             query_normalization_enabled=query_normalization_enabled,
+            phase10b_query_mode=phase10b_query_mode,
+            phase10b_top_k=phase10b_top_k,
+            phase10b_chunk_top_k=phase10b_chunk_top_k,
             validation_base_url=validation_base_url,
             validation_artifact_dir=validation_artifact_dir.resolve(),
             validation_max_age_seconds=validation_max_age_seconds,

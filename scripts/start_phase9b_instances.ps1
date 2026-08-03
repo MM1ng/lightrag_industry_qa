@@ -3,6 +3,12 @@ param(
     [int[]]$Ports = @(8111, 8112),
     [switch]$DisableLlmCache,
     [switch]$EnableQueryNormalization,
+    [ValidateSet("mix", "naive", "hybrid", "local", "global")]
+    [string]$Phase10bQueryMode,
+    [ValidateRange(1, 1000)]
+    [int]$Phase10bTopK = 0,
+    [ValidateRange(1, 1000)]
+    [int]$Phase10bChunkTopK = 0,
     [ValidateRange(60, 604800)]
     [int]$RetrievalTraceTtlSeconds = 86400
 )
@@ -29,6 +35,15 @@ if ($DisableLlmCache) {
 }
 if ($EnableQueryNormalization) {
     $env:QA_QUERY_NORMALIZATION_ENABLED = "true"
+}
+if ($Phase10bQueryMode) {
+    $env:PHASE10B_QUERY_MODE = $Phase10bQueryMode
+}
+if ($Phase10bTopK -gt 0) {
+    $env:PHASE10B_TOP_K = [string]$Phase10bTopK
+}
+if ($Phase10bChunkTopK -gt 0) {
+    $env:PHASE10B_CHUNK_TOP_K = [string]$Phase10bChunkTopK
 }
 $env:RETRIEVAL_TRACE_TTL_SECONDS = [string]$RetrievalTraceTtlSeconds
 $env:APP_GIT_COMMIT = (& git -C $repo rev-parse HEAD).Trim()

@@ -473,7 +473,14 @@ class LightRAGService:
                 )
         return last_track_id
 
-    async def query(self, question: str, *, mode: QueryMode = "mix") -> QueryResult:
+    async def query(
+        self,
+        question: str,
+        *,
+        mode: QueryMode = "mix",
+        top_k: int = 12,
+        chunk_top_k: int = 20,
+    ) -> QueryResult:
         if not self._initialized:
             raise RuntimeError("LightRAG 尚未初始化")
         if mode not in SUPPORTED_QUERY_MODES:
@@ -495,7 +502,7 @@ class LightRAGService:
         normalization_ms = (time.perf_counter() - normalization_started) * 1000
         if not normalized_question:
             raise ValueError("问题不能为空")
-        options = QueryOptions(mode=mode)
+        options = QueryOptions(mode=mode, top_k=top_k, chunk_top_k=chunk_top_k)
         retrieval_started = time.perf_counter()
         evidence = await self._backend.aquery_data(normalized_question, options)
         retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
