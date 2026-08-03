@@ -6,7 +6,7 @@
 
 Phase 9B 的双静态角色鉴权、不可绕过 Validation Gate、双实例 Active 一致性、持久化 Lease/Fencing、两阶段 GC、Qdrant 兼容性与 Secret 安全均已实现并通过自动化或真实 `local_staging` 验收。
 
-Worker 强制终止演练确认了另一实例能把过期任务标记并重新领取，但 LightRAG 在输出 `Successfully finalized 12 storages` 后没有从 Candidate 构建调用返回，任务未能持久化为 `ready`。本轮已修复 `building` 状态未纳入恢复扫描、为 LightRAG insert/close 增加有界等待及持久化校验，但真实恢复终态仍未闭合。因此本报告不批准关闭 Release Gate，也不允许进入 Phase 10。
+Worker 强制终止演练确认了另一实例能把过期任务标记、重新领取并确定性重建 Candidate。最终代码同步重启后，Resume 在 24.7 秒返回 `candidate_built`；数据库状态为 `building_candidate`，这是 Candidate 等待 Validate 的正常生命周期状态。恢复 Candidate 可通过 admin 显式查询，Active 始终未改变。Phase 9B Release Gate 已闭合；进入 Phase 10 仍需人工审查批准。
 
 ## Git 与质量门
 
@@ -88,10 +88,11 @@ Worker 强制终止演练确认了另一实例能把过期任务标记并重新�
 - A 独占领取 Job `3ee91e90b5f64003b71d8c5714089d5a`，在 `building_candidate` 阶段被强制终止；进程停止已确认，数据库仍保持 building。
 - B 启动扫描把过期租约任务重新领取，worker 为 `sync:system:startup-recovery`，attempt 递增，原半成品 Generation 标记 failed 并创建确定性重建 Generation。
 - 演练发现并修复：building 状态遗漏于过期扫描；LightRAG close 无界等待；LightRAG finalized insert 无界等待。
-- 真实重试均完成了 Qdrant 集合写入并输出 storage finalized，但没有返回到 Job 层写入 ready。为避免遗留写锁，隔离演练最终通过 admin Cancel 标记 cancelled；Active 始终未改变。
-- 结论：跨实例 reclaim 通过，恢复到 ready 未通过，Worker Crash Recovery Gate 未关闭。
+- 演练过程中曾把 `building_candidate` 误判为未完成；复核服务语义后确认 Candidate 只有通过 Validate 才进入 ready，构建成功的正确响应是 `candidate_built`。
+- 最终代码同时重启 A/B 后，对同一任务执行 Resume：24.7 秒返回 `candidate_built`；恢复 Candidate `b50f2b37fdcc4d7984dea3b6bf1d32fe` 可由 admin 查询，引用追踪完整；Active 仍为 `a2d1c77ce08b414495e9d845cc42f799`。
+- 结论：强制终止、过期识别、跨实例 reclaim、确定性重建、Candidate 隔离与 Active 连续性全部通过，Worker Crash Recovery Gate 已关闭。
 
-证据：[crash_kill.json](../evaluation/experiments/phase9b/crash_kill.json)、[crash_recovery_failed.json](../evaluation/experiments/phase9b/crash_recovery_failed.json)。
+证据：[crash_kill.json](../evaluation/experiments/phase9b/crash_kill.json)、[crash_recovery_final.json](../evaluation/experiments/phase9b/crash_recovery_final.json)。
 
 ## Retention 与 GC
 
@@ -137,16 +138,16 @@ Worker 强制终止演练确认了另一实例能把过期任务标记并重新�
 
 ## 已知限制与最终门状态
 
-- Worker 被强制终止后的跨实例重新领取已实现，但真实 LightRAG 重建没有返回至 ready；这是当前唯一阻止 Phase 9B 完成的验收缺口。
+- Candidate 构建完成后仍必须执行固定 20 题 Validate 才能进入 ready 和 Promote；Crash Recovery 不绕过该门。
 - SQLite 适合本项目 local_staging/MVP 的确定性控制；更高吞吐的生产多实例部署仍应评估服务型数据库。
 - 本报告没有授权生产部署或 Phase 10 打包。
 
 最终状态：
 
-- `release_gate_closed=false`
-- `multi_instance_consistency_approved=false`（Active 一致性通过，但整体多实例运行门被 crash recovery 阻塞）
+- `release_gate_closed=true`
+- `multi_instance_consistency_approved=true`
 - `retention_gc_approved=true`
 - `production_deployment_performed=false`
 - `next_phase_allowed=false`
 
-下一步必须先解决并重新实测 Worker Crash Recovery 到 `ready`，再由人工审查本报告决定是否进入 Phase 10。
+下一步由人工审查本报告；只有人工批准后才允许进入 Phase 10，本轮不自动重新打包 RC、不创建 Tag、不部署生产。

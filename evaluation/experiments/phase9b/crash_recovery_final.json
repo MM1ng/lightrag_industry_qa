@@ -1,0 +1,16 @@
+{
+  "job_id": "3ee91e90b5f64003b71d8c5714089d5a",
+  "forced_kill_verified": true,
+  "cross_instance_reclaim_verified": true,
+  "final_code_resume_elapsed_seconds": 24.7,
+  "resume_response_status": "candidate_built",
+  "lifecycle_state_after_build": "building",
+  "lifecycle_interpretation": "candidate built and awaiting Validate",
+  "recovered_candidate_generation_id": "b50f2b37fdcc4d7984dea3b6bf1d32fe",
+  "candidate_query_status": "insufficient_evidence",
+  "candidate_query_generation_id": "b50f2b37fdcc4d7984dea3b6bf1d32fe",
+  "candidate_trace_complete": true,
+  "active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_unchanged": true,
+  "recovery_gate_passed": true
+}
