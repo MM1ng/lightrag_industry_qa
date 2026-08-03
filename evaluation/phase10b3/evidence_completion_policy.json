@@ -1,0 +1,12 @@
+{
+  "version": "phase10b3-v1",
+  "initial_evidence_limit": 3,
+  "completion_limit": 2,
+  "total_evidence_limit": 5,
+  "adjacent_limit_per_side": 1,
+  "same_document_and_generation": true,
+  "pdf_scan_per_query": false,
+  "embedding_recalculation": false,
+  "coverage_statuses": ["fully_covered", "partially_covered", "uncovered"],
+  "sources": ["parent_context", "adjacent", "table_header", "multi_evidence_completion"]
+}

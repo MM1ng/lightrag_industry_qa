@@ -89,6 +89,11 @@ class RetrievalExecutionTrace:
     detected_parameter: str | None = None
     added_aliases: tuple[str, ...] = ()
     answer_plan: tuple[dict[str, object], ...] = ()
+    completion_applied: bool = False
+    completion_candidates: tuple[dict[str, object], ...] = ()
+    completed_evidence: tuple[dict[str, object], ...] = ()
+    coverage_requirements: tuple[str, ...] = ()
+    coverage_status: str = "uncovered"
 
     def with_document_ids(self, document_ids: Mapping[str, str]) -> RetrievalExecutionTrace:
         return replace(
@@ -128,4 +133,9 @@ class RetrievalExecutionTrace:
             "detected_parameter": self.detected_parameter,
             "added_aliases": list(self.added_aliases),
             "answer_plan": list(self.answer_plan),
+            "completion_applied": self.completion_applied,
+            "completion_candidates": list(self.completion_candidates),
+            "completed_evidence": list(self.completed_evidence),
+            "coverage_requirements": list(self.coverage_requirements),
+            "coverage_status": self.coverage_status,
         }
