@@ -57,6 +57,7 @@ from industrial_rag.vector_collections import CollectionNameResolver, VectorBack
 
 logger = logging.getLogger(__name__)
 LIGHTRAG_CLOSE_TIMEOUT_SECONDS = 30.0
+LIGHTRAG_INSERT_TIMEOUT_SECONDS = 300.0
 
 MAX_UPLOAD_SIZE = 20 * 1024 * 1024
 ALLOWED_EXTENSIONS = {".pdf"}
@@ -1156,13 +1157,36 @@ class IncrementalUpdateService:
         )
         await service.initialize()
         try:
-            await service._backend.ainsert(
-                input=[boundary.join(parts)],
-                ids=[f"kb-{identity}"],
-                file_paths=[doc.original_file_name],
-                split_by_character=boundary,
-                split_by_character_only=True,
+            insert_task = asyncio.create_task(
+                service._backend.ainsert(
+                    input=[boundary.join(parts)],
+                    ids=[f"kb-{identity}"],
+                    file_paths=[doc.original_file_name],
+                    split_by_character=boundary,
+                    split_by_character_only=True,
+                )
             )
+            done, _pending = await asyncio.wait(
+                {insert_task}, timeout=LIGHTRAG_INSERT_TIMEOUT_SECONDS
+            )
+            if done:
+                await insert_task
+            else:
+                insert_task.cancel()
+                internal_ids = [
+                    f"kb-{identity}-chunk-{index:03d}"
+                    for index in range(len(children))
+                ]
+                if not await self._candidate_chunks_are_durable(
+                    generation.collections["chunks"], internal_ids
+                ):
+                    raise RuntimeError(
+                        "LightRAG insert timed out before candidate chunks were durable"
+                    )
+                logger.warning(
+                    "LightRAG insert exceeded %.0fs after candidate chunks became durable; continuing",
+                    LIGHTRAG_INSERT_TIMEOUT_SECONDS,
+                )
         finally:
             try:
                 await asyncio.wait_for(
@@ -1180,6 +1204,29 @@ class IncrementalUpdateService:
             indexed_at=_utcnow(),
         )
         return len(children)
+
+    async def _candidate_chunks_are_durable(
+        self, collection_name: str, internal_ids: list[str]
+    ) -> bool:
+        if not internal_ids:
+            return False
+        client = self._new_qdrant_client()
+        try:
+            result = await client.count(
+                collection_name=collection_name,
+                count_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(
+                            key="id",
+                            match=models.MatchAny(any=internal_ids),
+                        )
+                    ]
+                ),
+                exact=True,
+            )
+            return result.count == len(internal_ids)
+        finally:
+            await client.close()
 
     async def _remove_document_points(
         self,

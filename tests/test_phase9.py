@@ -69,8 +69,16 @@ class FakeQdrant:
         for point in points:
             store[point.id] = FakeQdrantRecord(point.id, point.vector, point.payload)
 
-    async def count(self, collection_name, exact=True) -> SimpleNamespace:
-        return SimpleNamespace(count=len(self.collections.get(collection_name, {})))
+    async def count(
+        self, collection_name, exact=True, count_filter=None
+    ) -> SimpleNamespace:
+        records = list(self.collections.get(collection_name, {}).values())
+        if count_filter is not None:
+            expected = set(count_filter.must[0].match.any)
+            records = [
+                record for record in records if record.payload.get("id") in expected
+            ]
+        return SimpleNamespace(count=len(records))
 
     async def delete(self, collection_name, selector, wait=True) -> None:
         store = self.collections.get(collection_name, {})
@@ -333,6 +341,29 @@ def test_lightrag_close_timeout_does_not_block_candidate_completion(
     async def _test():
         kb_id = await ctx.create_kb()
         result = await ctx.add(kb_id, "P9-CLOSE-TIMEOUT 可恢复构建。", "timeout.pdf")
+        assert result["status"] == "candidate_built"
+
+    _run(_test())
+
+
+def test_lightrag_insert_timeout_requires_durable_candidate_chunks(
+    ctx: Phase9Ctx, monkeypatch
+):
+    original_insert = FakeBackend.ainsert
+
+    async def durable_then_hanging_insert(self, *args, **kwargs) -> None:
+        await original_insert(self, *args, **kwargs)
+        await asyncio.Event().wait()
+
+    monkeypatch.setattr(FakeBackend, "ainsert", durable_then_hanging_insert)
+    monkeypatch.setattr(
+        "industrial_rag.services.incremental_update_service.LIGHTRAG_INSERT_TIMEOUT_SECONDS",
+        0.01,
+    )
+
+    async def _test():
+        kb_id = await ctx.create_kb()
+        result = await ctx.add(kb_id, "P9-INSERT-TIMEOUT 已持久化构建。", "insert.pdf")
         assert result["status"] == "candidate_built"
 
     _run(_test())
