@@ -6,7 +6,7 @@
 
 ## 版本与提交
 
-- Git HEAD：`c1d847d`
+- Git HEAD：`2486239`
 - 任务提交：
   - `28311d2 feat(ui): switch chat to knowledge-base scoped queries`
   - `c0c4bb2 fix(api): preserve partial answer status end to end`
