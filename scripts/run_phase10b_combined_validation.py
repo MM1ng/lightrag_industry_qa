@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-
 from industrial_rag.phase10_evaluation import evaluate_retrieval
 from run_phase10a_baseline import Phase10BaselineRunner
 
