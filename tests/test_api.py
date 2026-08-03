@@ -110,6 +110,7 @@ def test_query_returns_traceable_citations_and_fixed_mix_mode() -> None:
             "claim_id": "claim_1",
             "text": body["answer"],
             "citation_ids": ["cite_1"],
+            "evidence_ids": [],
         }
     ]
     assert runtime.calls == [("E102 如何处理？", "mix")]

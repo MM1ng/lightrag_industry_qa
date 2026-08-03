@@ -78,18 +78,37 @@ class CitationResponse(BaseModel):
     chunk_id: str
     document_id: str | None = None
     generation_id: str | None = None
+    evidence_id: str | None = None
 
 
 class ClaimResponse(BaseModel):
     claim_id: str
     text: str
     citation_ids: list[str]
+    evidence_ids: list[str] = []
+
+
+class EvidenceResponse(BaseModel):
+    evidence_id: str
+    citation_id: str | None = None
+    document_name: str
+    document_id: str | None = None
+    page: int
+    chunk_id: str
+    generation_id: str | None = None
+    section_path: list[str] = []
+    excerpt: str = Field(default="", max_length=600)
+    source_type: str = "initial"
+    context_role: str = "primary"
+    supports_claim_ids: list[str] = []
+    completion_reason: str | None = None
+    relevance_label: str = "核心依据"
 
 
 class QueryResponse(BaseModel):
     request_id: str
     trace_id: str = ""
-    status: Literal["success", "partial_answer", "insufficient_evidence"]
+    status: Literal["success", "partial_answer", "insufficient_evidence", "safety_blocked"]
     answer: str
     citations: list[CitationResponse]
     claims: list[ClaimResponse]
@@ -97,6 +116,7 @@ class QueryResponse(BaseModel):
     retrieved_chunk_ids: list[str] = []
     shadow_audit: dict[str, Any] | None = None
     generation_id: str | None = None
+    evidence: list[EvidenceResponse] = []
 
 
 class PublicError(BaseModel):
@@ -181,6 +201,7 @@ def _citation_response(
     *,
     generation_id: str | None = None,
     document_id: str | None = None,
+    evidence_id: str | None = None,
 ) -> CitationResponse:
     return CitationResponse(
         citation_id=f"cite_{index}",
@@ -189,6 +210,7 @@ def _citation_response(
         chunk_id=citation.chunk_id,
         document_id=document_id,
         generation_id=generation_id,
+        evidence_id=evidence_id,
     )
 
 
@@ -240,23 +262,67 @@ def _api_keys_from_environment() -> tuple[str | None, str | None]:
     )
 
 
+def _evidence_index(evidence_ids: list[str]) -> dict[str, CitationResponse]:
+    """Map deterministic E1/E2 answer evidence IDs to public citations."""
+    return {
+        f"E{index}": citation
+        for index, citation in enumerate(evidence_ids, start=1)
+    }
+
+
 def _claims_for_result(result: QueryResult, citations: list[CitationResponse]) -> list[ClaimResponse]:
     points = [point for point in result.answer_points if point.support_status == "supported"]
     if not points:
+        citation_ids = (
+            [citation.citation_id for citation in citations]
+            if not any(citation.evidence_id for citation in citations)
+            else ([citations[0].citation_id] if citations else [])
+        )
         return [
             ClaimResponse(
                 claim_id="claim_1",
                 text=result.answer,
-                citation_ids=[citation.citation_id for citation in citations],
+                citation_ids=citation_ids,
+                evidence_ids=[citation.evidence_id for citation in citations if citation.evidence_id],
             )
         ]
+    by_evidence = {citation.evidence_id: citation for citation in citations if citation.evidence_id}
     return [
         ClaimResponse(
             claim_id=point.point_id,
             text=point.content,
-            citation_ids=[citation.citation_id for citation in citations],
+            citation_ids=[by_evidence[evidence_id].citation_id for evidence_id in point.evidence_ids if evidence_id in by_evidence],
+            evidence_ids=[evidence_id for evidence_id in point.evidence_ids if evidence_id in by_evidence],
         )
         for point in points
+    ]
+
+
+def _evidence_for_result(
+    result: QueryResult,
+    citations: list[CitationResponse],
+    *,
+    generation_id: str | None,
+) -> list[EvidenceResponse]:
+    by_id = {citation.evidence_id: citation for citation in citations if citation.evidence_id}
+    supports: dict[str, list[str]] = {key: [] for key in by_id}
+    for point in result.answer_points:
+        for evidence_id in point.evidence_ids:
+            if evidence_id in supports:
+                supports[evidence_id].append(point.point_id)
+    return [
+        EvidenceResponse(
+            evidence_id=evidence_id,
+            citation_id=citation.citation_id,
+            document_name=citation.document_name,
+            document_id=citation.document_id,
+            page=citation.page,
+            chunk_id=citation.chunk_id,
+            generation_id=generation_id,
+            supports_claim_ids=supports[evidence_id],
+            relevance_label="核心依据",
+        )
+        for evidence_id, citation in by_id.items()
     ]
 
 
@@ -704,6 +770,7 @@ def create_app(
             citations=citations,
             claims=_claims_for_result(result, citations),
             latency_ms=latency_ms,
+            evidence=_evidence_for_result(result, citations, generation_id=None),
         )
         _log_result(request_id=request_id, status=result.answer_status, latency_ms=latency_ms)
         if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true":
@@ -835,6 +902,7 @@ def create_app(
                     index,
                     generation_id=execution.generation_id,
                     document_id=execution.citation_document_ids.get(citation.source_file),
+                    evidence_id=f"E{index}",
                 )
                 for index, citation in enumerate(result.citations, start=1)
             ]
@@ -849,6 +917,9 @@ def create_app(
                 retrieved_chunk_ids=list(result.retrieval_chunk_ids),
                 shadow_audit=audit,
                 generation_id=execution.generation_id,
+                evidence=_evidence_for_result(
+                    result, citations, generation_id=execution.generation_id
+                ),
             )
         from industrial_rag.services.retrieval_trace_service import (
             RetrievalTraceService,
