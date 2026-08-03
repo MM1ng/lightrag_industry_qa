@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import time
 from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from functools import partial
@@ -17,7 +18,13 @@ from industrial_rag.config import (
     write_storage_metadata,
 )
 from industrial_rag.document_parser import DocumentChunk
-from industrial_rag.evidence_policy import EvidenceCandidate, select_evidence
+from industrial_rag.evidence_policy import EvidenceCandidate, _tokens, select_evidence
+from industrial_rag.retrieval_trace import (
+    TRACE_VERSION,
+    RetrievalExecutionTrace,
+    RetrievalTraceItem,
+    SelectedEvidenceTrace,
+)
 from industrial_rag.vector_collections import VectorBackend
 
 QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
@@ -47,6 +54,7 @@ class QueryResult:
     mode: QueryMode
     retrieval_chunk_ids: tuple[str, ...] = ()
     retrieval_meta: tuple[tuple[str, str, int], ...] = ()
+    retrieval_trace: RetrievalExecutionTrace | None = None
 
 
 class LightRAGBackend(Protocol):
@@ -282,16 +290,112 @@ def _extract_retrieved(evidence: dict[str, Any]) -> list[dict[str, Any]]:
             if identity in seen:
                 continue
             seen.add(identity)
+            score = value.get("score")
+            if score is None:
+                score = value.get("distance")
+            retrieval_source = value.get("retrieval_source")
+            if not isinstance(retrieval_source, str) or not retrieval_source.strip():
+                retrieval_source = "lightrag_mix_unspecified"
+            section_path = value.get("section_path", ())
+            if not isinstance(section_path, (list, tuple)):
+                section_path = ()
             out.append(
                 {
                     "file": citation.source_file,
                     "page": citation.page_number,
                     "chunk_id": citation.chunk_id,
-                    "score": value.get("score") or value.get("distance"),
+                    "score": score if isinstance(score, (int, float)) else None,
                     "rank": len(out) + 1,
+                    "retrieval_source": retrieval_source,
+                    "section_path": tuple(str(part) for part in section_path if str(part)),
+                    "content": value.get("content") if isinstance(value.get("content"), str) else "",
                 }
             )
     return out
+
+
+def _build_retrieval_trace(
+    *,
+    original_query: str,
+    normalized_query: str,
+    options: QueryOptions,
+    retrieved: list[dict[str, Any]],
+    selected: Sequence[EvidenceCandidate],
+    cited: Sequence[Citation],
+    normalization_ms: float,
+    retrieval_ms: float,
+    evidence_selection_ms: float,
+) -> RetrievalExecutionTrace:
+    selected_identities = {
+        (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
+        for item in selected
+    }
+    cited_identities = {
+        (item.source_file, item.page_number, item.chunk_id) for item in cited
+    }
+    question_terms = _tokens(normalized_query)
+    initial_results: list[RetrievalTraceItem] = []
+    ranks_by_identity: dict[tuple[str, int, str], int] = {}
+    for item in retrieved:
+        identity = (item["file"], item["page"], item["chunk_id"])
+        ranks_by_identity[identity] = item["rank"]
+        candidate_terms = _tokens(item["content"])
+        initial_results.append(
+            RetrievalTraceItem(
+                initial_rank=item["rank"],
+                initial_score=item["score"],
+                retrieval_source=item["retrieval_source"],
+                document_id=None,
+                document_name=item["file"],
+                page_number=item["page"],
+                chunk_id=item["chunk_id"],
+                section_path=item["section_path"],
+                matched_terms=tuple(sorted(question_terms & candidate_terms)),
+                used_for_answer=identity in selected_identities,
+                cited_in_answer=identity in cited_identities,
+            )
+        )
+    final_selected = tuple(
+        SelectedEvidenceTrace(
+            final_rank=final_rank,
+            chunk_id=item.citation.chunk_id,
+            document_id=None,
+            document_name=item.citation.source_file,
+            page_number=item.citation.page_number,
+            initial_rank=ranks_by_identity.get(
+                (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
+            ),
+            reranked_rank=None,
+            used_for_answer=True,
+            cited_in_answer=(
+                item.citation.source_file,
+                item.citation.page_number,
+                item.citation.chunk_id,
+            )
+            in cited_identities,
+        )
+        for final_rank, item in enumerate(selected, start=1)
+    )
+    return RetrievalExecutionTrace(
+        trace_version=TRACE_VERSION,
+        original_query=original_query,
+        normalized_query=normalized_query,
+        retrieval_config=(
+            ("mode", options.mode),
+            ("top_k", options.top_k),
+            ("chunk_top_k", options.chunk_top_k),
+            ("rerank_enabled", options.enable_rerank),
+        ),
+        initial_results=tuple(initial_results),
+        rerank_applied=False,
+        reranked_results=(),
+        final_selected_chunks=final_selected,
+        selected_chunk_ids=tuple(item.chunk_id for item in final_selected),
+        normalization_ms=normalization_ms,
+        retrieval_ms=retrieval_ms,
+        rerank_ms=0.0,
+        evidence_selection_ms=evidence_selection_ms,
+    )
 
 
 def _generation_system_prompt(context: str) -> str:
@@ -368,39 +472,83 @@ class LightRAGService:
             raise RuntimeError("LightRAG 尚未初始化")
         if mode not in SUPPORTED_QUERY_MODES:
             raise ValueError(f"不支持的查询模式: {mode}")
-        if not question.strip():
+        normalization_started = time.perf_counter()
+        normalized_question = question.strip()
+        normalization_ms = (time.perf_counter() - normalization_started) * 1000
+        if not normalized_question:
             raise ValueError("问题不能为空")
         options = QueryOptions(mode=mode)
-        evidence = await self._backend.aquery_data(question.strip(), options)
+        retrieval_started = time.perf_counter()
+        evidence = await self._backend.aquery_data(normalized_question, options)
+        retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
         retrieved = _extract_retrieved(evidence)
         retrieval_chunk_ids = tuple(item["chunk_id"] for item in retrieved)
         retrieval_meta = tuple(
             (item["file"], item["page"], item["chunk_id"]) for item in retrieved
         )
-        decision = select_evidence(question.strip(), evidence)
+        selection_started = time.perf_counter()
+        decision = select_evidence(normalized_question, evidence)
+        evidence_selection_ms = (time.perf_counter() - selection_started) * 1000
         if not decision.allowed:
+            trace = _build_retrieval_trace(
+                original_query=question,
+                normalized_query=normalized_question,
+                options=options,
+                retrieved=retrieved,
+                selected=(),
+                cited=(),
+                normalization_ms=normalization_ms,
+                retrieval_ms=retrieval_ms,
+                evidence_selection_ms=evidence_selection_ms,
+            )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
                 (),
                 mode,
                 retrieval_chunk_ids,
                 retrieval_meta,
+                trace,
             )
         context = _selected_context(decision.selected)
         system_prompt = _generation_system_prompt(context)
-        answer = (await self._backend.generate(question.strip(), context, system_prompt)).strip()
+        answer = (await self._backend.generate(normalized_question, context, system_prompt)).strip()
         if not answer:
+            trace = _build_retrieval_trace(
+                original_query=question,
+                normalized_query=normalized_question,
+                options=options,
+                retrieved=retrieved,
+                selected=decision.selected,
+                cited=(),
+                normalization_ms=normalization_ms,
+                retrieval_ms=retrieval_ms,
+                evidence_selection_ms=evidence_selection_ms,
+            )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
                 (),
                 mode,
                 retrieval_chunk_ids,
                 retrieval_meta,
+                trace,
             )
+        citations = tuple(item.citation for item in decision.selected)
+        trace = _build_retrieval_trace(
+            original_query=question,
+            normalized_query=normalized_question,
+            options=options,
+            retrieved=retrieved,
+            selected=decision.selected,
+            cited=citations,
+            normalization_ms=normalization_ms,
+            retrieval_ms=retrieval_ms,
+            evidence_selection_ms=evidence_selection_ms,
+        )
         return QueryResult(
             answer,
-            tuple(item.citation for item in decision.selected),
+            citations,
             mode,
             retrieval_chunk_ids,
             retrieval_meta,
+            trace,
         )

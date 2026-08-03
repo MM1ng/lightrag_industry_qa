@@ -110,6 +110,11 @@ class QueryApplicationService:
         operational_metrics.set(f"active_generation.{kb.id}", generation.id)
         result = await runtime.query(question, mode="mix")
         document_ids = await self._citation_document_ids(kb.id, generation)
+        if result.retrieval_trace is not None:
+            result = replace(
+                result,
+                retrieval_trace=result.retrieval_trace.with_document_ids(document_ids),
+            )
         return GenerationQueryResult(
             generation_id=generation.id,
             generation_name=generation.generation,
