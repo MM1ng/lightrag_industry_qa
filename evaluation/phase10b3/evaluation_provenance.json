@@ -1,0 +1,8 @@
+{
+  "phase": "10B-3",
+  "source": "Phase 10B-2 frozen development/validation artifacts",
+  "executed_in_this_task": false,
+  "holdout_rerun": false,
+  "policy": "evaluation/phase10b3/evidence_completion_policy.json",
+  "notes": "These artifacts are a frozen baseline and are not a claim of a fresh end-to-end rerun."
+}
