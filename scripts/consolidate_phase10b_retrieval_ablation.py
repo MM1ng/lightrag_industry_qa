@@ -23,7 +23,7 @@ def main() -> int:
     baseline = _read(Path(args.baseline_manifest))
     development = [_read(Path(path)) for path in args.development_manifest]
     validation = _read(Path(args.selected_validation_manifest))
-    manifests = development + [validation]
+    manifests = [*development, validation]
     if any(item.get("split") not in {"development", "validation"} for item in manifests):
         raise ValueError("ablation consolidation accepts only development/validation manifests")
     if any(item.get("holdout_used_for_tuning") for item in manifests):
