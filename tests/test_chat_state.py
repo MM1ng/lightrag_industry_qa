@@ -353,7 +353,7 @@ def test_app_package_importable() -> None:
     assert hasattr(module, "UserMessage")
     assert hasattr(module, "AssistantMessage")
     assert frozenset({"mix", "hybrid", "local", "global", "naive"}) == SUPPORTED_CHAT_QUERY_MODES
-    assert frozenset({"success", "insufficient_evidence", "error"}) == SUPPORTED_MESSAGE_STATUSES
+    assert frozenset({"success", "partial_answer", "insufficient_evidence", "safety_blocked", "error"}) == SUPPORTED_MESSAGE_STATUSES
 
 
 def test_add_error_message_sets_error_status() -> None:

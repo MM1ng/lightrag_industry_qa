@@ -251,10 +251,14 @@ def _render_message_meta(msg: AssistantMessage) -> None:
     parts.append(f"📎 {msg.citation_count}条引用")
     if msg.status == "insufficient_evidence":
         parts.append("⚠️ 证据不足")
+    elif msg.status == "partial_answer":
+        parts.append("◐ 部分回答")
+    elif msg.status == "safety_blocked":
+        parts.append("⛔ 安全限制")
     elif msg.status == "error":
         parts.append("❌ 查询失败")
     else:
-        parts.append("✓ 成功")
+        parts.append("✓ 完整回答")
     st.caption(" ｜ ".join(parts))
 
 

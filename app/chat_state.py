@@ -13,13 +13,19 @@ from typing import Literal
 from uuid import uuid4
 
 ChatQueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
-MessageStatus = Literal["success", "insufficient_evidence", "error"]
+MessageStatus = Literal[
+    "success",
+    "partial_answer",
+    "insufficient_evidence",
+    "safety_blocked",
+    "error",
+]
 
 SUPPORTED_CHAT_QUERY_MODES: frozenset[str] = frozenset(
     {"mix", "hybrid", "local", "global", "naive"}
 )
 SUPPORTED_MESSAGE_STATUSES: frozenset[str] = frozenset(
-    {"success", "insufficient_evidence", "error"}
+    {"success", "partial_answer", "insufficient_evidence", "safety_blocked", "error"}
 )
 
 
@@ -34,6 +40,10 @@ class ChatCitation:
     source_file: str
     page_number: int
     chunk_id: str
+    citation_id: str = ""
+    evidence_id: str | None = None
+    document_id: str | None = None
+    generation_id: str | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.source_file, str) or not self.source_file.strip():
@@ -70,6 +80,29 @@ class UserMessage:
 
 
 @dataclass(frozen=True, slots=True)
+class ChatClaim:
+    claim_id: str
+    text: str
+    citation_ids: tuple[str, ...] = ()
+    evidence_ids: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class ChatEvidence:
+    evidence_id: str
+    citation_id: str | None
+    document_name: str
+    page: int
+    chunk_id: str
+    excerpt: str = ""
+    source_type: str = "initial"
+    context_role: str = "primary"
+    supports_claim_ids: tuple[str, ...] = ()
+    completion_reason: str | None = None
+    relevance_label: str = "核心依据"
+
+
+@dataclass(frozen=True, slots=True)
 class AssistantMessage:
     """Assistant chat message with per-message mode/latency/citations/status.
 
@@ -82,6 +115,13 @@ class AssistantMessage:
     latency_seconds: float | None = None
     citations: tuple[ChatCitation, ...] = ()
     status: MessageStatus = "success"
+    knowledge_base_id: str | None = None
+    generation_id: str | None = None
+    request_id: str | None = None
+    trace_id: str | None = None
+    claims: tuple[ChatClaim, ...] = ()
+    evidence: tuple[ChatEvidence, ...] = ()
+    partial_reason: str | None = None
     message_id: str = field(default_factory=lambda: uuid4().hex, init=False)
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     role: Literal["assistant"] = field(default="assistant", init=False)
@@ -138,7 +178,7 @@ def _validate_and_enforce_mode(msg: AssistantMessage) -> None:
         raise ValueError(
             f"mode 必须为 {sorted(SUPPORTED_CHAT_QUERY_MODES)} 之一，收到: {msg.mode!r}"
         )
-    if msg.status in ("success", "insufficient_evidence") and msg.mode is None:
+    if msg.status in ("success", "partial_answer", "insufficient_evidence", "safety_blocked") and msg.mode is None:
         raise ValueError(f"status='{msg.status}' 时 mode 不能为 None")
 
 
@@ -192,6 +232,13 @@ def add_assistant_message(
     latency_seconds: float | None = None,
     citations: Iterable[ChatCitation] = (),
     status: MessageStatus = "success",
+    knowledge_base_id: str | None = None,
+    generation_id: str | None = None,
+    request_id: str | None = None,
+    trace_id: str | None = None,
+    claims: Iterable[ChatClaim] = (),
+    evidence: Iterable[ChatEvidence] = (),
+    partial_reason: str | None = None,
 ) -> tuple[ChatSession, AssistantMessage]:
     """Append an assistant message without mutating the original session."""
     msg = AssistantMessage(
@@ -200,6 +247,13 @@ def add_assistant_message(
         latency_seconds=latency_seconds,
         citations=tuple(citations or ()),
         status=status,
+        knowledge_base_id=knowledge_base_id,
+        generation_id=generation_id,
+        request_id=request_id,
+        trace_id=trace_id,
+        claims=tuple(claims or ()),
+        evidence=tuple(evidence or ()),
+        partial_reason=partial_reason,
     )
     return [*session, msg], msg
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.api_client import ApiCitation, ApiQueryResult
+from app.api_client import ApiCitation, ApiClaim, ApiEvidence, ApiQueryResult
 from app.chat_state import add_error_message, add_user_message, create_empty_session
 from app.p3_chat import append_p3_answer, build_p3_history
 
@@ -93,3 +93,24 @@ def test_p3_failed_status_becomes_a_chat_error_without_internal_metadata() -> No
     assert message.latency_seconds is None
     assert message.citations == ()
     assert message.content == "安全审查未能可靠完成，请转人工复核。"
+
+
+def test_p3_partial_answer_preserves_status_and_evidence_metadata() -> None:
+    result = ApiQueryResult(
+        request_id="req_partial",
+        status="partial_answer",
+        answer="已确认部分",
+        knowledge_base_id="kb-1",
+        generation_id="gen-1",
+        claims=(ApiClaim("P1", "结论", ("cite_1",), ("E1",)),),
+        evidence=(
+            ApiEvidence("E1", "cite_1", "手册", None, 2, "c1", "gen-1", excerpt="证据"),
+        ),
+        partial_reason="缺少条件",
+    )
+    _, message = append_p3_answer(create_empty_session(), result)
+    assert message.status == "partial_answer"
+    assert message.knowledge_base_id == "kb-1"
+    assert message.generation_id == "gen-1"
+    assert message.claims[0].evidence_ids == ("E1",)
+    assert message.evidence[0].excerpt == "证据"

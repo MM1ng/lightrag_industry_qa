@@ -8,6 +8,8 @@ from app.api_client import ApiQueryResult
 from app.chat_state import (
     AssistantMessage,
     ChatCitation,
+    ChatClaim,
+    ChatEvidence,
     ChatMessage,
     ChatSession,
     UserMessage,
@@ -41,10 +43,41 @@ def append_p3_answer(
             source_file=citation.source_file,
             page_number=citation.page_number,
             chunk_id=citation.chunk_id,
+            citation_id=citation.citation_id,
+            evidence_id=citation.evidence_id,
+            document_id=citation.document_id,
+            generation_id=citation.generation_id,
         )
         for citation in result.citations
     )
-    status = "insufficient_evidence" if result.status == "insufficient_evidence" else "success"
+    status = result.status if result.status in {
+        "success", "partial_answer", "insufficient_evidence", "safety_blocked"
+    } else "error"
+    claims = tuple(
+        ChatClaim(
+            claim_id=claim.claim_id,
+            text=claim.text,
+            citation_ids=claim.citation_ids,
+            evidence_ids=claim.evidence_ids,
+        )
+        for claim in result.claims
+    )
+    evidence = tuple(
+        ChatEvidence(
+            evidence_id=item.evidence_id,
+            citation_id=item.citation_id,
+            document_name=item.document_name,
+            page=item.page,
+            chunk_id=item.chunk_id,
+            excerpt=item.excerpt,
+            source_type=item.source_type,
+            context_role=item.context_role,
+            supports_claim_ids=item.supports_claim_ids,
+            completion_reason=item.completion_reason,
+            relevance_label=item.relevance_label,
+        )
+        for item in result.evidence
+    )
     return add_assistant_message(
         session,
         result.answer,
@@ -52,4 +85,11 @@ def append_p3_answer(
         latency_seconds=result.latency_ms / 1000.0,
         citations=citations,
         status=status,
+        knowledge_base_id=result.knowledge_base_id,
+        generation_id=result.generation_id,
+        request_id=result.request_id,
+        trace_id=result.trace_id,
+        claims=claims,
+        evidence=evidence,
+        partial_reason=result.partial_reason,
     )
