@@ -18,7 +18,10 @@ from industrial_rag.repositories.knowledge_base_repository import KnowledgeBaseR
 from industrial_rag.repositories.vector_index_generation_repository import (
     VectorIndexGenerationRepository,
 )
-from industrial_rag.services.generation_content_fingerprint import stable_hash
+from industrial_rag.services.generation_content_fingerprint import (
+    GenerationContentFingerprintService,
+    stable_hash,
+)
 from industrial_rag.services.kb_lease_service import KBLeaseService
 from industrial_rag.storage_layout import is_safe_to_delete
 
@@ -104,6 +107,7 @@ class GenerationGCService:
                 reason = "archived_retention_exceeded"
             if reason is None:
                 continue
+            evidence = await self._fingerprints().calculate(kb_id, generation)
             items.append(
                 {
                     "generation_id": generation.id,
@@ -112,6 +116,7 @@ class GenerationGCService:
                     "workspace_path": generation.workspace_path,
                     "collections": sorted((generation.collections or {}).values()),
                     "content_epoch": int(generation.content_epoch or 0),
+                    "qdrant_content_fingerprint": evidence.qdrant_content_fingerprint,
                     "reason": reason,
                 }
             )
@@ -249,6 +254,16 @@ class GenerationGCService:
         ):
             return {**item, "status": "failed", "error": "writer lease expired"}
         try:
+            evidence = await self._fingerprints().calculate(kb_id, generation)
+            if (
+                evidence.qdrant_content_fingerprint
+                != item.get("qdrant_content_fingerprint")
+            ):
+                return {
+                    **item,
+                    "status": "failed",
+                    "error": "generation content changed",
+                }
             client = self._new_qdrant_client()
             try:
                 for collection in item["collections"]:
@@ -274,6 +289,13 @@ class GenerationGCService:
         return AsyncQdrantClient(
             url=self._settings.qdrant_url,
             api_key=self._settings.qdrant_api_key,
+        )
+
+    def _fingerprints(self) -> GenerationContentFingerprintService:
+        return GenerationContentFingerprintService(
+            self._session,
+            settings=self._settings,
+            qdrant_client_factory=self._new_qdrant_client,
         )
 
     @staticmethod

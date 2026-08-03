@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from types import SimpleNamespace
 
 import pytest
 import pytest_asyncio
@@ -22,6 +23,7 @@ class _GCQdrant:
         self.names = set(names)
         self.deleted: list[str] = []
         self.fail_once: set[str] = set()
+        self.revision = "original"
 
     async def collection_exists(self, name: str) -> bool:
         return name in self.names
@@ -32,6 +34,15 @@ class _GCQdrant:
             raise RuntimeError("injected exact delete failure")
         self.names.discard(collection_name)
         self.deleted.append(collection_name)
+
+    async def scroll(self, *, collection_name: str, **_kwargs):
+        return [
+            SimpleNamespace(
+                id=f"{collection_name}-point",
+                payload={"revision": self.revision},
+                vector=[0.1, 0.2],
+            )
+        ], None
 
     async def close(self) -> None:
         return None
@@ -178,3 +189,35 @@ async def test_partial_gc_plan_resumes_same_manifest(gc_state) -> None:
             actor="admin:bbbbbbbbbbbb",
         )
     assert second["status"] == "completed"
+
+
+@pytest.mark.asyncio
+async def test_gc_plan_rejects_qdrant_content_changed_after_plan(gc_state) -> None:
+    factory, settings, qdrant, kb_id, _ids, workspaces = gc_state
+    async with factory() as session:
+        service = GenerationGCService(
+            session,
+            settings=settings,
+            qdrant_client_factory=lambda: qdrant,
+        )
+        plan = await service.plan(
+            kb_id,
+            actor="admin:aaaaaaaaaaaa",
+            failed_retention_days=0,
+            archived_keep_count=0,
+        )
+        qdrant.revision = "mutated-after-plan"
+        result = await service.execute(
+            kb_id,
+            plan["plan_id"],
+            manifest_hash=plan["manifest_hash"],
+            actor="admin:bbbbbbbbbbbb",
+        )
+    assert result["status"] == "partial_failed"
+    assert qdrant.deleted == []
+    assert workspaces["candidate"].exists()
+    assert workspaces["archived"].exists()
+    assert all(
+        item["error"] == "generation content changed"
+        for item in result["result"]["items"]
+    )

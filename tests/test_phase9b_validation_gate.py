@@ -7,6 +7,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
+import httpx
 import pytest
 import pytest_asyncio
 from industrial_rag.config import Settings
@@ -118,6 +119,80 @@ async def test_missing_http_runner_configuration_never_defaults_to_pass(tmp_path
     assert report["runner_configured"] is False
     assert report["http_success_rate"] == 0.0
     assert report["no_5xx"] is False
+
+
+@pytest.mark.asyncio
+async def test_canonical_http_record_contains_required_trace_and_safety_fields(
+    tmp_path, monkeypatch
+) -> None:
+    response = httpx.Response(
+        200,
+        json={
+            "request_id": "req-123",
+            "trace_id": "trace-456",
+            "status": "success",
+            "answer": "可验证答案",
+            "generation_id": "b" * 32,
+            "citations": [
+                {
+                    "document_id": "doc-1",
+                    "chunk_id": "chunk-1",
+                    "generation_id": "b" * 32,
+                    "document_name": "source.pdf",
+                    "page": 1,
+                }
+            ],
+        },
+    )
+
+    class _HTTPClient:
+        def __init__(self, **_kwargs) -> None:
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args) -> None:
+            return None
+
+        async def post(self, *_args, **_kwargs):
+            return response
+
+    monkeypatch.setattr(
+        "industrial_rag.services.canonical_validation_runner.AsyncClient",
+        _HTTPClient,
+    )
+    policy = GoldenSetPolicy(
+        questions=(
+            {
+                "id": "T001",
+                "question": "test",
+                "expects_evidence": True,
+                "expected_citations": [
+                    {"source_file": "source.pdf", "page_number": 1}
+                ],
+            },
+        ),
+        source_sha256="1" * 64,
+        source_path=tmp_path / "test-golden.json",
+        version="test",
+    )
+    settings = Settings(
+        api_key="provider-test-key",
+        admin_api_key="admin-test-key",
+        validation_base_url="http://validation.invalid",
+        working_dir=tmp_path,
+    )
+    report = await CanonicalValidationRunner(settings, policy)(
+        "a" * 32,
+        SimpleNamespace(id="b" * 32),
+    )
+    record = report["results"][0]
+    assert record["request_id"] == "req-123"
+    assert record["trace_id"] == "trace-456"
+    assert record["answer_status"] == "success"
+    assert record["safety_result"] == "allowed"
+    assert record["failure_reason"] is None
 
 
 @pytest.mark.asyncio

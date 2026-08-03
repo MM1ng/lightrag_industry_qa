@@ -90,7 +90,17 @@ class CanonicalValidationRunner:
                 results.append(
                     {
                         "id": item["id"],
+                        "request_id": body.get("request_id"),
+                        "trace_id": body.get("trace_id"),
                         "status_code": status_code,
+                        "answer_status": body.get("status") or (
+                            "transport_error" if error_code else "http_error"
+                        ),
+                        "safety_result": "allowed" if status_code == 200 else "blocked",
+                        "failure_reason": (
+                            error_code
+                            or (body.get("code") if status_code != 200 else None)
+                        ),
                         "latency_ms": latency_ms,
                         "error_code": error_code,
                         "expects_evidence": expects_evidence,
