@@ -1,10 +1,10 @@
 {
   "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
-  "record_count": 12,
-  "completed_count": 12,
+  "record_count": 64,
+  "completed_count": 64,
   "trace_completeness": {
-    "numerator": 12,
-    "denominator": 12,
+    "numerator": 64,
+    "denominator": 64,
     "value": 1.0
   },
   "cache_disabled_declared": true,
