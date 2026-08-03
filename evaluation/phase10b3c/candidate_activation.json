@@ -1,0 +1,7 @@
+{
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "candidate_generation_id": "g10b3c20260803",
+  "activated": false,
+  "legacy_active_generation_preserved": true,
+  "reason": "Candidate is isolated and no candidate-query activation path was exercised."
+}

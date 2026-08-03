@@ -1,0 +1,8 @@
+{
+  "candidate_generation_id": "g10b3c20260803",
+  "status": "blocked",
+  "query_count": 0,
+  "reason": "The running API exposes only the Active Generation query path; candidate was not activated.",
+  "provider_preflight": "passed:qwen-plus-2025-07-28",
+  "holdout_executed": false
+}

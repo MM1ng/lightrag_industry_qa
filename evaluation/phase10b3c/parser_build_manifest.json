@@ -1,0 +1,33 @@
+{
+  "schema_version": "phase10b3c-context-registry-v1",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "generation_id": "g10b3c20260803",
+  "parser_name": "PyMuPDF",
+  "parser_version": "1.28.0",
+  "chunking_strategy": "pymupdf-v1",
+  "chunking_version": "0.1.0",
+  "source_artifacts": [
+    {
+      "path": "runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/parsed/doc-4ffb6df91a9a/parent_chunks.jsonl",
+      "sha256": "3155eb87b75b6c89da97895d145d75fafadcaf7f6c50db9893f686967c82ec5e"
+    },
+    {
+      "path": "runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/parsed/doc-4ffb6df91a9a/child_chunks.jsonl",
+      "sha256": "dd25cfb6d69dde31275aa594e7f0b7a25aed19bcc35262a41685cba874ec0715"
+    },
+    {
+      "path": "runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/parsed/doc-6a9ea3ff1f42/parent_chunks.jsonl",
+      "sha256": "31e73d69f60a29fde61275eaf84efbe6452dd4ad294a40ab917e1f03a5bc5364"
+    },
+    {
+      "path": "runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/parsed/doc-6a9ea3ff1f42/child_chunks.jsonl",
+      "sha256": "e592f65d54c23f5a314d6eac2f83ddbe6ad76028deb446e5e12915835516ace9"
+    }
+  ],
+  "record_count": 453,
+  "parent_count": 447,
+  "relationship_count": 1355,
+  "table_supported": false,
+  "created_at": "2026-08-03T11:24:04.855263+00:00",
+  "creation_commit": "0036016"
+}
