@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -406,6 +407,27 @@ async def test_query_generates_from_selected_chunks_and_returns_three_citations(
     assert "只能依据检索到的手册内容回答" in system_prompt
     assert "{context_data}" not in system_prompt
     assert "{content_data}" not in system_prompt
+
+
+@pytest.mark.asyncio
+async def test_query_trace_records_deterministic_normalization_metadata(tmp_path: Path) -> None:
+    evidence = _payload(
+        [("2196-ANSI-Manual-Chinese.pdf", 9, "sumit-c1", "SUMMIT 2196 泵轴每周转动一次。")]
+    )
+    backend = FakeLightRAGBackend(evidence_payload=evidence)
+    settings = replace(_settings(tmp_path), query_normalization_enabled=True)
+    service = LightRAGService(settings, backend=backend)
+    await service.initialize()
+
+    query = "  \uff33\uff35\uff2d\uff2d\uff29\uff34\u30002196 泵轴多久转动一次？  "
+    result = await service.query(query)
+
+    assert result.retrieval_trace is not None
+    assert result.retrieval_trace.original_query == query
+    assert result.retrieval_trace.normalized_query == "summit 2196 泵轴如何转动一次?"
+    assert result.retrieval_trace.detected_model == "2196"
+    assert result.retrieval_trace.detected_component == "泵轴"
+    assert "怎么/多久→如何" in result.retrieval_trace.added_aliases
 
 
 @pytest.mark.asyncio

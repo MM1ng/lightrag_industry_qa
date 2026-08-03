@@ -19,6 +19,7 @@ from industrial_rag.config import (
 )
 from industrial_rag.document_parser import DocumentChunk
 from industrial_rag.evidence_policy import EvidenceCandidate, _tokens, select_evidence
+from industrial_rag.query_normalization import NormalizationResult, normalize_query
 from industrial_rag.retrieval_trace import (
     TRACE_VERSION,
     RetrievalExecutionTrace,
@@ -325,6 +326,7 @@ def _build_retrieval_trace(
     normalization_ms: float,
     retrieval_ms: float,
     evidence_selection_ms: float,
+    normalization: NormalizationResult | None = None,
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -395,6 +397,10 @@ def _build_retrieval_trace(
         retrieval_ms=retrieval_ms,
         rerank_ms=0.0,
         evidence_selection_ms=evidence_selection_ms,
+        detected_model=normalization.detected_model if normalization else None,
+        detected_component=normalization.detected_component if normalization else None,
+        detected_parameter=normalization.detected_parameter if normalization else None,
+        added_aliases=normalization.added_aliases if normalization else (),
     )
 
 
@@ -473,7 +479,19 @@ class LightRAGService:
         if mode not in SUPPORTED_QUERY_MODES:
             raise ValueError(f"不支持的查询模式: {mode}")
         normalization_started = time.perf_counter()
-        normalized_question = question.strip()
+        normalization = (
+            normalize_query(question)
+            if self.settings.query_normalization_enabled
+            else NormalizationResult(
+                original_query=question,
+                normalized_query=question.strip(),
+                detected_model=None,
+                detected_component=None,
+                detected_parameter=None,
+                added_aliases=(),
+            )
+        )
+        normalized_question = normalization.normalized_query
         normalization_ms = (time.perf_counter() - normalization_started) * 1000
         if not normalized_question:
             raise ValueError("问题不能为空")
@@ -500,6 +518,7 @@ class LightRAGService:
                 normalization_ms=normalization_ms,
                 retrieval_ms=retrieval_ms,
                 evidence_selection_ms=evidence_selection_ms,
+                normalization=normalization,
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -523,6 +542,7 @@ class LightRAGService:
                 normalization_ms=normalization_ms,
                 retrieval_ms=retrieval_ms,
                 evidence_selection_ms=evidence_selection_ms,
+                normalization=normalization,
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -543,6 +563,7 @@ class LightRAGService:
             normalization_ms=normalization_ms,
             retrieval_ms=retrieval_ms,
             evidence_selection_ms=evidence_selection_ms,
+            normalization=normalization,
         )
         return QueryResult(
             answer,

@@ -2,6 +2,7 @@ param(
     [string]$RuntimeRoot = "D:\industrial_energy_agent_phase9b_staging",
     [int[]]$Ports = @(8111, 8112),
     [switch]$DisableLlmCache,
+    [switch]$EnableQueryNormalization,
     [ValidateRange(60, 604800)]
     [int]$RetrievalTraceTtlSeconds = 86400
 )
@@ -25,6 +26,9 @@ Get-Content -LiteralPath $envFile | ForEach-Object {
 }
 if ($DisableLlmCache) {
     $env:ENABLE_LLM_CACHE = "false"
+}
+if ($EnableQueryNormalization) {
+    $env:QA_QUERY_NORMALIZATION_ENABLED = "true"
 }
 $env:RETRIEVAL_TRACE_TTL_SECONDS = [string]$RetrievalTraceTtlSeconds
 $env:APP_GIT_COMMIT = (& git -C $repo rev-parse HEAD).Trim()

@@ -84,6 +84,10 @@ class RetrievalExecutionTrace:
     retrieval_ms: float
     rerank_ms: float
     evidence_selection_ms: float
+    detected_model: str | None = None
+    detected_component: str | None = None
+    detected_parameter: str | None = None
+    added_aliases: tuple[str, ...] = ()
 
     def with_document_ids(self, document_ids: Mapping[str, str]) -> RetrievalExecutionTrace:
         return replace(
@@ -118,4 +122,8 @@ class RetrievalExecutionTrace:
             "retrieval_ms": self.retrieval_ms,
             "rerank_ms": self.rerank_ms,
             "evidence_selection_ms": self.evidence_selection_ms,
+            "detected_model": self.detected_model,
+            "detected_component": self.detected_component,
+            "detected_parameter": self.detected_parameter,
+            "added_aliases": list(self.added_aliases),
         }

@@ -60,6 +60,7 @@ class Settings:
     qdrant_expected_minor: str = "1.13"
     generation_epoch: int = 0
     enable_llm_cache: bool = True
+    query_normalization_enabled: bool = False
     validation_base_url: str | None = None
     validation_artifact_dir: Path = PROJECT_ROOT / "artifacts" / "validation-runs"
     validation_max_age_seconds: int = 3600
@@ -164,6 +165,10 @@ class Settings:
         enable_llm_cache = (
             (values.get("ENABLE_LLM_CACHE") or "true").strip().lower() != "false"
         )
+        query_normalization_enabled = (
+            (values.get("QA_QUERY_NORMALIZATION_ENABLED") or "false").strip().lower()
+            == "true"
+        )
         validation_base_url = (
             values.get("VALIDATION_BASE_URL") or ""
         ).strip().rstrip("/") or None
@@ -248,6 +253,7 @@ class Settings:
             qdrant_kb_id=qdrant_kb_id,
             qdrant_expected_minor=qdrant_expected_minor,
             enable_llm_cache=enable_llm_cache,
+            query_normalization_enabled=query_normalization_enabled,
             validation_base_url=validation_base_url,
             validation_artifact_dir=validation_artifact_dir.resolve(),
             validation_max_age_seconds=validation_max_age_seconds,
