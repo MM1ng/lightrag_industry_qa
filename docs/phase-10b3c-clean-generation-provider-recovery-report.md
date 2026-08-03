@@ -2,60 +2,93 @@
 
 ## 结论
 
-本阶段完成了旧 Active Generation 保护、重复 Chunk ID 审计、确定性 ID 修复、隔离 Candidate Generation 构建、上下文注册表完整性门禁、Golden evidence sidecar、Provider preflight 和 staging 运行验证。Candidate 未激活，未修改旧 Generation、Qdrant Collection 或 Golden Set；因此本阶段不宣称通过 Phase 10B-3A 质量门禁，也不进入 Phase 10C。
+审查发现原报告错误地声称“当前 API 只暴露 Active Generation 查询路径”。实际代码已经存在 admin-only 显式 Generation 查询接口：
 
-## 版本与范围
+`POST /v1/knowledge-bases/{kb_id}/generations/{generation_id}/query`
+
+本轮已正确核对并使用该接口完成 Candidate smoke 和 52 题显式 Generation 验收。接口不修改 Active 指针。Candidate 已正式注册、建立真实 Qdrant 索引并完成 development/validation 查询；由于质量指标未达到全部门禁，Candidate 保持未激活。
+
+## 标识与版本
 
 - 分支：`codex/knowledge-qa-platform-design`
-- 实施代码提交：`0036016`
-- Candidate：`g10b3c20260803`
+- `code_under_test_commit`：`4214998`
+- `report_commit`：`4214998`（报告基于该已提交实现生成；本文件随后的 docs 提交记录修订文本）
 - KB：`8fce4626859d44abb70a9ae5b0372cea`
-- 旧 Active Generation：保持不变
-- Holdout：未逐题读取、未运行
-- Golden Set：未修改；仅生成只读 sidecar 映射
-- Tag、RC 重打包、生产部署：均未执行
+- old_active_generation_id：`a2d1c77ce08b414495e9d845cc42f799`
+- candidate_generation_id（数据库 `vector_index_generations.id`）：`5bca792c08fcf2f7b08cbaed09b6d525`
+- candidate_generation_name（数据库 `vector_index_generations.generation`）：`g10b3c20260803`
+- candidate_qdrant_collection：`ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_chunks`
+- Candidate workspace：`runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/workspace`
 
-## 数据与 ID 审计
+## API 路由与权限验证
 
-旧 Active child JSONL 共 453 条、383 个唯一 ID，发现 9 组、70 个重复实例。重复均为“相同内容位于不同位置”而非跨文档或同 ID 不同内容。根因是旧 child ID 只使用 parent ID 的短后缀，缺少完整 parent 位置身份。
+OpenAPI 已确认该路由为 POST，响应 schema 为 `QueryResponse`。实际验证结果：无凭证 401，SERVICE 403，ADMIN 合法 Candidate 200，不存在 Generation 404，其他 KB 404。Candidate 查询返回的 `generation_id`、Trace、Citation 和 Evidence 均为数据库 Candidate ID。
 
-Candidate 使用 `document_id + page/order/group ordinal + normalized content` 的确定性摘要生成 Parent/Child ID。Candidate 注册表共 453 个 Child、453 个唯一 ID、447 个 Parent、1355 条关系；Parent 链接 453/453，有效前后关系 451/451，无断链、跨文档、跨 Generation、自环或环路。表格元数据不存在，因此 `table_supported=false`，未猜测表头。
+相关产物：
 
-证据与清单：
+- `evaluation/phase10b3c/candidate_query_route_check.json`
+- `evaluation/phase10b3c/candidate_identity.json`
+- `evaluation/phase10b3c/candidate_registration_check.json`
 
-- `evaluation/phase10b3c/duplicate_chunk_audit.json`
-- `evaluation/phase10b3c/duplicate_chunk_groups.jsonl`
+## Candidate 注册与索引
+
+Candidate 使用现有 `VectorIndexGenerationRepository` 注册，状态为 `ready`，workspace 位于稳定 runtime 目录，backend 为 qdrant，属于当前 KB，且 `active=false`。Candidate Qdrant chunks collection 存在 453 个 Point，向量维度 1024，距离为 Cosine，Embedding 模型为 `text-embedding-v4`。旧 Active collection 查询前后保持 453 个 Point，未向旧 Collection 写入。
+
+相关产物：
+
+- `evaluation/phase10b3c/candidate_vector_index_check.json`
 - `evaluation/phase10b3c/context_registry_integrity.json`
 - `evaluation/phase10b3c/parser_build_manifest.json`
 - `evaluation/phase10b3c/context_registry_manifest.json`
-- `evaluation/phase10b3c/golden_evidence_mapping_g10b3c20260803.json`
 
-Golden sidecar 共映射 83 条 evidence，未修改原始黄金集，且标记 `used_for_tuning=false`。
+旧 Active child JSONL 的 453 条记录中，原有 9 组、70 个重复实例；Candidate 通过包含文档、位置、分组序号和规范化内容的确定性 ID 修复为 453 个唯一 ID。表格元数据不存在，因此 `table_supported=false`，没有伪造 Table Completion。
 
-## Provider 与 staging 验证
+## Candidate Smoke
 
-Provider preflight 结果为：固定回答模型 `qwen-plus-2025-07-28` 可用，Embedding `text-embedding-v4` 可用；此前不可用的模型不再作为 fallback。结果只记录状态码、延迟和可用性，不记录响应体或密钥：`evaluation/phase10b3c/provider_preflight.json`。
+通过显式 Generation 路由执行 7 个非黄金 Smoke 场景：普通可回答、无依据、partial、Adjacent、Parent、Multi-evidence 和安全问题。7/7 HTTP 200，7/7 Trace 200，响应/Trace Generation 均为 Candidate，wrong-generation citation 为 0。Table 场景按不支持处理。
 
-恢复现有 staging Qdrant 后，服务在 `local_staging` 启动。普通 KB-scoped 查询使用 SERVICE 身份成功返回 `partial_answer`、`request_id`、`generation_id` 和结构化证据；ADMIN 诊断 GET 返回 200 且 trace 可读取。该运行验证使用的是旧 Active Generation，用于证明 Provider/服务恢复，不等同于 Candidate 已上线。
+详见 `evaluation/phase10b3c/candidate_smoke_results.jsonl` 和汇总 JSON。
 
-Candidate smoke 明确记录为 blocked：当前 API 只暴露 Active Generation 查询路径，没有在不切换 Active 指针的前提下执行 Candidate 查询的接口。因此 Candidate 保持隔离，`evaluation/phase10b3c/candidate_activation.json` 中 `activated=false`，`candidate_smoke_results.json` 中 `query_count=0`；没有伪造 smoke 结果。
+## Development + Validation（52 题）
 
-## 配置冻结
+仅执行 development 36 题和 validation 16 题，未执行 Holdout，未修改 Golden Set。每题均通过 ADMIN Candidate Query → request_id → ADMIN Trace GET 流程完成，52/52 Trace 可读取。
 
-`evaluation/phase10b3c/runtime_config_proof.json` 固定记录：naive、TopK 12、chunk TopK 20、normalization/grounding 开启、LLM cache 关闭、Rerank 关闭、fallback 关闭。密钥只从环境变量读取，未进入 Candidate、评估 JSON、日志或响应。`secret_scan.json` 的 `confirmed_secret_count=0`。
+使用冻结的 Golden evidence sidecar 将旧 evidence identity 映射到 Candidate Chunk ID；原始黄金集未改写。真实结果：
 
-## 测试
+- Chunk Recall@20：63/72 = 87.5%
+- Any Evidence Recall@20：50/50 = 100%
+- Page Recall@20：50/50 = 100%
+- MRR：0.6994
+- False Rejection Rate：10/50 = 20%
+- Negative Rejection Rate：2/2 = 100%
+- Retrieval Trace Completeness：52/52 = 100%
+- Claim-Citation Exact Mapping：52/52 = 100%
+- Evidence Panel Completeness：52/52 = 100%
+- Unsupported Answer Rate：1/1 = 100%（未通过）
+- Question-level Citation Accuracy：1/1 = 100%（当前正例分母仅 1）
+- Table trigger rate：unsupported，numerator/denominator/value 均为 null
+- 端到端延迟：p50 约 2671ms，p95 约 6861ms
 
-- 全量 pytest：669 passed，12 skipped，1 warning。
-- 结构化 Chunker 定向测试：24 passed。
-- Ruff：新增和修改 Python 文件检查通过。
+测试收尾：`pytest --collect-only` 收集 682 项；全量 pytest 为 670 passed、12 skipped、1 warning；`ruff check .` 通过。
 
-跳过项均为显式 opt-in 的真实 MinerU/Qdrant/DashScope 集成测试；本阶段没有以跳过项冒充 Candidate E2E 通过。
+指标原始数据保存在 `evaluation/phase10b3a/final_metrics.json`，逐题数据保存在 `development_results.jsonl` 和 `validation_results.jsonl`。
+
+## 配置与安全
+
+固定配置为 naive、TopK 12、chunk TopK 20、normalization/grounding 开启、Rerank 关闭、cache 关闭、fallback 关闭，Provider 固定 `qwen-plus-2025-07-28`。Secret scan confirmed_secret_count=0；密钥未进入 Candidate、Trace、响应、日志或报告。
 
 ## 阶段状态
 
-- `phase10b3c_approved`: false（Candidate smoke/激活门禁未完成）
-- `phase10c_allowed`: false
-- `production_deployment_performed`: false
+```json
+{
+  "phase10b3c_data_rebuild_approved": true,
+  "phase10b3c_provider_recovery_approved": true,
+  "phase10b3c_candidate_smoke_approved": true,
+  "phase10b3c_approved": false,
+  "phase10b3a_approved": false,
+  "phase10c_allowed": false,
+  "production_deployment_performed": false
+}
+```
 
-下一步需要先提供或实现受控的 Candidate 查询执行入口，在不修改旧 Active 指针的条件下完成 Candidate smoke、52 题 development/validation 验收，然后再由人工审查决定是否进入后续阶段。
+Candidate 不因已产生 Embedding 成本而激活。下一步需针对 False Rejection、Chunk Recall 和 Unsupported Answer 继续修复并重新验收；本阶段到此停止，不进入 Phase 10C，不创建 Tag，不重新打包 RC，不部署生产。

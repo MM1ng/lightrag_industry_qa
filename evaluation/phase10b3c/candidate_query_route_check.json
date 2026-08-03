@@ -6,5 +6,6 @@
   "service_forbidden": 403,
   "admin_valid_candidate": 200,
   "admin_unknown_generation": 404,
-  "admin_other_kb": 404
+  "admin_other_kb": 404,
+  "admin_failed_generation": "covered_by_unit_test:test_failed_candidate_generation_is_rejected_with_conflict"
 }

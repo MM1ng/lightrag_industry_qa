@@ -6,5 +6,5 @@
 4. 从真实 PDF 构建隔离 Candidate，并生成 parsed、parents、chunks、relationships、tables 和 manifest。
 5. 执行上下文注册表完整性门禁及 Golden evidence 只读 sidecar 映射。
 6. 执行 Provider preflight，固定可用模型和 Embedding，禁止隐式 fallback。
-7. 仅在 Candidate 查询入口可用时执行 Candidate smoke；否则记录阻塞并保持 Candidate 未激活。
+7. 使用现有 admin-only 显式 Generation 查询接口执行 Candidate smoke 和 52 题 development/validation 验收，确认响应、Trace、Citation、Evidence 的数据库 Generation ID 一致。
 8. 运行 pytest、Ruff、secret scan，生成阶段报告；不执行 Holdout、Tag、RC 或生产部署。
