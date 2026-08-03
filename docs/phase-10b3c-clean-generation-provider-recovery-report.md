@@ -12,7 +12,7 @@
 
 - 分支：`codex/knowledge-qa-platform-design`
 - `code_under_test_commit`：`4214998`
-- `report_commit`：`4214998`（报告基于该已提交实现生成；本文件随后的 docs 提交记录修订文本）
+- `report_commit`：`dace692`（本报告修订版的 docs 提交；最终 Git HEAD 另见交付记录）
 - KB：`8fce4626859d44abb70a9ae5b0372cea`
 - old_active_generation_id：`a2d1c77ce08b414495e9d845cc42f799`
 - candidate_generation_id（数据库 `vector_index_generations.id`）：`5bca792c08fcf2f7b08cbaed09b6d525`
