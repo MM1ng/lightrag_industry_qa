@@ -1,0 +1,20 @@
+{
+  "status": "no_real_cases_observed",
+  "parent": {
+    "applicable": null,
+    "evidence": []
+  },
+  "adjacent": {
+    "applicable": null,
+    "evidence": []
+  },
+  "table": {
+    "applicable": null,
+    "evidence": []
+  },
+  "multi_evidence": {
+    "applicable": null,
+    "evidence": []
+  },
+  "reason": "52 HTTP queries were not executed because local_staging prerequisites were unavailable; no case is fabricated."
+}

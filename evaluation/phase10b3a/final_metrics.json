@@ -1,0 +1,125 @@
+{
+  "status": "blocked_no_real_http_run",
+  "holdout_rerun": false,
+  "development_count": 36,
+  "validation_count": 16,
+  "metrics": {
+    "false_rejection_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "question_level_citation_accuracy": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "expected_answer_point_coverage": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "missing_expected_answer_point_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "emitted_answer_point_support_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "unsupported_emitted_answer_point_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "multi_evidence_complete_coverage": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "partial_answer_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "negative_rejection_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "wrong_page_citation_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "wrong_chunk_citation_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "claim_citation_exact_mapping_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "evidence_panel_completeness": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "retrieval_trace_completeness": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "completion_trigger_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "parent_trigger_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "adjacent_trigger_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "table_trigger_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "retrieval_p50_ms": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "retrieval_p95_ms": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "end_to_end_p50_ms": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    },
+    "end_to_end_p95_ms": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null
+    }
+  },
+  "gate_evaluation": "not_evaluable",
+  "blocker": "local_staging check_env failed: ADMIN_API_KEY, QDRANT_URL and other required runtime settings missing; port 8000 is not the current KB-scoped API"
+}

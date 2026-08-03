@@ -1,0 +1,6 @@
+{
+  "status": "blocked_not_run",
+  "scenarios": [],
+  "screenshot_paths": [],
+  "reason": "No current Streamlit/API staging instance was started because required local_staging settings and ADMIN_API_KEY are missing."
+}
