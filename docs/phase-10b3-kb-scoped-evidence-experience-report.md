@@ -6,7 +6,7 @@
 
 ## 版本与提交
 
-- Git HEAD：`2d516ce`
+- Git HEAD：`c1d847d`
 - 任务提交：
   - `28311d2 feat(ui): switch chat to knowledge-base scoped queries`
   - `c0c4bb2 fix(api): preserve partial answer status end to end`
@@ -62,4 +62,3 @@
 - 当前提交提供了 completion registry 原语和 Trace 字段，但尚未在真实 Generation Context Registry 上完成 52 题重新运行，因此 Parent/Adjacent/Table 的端到端改善不能虚报。
 - UI 结构化验收结果已生成，但未在本轮启动真实 Streamlit 服务并采集截图。
 - 仍需后续人工验收和真实运行数据，才可判断 Phase 10B-3 是否通过；本阶段不自动进入 Phase 10C。
-
