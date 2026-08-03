@@ -1,0 +1,5 @@
+{"question_id": "C001", "question": "两份手册对泵的存放环境和泵轴定期转动频率分别有什么规定？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "C002", "question": "SUMMIT 与 DESMI 手册对泵和电机联轴器对中精度的要求有什么不同？", "failure_layer": "Refusal Decision Error", "failure_category": "evidence_threshold_too_high", "failure_reason": "evidence threshold too high", "execution_status": "completed"}
+{"question_id": "C003", "question": "两份手册对离心泵干运行和启动前灌注有哪些共同要求？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "N001", "question": "这两份泵手册中，Wi-Fi 配网和无线网络密码应该如何设置？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
+{"question_id": "N002", "question": "两份手册指定必须购买哪个品牌、哪个型号的变频器？", "failure_layer": null, "failure_category": null, "failure_reason": null, "execution_status": "completed"}
