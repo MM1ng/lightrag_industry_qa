@@ -14,7 +14,8 @@
   "chunking": "frozen_phase10a_pymupdf_standard_adapter",
   "candidate_chunking_run": false,
   "candidate_chunking_decision": "not_justified: dominant development/validation failures are cross-page evidence mapping and refusal/evidence selection, not broad Top20 retrieval miss",
-  "holdout_run_count": 0,
+  "holdout_run_count": 1,
   "source_git_commit": "a7ff23b7ac3f3ca01a675adde03378148e00ae4d",
-  "frozen_before_holdout": true
+  "frozen_before_holdout": true,
+  "holdout_completed": true
 }
