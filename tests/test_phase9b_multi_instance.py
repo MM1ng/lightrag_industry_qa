@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -129,6 +130,28 @@ async def test_candidate_query_does_not_change_active_pointer(multi_instance_sta
     assert result.result.answer == "candidate:g-new"
     assert kb is not None
     assert kb.active_vector_generation_id == old_id
+    await manager.close_all()
+
+
+@pytest.mark.asyncio
+async def test_failed_candidate_generation_is_rejected_with_conflict(multi_instance_state) -> None:
+    from industrial_rag.errors import AppError
+    from industrial_rag.services.query_application_service import QueryApplicationService
+
+    factory, kb_id, _old_id, new_id, tmp_path = multi_instance_state
+    manager = KnowledgeBaseRuntimeManager(service_factory=_GenerationRuntime)
+    async with factory() as session:
+        candidate = await session.get(VectorIndexGeneration, new_id)
+        assert candidate is not None
+        candidate.status = VectorIndexGenerationStatus.failed
+        await session.commit()
+        with pytest.raises(AppError) as error:
+            await QueryApplicationService(
+                session,
+                base_settings=_base_settings(tmp_path),
+                runtime_manager=manager,
+            ).query_generation(kb_id, new_id, "candidate")
+    assert error.value.status_code == 409
     await manager.close_all()
 
 
@@ -274,6 +297,9 @@ async def test_admin_candidate_query_route_returns_actual_generation_without_swi
     app.state.admin_api_key = settings.admin_api_key
     app.state.resolved_settings = settings
     app.state.runtime_manager = manager
+    route = "/v1/knowledge-bases/{kb_id}/generations/{generation_id}/query"
+    assert route in app.openapi()["paths"]
+    assert "QueryResponse" in json.dumps(app.openapi()["paths"][route])
 
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://test"

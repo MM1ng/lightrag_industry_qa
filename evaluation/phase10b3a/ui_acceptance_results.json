@@ -1,6 +1,7 @@
 {
-  "status": "blocked_not_run",
+  "status": "not_in_scope",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
   "scenarios": [],
   "screenshot_paths": [],
-  "reason": "No current Streamlit/API staging instance was started because required local_staging settings and ADMIN_API_KEY are missing."
+  "reason": "Phase 10B-3C Candidate API and 52-question evaluation were completed; Streamlit UI acceptance remains outside this corrective Candidate smoke gate."
 }

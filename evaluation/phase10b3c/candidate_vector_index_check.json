@@ -1,0 +1,11 @@
+{
+  "collection_exists": true,
+  "collection_name": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_chunks",
+  "point_count": 453,
+  "vector_dimension": 1024,
+  "distance_metric": "Cosine",
+  "generation_match": true,
+  "knowledge_base_match": true,
+  "active_collection_unchanged": 453,
+  "embedding_model": "text-embedding-v4"
+}

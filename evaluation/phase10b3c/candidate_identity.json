@@ -1,10 +1,10 @@
 {
   "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
-  "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
   "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
   "candidate_generation_name": "g10b3c20260803",
+  "candidate_workspace": "runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/workspace",
+  "candidate_backend": "qdrant",
   "candidate_qdrant_collection": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_chunks",
-  "activated": false,
-  "legacy_active_generation_preserved": true,
-  "reason": "Candidate smoke and 52-question explicit-generation evaluation completed; activation remains deferred because quality gates were not met."
+  "candidate_status": "ready",
+  "active": false
 }

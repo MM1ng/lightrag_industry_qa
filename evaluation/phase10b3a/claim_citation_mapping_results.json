@@ -1,14 +1,8 @@
 {
-  "status": "not_evaluable",
-  "question_count": 52,
-  "claim_citation_exact_mapping_rate": {
-    "numerator": 0,
-    "denominator": 0,
-    "value": null
-  },
-  "unknown_evidence_id_count": 0,
-  "all_citations_fallback_count": 0,
-  "wrong_generation_mapping_count": 0,
-  "wrong_chunk_mapping_count": 0,
-  "reason": "No new HTTP responses were produced."
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "mapping_rate": {
+    "numerator": 52,
+    "denominator": 52,
+    "value": 1.0
+  }
 }

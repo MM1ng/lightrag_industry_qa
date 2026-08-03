@@ -63,6 +63,7 @@ class Phase10BaselineRunner:
         dataset_sha256: str,
         output_dir: Path,
         required_trace_keys: tuple[str, ...] = (),
+        explicit_generation: bool = False,
     ) -> None:
         if not service_api_key or not admin_api_key:
             raise ValueError("both role credentials are required")
@@ -76,6 +77,7 @@ class Phase10BaselineRunner:
         self._dataset_sha256 = dataset_sha256
         self._output_dir = output_dir
         self._required_trace_keys = required_trace_keys
+        self._explicit_generation = explicit_generation
 
     async def run_case(self, golden: dict[str, Any]) -> dict[str, Any]:
         base = {
@@ -86,10 +88,15 @@ class Phase10BaselineRunner:
             "trace": None,
         }
         try:
+            query_path = (
+                f"/v1/knowledge-bases/{self._kb_id}/generations/{self._expected_generation_id}/query"
+                if self._explicit_generation
+                else f"/v1/knowledge-bases/{self._kb_id}/query"
+            )
             ordinary = await self._client.post(
-                f"/v1/knowledge-bases/{self._kb_id}/query",
+                query_path,
                 json={"query": golden["question"]},
-                headers={"Authorization": f"Bearer {self._service_key}"},
+                headers={"Authorization": f"Bearer {self._admin_key}" if self._explicit_generation else f"Bearer {self._service_key}"},
             )
         except httpx.HTTPError as error:
             return {
@@ -259,6 +266,7 @@ async def _run(args: argparse.Namespace) -> int:
             admin_api_key=admin_key,
             dataset_sha256=dataset_sha256,
             output_dir=output_dir,
+            explicit_generation=args.explicit_generation,
         )
         results = await runner.run(_load_jsonl(golden_path))
     completed = sum(row.get("execution_status") == "completed" for row in results)
@@ -280,6 +288,7 @@ def main() -> int:
     )
     parser.add_argument("--timeout", type=float, default=240.0)
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--explicit-generation", action="store_true")
     args = parser.parse_args()
     if not args.verify_only and (not args.kb_id or not args.expected_generation_id):
         parser.error("--kb-id and --expected-generation-id are required")

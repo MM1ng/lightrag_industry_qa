@@ -1,0 +1,10 @@
+{
+  "openapi_route": "http://127.0.0.1:8011/v1/knowledge-bases/8fce4626859d44abb70a9ae5b0372cea/generations/{generation_id}/query",
+  "method": "POST",
+  "response_schema": "QueryResponse",
+  "no_credentials": 401,
+  "service_forbidden": 403,
+  "admin_valid_candidate": 200,
+  "admin_unknown_generation": 404,
+  "admin_other_kb": 404
+}

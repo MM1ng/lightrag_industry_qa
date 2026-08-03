@@ -1,20 +1,5 @@
 {
-  "status": "no_real_cases_observed",
-  "parent": {
-    "applicable": null,
-    "evidence": []
-  },
-  "adjacent": {
-    "applicable": null,
-    "evidence": []
-  },
-  "table": {
-    "applicable": null,
-    "evidence": []
-  },
-  "multi_evidence": {
-    "applicable": null,
-    "evidence": []
-  },
-  "reason": "52 HTTP queries were not executed because local_staging prerequisites were unavailable; no case is fabricated."
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "smoke_cases": 7,
+  "table_supported": false
 }
