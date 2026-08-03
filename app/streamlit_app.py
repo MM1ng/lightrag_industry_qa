@@ -32,11 +32,15 @@ from app.chat_state import (  # noqa: E402
     clear_session,
     create_empty_session,
 )
+from app.components.claims_panel import claim_models  # noqa: E402
+from app.components.evidence_panel import evidence_panel_models  # noqa: E402
 from app.components.knowledge_base_selector import (  # noqa: E402
     knowledge_base_label,
     queryable_knowledge_bases,
 )
 from app.p3_chat import append_p3_answer, build_p3_history  # noqa: E402
+from app.pages.chat_page import render_chat_page  # noqa: E402
+from app.pages.graph_page import render_graph_page  # noqa: E402
 from app.ui_theme import inject_theme_css  # noqa: E402
 
 # ---------------------------------------------------------------------------
@@ -238,7 +242,19 @@ def _render_assistant_message(msg: AssistantMessage) -> None:
     with st.chat_message("assistant"):
         st.markdown(msg.content)
         _render_message_meta(msg)
+        if msg.claims:
+            with st.expander("答案点与对应引用", expanded=False):
+                for claim in claim_models(msg.claims):
+                    st.markdown(f"**{claim['claim_id']}** {claim['text']}")
+                    refs = ", ".join(claim["citation_ids"]) or "无精确引用"
+                    st.caption(f"引用：{refs}")
         _render_citations(msg)
+        if msg.evidence:
+            with st.expander(f"查看依据（{len(msg.evidence)}）", expanded=False):
+                for evidence in evidence_panel_models(msg.evidence):
+                    st.markdown(f"**{evidence['label']}** · {evidence['document_name']} · 第{evidence['page']}页")
+                    st.caption(f"Chunk：{evidence['chunk_id']} · 支撑：{', '.join(evidence['supports_claim_ids']) or '上下文'}")
+                    st.write(evidence["excerpt"])
 
 
 def _render_message_meta(msg: AssistantMessage) -> None:
@@ -778,10 +794,10 @@ _render_status_bar(WORKING_DIR, graph_stats)
 
 qa_tab, graph_tab, update_tab = st.tabs(["智能问答", "知识图谱", "知识库更新"])
 with qa_tab:
-    _render_qa_tab()
+    render_chat_page(_render_qa_tab)
 with graph_tab:
     try:
-        _render_graph_tab(WORKING_DIR)
+        render_graph_page(lambda: _render_graph_tab(WORKING_DIR))
     except Exception as error:
         st.error(f"知识图谱页面异常：{error}")
 with update_tab:
