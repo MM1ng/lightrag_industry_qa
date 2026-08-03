@@ -32,6 +32,7 @@ class AppErrorCode:
     kb_protected_from_delete = "kb_protected_from_delete"
     path_traversal_rejected = "path_traversal_rejected"
     empty_file = "empty_file"
+    retrieval_trace_not_found = "RETRIEVAL_TRACE_NOT_FOUND"
 
 
 HTTP_STATUS_MAP: dict[str, int] = {
@@ -61,6 +62,7 @@ HTTP_STATUS_MAP: dict[str, int] = {
     AppErrorCode.storage_failure: 500,
     AppErrorCode.index_not_ready: 503,
     AppErrorCode.path_traversal_rejected: 400,
+    AppErrorCode.retrieval_trace_not_found: 404,
 }
 
 

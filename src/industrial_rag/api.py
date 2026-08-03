@@ -31,6 +31,7 @@ from industrial_rag.errors import AppError
 from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
 from industrial_rag.operational_metrics import operational_metrics
 from industrial_rag.routers import (
+    admin_diagnostics,
     documents,
     generation_gc,
     generations,
@@ -110,6 +111,7 @@ _ERRORS: dict[str, tuple[int, str, bool]] = {
     "INVALID_REQUEST": (422, "请求内容不合法，请检查后重试。", False),
     "UNAUTHORIZED": (401, "未提供有效的服务凭据。", False),
     "ADMIN_PERMISSION_REQUIRED": (403, "该操作需要管理员权限。", False),
+    "RETRIEVAL_TRACE_NOT_FOUND": (404, "检索追踪记录不存在或已过期。", False),
     "INDEX_NOT_READY": (503, "知识库索引尚未就绪，请稍后重试。", True),
     "TIMEOUT": (504, "知识库查询超时，请稍后重试。", True),
     "UPSTREAM_UNAVAILABLE": (502, "知识库服务暂时不可用，请稍后重试。", True),
@@ -800,7 +802,7 @@ def create_app(
             else None
         )
         if result.answer == INSUFFICIENT_EVIDENCE_MESSAGE or not result.citations:
-            return QueryResponse(
+            response = QueryResponse(
                 request_id=request_id,
                 trace_id=trace_id,
                 status="insufficient_evidence",
@@ -812,33 +814,46 @@ def create_app(
                 shadow_audit=audit,
                 generation_id=execution.generation_id,
             )
-        citations = [
-            _citation_response(
-                citation,
-                index,
+        else:
+            citations = [
+                _citation_response(
+                    citation,
+                    index,
+                    generation_id=execution.generation_id,
+                    document_id=execution.citation_document_ids.get(citation.source_file),
+                )
+                for index, citation in enumerate(result.citations, start=1)
+            ]
+            response = QueryResponse(
+                request_id=request_id,
+                trace_id=trace_id,
+                status="success",
+                answer=result.answer,
+                citations=citations,
+                claims=[
+                    ClaimResponse(
+                        claim_id="claim_1",
+                        text=result.answer,
+                        citation_ids=[citation.citation_id for citation in citations],
+                    )
+                ],
+                latency_ms=latency_ms,
+                retrieved_chunk_ids=list(result.retrieval_chunk_ids),
+                shadow_audit=audit,
                 generation_id=execution.generation_id,
-                document_id=execution.citation_document_ids.get(citation.source_file),
             )
-            for index, citation in enumerate(result.citations, start=1)
-        ]
-        return QueryResponse(
+        from industrial_rag.services.retrieval_trace_service import (
+            RetrievalTraceService,
+        )
+
+        await RetrievalTraceService(settings=base_settings).record_best_effort(
             request_id=request_id,
             trace_id=trace_id,
-            status="success",
-            answer=result.answer,
-            citations=citations,
-            claims=[
-                ClaimResponse(
-                    claim_id="claim_1",
-                    text=result.answer,
-                    citation_ids=[citation.citation_id for citation in citations],
-                )
-            ],
-            latency_ms=latency_ms,
-            retrieved_chunk_ids=list(result.retrieval_chunk_ids),
-            shadow_audit=audit,
-            generation_id=execution.generation_id,
+            knowledge_base_id=kb_id,
+            execution=execution,
+            end_to_end_ms=float(latency_ms),
         )
+        return response
 
     @application.post(
         "/v1/knowledge-bases/{kb_id}/query",
@@ -875,6 +890,7 @@ def create_app(
     # Register new phase-2 routers
     # ------------------------------------------------------------------
 
+    application.include_router(admin_diagnostics.router)
     application.include_router(knowledge_bases.router)
     application.include_router(documents.router)
     application.include_router(tasks.router)
