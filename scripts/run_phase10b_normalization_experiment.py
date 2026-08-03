@@ -13,7 +13,7 @@ from typing import Any
 
 import httpx
 from industrial_rag.phase10_evaluation import evaluate_retrieval
-from scripts.run_phase10a_baseline import Phase10BaselineRunner
+from run_phase10a_baseline import Phase10BaselineRunner
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PHASE10_DIR = PROJECT_ROOT / "evaluation/phase10"
