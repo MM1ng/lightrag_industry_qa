@@ -42,6 +42,7 @@ from industrial_rag.retrieval_trace import (
     RetrievalExecutionTrace,
     RetrievalTraceItem,
     SelectedEvidenceTrace,
+    feature_flag_retrieval_config,
 )
 from industrial_rag.structured_generation_policy import validate_answer_points
 from industrial_rag.supplemental_retrieval_policy import run_supplemental_retrieval
@@ -351,6 +352,7 @@ def _build_retrieval_trace(
     normalization_ms: float,
     retrieval_ms: float,
     evidence_selection_ms: float,
+    feature_flags: Sequence[tuple[str, object]] = (),
     normalization: NormalizationResult | None = None,
     answer_plan: Sequence[AnswerPoint] = (),
     grounding_audit: GroundingAudit | None = None,
@@ -440,6 +442,7 @@ def _build_retrieval_trace(
             ("top_k", options.top_k),
             ("chunk_top_k", options.chunk_top_k),
             ("rerank_enabled", options.enable_rerank),
+            *feature_flags,
         ),
         initial_results=tuple(initial_results),
         rerank_applied=False,
@@ -450,6 +453,7 @@ def _build_retrieval_trace(
         retrieval_ms=retrieval_ms,
         rerank_ms=0.0,
         evidence_selection_ms=evidence_selection_ms,
+        feature_flags=tuple(feature_flags),
         detected_model=normalization.detected_model if normalization else None,
         detected_component=normalization.detected_component if normalization else None,
         detected_parameter=normalization.detected_parameter if normalization else None,
@@ -487,6 +491,14 @@ def _build_retrieval_trace(
 
 def _generation_system_prompt(context: str) -> str:
     return _SYSTEM_PROMPT_BASE + _SELECTED_CONTEXT_LABEL + context
+
+
+def _phase10b3i_trace_flags(settings: Settings) -> tuple[tuple[str, object], ...]:
+    return feature_flag_retrieval_config(
+        settings.phase10b3i_feature_flags,
+        settings.phase10b3i_config_sha256,
+        include_metadata=True,
+    )
 
 
 def _load_context_registry(settings: Settings) -> dict[str, ContextRecord]:
@@ -728,8 +740,8 @@ class LightRAGService:
                 # below with the exact SupplementalQuery.question.  Keeping
                 # this side-effect-free avoids changing initial ranking.
                 retrieve=lambda _query: (),
-            )
-            if pre_supplemental.triggered and pre_supplemental.supplemental_query is not None:
+            ) if self.settings.supplemental_retrieval_enabled else None
+            if pre_supplemental is not None and pre_supplemental.triggered and pre_supplemental.supplemental_query is not None:
                 supplemental_query = pre_supplemental.supplemental_query
                 supplemental_payload = await self._backend.aquery_data(
                     supplemental_query.question,
@@ -796,6 +808,7 @@ class LightRAGService:
                 normalization_ms=normalization_ms,
                 retrieval_ms=retrieval_ms,
                 evidence_selection_ms=evidence_selection_ms,
+                feature_flags=_phase10b3i_trace_flags(self.settings),
                 normalization=normalization,
                 grounding_audit=audit,
                 completion_candidates=completion_candidates,
@@ -864,6 +877,7 @@ class LightRAGService:
                 normalization_ms=normalization_ms,
                 retrieval_ms=retrieval_ms,
                 evidence_selection_ms=evidence_selection_ms,
+                feature_flags=_phase10b3i_trace_flags(self.settings),
                 normalization=normalization,
                 grounding_audit=audit,
                 completion_candidates=completion_candidates,
@@ -887,7 +901,7 @@ class LightRAGService:
         support_reason_codes: list[str] = []
         generated_point_ids: list[str] = []
         rejected_point_ids: list[str] = []
-        if grounded is not None:
+        if grounded is not None and self.settings.support_validator_v2_enabled:
             evidence_registry = {
                 f"E{index}": EvidenceRef(
                     evidence_id=f"E{index}",
@@ -960,6 +974,7 @@ class LightRAGService:
             normalization_ms=normalization_ms,
             retrieval_ms=retrieval_ms,
             evidence_selection_ms=evidence_selection_ms,
+            feature_flags=_phase10b3i_trace_flags(self.settings),
             normalization=normalization,
             answer_plan=grounded.answer_points if grounded else (),
             grounding_audit=(grounded.grounding_audit if grounded and self.settings.grounding_audit_enabled else None),
