@@ -131,6 +131,7 @@ class RetrievalExecutionTrace:
     supplemental_query_sha256: str | None = None
     supplemental_candidates: tuple[dict[str, object], ...] = ()
     supplemental_accepted: tuple[dict[str, object], ...] = ()
+    supplemental_rejected: tuple[dict[str, object], ...] = ()
     provider_evidence_ids: tuple[str, ...] = ()
     generated_answer_points: tuple[str, ...] = ()
     rejected_answer_points: tuple[str, ...] = ()
@@ -199,6 +200,7 @@ class RetrievalExecutionTrace:
             "supplemental_query_sha256": self.supplemental_query_sha256,
             "supplemental_candidates": list(self.supplemental_candidates),
             "supplemental_accepted": list(self.supplemental_accepted),
+            "supplemental_rejected": list(self.supplemental_rejected),
             "provider_evidence_ids": list(self.provider_evidence_ids),
             "generated_answer_points": list(self.generated_answer_points),
             "rejected_answer_points": list(self.rejected_answer_points),
