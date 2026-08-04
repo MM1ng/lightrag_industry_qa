@@ -3,9 +3,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from industrial_rag.coverage_funnel import build_coverage_funnel
 
@@ -25,9 +28,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", nargs="+", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--mapping", type=Path)
     args = parser.parse_args()
     rows = _rows(args.results)
-    funnel = build_coverage_funnel(rows)
+    mapping = None
+    if args.mapping:
+        payload = json.loads(args.mapping.read_text(encoding="utf-8"))
+        records = payload.get("mapped_records", payload if isinstance(payload, list) else [])
+        mapping = {(item.get("question_id"), item.get("evidence_id")): item for item in records}
+    funnel = build_coverage_funnel(rows, mapping)
     support = [item for item in funnel if item["final_failure_stage"] in {"generation_omitted", "generation_refusal", "grounding_false_negative", "provider_context_missing", "selected_not_available_to_provider", "recalled_not_selected", "retrieval_missing", "completion_not_triggered", "completion_rejected"}]
     citation = [item for item in funnel if item["final_failure_stage"] in {"citation_wrong_evidence", "evaluation_mapping_error"}]
     args.output.mkdir(parents=True, exist_ok=True)
