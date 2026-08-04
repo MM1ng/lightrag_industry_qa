@@ -3,11 +3,11 @@
   "evaluation_run_id": "phase10b3i-i0-i1-development",
   "code_under_test_commit": "fb77693",
   "evaluation_manifest_commit": "fe21431",
-  "report_commit": "d4c783b",
-  "report_path": "docs/phase-10b3i-r1-audit-artifact-repair-report.md",
+  "report_commit": "61823ab",
+  "report_path": "docs/phase-10b3i-r2-metric-semantics-restoration-report.md",
   "test_verification": {
-    "pytest": "732 passed, 12 skipped, 1 warning",
-    "tests_collected": 744,
+    "pytest": "738 passed, 12 skipped, 2 warnings",
+    "tests_collected": 750,
     "ruff": "All checks passed!",
     "diff_check": "passed"
   },
@@ -45,6 +45,19 @@
     {"path":"evaluation/phase10b3i_r1/input_integrity.json","sha256":"cda80fd8ac8295b992e4046ba30f2b4cd47df2f28ca5a18a628c680174cfe853"},
     {"path":"evaluation/phase10b3i_r1/secret_scan.json","sha256":"857c63d65712c55041263106b862d17527e470eb804d06089c85868497584c38"},
     {"path":"evaluation/phase10b3i_r1/support_failure_cases.jsonl","sha256":"3b278030873ffab252f4ad196b3902904fde188024d907bd9376b8b674fb3a12"},
-    {"path":"evaluation/phase10b3i_r1/support_failure_summary.json","sha256":"0bf752a5e815cf66aedb98296362976d515b161fa757270d46d79a882aefb78a"}
+    {"path":"evaluation/phase10b3i_r1/support_failure_summary.json","sha256":"0bf752a5e815cf66aedb98296362976d515b161fa757270d46d79a882aefb78a"},
+    {"path":"evaluation/phase10b3i_r2/citation_failure_cases.jsonl","sha256":"4a12c0b7b79874562d761ff92758b2ddc353492f864b2194dcfa6221f96d3036"},
+    {"path":"evaluation/phase10b3i_r2/citation_failure_summary.json","sha256":"4d1689f0fc5140aed520eff9a5007db691d551cf9ecca094d1e8f3f7bd12c793"},
+    {"path":"evaluation/phase10b3i_r2/coverage_funnel_invariants.json","sha256":"bdd9fd7bdb004a490f8c76f37bc9ee20fae50ab733fa4a9bafb400abc3d0ee46"},
+    {"path":"evaluation/phase10b3i_r2/coverage_funnel_matrix.jsonl","sha256":"f582c59a21cae7e2cc134dec3209f1bab3bd1ef6f30114decc268cdd85f87c59"},
+    {"path":"evaluation/phase10b3i_r2/coverage_funnel_summary.json","sha256":"601490275c9721d32307e29e2327e245c6875327ab45ff509b9976feae4a9704"},
+    {"path":"evaluation/phase10b3i_r2/i0_development_metrics.json","sha256":"bdcbab46d75773f7029f26b7b9a1756bebbec537be30b8964209e1eb6c25cd97"},
+    {"path":"evaluation/phase10b3i_r2/i1_dead_path_matrix.jsonl","sha256":"357cd88664cf7bbd7cbf2be8722635faed012f3f98d62cd54ba8694c6803eea6"},
+    {"path":"evaluation/phase10b3i_r2/i1_dead_path_summary.json","sha256":"ec7345c18696bf0816df07364495767da8fe8d609df8b729d899e210d1f9f614"},
+    {"path":"evaluation/phase10b3i_r2/input_integrity.json","sha256":"cda80fd8ac8295b992e4046ba30f2b4cd47df2f28ca5a18a628c680174cfe853"},
+    {"path":"evaluation/phase10b3i_r2/metric_policy.json","sha256":"2ce98de52449c1613aae2bd2c2d8727989b584ed9a127dc2be1e6f1453743ef9"},
+    {"path":"evaluation/phase10b3i_r2/secret_scan.json","sha256":"1331e136fa81bf4b322f5290c4eb83d8b9164a6cb491fda26df6ede2cb865565"},
+    {"path":"evaluation/phase10b3i_r2/support_failure_cases.jsonl","sha256":"4feb0031a65d18ef9def3737dd74df9c59e1e4dbba1e211eca82ba61e2fb80a5"},
+    {"path":"evaluation/phase10b3i_r2/support_failure_summary.json","sha256":"0904b02557bb6be88d57fa45c72e883a1d24953c245fe2e1b8fbd3e228fa8eb8"}
   ]
 }
