@@ -1,11 +1,11 @@
 {
   "phase": "10B-3J-R1",
-  "integration_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
-  "report_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
+  "integration_commit": "b66befdf37eb07ffe80abdf0b2ce17cbf46f2caa",
+  "report_commit": "b66befdf37eb07ffe80abdf0b2ce17cbf46f2caa",
   "remote_branch": "codex/knowledge-qa-platform-design",
   "pushed": false,
-  "push_failure_reason": "pending commit and push",
-  "pytest": "pending fresh post-change run",
-  "ruff": "pending fresh post-change run",
+  "push_failure_reason": "pending push",
+  "pytest": "752 passed, 12 skipped, 1 warning",
+  "ruff": "All checks passed",
   "secret_scan_confirmed_secret_count": 0
 }

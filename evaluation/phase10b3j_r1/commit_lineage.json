@@ -4,8 +4,8 @@
   "agent_b_commit": "a8c202487d8eefd764944a0761adade7a21782c5",
   "agent_c_commit": "d46c0b2f1d623a12b517f4d32c5224313a8fccb0",
   "agent_d_commit": "2b442008b9a9355ff9e5fd1896c4c75f91622d03",
-  "integration_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
-  "report_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
+  "integration_commit": "b66befdf37eb07ffe80abdf0b2ce17cbf46f2caa",
+  "report_commit": "b66befdf37eb07ffe80abdf0b2ce17cbf46f2caa",
   "remote_branch": "codex/knowledge-qa-platform-design",
   "pushed": false,
   "push_failure_reason": "not yet pushed"
