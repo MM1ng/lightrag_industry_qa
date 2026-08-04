@@ -103,6 +103,18 @@ class RetrievalExecutionTrace:
     completion_bound_answer_points: tuple[str, ...] = ()
     completion_bound_claims: tuple[str, ...] = ()
     completion_drop_reasons: tuple[str, ...] = ()
+    coverage_requirement_ids: tuple[str, ...] = ()
+    coverage_funnel_stage: str = "initial"
+    supplemental_retrieval_triggered: bool = False
+    supplemental_query_sha256: str | None = None
+    supplemental_candidates: tuple[dict[str, object], ...] = ()
+    supplemental_accepted: tuple[dict[str, object], ...] = ()
+    provider_evidence_ids: tuple[str, ...] = ()
+    generated_answer_points: tuple[str, ...] = ()
+    rejected_answer_points: tuple[str, ...] = ()
+    support_validation_reason_codes: tuple[str, ...] = ()
+    final_answer_point_ids: tuple[str, ...] = ()
+    unresolved_requirement_ids: tuple[str, ...] = ()
     coverage_status: str = "uncovered"
     grounding_audit: dict[str, Any] | None = None
 
@@ -157,6 +169,18 @@ class RetrievalExecutionTrace:
             "completion_bound_answer_points": list(self.completion_bound_answer_points),
             "completion_bound_claims": list(self.completion_bound_claims),
             "completion_drop_reasons": list(self.completion_drop_reasons),
+            "coverage_requirement_ids": list(self.coverage_requirement_ids),
+            "coverage_funnel_stage": self.coverage_funnel_stage,
+            "supplemental_retrieval_triggered": self.supplemental_retrieval_triggered,
+            "supplemental_query_sha256": self.supplemental_query_sha256,
+            "supplemental_candidates": list(self.supplemental_candidates),
+            "supplemental_accepted": list(self.supplemental_accepted),
+            "provider_evidence_ids": list(self.provider_evidence_ids),
+            "generated_answer_points": list(self.generated_answer_points),
+            "rejected_answer_points": list(self.rejected_answer_points),
+            "support_validation_reason_codes": list(self.support_validation_reason_codes),
+            "final_answer_point_ids": list(self.final_answer_point_ids),
+            "unresolved_requirement_ids": list(self.unresolved_requirement_ids),
             "coverage_status": self.coverage_status,
             "grounding_audit": self.grounding_audit,
         }

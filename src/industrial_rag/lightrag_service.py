@@ -7,7 +7,7 @@ import json
 import logging
 import time
 from collections.abc import Awaitable, Callable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import partial
 from typing import Any, Literal, Protocol, cast
 
@@ -27,6 +27,7 @@ from industrial_rag.config import (
     write_storage_metadata,
 )
 from industrial_rag.document_parser import DocumentChunk
+from industrial_rag.evidence_answer_schema import EvidenceRef, StructuredAnswerPoint
 from industrial_rag.evidence_completion import ContextRecord
 from industrial_rag.evidence_policy import (
     EvidenceCandidate,
@@ -42,6 +43,8 @@ from industrial_rag.retrieval_trace import (
     RetrievalTraceItem,
     SelectedEvidenceTrace,
 )
+from industrial_rag.structured_generation_policy import validate_answer_points
+from industrial_rag.supplemental_retrieval_policy import run_supplemental_retrieval
 from industrial_rag.vector_collections import VectorBackend
 
 QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
@@ -361,6 +364,18 @@ def _build_retrieval_trace(
     completion_bound_answer_points: Sequence[str] = (),
     completion_bound_claims: Sequence[str] = (),
     completion_drop_reasons: Sequence[str] = (),
+    coverage_requirement_ids: Sequence[str] = (),
+    coverage_funnel_stage: str = "initial",
+    supplemental_retrieval_triggered: bool = False,
+    supplemental_query_sha256: str | None = None,
+    supplemental_candidates: Sequence[dict[str, object]] = (),
+    supplemental_accepted: Sequence[dict[str, object]] = (),
+    provider_evidence_ids: Sequence[str] = (),
+    generated_answer_points: Sequence[str] = (),
+    rejected_answer_points: Sequence[str] = (),
+    support_validation_reason_codes: Sequence[str] = (),
+    final_answer_point_ids: Sequence[str] = (),
+    unresolved_requirement_ids: Sequence[str] = (),
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -450,6 +465,18 @@ def _build_retrieval_trace(
         completion_bound_answer_points=tuple(completion_bound_answer_points),
         completion_bound_claims=tuple(completion_bound_claims),
         completion_drop_reasons=tuple(completion_drop_reasons),
+        coverage_requirement_ids=tuple(coverage_requirement_ids),
+        coverage_funnel_stage=coverage_funnel_stage,
+        supplemental_retrieval_triggered=supplemental_retrieval_triggered,
+        supplemental_query_sha256=supplemental_query_sha256,
+        supplemental_candidates=tuple(supplemental_candidates),
+        supplemental_accepted=tuple(supplemental_accepted),
+        provider_evidence_ids=tuple(provider_evidence_ids),
+        generated_answer_points=tuple(generated_answer_points),
+        rejected_answer_points=tuple(rejected_answer_points),
+        support_validation_reason_codes=tuple(support_validation_reason_codes),
+        final_answer_point_ids=tuple(final_answer_point_ids),
+        unresolved_requirement_ids=tuple(unresolved_requirement_ids),
     )
 
 
@@ -633,6 +660,9 @@ class LightRAGService:
         coverage_after: tuple[str, ...] = ()
         completion_drop_reasons: list[str] = []
         completion_triggered = False
+        supplemental_result = None
+        supplemental_raw: list[dict[str, Any]] = []
+        supplemental_grounding: tuple[EvidenceCandidate, ...] = ()
         if decision.allowed and self.settings.evidence_completion_enabled:
             registry = _load_context_registry(self.settings)
             selected_context_records = [
@@ -676,6 +706,66 @@ class LightRAGService:
                 {"chunk_id": item.chunk_id, "relation": item.relation, "reason": item.reason}
                 for item in plan.candidates
             ]
+            # One bounded second retrieval is allowed only after the
+            # deterministic parent/adjacent plan leaves a gap.  Its results
+            # are kept separate from initial ranking and metrics.
+            pre_supplemental = run_supplemental_retrieval(
+                normalized_question,
+                knowledge_base_id=str(self.settings.qdrant_kb_id or ""),
+                generation_id=str(self.settings.qdrant_generation or ""),
+                selected=[{"chunk_id": item.citation.chunk_id} for item in decision.selected],
+                coverage_before=coverage_before,
+                coverage_after_context=coverage_after,
+                question_type=classify_question_type(normalized_question),
+                status="partial_answer",
+                is_negative=any(term in normalized_question for term in ("不存在", "没有", "无此", "是否存在")),
+            )
+            if pre_supplemental.triggered and pre_supplemental.supplemental_query is not None:
+                supplemental_payload = await self._backend.aquery_data(
+                    normalized_question,
+                    QueryOptions(mode=options.mode, top_k=5, chunk_top_k=5),
+                )
+                supplemental_raw = _extract_retrieved(supplemental_payload)
+                supplemental_raw = [
+                    {
+                        **item,
+                        "knowledge_base_id": str(self.settings.qdrant_kb_id or ""),
+                        "generation_id": str(self.settings.qdrant_generation or ""),
+                        "document_id": next((record.document_id for record in registry.values() if record.document_name == item["file"]), None),
+                    }
+                    for item in supplemental_raw
+                ]
+                supplemental_result = run_supplemental_retrieval(
+                    normalized_question,
+                    knowledge_base_id=str(self.settings.qdrant_kb_id or ""),
+                    generation_id=str(self.settings.qdrant_generation or ""),
+                    selected=[{"chunk_id": item.citation.chunk_id} for item in decision.selected],
+                    coverage_before=coverage_before,
+                    coverage_after_context=coverage_after,
+                    question_type=classify_question_type(normalized_question),
+                    status="partial_answer",
+                    is_negative=any(term in normalized_question for term in ("不存在", "没有", "无此", "是否存在")),
+                    retrieve=lambda _query: supplemental_raw,
+                )
+                supplemental_grounding = tuple(
+                    EvidenceCandidate(Citation(item["file"], item["page"], item["chunk_id"]), item["content"], len(decision.selected) + len(completed_context) + index)
+                    for index, item in enumerate(supplemental_result.accepted, 1)
+                )
+                supplemental_evidence = [
+                    {
+                        "chunk_id": item.citation.chunk_id,
+                        "document_name": item.citation.source_file,
+                        "page_number": item.citation.page_number,
+                        "generation_id": str(self.settings.qdrant_generation or ""),
+                        "source_type": "supplemental",
+                        "context_role": "supporting",
+                        "completion_reason": "coverage_gap",
+                        "used_for_answer": True,
+                        "cited_in_answer": False,
+                    }
+                    for item in supplemental_grounding
+                ]
+                completed_evidence.extend(supplemental_evidence)
         if not decision.allowed:
             audit = (
                 build_non_generation_audit(
@@ -724,12 +814,17 @@ class LightRAGService:
             )
             for index, item in enumerate(completed_context, 1)
         )
-        grounding_candidates = tuple(decision.selected) + completion_candidates_for_grounding
+        grounding_candidates = tuple(decision.selected) + completion_candidates_for_grounding + supplemental_grounding
         context = _selected_context(decision.selected)
         if completed_context:
             context += "\n\n" + "\n\n".join(
                 f"[补充上下文：{item.document_name} 第{item.page_start}页]\n{item.text}"
                 for item in completed_context
+            )
+        if supplemental_grounding:
+            context += "\n\n" + "\n\n".join(
+                f"[补充检索证据：{item.citation.source_file} 第{item.citation.page_number}页]\n{item.text}"
+                for item in supplemental_grounding
             )
         system_prompt = _generation_system_prompt(context)
         if self.settings.answer_grounding_enabled:
@@ -779,6 +874,72 @@ class LightRAGService:
             if self.settings.answer_grounding_enabled
             else None
         )
+        support_reason_codes: list[str] = []
+        generated_point_ids: list[str] = []
+        rejected_point_ids: list[str] = []
+        if grounded is not None:
+            evidence_registry = {
+                f"E{index}": EvidenceRef(
+                    evidence_id=f"E{index}",
+                    chunk_id=item.citation.chunk_id,
+                    generation_id=str(self.settings.qdrant_generation or ""),
+                    document_name=item.citation.source_file,
+                    citation_id=f"cite_{index}",
+                    context_role="primary",
+                    text=item.text,
+                    is_child=True,
+                )
+                for index, item in enumerate(grounding_candidates, 1)
+            }
+            structured_points = tuple(
+                StructuredAnswerPoint(point.point_id, point.content, point.evidence_ids)
+                for point in grounded.answer_points
+            )
+            validation = validate_answer_points(
+                structured_points,
+                evidence_registry,
+                generation_id=str(self.settings.qdrant_generation or ""),
+                safety_question=classify_question_type(normalized_question) == "safety",
+            )
+            generated_point_ids = [point.point_id for point in grounded.answer_points]
+            rejected_point_ids = list(validation.invalid_point_ids)
+            for result in validation.point_results:
+                if result.reason:
+                    support_reason_codes.extend(result.reason.split(";"))
+            if validation.points:
+                retained_ids = {point.point_id for point in validation.points}
+                retained_answer_points = tuple(
+                    replace(point, support_status="supported")
+                    for point in grounded.answer_points
+                    if point.point_id in retained_ids
+                )
+                retained_evidence = {
+                    evidence_id
+                    for point in validation.points
+                    for evidence_id in point.evidence_ids
+                }
+                retained_citations = tuple(
+                    citation
+                    for index, citation in enumerate(grounded.citations, 1)
+                    if f"E{index}" in retained_evidence
+                )
+                grounded = replace(
+                    grounded,
+                    answer="\n".join(point.content for point in retained_answer_points),
+                    citations=retained_citations,
+                    answer_points=retained_answer_points,
+                    status=validation.status,
+                    failure_categories=tuple(dict.fromkeys((*grounded.failure_categories, *support_reason_codes))),
+                )
+            elif grounded.answer_points:
+                grounded = replace(
+                    grounded,
+                    answer=INSUFFICIENT_EVIDENCE_MESSAGE,
+                    citations=(),
+                    answer_points=(),
+                    status="insufficient_evidence",
+                    failure_categories=tuple(dict.fromkeys((*grounded.failure_categories, "support_validation_rejected_all"))),
+                )
         trace = _build_retrieval_trace(
             original_query=question,
             normalized_query=normalized_question,
@@ -811,6 +972,18 @@ class LightRAGService:
                 if any(evidence_id.startswith("E") and int(evidence_id[1:]) > len(decision.selected) for evidence_id in point.evidence_ids)
             ),
             completion_drop_reasons=completion_drop_reasons,
+            coverage_requirement_ids=coverage_requirements,
+            coverage_funnel_stage=("supplemental" if supplemental_result and supplemental_result.triggered else ("completion" if completed_context else "initial")),
+            supplemental_retrieval_triggered=bool(supplemental_result and supplemental_result.triggered),
+            supplemental_query_sha256=(hashlib.sha256(json.dumps(supplemental_result.to_dict(), ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest() if supplemental_result and supplemental_result.supplemental_query else None),
+            supplemental_candidates=(tuple(dict(item) for item in supplemental_result.retrieved) if supplemental_result else ()),
+            supplemental_accepted=(tuple(dict(item) for item in supplemental_result.accepted) if supplemental_result else ()),
+            provider_evidence_ids=tuple(f"E{index}" for index in range(1, len(grounding_candidates) + 1)),
+            generated_answer_points=tuple(generated_point_ids),
+            rejected_answer_points=tuple(rejected_point_ids),
+            support_validation_reason_codes=tuple(dict.fromkeys(support_reason_codes)),
+            final_answer_point_ids=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
+            unresolved_requirement_ids=tuple(item for item in coverage_requirements if item not in coverage_after),
         )
         return QueryResult(
             grounded.answer if grounded else answer,
