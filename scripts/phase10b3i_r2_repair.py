@@ -85,14 +85,16 @@ def raw_point_present(expected: str, raw: str, *, refusal: bool) -> bool:
     e, a = norm(expected), norm(raw)
     if e and e in a:
         return True
-    nums = set(NUM_RE.findall(e))
-    if nums and not nums.issubset(set(NUM_RE.findall(a))):
-        return False
     tokens = terms(e)
     if not tokens:
         return False
     matched = sum(token in a for token in tokens)
-    return matched / len(tokens) >= 0.35
+    features = semantic_features(expected, raw)
+    # The frozen golden point may contain page/format numbers that are not
+    # repeated verbatim in the raw answer.  Require deterministic object and
+    # at least one parameter/condition/model/unit signal, plus a small lexical
+    # overlap; do not require the entire golden Chunk text to be reproduced.
+    return features["object_match"] is True and any(features[key] is True for key in ("parameter_match", "condition_match", "model_match", "unit_match")) and matched / len(tokens) >= 0.05
 
 
 def registry() -> dict[str, dict[str, Any]]:
@@ -168,7 +170,7 @@ def classify(row: dict[str, Any], point: dict[str, Any], mapping: dict[tuple[str
     refusal = bool(audit.get("generation_returned_refusal")) or response.get("status") in {"insufficient_evidence", "safety_blocked"}
     present_raw = raw_point_present(str(point.get("text", "")), raw_answer, refusal=refusal)
     present_grounded = any(point_suffix(str(item.get("point_id", ""))) == point_suffix(str(point["point_id"])) for item in audit.get("retained_answer_points", []))
-    final_emitted = bool(present_grounded and claims_for(str(point["point_id"]), response))
+    final_emitted = bool(present_raw and present_grounded and claims_for(str(point["point_id"]), response))
     citation = citation_audit(row, point, expected_ids, registry_by_id, final_emitted)
     available = bool(expected_ids & provider_ids) if provider_resolved else None
     initial = bool(expected_ids & {str(x.get("chunk_id")) for x in trace.get("initial_results", []) if x.get("chunk_id")})

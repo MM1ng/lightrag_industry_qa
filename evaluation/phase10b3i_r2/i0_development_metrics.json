@@ -21,9 +21,9 @@
       "split": "development"
     },
     "supporting_citation_recall": {
-      "numerator": 24,
-      "denominator": 29,
-      "value": 0.8275862068965517,
+      "numerator": 21,
+      "denominator": 23,
+      "value": 0.9130434782608695,
       "included_statuses": [
         "final emitted points"
       ],
@@ -34,9 +34,9 @@
       "split": "development"
     },
     "citation_precision": {
-      "numerator": 10.416666666666666,
-      "denominator": 29,
-      "value": 0.35919540229885055,
+      "numerator": 8.166666666666664,
+      "denominator": 23,
+      "value": 0.35507246376811585,
       "included_statuses": [
         "final emitted points"
       ],
@@ -47,9 +47,9 @@
       "split": "development"
     },
     "overcitation_rate": {
-      "numerator": 21,
-      "denominator": 29,
-      "value": 0.7241379310344828,
+      "numerator": 20,
+      "denominator": 23,
+      "value": 0.8695652173913043,
       "included_statuses": [
         "final emitted points"
       ],
@@ -60,9 +60,9 @@
       "split": "development"
     },
     "claim_semantic_support": {
-      "numerator": 24,
-      "denominator": 29,
-      "value": 0.8275862068965517,
+      "numerator": 21,
+      "denominator": 23,
+      "value": 0.9130434782608695,
       "included_statuses": [
         "final emitted points"
       ],
@@ -88,9 +88,9 @@
       "split": "development"
     },
     "question_level_unsupported_answer_rate": {
-      "numerator": 11,
+      "numerator": 12,
       "denominator": 33,
-      "value": 0.3333333333333333,
+      "value": 0.36363636363636365,
       "included_statuses": [
         "success",
         "partial_answer"
@@ -103,9 +103,9 @@
       "split": "development"
     },
     "question_level_citation_accuracy": {
-      "numerator": 28,
+      "numerator": 31,
       "denominator": 33,
-      "value": 0.8484848484848485,
+      "value": 0.9393939393939394,
       "included_statuses": [
         "success",
         "partial_answer"
@@ -118,9 +118,9 @@
       "split": "development"
     },
     "expected_answer_point_coverage": {
-      "numerator": 24,
+      "numerator": 21,
       "denominator": 39,
-      "value": 0.6153846153846154,
+      "value": 0.5384615384615384,
       "included_statuses": [
         "covered_exact_citation",
         "covered_with_overcitation"
