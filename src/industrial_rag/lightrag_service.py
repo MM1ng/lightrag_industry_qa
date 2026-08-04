@@ -457,7 +457,15 @@ def _build_retrieval_trace(
         for final_rank, item in enumerate(selected, start=1)
     )
     return RetrievalExecutionTrace(
-        trace_version=(RUNTIME_LINEAGE_TRACE_VERSION if provider_evidence_ids or coverage_requirements else (GROUNDING_AUDIT_TRACE_VERSION if grounding_audit is not None else TRACE_VERSION)),
+        # Keep the Phase 10A trace contract for callers that have not enabled
+        # the runtime grounding/audit pipeline.  The 10B-3J lineage version is
+        # emitted only for the real audited query path, where the provider
+        # boundary fields are meaningful rather than synthetic defaults.
+        trace_version=(
+            RUNTIME_LINEAGE_TRACE_VERSION
+            if grounding_audit is not None and (provider_evidence_ids or coverage_requirements)
+            else (GROUNDING_AUDIT_TRACE_VERSION if grounding_audit is not None else TRACE_VERSION)
+        ),
         original_query=original_query,
         normalized_query=normalized_query,
         retrieval_config=(
