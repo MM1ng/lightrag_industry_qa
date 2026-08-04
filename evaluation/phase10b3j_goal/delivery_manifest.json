@@ -20,5 +20,18 @@
     "focused_post_rollback": "35 passed, 1 warning",
     "ruff": "pass",
     "secret_scan": "pass; confirmed_secret_count=0"
+  },
+  "provenance": {
+    "base_commit": "0c638dd76be3ab6dbc2d9a785eaf329c004c6d22",
+    "agent_a_commits": ["e0a7464", "5e62831"],
+    "agent_b_commit": "6c5e075",
+    "agent_c_commit": "af54d1d",
+    "integration_commits": ["d8fc5b1", "eb2d154"],
+    "code_under_test_commit": "3c4a73f37db48ba60df9947b5e522d65a023b6ca",
+    "rollback_commit": "6a11bdb8980f379bec579e125b789ea2a28bbfa0",
+    "evaluation_run_artifacts_commit": "ad9c53fc496cc70536c5d959be26ba29dea1e379",
+    "report_artifact_commit": "ad9c53fc496cc70536c5d959be26ba29dea1e379",
+    "remote_branch": "codex/knowledge-qa-platform-design",
+    "remote_head_sha": "recorded in the final handoff after non-force push; omitted here to avoid self-referencing an uncreated commit"
   }
 }

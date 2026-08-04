@@ -44,3 +44,9 @@ The required next dependency is an explicit human-approved expansion of the perm
 - Focused post-rollback checks: 35 passed, 1 FastAPI deprecation warning; J0 certification script and Ruff passed.
 - Full suite: 757 passed, 12 skipped, 5 failed, 2 warnings. The failures require absent local parser raw/PDF inputs, a parser mapping source mismatch, and the absent Phase 7 RC ZIP; they are not repaired because this terminal B delivery does not authorize recreating historical artifacts or packaging an RC.
 - Secret scan: 136 lexical matches were reviewed as configuration identifiers, auth code, fixtures, or placeholders; `confirmed_secret_count=0`.
+
+## Delivery provenance
+
+- Base: `0c638dd76be3ab6dbc2d9a785eaf329c004c6d22`; Agent A: `e0a7464`, `5e62831`; Agent B: `6c5e075`; Agent C: `af54d1d`.
+- Integration: `d8fc5b1`, `eb2d154`; J1 code under test: `3c4a73f37db48ba60df9947b5e522d65a023b6ca`; rollback: `6a11bdb8980f379bec579e125b789ea2a28bbfa0`.
+- Evaluation and report artifacts: `ad9c53fc496cc70536c5d959be26ba29dea1e379`. The remote head is recorded in the final handoff after the non-force push, rather than self-referencing an uncreated commit in this report.
