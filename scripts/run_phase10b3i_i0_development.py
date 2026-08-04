@@ -9,7 +9,6 @@ import os
 from pathlib import Path
 
 import httpx
-
 from run_phase10a_baseline import Phase10BaselineRunner
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,7 +36,22 @@ async def main() -> int:
     dataset_sha = hashlib.sha256(GOLDEN.read_bytes()).hexdigest()
     OUT.mkdir(parents=True, exist_ok=True)
     async with httpx.AsyncClient(base_url="http://127.0.0.1:8011", timeout=240) as client:
-        runner = Phase10BaselineRunner(client=client, knowledge_base_id=KB_ID, expected_generation_id=GENERATION_ID, service_api_key=os.environ["SERVICE_API_KEY"], admin_api_key=os.environ["ADMIN_API_KEY"], dataset_sha256=dataset_sha, output_dir=ROOT / "runtime" / "phase10b3i" / "i0-development", required_trace_keys=("grounding_audit", "completed_evidence", "feature_flags"), explicit_generation=True, trace_versions=("phase10b3f-grounding-audit-v1",))
+        runner = Phase10BaselineRunner(
+            client=client,
+            knowledge_base_id=KB_ID,
+            expected_generation_id=GENERATION_ID,
+            service_api_key=os.environ["SERVICE_API_KEY"],
+            admin_api_key=os.environ["ADMIN_API_KEY"],
+            dataset_sha256=dataset_sha,
+            output_dir=ROOT / "runtime" / "phase10b3i" / "i0-development",
+            required_trace_keys=(
+                "grounding_audit", "completed_evidence", "feature_flags",
+                "provider_evidence_ids", "provider_context_order",
+                "coverage_before", "coverage_after_parent_adjacent",
+            ),
+            explicit_generation=True,
+            trace_versions=("phase10b3f-grounding-audit-v1", "phase10b3j-runtime-lineage-v2"),
+        )
         results = await runner.run(rows)
     experiment_id = "I1" if os.environ.get("PHASE10B3I_ENABLE_SUPPLEMENTAL") == "1" else "I0"
     output_name = "i1_development_results.jsonl" if experiment_id == "I1" else "i0_development_results.jsonl"

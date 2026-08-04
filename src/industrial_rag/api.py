@@ -271,20 +271,31 @@ def _evidence_index(evidence_ids: list[str]) -> dict[str, CitationResponse]:
     }
 
 
-def _claims_for_result(result: QueryResult, citations: list[CitationResponse]) -> list[ClaimResponse]:
+def _claims_for_result(
+    result: QueryResult,
+    citations: list[CitationResponse],
+    *,
+    allow_legacy_fallback: bool = True,
+) -> list[ClaimResponse]:
     points = [point for point in result.answer_points if point.support_status == "supported"]
     if not points:
         citation_ids = (
             [citation.citation_id for citation in citations]
-            if not any(citation.evidence_id for citation in citations)
+            if allow_legacy_fallback and not any(citation.evidence_id for citation in citations)
             else ([citations[0].citation_id] if citations else [])
         )
+        if not allow_legacy_fallback:
+            citation_ids = []
         return [
             ClaimResponse(
                 claim_id="claim_1",
                 text=result.answer,
                 citation_ids=citation_ids,
-                evidence_ids=[citation.evidence_id for citation in citations if citation.evidence_id],
+                evidence_ids=(
+                    [citation.evidence_id for citation in citations if citation.evidence_id]
+                    if allow_legacy_fallback
+                    else []
+                ),
             )
         ]
     by_evidence = {citation.evidence_id: citation for citation in citations if citation.evidence_id}
@@ -925,7 +936,7 @@ def create_app(
                 status=result.answer_status,
                 answer=result.answer,
                 citations=citations,
-                claims=_claims_for_result(result, citations),
+                claims=_claims_for_result(result, citations, allow_legacy_fallback=False),
                 latency_ms=latency_ms,
                 retrieved_chunk_ids=list(result.retrieval_chunk_ids),
                 shadow_audit=audit,
