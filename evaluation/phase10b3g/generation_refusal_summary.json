@@ -1,0 +1,30 @@
+{
+  "scope": {
+    "split": "development",
+    "total_questions": 36,
+    "generation_refusal_count": 3,
+    "validation_read": false,
+    "holdout_read": false
+  },
+  "question_ids": [
+    "S007",
+    "S020",
+    "D005"
+  ],
+  "by_question_type": {
+    "procedure": 1,
+    "safety_warning": 1,
+    "table": 1
+  },
+  "by_failure_category": {
+    "refused_after_context_path_confirmed": 3
+  },
+  "context_presence": {
+    "path_confirmed": 3,
+    "not_recorded": 0
+  },
+  "diagnosis": "All observed development refusals had selected evidence and provider invocation. The complete provider context/prompt was not captured, so content sufficiency, context noise/length, prompt tendency, and parser/provider root causes remain indeterminate.",
+  "policy_change_authorized": false,
+  "second_llm_call": false,
+  "golden_or_holdout_used": false
+}
