@@ -1,9 +1,13 @@
+from industrial_rag.answer_grounding import AnswerPoint
+from industrial_rag.api import CitationResponse, _claims_for_result
+from industrial_rag.citation_formatter import Citation
 from industrial_rag.claim_citation_pruning import (
     prune_claim_citations,
     prune_claims_and_citations,
     prune_supported_claims_and_citations,
 )
 from industrial_rag.claim_support_matcher import match_claim_support
+from industrial_rag.lightrag_service import QueryResult
 
 
 def _cit(cid: str, eid: str, chunk: str, generation: str = "g1") -> dict[str, str]:
@@ -163,3 +167,29 @@ def test_pruning_removes_unsupported_claims_independently_and_keeps_minimal_cita
     ]
     assert metrics["unsupported_claim_count_after"] == 1
     assert metrics["removed_unsupported_claim_ids"] == ["P2"]
+
+
+def test_runtime_pruning_uses_internal_child_evidence_only() -> None:
+    result = QueryResult(
+        "压力为5 MPa\n不得超过5 MPa",
+        (Citation("manual.pdf", 1, "c1"), Citation("manual.pdf", 2, "parent")),
+        "naive",
+        answer_points=(
+            AnswerPoint("P1", "压力为5 MPa", ("E1",), "supported"),
+            AnswerPoint("P2", "不得超过5 MPa", ("E2",), "supported"),
+        ),
+        evidence_context=(
+            {"evidence_id": "E1", "chunk_id": "c1", "generation_id": "g1", "text": "压力为5 MPa", "is_child": True},
+            {"evidence_id": "E2", "chunk_id": "parent", "generation_id": "g1", "text": "不得超过5 MPa", "is_child": False, "context_role": "context_only"},
+        ),
+    )
+    citations = [
+        CitationResponse(citation_id="cite_1", document_name="manual.pdf", page=1, chunk_id="c1", generation_id="g1", evidence_id="E1"),
+        CitationResponse(citation_id="cite_2", document_name="manual.pdf", page=2, chunk_id="parent", generation_id="g1", evidence_id="E2"),
+    ]
+    claims = _claims_for_result(
+        result, citations, allow_legacy_fallback=False, claim_citation_pruning_enabled=True,
+        evidence_context=result.evidence_context, expected_generation_id="g1",
+    )
+    assert [claim.claim_id for claim in claims] == ["P1"]
+    assert claims[0].citation_ids == ["cite_1"]

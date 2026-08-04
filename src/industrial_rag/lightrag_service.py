@@ -84,6 +84,9 @@ class QueryResult:
     answer_status: Literal["success", "partial_answer", "insufficient_evidence", "safety_blocked"] = "success"
     answer_points: tuple[AnswerPoint, ...] = ()
     grounding_failure_categories: tuple[str, ...] = ()
+    # Internal-only full-text evidence registry for response-side claim pruning.
+    # It is never serialized in the public response or retrieval trace.
+    evidence_context: tuple[dict[str, Any], ...] = ()
 
 
 class LightRAGBackend(Protocol):
@@ -1132,4 +1135,15 @@ class LightRAGService:
             grounded.status if grounded else "success",
             grounded.answer_points if grounded else (),
             grounded.failure_categories if grounded else (),
+            tuple(
+                {
+                    "evidence_id": f"E{index}",
+                    "chunk_id": item.citation.chunk_id,
+                    "generation_id": str(self.settings.qdrant_generation or ""),
+                    "text": item.text,
+                    "is_child": index <= len(decision.selected),
+                    "context_role": "primary" if index <= len(decision.selected) else "context_only",
+                }
+                for index, item in enumerate(grounding_candidates, 1)
+            ),
         )
