@@ -1,7 +1,7 @@
 {
   "phase": "10B-3I",
   "evaluation_run_id": "phase10b3i-i0-i1-development",
-  "code_under_test_commit": "integration-pending",
+  "code_under_test_commit": "fb77693",
   "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
   "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
   "holdout_used": false,
