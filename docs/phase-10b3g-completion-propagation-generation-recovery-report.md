@@ -15,8 +15,8 @@ Phase 10B-3G 完成了 Completion Lineage 审计、条件触发接线和一次�
 | integration_commit | `7fe9e09` |
 | code_under_test_commit | `7fe9e09` |
 | evaluation_run_commit | `7fe9e09` |
-| report_commit | `7fe9e09` |
-| final_delivery_commit | `7fe9e09` |
+| report_commit | `6057e20` |
+| final_delivery_commit | `6057e20` |
 | candidate_generation_id | `5bca792c08fcf2f7b08cbaed09b6d525` |
 | candidate_generation_name | `g10b3c20260803` |
 | old_active_generation_id | `a2d1c77ce08b414495e9d845cc42f799` |
