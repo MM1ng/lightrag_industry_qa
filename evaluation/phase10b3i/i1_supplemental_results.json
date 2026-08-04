@@ -1,0 +1,15 @@
+{
+  "experiment_id": "I1",
+  "split": "development",
+  "record_count": 36,
+  "supplemental_triggered": 0,
+  "supplemental_trigger_rate": {
+    "numerator": 0,
+    "denominator": 36,
+    "value": 0.0
+  },
+  "query_wiring_verified": false,
+  "accepted": false,
+  "rejection_reason": "No deterministic coverage gap triggered Supplemental Retrieval; validation was not run.",
+  "holdout_used": false
+}

@@ -129,6 +129,9 @@ class RetrievalExecutionTrace:
     supplemental_retrieval_triggered: bool = False
     supplemental_query_text: str | None = None
     supplemental_query_sha256: str | None = None
+    original_query_sha256: str | None = None
+    normalized_query_sha256: str | None = None
+    supplemental_query_different_from_normalized: bool = False
     supplemental_candidates: tuple[dict[str, object], ...] = ()
     supplemental_accepted: tuple[dict[str, object], ...] = ()
     supplemental_rejected: tuple[dict[str, object], ...] = ()
@@ -198,6 +201,9 @@ class RetrievalExecutionTrace:
             "supplemental_retrieval_triggered": self.supplemental_retrieval_triggered,
             "supplemental_query_text": self.supplemental_query_text,
             "supplemental_query_sha256": self.supplemental_query_sha256,
+            "original_query_sha256": self.original_query_sha256,
+            "normalized_query_sha256": self.normalized_query_sha256,
+            "supplemental_query_different_from_normalized": self.supplemental_query_different_from_normalized,
             "supplemental_candidates": list(self.supplemental_candidates),
             "supplemental_accepted": list(self.supplemental_accepted),
             "supplemental_rejected": list(self.supplemental_rejected),

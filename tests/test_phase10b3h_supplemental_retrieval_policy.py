@@ -95,7 +95,8 @@ def test_query_builder_preserves_question_and_identity():
         generation_id="gen-1",
         coverage_gap=("step", "step", "warning"),
     )
-    assert query.question == "原始问题"
+    assert query.question.startswith("原始问题 补充覆盖：")
+    assert query.question != "原始问题"
     assert query.coverage_gap == ("step", "warning")
     assert query.top_k == 5
     assert query.attempt == 1

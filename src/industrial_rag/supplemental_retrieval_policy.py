@@ -128,7 +128,10 @@ def build_supplemental_query(
     coverage_gap: Iterable[str],
 ) -> SupplementalQuery:
     gap = tuple(dict.fromkeys(str(item) for item in coverage_gap if item))
-    return SupplementalQuery(str(question), str(knowledge_base_id), str(generation_id), gap)
+    query_text = str(question).strip()
+    if gap and "补充覆盖：" not in query_text:
+        query_text = f"{query_text} 补充覆盖：{'、'.join(gap)}"
+    return SupplementalQuery(query_text, str(knowledge_base_id), str(generation_id), gap)
 
 
 def _candidate(item: Mapping[str, Any]) -> SupplementalCandidate:

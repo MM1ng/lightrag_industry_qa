@@ -374,6 +374,7 @@ def _build_retrieval_trace(
     supplemental_retrieval_triggered: bool = False,
     supplemental_query_text: str | None = None,
     supplemental_query_sha256: str | None = None,
+    supplemental_query_different_from_normalized: bool = False,
     supplemental_candidates: Sequence[dict[str, object]] = (),
     supplemental_accepted: Sequence[dict[str, object]] = (),
     supplemental_rejected: Sequence[dict[str, object]] = (),
@@ -479,6 +480,9 @@ def _build_retrieval_trace(
         supplemental_retrieval_triggered=supplemental_retrieval_triggered,
         supplemental_query_text=supplemental_query_text,
         supplemental_query_sha256=supplemental_query_sha256,
+        original_query_sha256=hashlib.sha256(original_query.encode("utf-8")).hexdigest(),
+        normalized_query_sha256=hashlib.sha256(normalized_query.encode("utf-8")).hexdigest(),
+        supplemental_query_different_from_normalized=supplemental_query_different_from_normalized,
         supplemental_candidates=tuple(supplemental_candidates),
         supplemental_accepted=tuple(supplemental_accepted),
         supplemental_rejected=tuple(supplemental_rejected),
@@ -1004,9 +1008,14 @@ class LightRAGService:
             supplemental_retrieval_triggered=bool(supplemental_result and supplemental_result.triggered),
             supplemental_query_text=(supplemental_result.supplemental_query.question if supplemental_result and supplemental_result.supplemental_query else None),
             supplemental_query_sha256=(hash_supplemental_query(supplemental_result.supplemental_query.question) if supplemental_result and supplemental_result.supplemental_query else None),
-            supplemental_candidates=(tuple(dict(item) for item in supplemental_result.retrieved) if supplemental_result else ()),
-            supplemental_accepted=(tuple(dict(item) for item in supplemental_result.accepted) if supplemental_result else ()),
-            supplemental_rejected=(tuple(dict(item) for item in supplemental_result.rejected) if supplemental_result else ()),
+            supplemental_query_different_from_normalized=bool(
+                supplemental_result
+                and supplemental_result.supplemental_query
+                and supplemental_result.supplemental_query.question != normalized_question
+            ),
+            supplemental_candidates=(tuple({"chunk_id": item.get("chunk_id"), "rank": item.get("rank"), "document_id": item.get("document_id"), "generation_id": item.get("generation_id")} for item in supplemental_result.retrieved) if supplemental_result else ()),
+            supplemental_accepted=(tuple({"chunk_id": item.get("chunk_id"), "rank": item.get("rank"), "document_id": item.get("document_id"), "generation_id": item.get("generation_id")} for item in supplemental_result.accepted) if supplemental_result else ()),
+            supplemental_rejected=(tuple({"chunk_id": item.get("chunk_id"), "rank": item.get("rank"), "document_id": item.get("document_id"), "generation_id": item.get("generation_id")} for item in supplemental_result.rejected) if supplemental_result else ()),
             provider_evidence_ids=tuple(f"E{index}" for index in range(1, len(grounding_candidates) + 1)),
             generated_answer_points=tuple(generated_point_ids),
             rejected_answer_points=tuple(rejected_point_ids),

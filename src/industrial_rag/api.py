@@ -637,6 +637,11 @@ def create_app(
             "query_mode": qa.query_mode if qa else None,
             "answer_model": qa.answer_model if qa else None,
             "embedding_model": qa.embedding_model if qa else None,
+            "phase10b3i_feature_flags": {
+                "QA_SUPPORT_VALIDATOR_V2_ENABLED": qa.support_validator_v2_enabled if qa else False,
+                "QA_STRUCTURED_GENERATION_ENABLED": qa.structured_generation_enabled if qa else False,
+                "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": qa.supplemental_retrieval_enabled if qa else False,
+            },
         }
 
     @application.get("/metrics")

@@ -1,0 +1,18 @@
+{
+  "experiment_id": "I0",
+  "split": "development",
+  "record_count": 36,
+  "status_counts": {
+    "success": 3,
+    "partial_answer": 30,
+    "insufficient_evidence": 3,
+    "safety_blocked": 0
+  },
+  "flags": {
+    "QA_SUPPORT_VALIDATOR_V2_ENABLED": false,
+    "QA_STRUCTURED_GENERATION_ENABLED": false,
+    "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": false
+  },
+  "holdout_used": false,
+  "reproduced_from": "phase10b3g-final-52"
+}
