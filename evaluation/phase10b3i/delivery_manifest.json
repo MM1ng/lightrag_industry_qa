@@ -1,0 +1,38 @@
+{
+  "phase": "10B-3I",
+  "evaluation_run_id": "phase10b3i-i0-i1-development",
+  "code_under_test_commit": "fb77693",
+  "evaluation_manifest_commit": "fe21431",
+  "report_commit": "d6e0a27",
+  "report_path": "docs/phase-10b3i-experiment-rollback-baseline-freeze-report.md",
+  "test_verification": {
+    "pytest": "726 passed, 12 skipped, 1 warning",
+    "tests_collected": 738,
+    "ruff": "All checks passed!",
+    "diff_check": "passed"
+  },
+  "holdout_used": false,
+  "validation_run": false,
+  "candidate_activated": false,
+  "phase10c_allowed": false,
+  "production_deployment_performed": false,
+  "confirmed_secret_count": 0,
+  "artifacts": [
+    {"path":"evaluation/phase10b3i/baseline_commit_analysis.json","sha256":"d7ee5566635f0b5a552b8296348aaf42cfc0c0c3f6ba9305ed7375086b9f9e9b"},
+    {"path":"evaluation/phase10b3i/citation_failure_cases.jsonl","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    {"path":"evaluation/phase10b3i/citation_failure_summary.json","sha256":"ab77334862dca1e6912a28ee8b5d8bfd31c1a24f2be7ae969278f642ec19fbb5"},
+    {"path":"evaluation/phase10b3i/coverage_funnel_invariants.json","sha256":"cc57859f94559df70d9dca17c895582e9bbf6ff027daeda060d4019af92794aa"},
+    {"path":"evaluation/phase10b3i/coverage_funnel_matrix.jsonl","sha256":"9253a3cce87c60c0b08ff525e3d49bf0593458161db879ec51e8bfdecb9707a5"},
+    {"path":"evaluation/phase10b3i/coverage_funnel_summary.json","sha256":"b1349b6259430d6f96fef305e2786d5e7cc40f1c4487f9f155871506069328c5"},
+    {"path":"evaluation/phase10b3i/evaluation_manifest.json","sha256":"82b4d0e1d0128c2fb22c8f537d94ddf670c3571786fbaf10d475c571c185b2e6"},
+    {"path":"evaluation/phase10b3i/feature_flag_proof.json","sha256":"e180fcfb3d8ad827d45bea331c11d6e96ac0a0e4eb100f8e809c2e56490a1ee6"},
+    {"path":"evaluation/phase10b3i/final_metrics.json","sha256":"dfec9f4b8ae6275d92a737c6f7172a3148372f94603054eb7ae9486c452b9ebb"},
+    {"path":"evaluation/phase10b3i/i0_baseline_results.json","sha256":"fe7abfcabae37cd86c9932f960d2b6984acc4ee50a6ef64344b856d253787e78"},
+    {"path":"evaluation/phase10b3i/i0_development_results.jsonl","sha256":"33bfbec790bf960889f9cd567401056649d56ca670e3c64c546e09038e2fdf3e"},
+    {"path":"evaluation/phase10b3i/i1_development_results.jsonl","sha256":"7eefe7b1b65798ba16368ba11ba39fe440350d0504b6ad1340c45ca0b9e93934"},
+    {"path":"evaluation/phase10b3i/i1_supplemental_results.json","sha256":"4320d682bd62f670faed6b3fc628ab40651ccc5a1e3914513d96043f5582a8c1"},
+    {"path":"evaluation/phase10b3i/secret_scan.json","sha256":"a29b610c0c3f046f6b5bd0e6a1db1e394c1d319cb0798304af94376a9e0edfcb"},
+    {"path":"evaluation/phase10b3i/support_failure_cases.jsonl","sha256":"9253a3cce87c60c0b08ff525e3d49bf0593458161db879ec51e8bfdecb9707a5"},
+    {"path":"evaluation/phase10b3i/support_failure_summary.json","sha256":"d27c1614c5bb02eeb8960c86c2854eac3874d4cfdff7118bbca46db800404255"}
+  ]
+}
