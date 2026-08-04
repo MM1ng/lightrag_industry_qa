@@ -1,0 +1,31 @@
+{
+  "policy_version": "phase10b3j-post-retrieval-recovery-v1",
+  "purpose": "offline deterministic diagnosis and bounded replay planning",
+  "runtime_enabled": false,
+  "retrieval_unchanged": true,
+  "max_recovery_candidates": 2,
+  "allowed_input": [
+    "already_retrieved_candidates",
+    "selected_evidence",
+    "provider_evidence_ids",
+    "grounding_audit",
+    "generation_status"
+  ],
+  "forbidden_actions": [
+    "second_retrieval_query",
+    "golden_set_runtime_rule",
+    "global_grounding_threshold_change",
+    "chunking_change",
+    "top_k_change",
+    "rerank_enablement",
+    "model_call"
+  ],
+  "failure_kinds": [
+    "recalled_not_selected",
+    "generation_omitted",
+    "generation_refusal",
+    "grounding_false_negative"
+  ],
+  "negative_query_adjacent_recovery": false,
+  "same_generation_and_document_required": true
+}
