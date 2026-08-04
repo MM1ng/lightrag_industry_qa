@@ -83,6 +83,6 @@ J0 所有新增质量实验 Flag 均为 false：Claim pruning、coverage-aware s
 
 ## 阶段状态
 
-`phase10b3j_r1_approved=true`（J0 运行认证完成）；`j1_j4_allowed=false`（等待 15 例人工决定）；`phase10c_allowed=false`；`validation_run=false`；`holdout_run=false`；`candidate_activation_performed=false`；`production_deployment_performed=false`。
+`phase10b3j_r1_approved=conditional`（J0 运行认证完成；building/failed/deleting fixture 的显式契约尚未补跑）；`j1_j4_allowed=false`（等待 15 例人工决定和剩余契约补证）；`phase10c_allowed=false`；`validation_run=false`；`holdout_run=false`；`candidate_activation_performed=false`；`production_deployment_performed=false`。
 
 完成本报告后停止，等待人工填写 15 例 `human_decision`。

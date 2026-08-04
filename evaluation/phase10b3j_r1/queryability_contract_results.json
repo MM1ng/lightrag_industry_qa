@@ -13,6 +13,7 @@
     "failed": "409 observed in original wrong-runtime run",
     "deleting": "not_run_fixture"
   },
+  "fixture_contract_complete": false,
   "wrong_kb": "not_run_fixture",
   "active_pointer_before": "a2d1c77ce08b414495e9d845cc42f799",
   "active_pointer_after": "a2d1c77ce08b414495e9d845cc42f799",
