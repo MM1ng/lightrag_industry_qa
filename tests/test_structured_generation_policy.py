@@ -1,6 +1,9 @@
 from industrial_rag.evidence_answer_schema import EvidenceRef, StructuredAnswerPoint
 from industrial_rag.structured_generation_parser import parse_structured_answer
-from industrial_rag.structured_generation_policy import validate_answer_points
+from industrial_rag.structured_generation_policy import (
+    resolve_partial_generation,
+    validate_answer_points,
+)
 
 GEN = "g1"
 
@@ -76,3 +79,24 @@ def test_all_invalid_safety_points_are_safety_blocked():
     point = StructuredAnswerPoint("P1", "禁止在高温下操作", ("E1",))
     result = validate_answer_points((point,), [], generation_id=GEN, safety_question=True)
     assert result.status == "safety_blocked"
+
+
+def test_partial_generation_keeps_supported_points_and_uses_old_answer_on_schema_failure():
+    payload = {
+        "answer": "错误汇总",
+        "answer_points": [
+            {"point_id": "P1", "text": "压力为5 MPa", "evidence_ids": ["E1"], "parameter": "压力", "numeric_values": ["5"], "units": ["MPa"]},
+            {"point_id": "P2", "text": "不存在的结论", "evidence_ids": ["UNKNOWN"]},
+        ],
+    }
+    answer, validation, parse_error = resolve_partial_generation(
+        payload, fallback_answer="旧路径回答", evidence_registry=[ref("E1", "压力为5 MPa")], generation_id=GEN
+    )
+    assert answer == "压力为5 MPa"
+    assert validation is not None and validation.status == "partial_answer"
+    assert parse_error is None
+
+    answer, validation, parse_error = resolve_partial_generation(
+        "not-json", fallback_answer="旧路径回答", evidence_registry=(), generation_id=GEN
+    )
+    assert (answer, validation, parse_error) == ("旧路径回答", None, "invalid_json")

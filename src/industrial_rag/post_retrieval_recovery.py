@@ -9,6 +9,7 @@ single-variable experiment.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -23,6 +24,92 @@ RecoveryKind = Literal[
     "generation_refusal",
     "grounding_false_negative",
 ]
+
+_NUMBER_RE = re.compile(r"[-+]?\d+(?:\.\d+)?")
+_NEGATION_TERMS = ("不得", "不能", "禁止", "严禁", "不可", "不应", "无需", "无须", "不要")
+
+
+def _normalise(value: Any) -> str:
+    return "".join(str(value or "").casefold().split())
+
+
+def _values(value: Any) -> tuple[str, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, str):
+        return (value,) if value.strip() else ()
+    if isinstance(value, Sequence) and not isinstance(value, (bytes, bytearray)):
+        return tuple(str(item) for item in value if str(item).strip())
+    return ()
+
+
+def _numbers(value: str) -> set[str]:
+    return {item.replace(" ", "") for item in _NUMBER_RE.findall(value)}
+
+
+def _negated(value: str) -> bool:
+    return any(term in value for term in _NEGATION_TERMS)
+
+
+def has_exact_false_negative_support(
+    point: Mapping[str, Any], evidence: Mapping[str, Any],
+) -> bool:
+    """Require field-level support before labelling a grounding removal false-negative.
+
+    This deliberately rejects inference from loose token overlap.  Every
+    declared object, parameter, condition, model, numeric value and unit must
+    occur in the same already-provider-visible evidence text; negation must
+    agree.  It is a diagnostic predicate only and never relaxes grounding.
+    """
+    text = str(point.get("text") or point.get("content") or "")
+    body = str(evidence.get("text") or evidence.get("excerpt") or "")
+    if not text.strip() or not body.strip():
+        return False
+    point_negated = bool(point.get("negated")) or _negated(text)
+    if point_negated != _negated(body):
+        return False
+    normalised_body = _normalise(body)
+    for key in ("object", "parameter", "model"):
+        field = _normalise(point.get(key))
+        if field and field not in normalised_body:
+            return False
+    for condition in _values(point.get("conditions", point.get("condition"))):
+        if _normalise(condition) not in normalised_body:
+            return False
+    required_numbers = _numbers(text) | {
+        _normalise(value) for value in _values(point.get("numeric_values", point.get("values")))
+    }
+    if required_numbers and not required_numbers.issubset(_numbers(body)):
+        return False
+    for unit in _values(point.get("units", point.get("unit"))):
+        if _normalise(unit) not in normalised_body:
+            return False
+    return True
+
+
+def _has_exact_removed_point_support(
+    removed_points: Sequence[Mapping[str, Any]],
+    evidence: Mapping[str, Mapping[str, Any]] | Sequence[Mapping[str, Any]],
+    provider_evidence_ids: Sequence[str],
+) -> bool:
+    if isinstance(evidence, Mapping):
+        registry = {str(key): value for key, value in evidence.items() if isinstance(value, Mapping)}
+    else:
+        registry = {
+            str(item.get("evidence_id") or item.get("chunk_id") or ""): item
+            for item in evidence
+            if isinstance(item, Mapping)
+        }
+    provider_ids = set(provider_evidence_ids)
+    for point in removed_points:
+        point_ids = _values(point.get("evidence_ids", point.get("evidence_id")))
+        # A diagnostic must name an evidence item actually delivered to the
+        # provider.  No implicit candidate scan is permitted.
+        for evidence_id in point_ids:
+            item = registry.get(evidence_id)
+            if item is not None and evidence_id in provider_ids and has_exact_false_negative_support(point, item):
+                return True
+    return False
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,6 +173,8 @@ def evaluate_post_retrieval_recovery(
     provider_evidence_ids: Sequence[str] = (),
     generated_answer_point_ids: Sequence[str] = (),
     grounding_removed_point_ids: Sequence[str] = (),
+    grounding_removed_points: Sequence[Mapping[str, Any]] = (),
+    grounding_evidence_registry: Mapping[str, Mapping[str, Any]] | Sequence[Mapping[str, Any]] = (),
     generation_status: str | None = None,
     negative_query: bool = False,
     max_recovery_candidates: int = 2,
@@ -120,14 +209,22 @@ def evaluate_post_retrieval_recovery(
         if item.chunk_id not in selected_ids and item.generation_id == (selected_records[0].generation_id if selected_records else item.generation_id)
     )
 
-    # A removed point with a provider-supported candidate is a diagnostic, not
-    # permission to weaken grounding globally.
-    if grounding_removed_point_ids and provider_evidence_ids:
+    # A false-negative requires exact, provider-visible support.  IDs alone
+    # are intentionally insufficient: they cannot prove object/parameter,
+    # numeric, unit, condition, model, or negation agreement.
+    if (
+        grounding_removed_point_ids
+        and provider_evidence_ids
+        and not negative_query
+        and _has_exact_removed_point_support(
+            grounding_removed_points, grounding_evidence_registry, provider_evidence_ids
+        )
+    ):
         return RecoveryDecision(
             "grounding_false_negative",
             "grounding_review_replay",
             True,
-            "provider_context_contains_evidence_but_grounding_removed_points",
+            "exact_provider_evidence_supports_removed_point",
             missing_requirements=plan.missing,
         )
     if not generated_answer_point_ids and generation_status in {"insufficient_evidence", "safety_blocked"}:
@@ -163,4 +260,8 @@ def evaluate_post_retrieval_recovery(
     return RecoveryDecision("none", "no_action", False, "no_eligible_post_retrieval_failure", missing_requirements=plan.missing)
 
 
-__all__ = ["RecoveryDecision", "evaluate_post_retrieval_recovery"]
+__all__ = [
+    "RecoveryDecision",
+    "evaluate_post_retrieval_recovery",
+    "has_exact_false_negative_support",
+]

@@ -72,6 +72,11 @@ class Settings:
     support_validator_v2_enabled: bool = False
     structured_generation_enabled: bool = False
     supplemental_retrieval_enabled: bool = False
+    # Phase 10B-3J controls are also fail-closed.  They are intentionally
+    # configuration-only here; query-path wiring must opt in explicitly.
+    grounding_false_negative_recovery_enabled: bool = False
+    coverage_aware_selection_enabled: bool = False
+    partial_generation_enabled: bool = False
     phase10b_query_mode: str = "mix"
     phase10b_top_k: int = 12
     phase10b_chunk_top_k: int = 20
@@ -213,6 +218,18 @@ class Settings:
             (values.get("QA_SUPPLEMENTAL_RETRIEVAL_ENABLED") or "false").strip().lower()
             == "true"
         )
+        grounding_false_negative_recovery_enabled = (
+            (values.get("QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED") or "false").strip().lower()
+            == "true"
+        )
+        coverage_aware_selection_enabled = (
+            (values.get("QA_COVERAGE_AWARE_SELECTION_ENABLED") or "false").strip().lower()
+            == "true"
+        )
+        partial_generation_enabled = (
+            (values.get("QA_PARTIAL_GENERATION_ENABLED") or "false").strip().lower()
+            == "true"
+        )
         try:
             evidence_completion_max = int(values.get("QA_EVIDENCE_COMPLETION_MAX") or "2")
         except ValueError as error:
@@ -318,6 +335,9 @@ class Settings:
             support_validator_v2_enabled=support_validator_v2_enabled,
             structured_generation_enabled=structured_generation_enabled,
             supplemental_retrieval_enabled=supplemental_retrieval_enabled,
+            grounding_false_negative_recovery_enabled=grounding_false_negative_recovery_enabled,
+            coverage_aware_selection_enabled=coverage_aware_selection_enabled,
+            partial_generation_enabled=partial_generation_enabled,
             phase10b_query_mode=phase10b_query_mode,
             phase10b_top_k=phase10b_top_k,
             phase10b_chunk_top_k=phase10b_chunk_top_k,
@@ -345,6 +365,9 @@ class Settings:
             "QA_SUPPORT_VALIDATOR_V2_ENABLED": self.support_validator_v2_enabled,
             "QA_STRUCTURED_GENERATION_ENABLED": self.structured_generation_enabled,
             "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": self.supplemental_retrieval_enabled,
+            "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": self.grounding_false_negative_recovery_enabled,
+            "QA_COVERAGE_AWARE_SELECTION_ENABLED": self.coverage_aware_selection_enabled,
+            "QA_PARTIAL_GENERATION_ENABLED": self.partial_generation_enabled,
         }
 
     @property

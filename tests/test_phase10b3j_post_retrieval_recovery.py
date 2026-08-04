@@ -23,14 +23,52 @@ def test_recalled_not_selected_is_bounded_and_deterministic():
 def test_grounding_false_negative_never_changes_global_threshold():
     result = evaluate_post_retrieval_recovery(
         question_type="parameter",
-        selected=[_item("c1", "压力 参数 值 2 MPa")],
+        selected=[_item("c1", "2196 泵压力 参数 值 2 MPa 正常运行")],
         provider_evidence_ids=("c1",),
         generated_answer_point_ids=("P1",),
         grounding_removed_point_ids=("P1",),
+        grounding_removed_points=(
+            {
+                "point_id": "P1",
+                "text": "2196 泵压力为2 MPa，正常运行",
+                "evidence_ids": ("c1",),
+                "object": "泵",
+                "parameter": "压力",
+                "numeric_values": ("2",),
+                "units": ("MPa",),
+                "conditions": ("正常运行",),
+                "model": "2196",
+            },
+        ),
+        grounding_evidence_registry={"c1": {"text": "2196 泵压力 参数 值 2 MPa 正常运行"}},
     )
     assert result.kind == "grounding_false_negative"
     assert result.action == "grounding_review_replay"
     assert "threshold" not in result.reason
+
+
+def test_grounding_false_negative_rejects_missing_exact_field_or_negation_mismatch():
+    base = {
+        "point_id": "P1",
+        "text": "2196 泵压力为2 MPa，正常运行",
+        "evidence_ids": ("c1",),
+        "object": "泵",
+        "parameter": "压力",
+        "numeric_values": ("2",),
+        "units": ("MPa",),
+        "conditions": ("正常运行",),
+        "model": "2196",
+    }
+    for text in ("2196 泵压力 参数 值 3 MPa 正常运行", "2196 泵不得压力为2 MPa 正常运行"):
+        result = evaluate_post_retrieval_recovery(
+            question_type="parameter",
+            selected=[_item("c1", text)],
+            provider_evidence_ids=("c1",),
+            grounding_removed_point_ids=("P1",),
+            grounding_removed_points=(base,),
+            grounding_evidence_registry={"c1": {"text": text}},
+        )
+        assert result.kind != "grounding_false_negative"
 
 
 def test_generation_refusal_requires_provider_context():

@@ -24,6 +24,9 @@ def test_phase10b3i_flags_default_false_and_digest_is_stable() -> None:
         "QA_SUPPORT_VALIDATOR_V2_ENABLED": False,
         "QA_STRUCTURED_GENERATION_ENABLED": False,
         "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": False,
+        "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": False,
+        "QA_COVERAGE_AWARE_SELECTION_ENABLED": False,
+        "QA_PARTIAL_GENERATION_ENABLED": False,
     }
     assert len(settings.phase10b3i_config_sha256) == 64
     assert settings.phase10b3i_config_sha256 == Settings.from_mapping(_values()).phase10b3i_config_sha256
@@ -36,11 +39,17 @@ def test_phase10b3i_flags_parse_independently() -> None:
             "QA_SUPPORT_VALIDATOR_V2_ENABLED": "true",
             "QA_STRUCTURED_GENERATION_ENABLED": "false",
             "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": "true",
+            "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": "true",
+            "QA_COVERAGE_AWARE_SELECTION_ENABLED": "true",
+            "QA_PARTIAL_GENERATION_ENABLED": "true",
         }
     )
     assert settings.support_validator_v2_enabled is True
     assert settings.structured_generation_enabled is False
     assert settings.supplemental_retrieval_enabled is True
+    assert settings.grounding_false_negative_recovery_enabled is True
+    assert settings.coverage_aware_selection_enabled is True
+    assert settings.partial_generation_enabled is True
     assert settings.phase10b3i_config_sha256 != Settings.from_mapping(_values()).phase10b3i_config_sha256
 
 
@@ -69,8 +78,14 @@ def test_production_summary_accepts_flags_without_changing_frozen_strategy() -> 
             "QA_SUPPORT_VALIDATOR_V2_ENABLED": "true",
             "QA_STRUCTURED_GENERATION_ENABLED": "false",
             "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": "true",
+            "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": "true",
+            "QA_COVERAGE_AWARE_SELECTION_ENABLED": "true",
+            "QA_PARTIAL_GENERATION_ENABLED": "true",
         }
     )
     assert config.support_validator_v2_enabled is True
     assert config.supplemental_retrieval_enabled is True
+    assert config.grounding_false_negative_recovery_enabled is True
+    assert config.coverage_aware_selection_enabled is True
+    assert config.partial_generation_enabled is True
     assert config.strategy_hash() == ProductionQASettings().strategy_hash()

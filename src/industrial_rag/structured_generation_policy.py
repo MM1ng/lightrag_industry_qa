@@ -17,6 +17,7 @@ from .evidence_answer_schema import (
     StructuredAnswerPoint,
     SupportValidation,
 )
+from .structured_generation_parser import parse_structured_answer
 
 _TOKEN_RE = re.compile(r"[A-Za-z0-9_./%°℃+-]+|[\u4e00-\u9fff]{2,}")
 _NUMBER_RE = re.compile(r"[-+]?\d+(?:\.\d+)?")
@@ -49,15 +50,21 @@ def _supports_text(point: StructuredAnswerPoint, evidence: EvidenceRef) -> bool:
     body_tokens = _tokens(body)
     if claim_tokens and not claim_tokens.intersection(body_tokens):
         return False
+    # Structured fields are commitments, not hints.  A point that names an
+    # object/parameter/model must name one that occurs in this evidence.
+    lowered = body.casefold().replace(" ", "")
+    for field in (point.object, point.parameter, point.model):
+        normalised = (field or "").casefold().replace(" ", "")
+        if normalised and normalised not in lowered:
+            return False
     required_numbers = _numbers(claim) | set(point.numeric_values)
     if required_numbers and not required_numbers.issubset(_numbers(body)):
         return False
-    if point.units:
-        lowered = body.casefold().replace(" ", "")
-        if not all(unit.casefold().replace(" ", "") in lowered for unit in point.units):
-            return False
+    if point.units and not all(unit.casefold().replace(" ", "") in lowered for unit in point.units):
+        return False
     for condition in point.conditions:
-        if _tokens(condition) and not _tokens(condition).intersection(body_tokens):
+        normalised = condition.casefold().replace(" ", "")
+        if normalised and normalised not in lowered:
             return False
     return True
 
@@ -156,4 +163,39 @@ def validate_structured_answer(
         return ("", validation)
     retained_text = "\n".join(point.text for point in validation.points)
     return (retained_text or answer, validation)
+
+
+def resolve_partial_generation(
+    provider_payload: Any,
+    *,
+    fallback_answer: str,
+    evidence_registry: Mapping[str, EvidenceRef] | Iterable[EvidenceRef] | Mapping[str, Any],
+    generation_id: str,
+    safety_question: bool = False,
+) -> tuple[str, SupportValidation | None, str | None]:
+    """Apply structured partial-answer validation with a one-call-safe fallback.
+
+    The provider payload is parsed once.  If its schema is malformed, the
+    existing answer is returned untouched and no validation/retry path is
+    attempted.  On a valid schema each supported point is retained
+    independently by :func:`validate_answer_points`.
+    """
+    parsed = parse_structured_answer(provider_payload, fallback_answer=fallback_answer)
+    if parsed.parse_error:
+        return fallback_answer, None, parsed.parse_error
+    answer, validation = validate_structured_answer(
+        parsed.answer,
+        parsed.points,
+        evidence_registry,
+        generation_id=generation_id,
+        safety_question=safety_question,
+    )
+    return answer, validation, None
+
+
+__all__ = [
+    "resolve_partial_generation",
+    "validate_answer_points",
+    "validate_structured_answer",
+]
 
