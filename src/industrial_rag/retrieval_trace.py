@@ -8,6 +8,26 @@ from typing import Any
 
 TRACE_VERSION = "phase10a-retrieval-trace-v1"
 GROUNDING_AUDIT_TRACE_VERSION = "phase10b3f-grounding-audit-v1"
+FEATURE_FLAG_TRACE_VERSION = "phase10b3i-feature-flags-v1"
+
+
+def feature_flag_retrieval_config(
+    flags: Mapping[str, bool], config_sha256: str | None = None,
+    *, include_metadata: bool = False,
+) -> tuple[tuple[str, object], ...]:
+    """Return a stable, secret-free trace fragment for experimental flags.
+
+    Query execution owns whether this fragment is included.  Keeping the
+    helper here lets later wiring record the exact controls without exposing
+    environment values or changing the public answer contract.
+    """
+
+    entries = [(str(name), bool(flags[name])) for name in sorted(flags)]
+    if include_metadata and config_sha256:
+        entries.append(("feature_flag_config_sha256", config_sha256))
+    if include_metadata:
+        entries.append(("feature_flag_config_version", FEATURE_FLAG_TRACE_VERSION))
+    return tuple(entries)
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +105,7 @@ class RetrievalExecutionTrace:
     retrieval_ms: float
     rerank_ms: float
     evidence_selection_ms: float
+    feature_flags: tuple[tuple[str, object], ...] = ()
     detected_model: str | None = None
     detected_component: str | None = None
     detected_parameter: str | None = None
@@ -151,6 +172,7 @@ class RetrievalExecutionTrace:
             "retrieval_ms": self.retrieval_ms,
             "rerank_ms": self.rerank_ms,
             "evidence_selection_ms": self.evidence_selection_ms,
+            "feature_flags": dict(self.feature_flags),
             "detected_model": self.detected_model,
             "detected_component": self.detected_component,
             "detected_parameter": self.detected_parameter,

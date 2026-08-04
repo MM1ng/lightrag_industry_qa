@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from collections.abc import Mapping
@@ -66,6 +67,11 @@ class Settings:
     evidence_selection_diversity_enabled: bool = False
     evidence_completion_enabled: bool = False
     evidence_completion_max: int = 2
+    # Phase 10B-3I experimental controls.  These are deliberately fail-closed
+    # and are not wired into the query path by this change.
+    support_validator_v2_enabled: bool = False
+    structured_generation_enabled: bool = False
+    supplemental_retrieval_enabled: bool = False
     phase10b_query_mode: str = "mix"
     phase10b_top_k: int = 12
     phase10b_chunk_top_k: int = 20
@@ -195,6 +201,18 @@ class Settings:
         evidence_completion_enabled = (
             (values.get("QA_EVIDENCE_COMPLETION_ENABLED") or "false").strip().lower() == "true"
         )
+        support_validator_v2_enabled = (
+            (values.get("QA_SUPPORT_VALIDATOR_V2_ENABLED") or "false").strip().lower()
+            == "true"
+        )
+        structured_generation_enabled = (
+            (values.get("QA_STRUCTURED_GENERATION_ENABLED") or "false").strip().lower()
+            == "true"
+        )
+        supplemental_retrieval_enabled = (
+            (values.get("QA_SUPPLEMENTAL_RETRIEVAL_ENABLED") or "false").strip().lower()
+            == "true"
+        )
         try:
             evidence_completion_max = int(values.get("QA_EVIDENCE_COMPLETION_MAX") or "2")
         except ValueError as error:
@@ -297,6 +315,9 @@ class Settings:
             evidence_selection_diversity_enabled=evidence_selection_diversity_enabled,
             evidence_completion_enabled=evidence_completion_enabled,
             evidence_completion_max=evidence_completion_max,
+            support_validator_v2_enabled=support_validator_v2_enabled,
+            structured_generation_enabled=structured_generation_enabled,
+            supplemental_retrieval_enabled=supplemental_retrieval_enabled,
             phase10b_query_mode=phase10b_query_mode,
             phase10b_top_k=phase10b_top_k,
             phase10b_chunk_top_k=phase10b_chunk_top_k,
@@ -315,6 +336,26 @@ class Settings:
             mineru_fallback_to_pymupdf=mineru_fallback_to_pymupdf,
             mineru_save_raw_response=mineru_save_raw_response,
         )
+
+    @property
+    def phase10b3i_feature_flags(self) -> dict[str, bool]:
+        """Sanitized experimental flags suitable for traces and diagnostics."""
+
+        return {
+            "QA_SUPPORT_VALIDATOR_V2_ENABLED": self.support_validator_v2_enabled,
+            "QA_STRUCTURED_GENERATION_ENABLED": self.structured_generation_enabled,
+            "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": self.supplemental_retrieval_enabled,
+        }
+
+    @property
+    def phase10b3i_config_sha256(self) -> str:
+        """Stable digest of the non-secret Phase 10B-3I flag configuration."""
+
+        payload = json.dumps(
+            self.phase10b3i_feature_flags, ensure_ascii=False, sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
 
     @classmethod
     def from_env(cls) -> Settings:

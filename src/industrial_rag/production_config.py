@@ -54,6 +54,9 @@ _ENV_NAMES = {
     "citation_shadow_audit_enabled": "CITATION_SHADOW_AUDIT_ENABLED",
     "safety_policy_enabled": "QA_SAFETY_POLICY_ENABLED",
     "observability_enabled": "QA_OBSERVABILITY_ENABLED",
+    "support_validator_v2_enabled": "QA_SUPPORT_VALIDATOR_V2_ENABLED",
+    "structured_generation_enabled": "QA_STRUCTURED_GENERATION_ENABLED",
+    "supplemental_retrieval_enabled": "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED",
     "locked": "QA_LOCKED",
 }
 
@@ -109,6 +112,11 @@ class ProductionQASettings:
     citation_shadow_audit_enabled: bool = False
     safety_policy_enabled: bool = True
     observability_enabled: bool = True
+    # Phase 10B-3I experimental flags are visible in sanitized version config
+    # but remain disabled by default and are not part of the frozen strategy.
+    support_validator_v2_enabled: bool = False
+    structured_generation_enabled: bool = False
+    supplemental_retrieval_enabled: bool = False
     locked: bool = True
 
     def __post_init__(self) -> None:
@@ -187,6 +195,9 @@ class ProductionQASettings:
                 "citation_shadow_audit_enabled",
                 "safety_policy_enabled",
                 "observability_enabled",
+                "support_validator_v2_enabled",
+                "structured_generation_enabled",
+                "supplemental_retrieval_enabled",
                 "locked",
             }:
                 data[key] = _as_bool(value, env_name)
