@@ -62,6 +62,7 @@ class Settings:
     enable_llm_cache: bool = True
     query_normalization_enabled: bool = False
     answer_grounding_enabled: bool = False
+    grounding_audit_enabled: bool = False
     phase10b_query_mode: str = "mix"
     phase10b_top_k: int = 12
     phase10b_chunk_top_k: int = 20
@@ -182,6 +183,9 @@ class Settings:
         answer_grounding_enabled = (
             (values.get("QA_ANSWER_GROUNDING_ENABLED") or "false").strip().lower() == "true"
         )
+        grounding_audit_enabled = (
+            (values.get("QA_GROUNDING_AUDIT_ENABLED") or "false").strip().lower() == "true"
+        )
         phase10b_query_mode = (values.get("PHASE10B_QUERY_MODE") or "mix").strip().lower()
         try:
             phase10b_top_k = int(values.get("PHASE10B_TOP_K") or "12")
@@ -274,6 +278,7 @@ class Settings:
             enable_llm_cache=enable_llm_cache,
             query_normalization_enabled=query_normalization_enabled,
             answer_grounding_enabled=answer_grounding_enabled,
+            grounding_audit_enabled=grounding_audit_enabled,
             phase10b_query_mode=phase10b_query_mode,
             phase10b_top_k=phase10b_top_k,
             phase10b_chunk_top_k=phase10b_chunk_top_k,

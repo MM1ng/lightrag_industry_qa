@@ -10,7 +10,12 @@ from dataclasses import dataclass
 from functools import partial
 from typing import Any, Literal, Protocol, cast
 
-from industrial_rag.answer_grounding import AnswerPoint, build_answer_plan
+from industrial_rag.answer_grounding import (
+    AnswerPoint,
+    GroundingAudit,
+    build_answer_plan,
+    build_non_generation_audit,
+)
 from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
 from industrial_rag.config import (
     SUPPORTED_QUERY_MODES,
@@ -27,6 +32,7 @@ from industrial_rag.evidence_policy import (
 )
 from industrial_rag.query_normalization import NormalizationResult, normalize_query
 from industrial_rag.retrieval_trace import (
+    GROUNDING_AUDIT_TRACE_VERSION,
     TRACE_VERSION,
     RetrievalExecutionTrace,
     RetrievalTraceItem,
@@ -337,6 +343,7 @@ def _build_retrieval_trace(
     evidence_selection_ms: float,
     normalization: NormalizationResult | None = None,
     answer_plan: Sequence[AnswerPoint] = (),
+    grounding_audit: GroundingAudit | None = None,
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -389,7 +396,7 @@ def _build_retrieval_trace(
         for final_rank, item in enumerate(selected, start=1)
     )
     return RetrievalExecutionTrace(
-        trace_version=TRACE_VERSION,
+        trace_version=(GROUNDING_AUDIT_TRACE_VERSION if grounding_audit is not None else TRACE_VERSION),
         original_query=original_query,
         normalized_query=normalized_query,
         retrieval_config=(
@@ -412,6 +419,7 @@ def _build_retrieval_trace(
         detected_parameter=normalization.detected_parameter if normalization else None,
         added_aliases=normalization.added_aliases if normalization else (),
         answer_plan=tuple(item.to_payload() for item in answer_plan),
+        grounding_audit=(grounding_audit.to_payload() if grounding_audit is not None else None),
     )
 
 
@@ -534,6 +542,15 @@ class LightRAGService:
                 decision = partial_decision
         evidence_selection_ms = (time.perf_counter() - selection_started) * 1000
         if not decision.allowed:
+            audit = (
+                build_non_generation_audit(
+                    generation_invoked=False,
+                    output_status="insufficient_evidence",
+                    failure_categories=("evidence_gate_refusal",),
+                )
+                if self.settings.grounding_audit_enabled
+                else None
+            )
             trace = _build_retrieval_trace(
                 original_query=question,
                 normalized_query=normalized_question,
@@ -545,6 +562,7 @@ class LightRAGService:
                 retrieval_ms=retrieval_ms,
                 evidence_selection_ms=evidence_selection_ms,
                 normalization=normalization,
+                grounding_audit=audit,
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -563,6 +581,16 @@ class LightRAGService:
             )
         answer = (await self._backend.generate(normalized_question, context, system_prompt)).strip()
         if not answer:
+            audit = (
+                build_non_generation_audit(
+                    answer="",
+                    generation_invoked=True,
+                    output_status="insufficient_evidence",
+                    failure_categories=("generation_empty",),
+                )
+                if self.settings.grounding_audit_enabled
+                else None
+            )
             trace = _build_retrieval_trace(
                 original_query=question,
                 normalized_query=normalized_question,
@@ -574,6 +602,7 @@ class LightRAGService:
                 retrieval_ms=retrieval_ms,
                 evidence_selection_ms=evidence_selection_ms,
                 normalization=normalization,
+                grounding_audit=audit,
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -601,6 +630,7 @@ class LightRAGService:
             evidence_selection_ms=evidence_selection_ms,
             normalization=normalization,
             answer_plan=grounded.answer_points if grounded else (),
+            grounding_audit=(grounded.grounding_audit if grounded and self.settings.grounding_audit_enabled else None),
         )
         return QueryResult(
             grounded.answer if grounded else answer,

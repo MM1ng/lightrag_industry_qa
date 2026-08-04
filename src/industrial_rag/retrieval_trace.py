@@ -7,6 +7,7 @@ from dataclasses import dataclass, replace
 from typing import Any
 
 TRACE_VERSION = "phase10a-retrieval-trace-v1"
+GROUNDING_AUDIT_TRACE_VERSION = "phase10b3f-grounding-audit-v1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,6 +95,7 @@ class RetrievalExecutionTrace:
     completed_evidence: tuple[dict[str, object], ...] = ()
     coverage_requirements: tuple[str, ...] = ()
     coverage_status: str = "uncovered"
+    grounding_audit: dict[str, Any] | None = None
 
     def with_document_ids(self, document_ids: Mapping[str, str]) -> RetrievalExecutionTrace:
         return replace(
@@ -138,4 +140,5 @@ class RetrievalExecutionTrace:
             "completed_evidence": list(self.completed_evidence),
             "coverage_requirements": list(self.coverage_requirements),
             "coverage_status": self.coverage_status,
+            "grounding_audit": self.grounding_audit,
         }

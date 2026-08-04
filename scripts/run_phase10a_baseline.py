@@ -64,6 +64,7 @@ class Phase10BaselineRunner:
         output_dir: Path,
         required_trace_keys: tuple[str, ...] = (),
         explicit_generation: bool = False,
+        trace_versions: tuple[str, ...] = (TRACE_VERSION,),
     ) -> None:
         if not service_api_key or not admin_api_key:
             raise ValueError("both role credentials are required")
@@ -78,6 +79,7 @@ class Phase10BaselineRunner:
         self._output_dir = output_dir
         self._required_trace_keys = required_trace_keys
         self._explicit_generation = explicit_generation
+        self._trace_versions = trace_versions
 
     async def run_case(self, golden: dict[str, Any]) -> dict[str, Any]:
         base = {
@@ -141,7 +143,7 @@ class Phase10BaselineRunner:
             }
         trace = _safe_json(diagnostic)
         if (
-            trace.get("trace_version") != TRACE_VERSION
+            trace.get("trace_version") not in self._trace_versions
             or trace.get("request_id") != request_id
             or trace.get("generation_id") != self._expected_generation_id
         ):

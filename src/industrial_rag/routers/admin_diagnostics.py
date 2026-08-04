@@ -56,6 +56,9 @@ class RetrievalTraceResponse(BaseModel):
     detected_parameter: str | None = None
     added_aliases: list[str] = Field(default_factory=list)
     answer_plan: list[dict[str, Any]] = Field(default_factory=list)
+    grounding_audit: dict[str, Any] | None = None
+    grounding_audit_version: str | None = None
+    replay_eligible: bool = False
     retrieval_config: dict[str, Any]
     initial_results: list[RetrievalResultResponse]
     rerank_applied: bool
@@ -68,6 +71,11 @@ class RetrievalTraceResponse(BaseModel):
     end_to_end_ms: float
     created_at: str
     expires_at: str
+
+    def model_post_init(self, __context: Any) -> None:
+        audit = self.grounding_audit or {}
+        object.__setattr__(self, "grounding_audit_version", audit.get("audit_version"))
+        object.__setattr__(self, "replay_eligible", bool(audit.get("replay_eligible", False)))
 
 
 @router.get(

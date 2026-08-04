@@ -1,0 +1,1597 @@
+{
+  "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "rows": [
+    {
+      "question_id": "S001",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-bb26526f42418702-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7aefa56f7726e40ade12ddb98f39caa2b3075750b645af644282b062e3417860"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-29247897fcf1016b-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7341e190c1e25ace3946ceaec5f1e03fa566e7566eccc3156c49048893736836"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-6031ad5e15a73119-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "81d058103a57e2ef280daae22f8b99e94ab2431b50c042c8fca78259b745a68a"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S002",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a9a1f3c1a7578885-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6b4cdb44b2e6dd5a516e28a6c65eb7a280f55574dc7f74cd2dd68dd86894fd21"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5ea5c41790ab805a-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2cc870ade08c9ac0ccf7c34e96c09cd6748a7a7740b4f63233238ba6b6ac5eb6"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S003",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a9a1f3c1a7578885-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6b4cdb44b2e6dd5a516e28a6c65eb7a280f55574dc7f74cd2dd68dd86894fd21"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5ea5c41790ab805a-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2cc870ade08c9ac0ccf7c34e96c09cd6748a7a7740b4f63233238ba6b6ac5eb6"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S004",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-3b58bc1e45428865-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f3878b254b0052ce4a8cf42f1433dcf0110370bf8eb346adcf9b17d8d38c3960"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-d0bf0e7542532ef9-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "0087c110afb151c845aca8b49fa664f4936ba1e15d5c8e2b547d2221d8038fe3"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S005",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-3b58bc1e45428865-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f3878b254b0052ce4a8cf42f1433dcf0110370bf8eb346adcf9b17d8d38c3960"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S006",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-e2d71181df615e5b-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "79a2100d5f354790c91c979bc79ae1c97f3c3ab31efd3cf698aed72a25df2fa7"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-fcc2e6681bc7509c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7eec21812fde696a89436b7378b78e43efdb1a6b22e8cd564c8485ae48a70670"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-3b58bc1e45428865-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f3878b254b0052ce4a8cf42f1433dcf0110370bf8eb346adcf9b17d8d38c3960"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S007",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-fcc2e6681bc7509c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7eec21812fde696a89436b7378b78e43efdb1a6b22e8cd564c8485ae48a70670"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-6f14788cb29e00e4-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "a667c5b9cb55b87bd09c8e339c21907d9993edfb553aac290508579d28f019eb"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-a03be0b31badfb6b-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4ac52828a19571d64cb863e4dbf7c66a9979b2266be0618b15d51f7d2f66cbaa"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "S008",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7192fa1959afa851-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4f968c6dbf9f39d17a834e078c3c81e0761d12c3254e853cb3c2f5eb29436f22"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e538966686c111ea-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "269c8752b32f9763cb441b6a115494fb769c1cedb86be7e581904b1bf5bdb537"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fcc2e6681bc7509c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7eec21812fde696a89436b7378b78e43efdb1a6b22e8cd564c8485ae48a70670"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S009",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e538966686c111ea-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "269c8752b32f9763cb441b6a115494fb769c1cedb86be7e581904b1bf5bdb537"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fcc2e6681bc7509c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7eec21812fde696a89436b7378b78e43efdb1a6b22e8cd564c8485ae48a70670"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7192fa1959afa851-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4f968c6dbf9f39d17a834e078c3c81e0761d12c3254e853cb3c2f5eb29436f22"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S010",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e538966686c111ea-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "269c8752b32f9763cb441b6a115494fb769c1cedb86be7e581904b1bf5bdb537"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5ea5c41790ab805a-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2cc870ade08c9ac0ccf7c34e96c09cd6748a7a7740b4f63233238ba6b6ac5eb6"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-d0bf0e7542532ef9-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "0087c110afb151c845aca8b49fa664f4936ba1e15d5c8e2b547d2221d8038fe3"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S011",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a9a1f3c1a7578885-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6b4cdb44b2e6dd5a516e28a6c65eb7a280f55574dc7f74cd2dd68dd86894fd21"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-34cc49bd2766d02e-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "0f44c075b8e8cf03c610a173ad720ea162c975fa772bb3d788c0a6215b6a01d0"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S012",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e538966686c111ea-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "269c8752b32f9763cb441b6a115494fb769c1cedb86be7e581904b1bf5bdb537"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a9a1f3c1a7578885-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6b4cdb44b2e6dd5a516e28a6c65eb7a280f55574dc7f74cd2dd68dd86894fd21"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-2db1a56a7e45ceb2-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f9acefacca02e7541351efc97f26404afeed763b558600484a819ad55c749afa"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S013",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7e3e80ba8c62809f-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6b0a2891be0cc722c26e2ba3b6b50f2c56c63849b1114da5fbd1209cfc41a8ac"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a03be0b31badfb6b-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4ac52828a19571d64cb863e4dbf7c66a9979b2266be0618b15d51f7d2f66cbaa"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-c8f73a00e3c0ab13-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d9c1ee182c8ea7cff86fb5e5f847faf2f6f595c292d19bf05c78863d2e966598"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S014",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-17f4771c4c817a77-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7435dcf3c1782df41033b9914f81b483591678aa236271dd042058d5ccb46cf0"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-c1a49660ca4fa082-001",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "eaf26ba98522872a5c29cb9d9255d6e2c008c3297db564be3a90721bcb02800d"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-24b95119c8293288-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7edf7c1a074e3daccebdf98c9b416a19f7c086c52c87005c65caecdc8a198071"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S015",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E2",
+          "chunk_id": "cchunk-pymupdf-v1-3b58bc1e45428865-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f3878b254b0052ce4a8cf42f1433dcf0110370bf8eb346adcf9b17d8d38c3960"
+        },
+        {
+          "evidence_id": "E2",
+          "chunk_id": "cchunk-pymupdf-v1-5ea5c41790ab805a-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2cc870ade08c9ac0ccf7c34e96c09cd6748a7a7740b4f63233238ba6b6ac5eb6"
+        },
+        {
+          "evidence_id": "E2",
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S016",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fcc2e6681bc7509c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7eec21812fde696a89436b7378b78e43efdb1a6b22e8cd564c8485ae48a70670"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-ce93a6a3ed3b805d-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "940d576ce9d1eacbea3e2b4cd9c4950622983cf22c98fbfc2ccb3a7f01aca7c3"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S017",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5ea5c41790ab805a-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2cc870ade08c9ac0ccf7c34e96c09cd6748a7a7740b4f63233238ba6b6ac5eb6"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-b3fcc507b8b40953-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "e05e769c5e5d48bedb4a96586dfe3b498a10c3aa97f874ca81b69a6729b994d4"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S018",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E2",
+          "chunk_id": "cchunk-pymupdf-v1-9525f7a38d48e416-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6f82474b87f382bcf50de88c1df6e1afb4fe637a07c028625ff9ab4a89c7a0c5"
+        },
+        {
+          "evidence_id": "E2",
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        },
+        {
+          "evidence_id": "E2",
+          "chunk_id": "cchunk-pymupdf-v1-7e3e80ba8c62809f-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6b0a2891be0cc722c26e2ba3b6b50f2c56c63849b1114da5fbd1209cfc41a8ac"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S019",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-f13e5d0f9df649e2-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f7d73f698d8212ecf77d9a84fbb8a24ba4c87ca532e360258591e1cbd492abfb"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e2388fe05f8eb9ad-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "05668e69e08c4d0f7b1dc63422d71332268ba8e05c3d6f25af0d1958dbb18a11"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7192fa1959afa851-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4f968c6dbf9f39d17a834e078c3c81e0761d12c3254e853cb3c2f5eb29436f22"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "S020",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-392aebff4bbbec9f-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6d8e2fb559b29eb8ae62d95a1431677a8bb73cdc7cbcc713573281a4a2556796"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-5d75f7554358132e-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "e4e3702cfcee612d3c3b751e37ddca678ee3fdd2dc2e3b8ed1525d573423457c"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "D001",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-81364d915c3384f9-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "656758c8defd2f7815e5f1f56a479f301b0018fdbc6093a4701e23f25fb186ab"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-075079781e245894-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "81ca73a92b3a85797579444bca6a60c9783d50e43c8c243025184e994e826827"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fe95f94d24968921-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "fd6608532f565039c5ee7f3895a7e47bd79c30fbf884e734d016342d57ac33fb"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D002",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-3de8aa9caa68e922-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7c34140dd37243a34ca80cf15cb8e2d9934dea3ad55af3a6109a7f85e3ad3ffc"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-4afb1bd71eb2e7fc-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f38d89e99717262c80e64862fcea73108ace67f8736811e6e63e3398069d0c6b"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-64e302610f23e9ce-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "700c0ee67bd8c3d28c3d762e81c6cc36971ba17a3dbaeddd9d113e4e996e4cfe"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D003",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-15441122e7bcbb40-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6145c4957e8425a97d73046f037d77f2c69345baf5d44d25ca7e7675a20cb999"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d5d837513e3d30647fb79a1b22293cd80c887e467a65b3fecd82464a1ae1b16c"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-4e14a3b265877fb1-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7368bef22ece395346a7276eb0c7bd556e43bdb9e96f8725d0237dab512f61f7"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D004",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-8cb55fe1213f5d02-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "50a12bb20bd701af02912b8cd05cd9607b035f6ab1e57c43004c19218b081d6d"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fc16e77b6450e35c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bbc455c4f6ecdf460deb598bc962e7927bbaa25e9d42ef52d597e0ec43b2b157"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7227e2460f83a192-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "1c1de7169b6296bcb4301209d9bbf3ba7b6a3701e7f78730ca5349f726f3b198"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D005",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-8cb55fe1213f5d02-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "50a12bb20bd701af02912b8cd05cd9607b035f6ab1e57c43004c19218b081d6d"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-4e14a3b265877fb1-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7368bef22ece395346a7276eb0c7bd556e43bdb9e96f8725d0237dab512f61f7"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-7227e2460f83a192-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "1c1de7169b6296bcb4301209d9bbf3ba7b6a3701e7f78730ca5349f726f3b198"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "D006",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7227e2460f83a192-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "1c1de7169b6296bcb4301209d9bbf3ba7b6a3701e7f78730ca5349f726f3b198"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fe95f94d24968921-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "fd6608532f565039c5ee7f3895a7e47bd79c30fbf884e734d016342d57ac33fb"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e1d1a306d81ddb56-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "845aa1f785027edf4ec995135b3ad42cd72c022003ef7627f2ff5c7f1d262aec"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D007",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-eca71a257022bfd5-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "42d00a7c48231d3795ab6de7db8222722645ac71dba2926e07f27781da39f815"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7227e2460f83a192-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "1c1de7169b6296bcb4301209d9bbf3ba7b6a3701e7f78730ca5349f726f3b198"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7a7a1d9527900134-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "e5ffb7751207522a4dfa7a7576502d6c7fadd1e8522c0c14de2452a4e10d148c"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D008",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7a7a1d9527900134-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "e5ffb7751207522a4dfa7a7576502d6c7fadd1e8522c0c14de2452a4e10d148c"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-d376dd44adad266c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bf7472dd9de6723743d7cc1f4e9b7ab6831008f9f60d0cb974a0d67830800496"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-53f148860125f4f4-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "19c6b9f384117b63ecee5221732478b144665ce255f330366e28c386d2ea63df"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D009",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-ab5e16a023d3f7d0-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4e7983e8ee6a3beba0c8ce5f0d68e2f0ff736b24aa93459702e4ae21479f3cbf"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-d376dd44adad266c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bf7472dd9de6723743d7cc1f4e9b7ab6831008f9f60d0cb974a0d67830800496"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e1d1a306d81ddb56-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "845aa1f785027edf4ec995135b3ad42cd72c022003ef7627f2ff5c7f1d262aec"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D010",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7ed93679bb25416b-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d65458c20c6633fa2b567a4906dd0289895ba8bb0c3be631d8ec5f9c56548add"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fc16e77b6450e35c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bbc455c4f6ecdf460deb598bc962e7927bbaa25e9d42ef52d597e0ec43b2b157"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-8cb55fe1213f5d02-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "50a12bb20bd701af02912b8cd05cd9607b035f6ab1e57c43004c19218b081d6d"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D011",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-031107a3c2337259-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "ad936a84c0fd4c1ca613737db17a5be8ac0f989dba1e977c496ff6bc6f9212d6"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-c252bcbee91ab8cc-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "cc20e38cbf4ca7fdac52e353bd2c82aed481389d738025a9cd734dab8b05e016"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-58f5902fcdf80561-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "0e0680dfae4f6b9df998fdfa14807fee212d196cb9ada5353bda6389fd50c5dd"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D012",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-b5a8f25cefe47aef-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "561411b3eab5711dd8a20d30833883de8a43a8af58acda83d769eac12894b4e3"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-379fd6889fc7fe67-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "c79b53d407c9f79481f9631dfa702415eeff3cd9358feb861c7653822f441d7c"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-8cb55fe1213f5d02-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "50a12bb20bd701af02912b8cd05cd9607b035f6ab1e57c43004c19218b081d6d"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D013",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-58f5902fcdf80561-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "0e0680dfae4f6b9df998fdfa14807fee212d196cb9ada5353bda6389fd50c5dd"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fc16e77b6450e35c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bbc455c4f6ecdf460deb598bc962e7927bbaa25e9d42ef52d597e0ec43b2b157"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-031107a3c2337259-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "ad936a84c0fd4c1ca613737db17a5be8ac0f989dba1e977c496ff6bc6f9212d6"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D014",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fc16e77b6450e35c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bbc455c4f6ecdf460deb598bc962e7927bbaa25e9d42ef52d597e0ec43b2b157"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-92120ce2e7ee0096-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2bc232147b0029059f6734cfef76aa511279c8b078da138bc3614718ad1d0e6b"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d5d837513e3d30647fb79a1b22293cd80c887e467a65b3fecd82464a1ae1b16c"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D015",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fc16e77b6450e35c-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "bbc455c4f6ecdf460deb598bc962e7927bbaa25e9d42ef52d597e0ec43b2b157"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-2e91d7e64f3794b6-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "40cb57e681cb73a9c5415f9187be16de8c78a4610b8e6c60e0e9db829ef988a0"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-8cb55fe1213f5d02-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "50a12bb20bd701af02912b8cd05cd9607b035f6ab1e57c43004c19218b081d6d"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D016",
+      "split": "development",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-1f4215593f0cb976-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "35450d06a968b1c96b1b01c6bc1c2d470dc5fedcac2eace8400b2ef5f118bc28"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5cb922ccf2388a71-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "11d4929f592ba8c69e6f2296c647b4ec22a49815fcb829e0c7896afb5f4c102d"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-3d4bbec2e5edecfe-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "5d0a260eacdde8b60aa1fdffd869f28c340dab2f3f5ff98bcae275753f0af5f8"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D017",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-3d4bbec2e5edecfe-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "5d0a260eacdde8b60aa1fdffd869f28c340dab2f3f5ff98bcae275753f0af5f8"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-1f4215593f0cb976-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "35450d06a968b1c96b1b01c6bc1c2d470dc5fedcac2eace8400b2ef5f118bc28"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a682444e38bfc94e-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "13247e760acad9eac426f8a426ad58fb7866529e63b1328b5dc5e741468d516a"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D018",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-4e14a3b265877fb1-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7368bef22ece395346a7276eb0c7bd556e43bdb9e96f8725d0237dab512f61f7"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-fe95f94d24968921-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "fd6608532f565039c5ee7f3895a7e47bd79c30fbf884e734d016342d57ac33fb"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-53f148860125f4f4-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "19c6b9f384117b63ecee5221732478b144665ce255f330366e28c386d2ea63df"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "D019",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-3c48ca477586c617-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6369ebc41691f6db37810f28a8bb3683b5f247740ce2c1347a01e76998bbe26c"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d5d837513e3d30647fb79a1b22293cd80c887e467a65b3fecd82464a1ae1b16c"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-0261999df5570bed-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "1029ca655df09107d5d111fb35c2a4a7b61d35727d432c6b45544458fdee2277"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "D020",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-e1d1a306d81ddb56-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "845aa1f785027edf4ec995135b3ad42cd72c022003ef7627f2ff5c7f1d262aec"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-f7bbb8547420f197-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "a81db37e8d3d5683be24c6fe7689adddb495e34a434fbef680ff1b57eaffcb44"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d5d837513e3d30647fb79a1b22293cd80c887e467a65b3fecd82464a1ae1b16c"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "C001",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7a7a1d9527900134-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "e5ffb7751207522a4dfa7a7576502d6c7fadd1e8522c0c14de2452a4e10d148c"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e1d1a306d81ddb56-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "845aa1f785027edf4ec995135b3ad42cd72c022003ef7627f2ff5c7f1d262aec"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-53f148860125f4f4-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "19c6b9f384117b63ecee5221732478b144665ce255f330366e28c386d2ea63df"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "C002",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-1f4215593f0cb976-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "35450d06a968b1c96b1b01c6bc1c2d470dc5fedcac2eace8400b2ef5f118bc28"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-5cb922ccf2388a71-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "11d4929f592ba8c69e6f2296c647b4ec22a49815fcb829e0c7896afb5f4c102d"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-2e91d7e64f3794b6-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "40cb57e681cb73a9c5415f9187be16de8c78a4610b8e6c60e0e9db829ef988a0"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "C003",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5178c456afbf1e5a-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "a79b13e9c9cfac120dbc0eb9a5db64302d8a01fa95e99471ff7f86431a7be67e"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-4e14a3b265877fb1-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "7368bef22ece395346a7276eb0c7bd556e43bdb9e96f8725d0237dab512f61f7"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "C004",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d70086d446eb87faabba90ece74531070aa0bc290455127a0bd903bf7040dbbd"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-34cc49bd2766d02e-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "0f44c075b8e8cf03c610a173ad720ea162c975fa772bb3d788c0a6215b6a01d0"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-b3fcc507b8b40953-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "e05e769c5e5d48bedb4a96586dfe3b498a10c3aa97f874ca81b69a6729b994d4"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "C005",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "d5d837513e3d30647fb79a1b22293cd80c887e467a65b3fecd82464a1ae1b16c"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-4afb1bd71eb2e7fc-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f38d89e99717262c80e64862fcea73108ace67f8736811e6e63e3398069d0c6b"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-7227e2460f83a192-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "1c1de7169b6296bcb4301209d9bbf3ba7b6a3701e7f78730ca5349f726f3b198"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "C006",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-031107a3c2337259-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "ad936a84c0fd4c1ca613737db17a5be8ac0f989dba1e977c496ff6bc6f9212d6"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-f1d515087d6f1eee-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "aab311a2a8ce4d8fbb4a108f3a3af55ef3933d54aa6807bf366e0e5b86db8996"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-c252bcbee91ab8cc-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "cc20e38cbf4ca7fdac52e353bd2c82aed481389d738025a9cd734dab8b05e016"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "C007",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-608ad00e418e6f74-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "acca142a093d9d68907faebbf097dfa3b5384eaacf7e664eac5dcac68b6789a0"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-00e544a08ac569cc-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b61416ebd7922e3692df7a5ebbf449a9e54723fd3dac29452d81a3bc4f36b851"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-9de58a796bbbd884-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "407680e4877558c1047086202379dd5c014d4138f36151d48160d77dcf737d2c"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "C008",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-5ea5c41790ab805a-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "2cc870ade08c9ac0ccf7c34e96c09cd6748a7a7740b4f63233238ba6b6ac5eb6"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-1f3fac6e86eebfd0-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "33abf3966e92822f5d96f11a52eaa2e7ef22e9a5430a0ef09af6af3a366eac2c"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-18c85b3ecf9f1f7f-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "6c5c3462ba4f13d9b36f4afffcd16227cd20fbe4ebd6fbe7e126dfbf9458d5fd"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "N001",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-075079781e245894-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "81ca73a92b3a85797579444bca6a60c9783d50e43c8c243025184e994e826827"
+        },
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-b5d0bccd99807cfe-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "df9526262e33ca07c7217706cda146a7dbb0ae6acfbae7313210ac7a97b4e562"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "N002",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": null,
+          "chunk_id": "cchunk-pymupdf-v1-c91c70afa0fb9c86-000",
+          "document_id": "doc-6a9ea3ff1f42",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b2054aa3a455bc5d8274d488891cef6b9c145c86d49e4a052bfe5863d0c7429c"
+        }
+      ],
+      "replay_eligible": false,
+      "replay_ineligible_reason": "generation_returned_refusal"
+    },
+    {
+      "question_id": "A001",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-e2d71181df615e5b-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "79a2100d5f354790c91c979bc79ae1c97f3c3ab31efd3cf698aed72a25df2fa7"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-3b58bc1e45428865-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "f3878b254b0052ce4a8cf42f1433dcf0110370bf8eb346adcf9b17d8d38c3960"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "b58afbb984725ec6f344966b869d6d6c6bc53a4e837b4e421f60ea40bf6113d5"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    },
+    {
+      "question_id": "A002",
+      "split": "validation",
+      "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "context_registry_mismatch": false,
+      "evidence_identities": [
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-7192fa1959afa851-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "4f968c6dbf9f39d17a834e078c3c81e0761d12c3254e853cb3c2f5eb29436f22"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-6c84270736d64bea-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "62a5d3821585c03a422a32bb295bbb5899025c4ef4a829de5211d0390157337e"
+        },
+        {
+          "evidence_id": "E1",
+          "chunk_id": "cchunk-pymupdf-v1-8198e38bb184b987-000",
+          "document_id": "doc-4ffb6df91a9a",
+          "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+          "content_sha256": "82ad524402ea7f1672792fea83679da249cef41012ec253cf417551e93d75de9"
+        }
+      ],
+      "replay_eligible": true,
+      "replay_ineligible_reason": null
+    }
+  ],
+  "context_registry_sha_mismatch_count": 0
+}
