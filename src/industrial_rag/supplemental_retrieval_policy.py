@@ -187,7 +187,9 @@ def run_supplemental_retrieval(
                     reasons[c.chunk_id] = "duplicate_chunk"
             rejected.append(item)
             continue
-        if c.knowledge_base_id not in (None, knowledge_base_id) or c.generation_id not in (None, generation_id):
+        # Supplemental evidence must carry explicit identity; an omitted
+        # identity is not safe to treat as same-KB/same-generation.
+        if c.knowledge_base_id != knowledge_base_id or c.generation_id != generation_id:
             wrong.append(c.chunk_id)
             reasons[c.chunk_id] = "wrong_identity"
             rejected.append(item)
