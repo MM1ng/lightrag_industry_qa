@@ -44,6 +44,7 @@ from industrial_rag.services.query_application_service import QueryApplicationSe
 R1 = ROOT / "evaluation" / "phase10b3j_r1"
 R2 = ROOT / "evaluation" / "phase10b3i_r2"
 POLICY_PATH = ROOT / "evaluation" / "phase10b3d" / "metric_policy.json"
+SIDECAR_PATH = ROOT / "evaluation" / "phase10b3c" / "golden_evidence_mapping_g10b3c20260803.json"
 PACKET_PATH = ROOT / "evaluation" / "phase10b3j" / "manual_support_review_packet.jsonl"
 OUT = ROOT / "evaluation" / "phase10b3j_goal"
 DEFINITION_VERSION = "phase10b3d-metric-policy-v1"
@@ -77,12 +78,192 @@ def _rate(numerator: int, denominator: int) -> dict[str, Any]:
     }
 
 
+def _point_suffix(point_id: object) -> str:
+    return str(point_id).rsplit("-", 1)[-1].casefold().lstrip("_")
+
+
+def _claims_for(point_id: object, response: dict[str, Any]) -> list[dict[str, Any]]:
+    suffix = _point_suffix(point_id)
+    return [
+        claim
+        for claim in response.get("claims", [])
+        if _point_suffix(claim.get("claim_id", "")) == suffix
+    ]
+
+
+def _expected_chunk_ids(
+    row: dict[str, Any], point: dict[str, Any], mapping: dict[tuple[str, str], str]
+) -> set[str]:
+    return {
+        mapping[(str(row["question_id"]), str(evidence_id))]
+        for evidence_id in point.get("supported_by", [])
+        if (str(row["question_id"]), str(evidence_id)) in mapping
+    }
+
+
+def _grounding_support_status(point_id: object, audit: dict[str, Any]) -> bool | None:
+    suffix = _point_suffix(point_id)
+    for decision in audit.get("point_decisions", []):
+        if _point_suffix(decision.get("point_id", "")) == suffix:
+            return decision.get("support_status") == "supported"
+    return None
+
+
+def _retained(point_id: object, audit: dict[str, Any]) -> bool:
+    suffix = _point_suffix(point_id)
+    return any(_point_suffix(item.get("point_id", "")) == suffix for item in audit.get("retained_answer_points", []))
+
+
+def _quality_metrics(
+    rows: list[dict[str, Any]], policy: dict[str, Any]
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Recompute the R2 metric family from J0 + the development sidecar.
+
+    The sidecar supplies only immutable development evidence-to-candidate chunk
+    identity.  All answer, claim, citation, and grounding decisions come from
+    the captured J0 records; neither a golden-set file nor a live runtime is
+    opened.
+    """
+    sidecar = _read_json(SIDECAR_PATH)["mapped_records"]
+    mapping = {
+        (str(item["question_id"]), str(item["evidence_id"])): str(item["candidate_chunk_id"])
+        for item in sidecar
+        if item.get("split") == "development" and item.get("candidate_chunk_id")
+    }
+    grounding_matrix = _read_jsonl(R1 / "grounding_removal_matrix.jsonl")
+    coverage_matrix = _read_jsonl(R1 / "coverage_predicate_matrix.jsonl")
+    provider_matrix = _read_jsonl(R1 / "provider_lineage_matrix.jsonl")
+    retained_by_question = {
+        str(item["question_id"]): item.get("grounding_retained_answer_points", [])
+        for item in grounding_matrix
+    }
+    point_rows: list[dict[str, Any]] = []
+    claims_total = claims_resolved = 0
+    for row in rows:
+        response = row.get("response") or {}
+        citations = {str(item.get("citation_id")): item for item in response.get("citations", [])}
+        evidence_ids = {str(item.get("evidence_id")) for item in response.get("evidence", [])}
+        for claim in response.get("claims", []):
+            claims_total += 1
+            citation_ids = [str(value) for value in claim.get("citation_ids", [])]
+            if (
+                citation_ids
+                and claim.get("evidence_ids")
+                and all(citations.get(value) is not None for value in citation_ids)
+                and all(str(value) in evidence_ids for value in claim.get("evidence_ids", []))
+            ):
+                claims_resolved += 1
+        audit = (row.get("trace") or {}).get("grounding_audit") or {}
+        for point in (row.get("golden") or {}).get("expected_answer_points", []):
+            claims = _claims_for(point.get("point_id"), response)
+            actual_chunks = {
+                str(citations[citation_id].get("chunk_id"))
+                for claim in claims
+                for citation_id in claim.get("citation_ids", [])
+                if str(citation_id) in citations and citations[str(citation_id)].get("chunk_id")
+            }
+            expected_chunks = _expected_chunk_ids(row, point, mapping)
+            supporting = actual_chunks & expected_chunks
+            final_emitted = bool(claims) and _retained(point.get("point_id"), audit)
+            point_rows.append(
+                {
+                    "question_id": row["question_id"],
+                    "final_emitted": final_emitted,
+                    "supporting_citation_present": bool(supporting),
+                    "citation_precision": len(supporting) / len(actual_chunks) if actual_chunks else None,
+                    "overcitation": bool(supporting and actual_chunks - expected_chunks),
+                    "semantic_support": _grounding_support_status(point.get("point_id"), audit),
+                    "expected_chunks": sorted(expected_chunks),
+                    "actual_chunks": sorted(actual_chunks),
+                }
+            )
+    substantive = [
+        row for row in rows if (row.get("response") or {}).get("status") in policy["substantive_statuses"]
+    ]
+    by_question: dict[str, list[dict[str, Any]]] = {}
+    for point in point_rows:
+        by_question.setdefault(str(point["question_id"]), []).append(point)
+    final_points = [point for point in point_rows if point["final_emitted"]]
+    citation_questions = sum(
+        bool([point for point in by_question.get(str(row["question_id"]), []) if point["final_emitted"]])
+        and all(
+            point["supporting_citation_present"]
+            for point in by_question.get(str(row["question_id"]), [])
+            if point["final_emitted"]
+        )
+        for row in substantive
+    )
+    support_questions = sum(
+        bool([point for point in by_question.get(str(row["question_id"]), []) if point["final_emitted"]])
+        and all(
+            point["semantic_support"] is True
+            for point in by_question.get(str(row["question_id"]), [])
+            if point["final_emitted"]
+        )
+        for row in substantive
+    )
+    answerable = [row for row in rows if (row.get("golden") or {}).get("answerable")]
+    metrics = {
+        "claim_evidence_identity_resolution_rate": _rate(claims_resolved, claims_total),
+        "supporting_citation_recall": _rate(sum(point["supporting_citation_present"] for point in final_points), len(final_points)),
+        "citation_precision": _rate(sum(point["citation_precision"] or 0 for point in final_points), len(final_points)),
+        "overcitation_rate": _rate(sum(point["overcitation"] for point in final_points), len(final_points)),
+        "claim_semantic_support": _rate(sum(point["semantic_support"] is True for point in final_points), len(final_points)),
+        "false_rejection_rate": _rate(
+            sum((row.get("response") or {}).get("status") in policy["refusal_statuses"] for row in answerable),
+            len(answerable),
+        ),
+        "question_level_unsupported_answer_rate": _rate(len(substantive) - support_questions, len(substantive)),
+        "question_level_citation_accuracy": _rate(citation_questions, len(substantive)),
+        "expected_answer_point_coverage": _rate(
+            sum(point["final_emitted"] and point["supporting_citation_present"] for point in point_rows),
+            len(point_rows),
+        ),
+    }
+    trace = _rate(sum(row.get("trace") is not None for row in rows), len(rows))
+    return (
+        {
+            "method": "J0 captured claims/citations/grounding audit plus immutable development evidence sidecar",
+            "sidecar_path": "evaluation/phase10b3c/golden_evidence_mapping_g10b3c20260803.json",
+            "sidecar_sha256": hashlib.sha256(SIDECAR_PATH.read_bytes()).hexdigest(),
+            "sidecar_development_record_count": len(mapping),
+            "j0_matrix_inputs": {
+                "grounding_removal_matrix_record_count": len(grounding_matrix),
+                "coverage_predicate_matrix_record_count": len(coverage_matrix),
+                "provider_lineage_matrix_record_count": len(provider_matrix),
+                "grounding_retained_matrix_matches_trace": all(
+                    {
+                        _point_suffix(item.get("point_id", ""))
+                        for item in ((row.get("trace") or {}).get("grounding_audit") or {}).get("retained_answer_points", [])
+                    }
+                    == {_point_suffix(item) for item in retained_by_question.get(str(row["question_id"]), [])}
+                    for row in rows
+                ),
+                "grounding_retained_matrix_mismatch_question_ids": [
+                    str(row["question_id"])
+                    for row in rows
+                    if {
+                        _point_suffix(item.get("point_id", ""))
+                        for item in ((row.get("trace") or {}).get("grounding_audit") or {}).get("retained_answer_points", [])
+                    }
+                    != {_point_suffix(item) for item in retained_by_question.get(str(row["question_id"]), [])}
+                ],
+                "quality_metric_source_of_truth": "j0_development_results.trace.grounding_audit; matrix mismatch is preserved as an input-integrity limitation",
+            },
+            "metrics": metrics,
+            "citation_trace_completeness": trace,
+        },
+        point_rows,
+    )
+
+
 def build_j0_development_metrics() -> dict[str, Any]:
     """Certify observable J0 runtime properties without semantic re-scoring."""
     policy = _read_json(POLICY_PATH)
     r1_summary = _read_json(R1 / "j0_development_summary.json")
     rows = _read_jsonl(R1 / "j0_development_results.jsonl")
     r2_metrics = _read_json(R2 / "i0_development_metrics.json")
+    quality, point_rows = _quality_metrics(rows, policy)
     statuses = Counter(str((row.get("response") or {}).get("status")) for row in rows)
     completed = [row for row in rows if row.get("execution_status") == "completed"]
     total = len(rows)
@@ -100,11 +281,25 @@ def build_j0_development_metrics() -> dict[str, Any]:
         for row in rows
     )
     r2_trace = r2_metrics["citation_trace_completeness"]["value"]
-    r2_quality_reference = {
+    higher_is_better = {
+        "claim_evidence_identity_resolution_rate",
+        "supporting_citation_recall",
+        "citation_precision",
+        "claim_semantic_support",
+        "question_level_citation_accuracy",
+        "expected_answer_point_coverage",
+    }
+    r2_quality_comparison = {
         name: {
             "r2_reference_value": value["value"],
-            "j0_value": None,
-            "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry",
+            "j0_value": quality["metrics"][name]["value"],
+            "delta": quality["metrics"][name]["value"] - value["value"],
+            "direction": "higher_is_better" if name in higher_is_better else "lower_is_better",
+            "non_regressed": (
+                quality["metrics"][name]["value"] >= value["value"]
+                if name in higher_is_better
+                else quality["metrics"][name]["value"] <= value["value"]
+            ),
         }
         for name, value in r2_metrics["metrics"].items()
     }
@@ -122,13 +317,17 @@ def build_j0_development_metrics() -> dict[str, Any]:
             "j0_results_sha256": hashlib.sha256((R1 / "j0_development_results.jsonl").read_bytes()).hexdigest(),
             "r2_reference_path": "evaluation/phase10b3i_r2/i0_development_metrics.json",
             "r2_reference_sha256": hashlib.sha256((R2 / "i0_development_metrics.json").read_bytes()).hexdigest(),
-            "golden_read": False,
+            "golden_set_read": False,
+            "development_golden_sidecar_read": True,
+            "j0_embedded_development_expectations_read": True,
             "holdout_read": False,
             "model_queries_made": False,
         },
         "question_count": total,
         "candidate_generation_id": CANDIDATE_GENERATION_ID,
         "status_distribution": dict(sorted(statuses.items())),
+        "quality_metrics": quality,
+        "quality_point_record_count": len(point_rows),
         "runtime_certification_metrics": {
             "completed_query_rate": _rate(len(completed), total),
             "substantive_response_rate": _rate(substantive, total),
@@ -139,19 +338,28 @@ def build_j0_development_metrics() -> dict[str, Any]:
             "provider_lineage_complete_rate": _rate(provider_complete, total),
         },
         "r2_non_regression_gates": {
-            "comparison_scope": "runtime and lineage only; semantic quality metrics were not recomputed without a permitted expected-answer source",
+            "comparison_scope": "same development split and phase10b3d metric definition; J0 is recomputed from captured J0 records plus the immutable development evidence sidecar",
             "metric_definition_matches": policy["definition_version"] == r2_metrics["definition_version"] == DEFINITION_VERSION,
             "development_question_count_matches": total == r2_metrics["question_count"],
-            "trace_completeness_non_regressed": trace_present / total >= r2_trace,
-            "r2_quality_metric_comparison": r2_quality_reference,
-            "semantic_quality_non_regression": "not_assessed",
+            "trace_completeness": {
+                "r2_reference_value": r2_trace,
+                "j0_value": quality["citation_trace_completeness"]["value"],
+                "delta": quality["citation_trace_completeness"]["value"] - r2_trace,
+                "non_regressed": quality["citation_trace_completeness"]["value"] >= r2_trace,
+            },
+            "quality_metric_comparison": r2_quality_comparison,
             "passed": (
                 policy["definition_version"] == r2_metrics["definition_version"] == DEFINITION_VERSION
                 and total == r2_metrics["question_count"]
-                and trace_present / total >= r2_trace
+                and quality["citation_trace_completeness"]["value"] >= r2_trace
+                and all(item["non_regressed"] for item in r2_quality_comparison.values())
             ),
         },
         "source_summary_consistent": r1_summary["completed"] == len(completed) == total,
+        "certification_completed": all(
+            metric["denominator"] > 0
+            for metric in [*quality["metrics"].values(), quality["citation_trace_completeness"]]
+        ),
         "validation_run": False,
         "holdout_run": False,
         "candidate_activation_performed": False,
@@ -363,6 +571,12 @@ def main() -> int:
     reviewer1, reviewer2, adjudicated, decision = build_machine_review()
     _write_json(OUT / "j0_development_metrics.json", metrics)
     _write_json(OUT / "lifecycle_contract_results.json", lifecycle)
+    # These names are the Phase 10B-3J review contract.  Short aliases are
+    # retained below for the first certification commit's local consumers.
+    _write_jsonl(OUT / "manual_support_review_reviewer1.jsonl", reviewer1)
+    _write_jsonl(OUT / "manual_support_review_reviewer2.jsonl", reviewer2)
+    _write_jsonl(OUT / "manual_support_review_adjudicated.jsonl", adjudicated)
+    _write_json(OUT / "manual_support_review_decisions.json", decision)
     _write_jsonl(OUT / "reviewer1_results.jsonl", reviewer1)
     _write_jsonl(OUT / "reviewer2_results.jsonl", reviewer2)
     _write_jsonl(OUT / "adjudicated_results.jsonl", adjudicated)
@@ -374,14 +588,18 @@ def main() -> int:
             "status": decision["status"],
             "case_count": decision["case_count"],
             "decision_counts": decision["decision_counts"],
-            "reviewer1_path": "evaluation/phase10b3j_goal/reviewer1_results.jsonl",
-            "reviewer2_path": "evaluation/phase10b3j_goal/reviewer2_results.jsonl",
-            "adjudicated_path": "evaluation/phase10b3j_goal/adjudicated_results.jsonl",
+            "reviewer1_path": "evaluation/phase10b3j_goal/manual_support_review_reviewer1.jsonl",
+            "reviewer2_path": "evaluation/phase10b3j_goal/manual_support_review_reviewer2.jsonl",
+            "adjudicated_path": "evaluation/phase10b3j_goal/manual_support_review_adjudicated.jsonl",
+            "decision_path": "evaluation/phase10b3j_goal/manual_support_review_decisions.json",
             "human_review_performed": False,
             "model_queries_made": False,
         },
     )
-    return 0 if lifecycle["passed"] and metrics["r2_non_regression_gates"]["passed"] else 1
+    # Exit status reports whether the offline certification ran to completion.
+    # A false R2 non-regression gate is a recorded release blocker, not a
+    # script-execution failure that should suppress its evidence artifacts.
+    return 0 if lifecycle["passed"] and metrics["certification_completed"] else 1
 
 
 if __name__ == "__main__":

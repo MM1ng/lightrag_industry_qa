@@ -6,9 +6,10 @@
     "machine_needs_human_review": 3,
     "machine_supported": 12
   },
-  "reviewer1_path": "evaluation/phase10b3j_goal/reviewer1_results.jsonl",
-  "reviewer2_path": "evaluation/phase10b3j_goal/reviewer2_results.jsonl",
-  "adjudicated_path": "evaluation/phase10b3j_goal/adjudicated_results.jsonl",
+  "reviewer1_path": "evaluation/phase10b3j_goal/manual_support_review_reviewer1.jsonl",
+  "reviewer2_path": "evaluation/phase10b3j_goal/manual_support_review_reviewer2.jsonl",
+  "adjudicated_path": "evaluation/phase10b3j_goal/manual_support_review_adjudicated.jsonl",
+  "decision_path": "evaluation/phase10b3j_goal/manual_support_review_decisions.json",
   "human_review_performed": false,
   "model_queries_made": false
 }

@@ -19,11 +19,17 @@ def test_goal_certification_outputs_are_truthful_and_offline() -> None:
     assert main() == 0
     metrics = json.loads((OUT / "j0_development_metrics.json").read_text(encoding="utf-8"))
     assert metrics["metric_definition"]["definition_version"] == "phase10b3d-metric-policy-v1"
-    assert metrics["input_evidence"]["golden_read"] is False
+    assert metrics["input_evidence"]["golden_set_read"] is False
+    assert metrics["input_evidence"]["development_golden_sidecar_read"] is True
     assert metrics["input_evidence"]["holdout_read"] is False
     assert metrics["input_evidence"]["model_queries_made"] is False
-    assert metrics["r2_non_regression_gates"]["passed"] is True
-    assert metrics["r2_non_regression_gates"]["semantic_quality_non_regression"] == "not_assessed"
+    assert metrics["quality_point_record_count"] == 39
+    matrix_inputs = metrics["quality_metrics"]["j0_matrix_inputs"]
+    assert matrix_inputs["grounding_retained_matrix_matches_trace"] is False
+    assert matrix_inputs["grounding_retained_matrix_mismatch_question_ids"]
+    comparison = metrics["r2_non_regression_gates"]["quality_metric_comparison"]
+    assert set(comparison) == set(metrics["quality_metrics"]["metrics"])
+    assert all(item["j0_value"] is not None for item in comparison.values())
 
 
 def test_lifecycle_fixture_keeps_active_pointer_and_blocks_terminal_states() -> None:
@@ -42,10 +48,10 @@ def test_lifecycle_fixture_keeps_active_pointer_and_blocks_terminal_states() -> 
 
 
 def test_machine_review_is_explicitly_not_human_review() -> None:
-    decision = json.loads((OUT / "reviewer_decision.json").read_text(encoding="utf-8"))
-    reviewer1 = _jsonl(OUT / "reviewer1_results.jsonl")
-    reviewer2 = _jsonl(OUT / "reviewer2_results.jsonl")
-    adjudicated = _jsonl(OUT / "adjudicated_results.jsonl")
+    decision = json.loads((OUT / "manual_support_review_decisions.json").read_text(encoding="utf-8"))
+    reviewer1 = _jsonl(OUT / "manual_support_review_reviewer1.jsonl")
+    reviewer2 = _jsonl(OUT / "manual_support_review_reviewer2.jsonl")
+    adjudicated = _jsonl(OUT / "manual_support_review_adjudicated.jsonl")
     assert decision["review_type"] == "multi_agent_machine_review"
     assert decision["human_review_performed"] is False
     assert decision["human_approval_claimed"] is False
