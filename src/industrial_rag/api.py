@@ -25,6 +25,7 @@ from industrial_rag.auth import (
     require_admin_actor,
 )
 from industrial_rag.citation_formatter import Citation
+from industrial_rag.claim_citation_pruning import prune_claim_citations
 from industrial_rag.config import Settings
 from industrial_rag.db.session import close_db, get_session, init_db
 from industrial_rag.errors import AppError
@@ -287,15 +288,22 @@ def _claims_for_result(result: QueryResult, citations: list[CitationResponse]) -
             )
         ]
     by_evidence = {citation.evidence_id: citation for citation in citations if citation.evidence_id}
-    return [
-        ClaimResponse(
-            claim_id=point.point_id,
-            text=point.content,
-            citation_ids=[by_evidence[evidence_id].citation_id for evidence_id in point.evidence_ids if evidence_id in by_evidence],
-            evidence_ids=[evidence_id for evidence_id in point.evidence_ids if evidence_id in by_evidence],
-        )
-        for point in points
-    ]
+    output: list[ClaimResponse] = []
+    citation_rows = [citation.model_dump() for citation in citations]
+    for point in points:
+        claim = {
+            "claim_id": point.point_id,
+            "text": point.content,
+            "citation_ids": [
+                by_evidence[evidence_id].citation_id
+                for evidence_id in point.evidence_ids
+                if evidence_id in by_evidence
+            ],
+            "evidence_ids": [evidence_id for evidence_id in point.evidence_ids if evidence_id in by_evidence],
+        }
+        pruned = prune_claim_citations(claim, citation_rows).claim
+        output.append(ClaimResponse(**pruned))
+    return output
 
 
 def _evidence_for_result(

@@ -35,9 +35,11 @@ from industrial_rag.evidence_policy import (
     select_evidence,
     select_partial_evidence,
 )
+from industrial_rag.post_retrieval_recovery import evaluate_post_retrieval_recovery
 from industrial_rag.query_normalization import NormalizationResult, normalize_query
 from industrial_rag.retrieval_trace import (
     GROUNDING_AUDIT_TRACE_VERSION,
+    RUNTIME_LINEAGE_TRACE_VERSION,
     TRACE_VERSION,
     RetrievalExecutionTrace,
     RetrievalTraceItem,
@@ -384,6 +386,25 @@ def _build_retrieval_trace(
     support_validation_reason_codes: Sequence[str] = (),
     final_answer_point_ids: Sequence[str] = (),
     unresolved_requirement_ids: Sequence[str] = (),
+    provider_primary_evidence_ids: Sequence[str] = (),
+    provider_completed_evidence_ids: Sequence[str] = (),
+    provider_supplemental_evidence_ids: Sequence[str] = (),
+    provider_context_order: Sequence[str] = (),
+    provider_context_sha256: str | None = None,
+    provider_evidence_count: int = 0,
+    provider_context_truncated: bool = False,
+    provider_context_token_estimate: int | None = None,
+    backend_second_query_called: bool = False,
+    coverage_after_parent_adjacent: Sequence[str] = (),
+    selected_coverage: Sequence[str] = (),
+    generated_coverage: Sequence[str] = (),
+    grounding_retained_coverage: Sequence[str] = (),
+    grounding_answer_point_identity: Sequence[str] = (),
+    grounding_support_candidate_ids: Sequence[dict[str, object]] = (),
+    grounding_retained_answer_points: Sequence[str] = (),
+    grounding_removed_answer_points: Sequence[str] = (),
+    grounding_removal_reasons: Sequence[dict[str, object]] = (),
+    grounding_false_negative_diagnostics: Sequence[dict[str, object]] = (),
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -436,7 +457,7 @@ def _build_retrieval_trace(
         for final_rank, item in enumerate(selected, start=1)
     )
     return RetrievalExecutionTrace(
-        trace_version=(GROUNDING_AUDIT_TRACE_VERSION if grounding_audit is not None else TRACE_VERSION),
+        trace_version=(RUNTIME_LINEAGE_TRACE_VERSION if provider_evidence_ids or coverage_requirements else (GROUNDING_AUDIT_TRACE_VERSION if grounding_audit is not None else TRACE_VERSION)),
         original_query=original_query,
         normalized_query=normalized_query,
         retrieval_config=(
@@ -487,6 +508,25 @@ def _build_retrieval_trace(
         supplemental_accepted=tuple(supplemental_accepted),
         supplemental_rejected=tuple(supplemental_rejected),
         provider_evidence_ids=tuple(provider_evidence_ids),
+        provider_primary_evidence_ids=tuple(provider_primary_evidence_ids),
+        provider_completed_evidence_ids=tuple(provider_completed_evidence_ids),
+        provider_supplemental_evidence_ids=tuple(provider_supplemental_evidence_ids),
+        provider_context_order=tuple(provider_context_order),
+        provider_context_sha256=provider_context_sha256,
+        provider_evidence_count=provider_evidence_count,
+        provider_context_truncated=provider_context_truncated,
+        provider_context_token_estimate=provider_context_token_estimate,
+        backend_second_query_called=backend_second_query_called,
+        coverage_after_parent_adjacent=tuple(coverage_after_parent_adjacent),
+        selected_coverage=tuple(selected_coverage),
+        generated_coverage=tuple(generated_coverage),
+        grounding_retained_coverage=tuple(grounding_retained_coverage),
+        grounding_answer_point_identity=tuple(grounding_answer_point_identity),
+        grounding_support_candidate_ids=tuple(grounding_support_candidate_ids),
+        grounding_retained_answer_points=tuple(grounding_retained_answer_points),
+        grounding_removed_answer_points=tuple(grounding_removed_answer_points),
+        grounding_removal_reasons=tuple(grounding_removal_reasons),
+        grounding_false_negative_diagnostics=tuple(grounding_false_negative_diagnostics),
         generated_answer_points=tuple(generated_answer_points),
         rejected_answer_points=tuple(rejected_answer_points),
         support_validation_reason_codes=tuple(support_validation_reason_codes),
@@ -855,6 +895,22 @@ class LightRAGService:
                 f"[补充检索证据：{item.citation.source_file} 第{item.citation.page_number}页]\n{item.text}"
                 for item in supplemental_grounding
             )
+        # Freeze the exact provider boundary inputs for the admin-only lineage
+        # trace.  These are derived from the same context sent below; no
+        # additional retrieval or model call is performed.
+        provider_evidence_ids = tuple(f"E{index}" for index in range(1, len(grounding_candidates) + 1))
+        provider_primary_evidence_ids = tuple(f"E{index}" for index in range(1, len(decision.selected) + 1))
+        provider_completed_evidence_ids = tuple(
+            f"E{len(decision.selected) + index}" for index in range(1, len(completed_context) + 1)
+        )
+        provider_supplemental_evidence_ids = tuple(
+            f"E{len(decision.selected) + len(completed_context) + index}"
+            for index in range(1, len(supplemental_grounding) + 1)
+        )
+        provider_context_order = tuple(item.citation.chunk_id for item in grounding_candidates)
+        provider_context_sha256 = hashlib.sha256(context.encode("utf-8")).hexdigest()
+        provider_context_token_estimate = max(1, len(context) // 4) if context else 0
+        selected_coverage = tuple(coverage_after)
         system_prompt = _generation_system_prompt(context)
         if self.settings.answer_grounding_enabled:
             system_prompt += (
@@ -907,6 +963,25 @@ class LightRAGService:
         support_reason_codes: list[str] = []
         generated_point_ids: list[str] = []
         rejected_point_ids: list[str] = []
+        recovery = evaluate_post_retrieval_recovery(
+            question_type=classify_question_type(normalized_question),
+            selected=[
+                {"chunk_id": item.citation.chunk_id, "generation_id": str(self.settings.qdrant_generation or ""),
+                 "document_name": item.citation.source_file, "page_number": item.citation.page_number,
+                 "text": item.text}
+                for item in grounding_candidates
+            ],
+            available_candidates=[
+                {"chunk_id": item["chunk_id"], "generation_id": str(self.settings.qdrant_generation or ""),
+                 "document_name": item["file"], "page_number": item["page"], "text": item.get("content", "")}
+                for item in retrieved
+            ],
+            coverage_requirements=coverage_requirements,
+            provider_evidence_ids=provider_evidence_ids,
+            generated_answer_point_ids=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
+            grounding_removed_point_ids=tuple(rejected_point_ids),
+            generation_status=grounded.status if grounded else "success",
+        )
         if grounded is not None and self.settings.support_validator_v2_enabled:
             evidence_registry = {
                 f"E{index}": EvidenceRef(
@@ -1016,7 +1091,23 @@ class LightRAGService:
             supplemental_candidates=(tuple({"chunk_id": item.get("chunk_id"), "rank": item.get("rank"), "document_id": item.get("document_id"), "generation_id": item.get("generation_id")} for item in supplemental_result.retrieved) if supplemental_result else ()),
             supplemental_accepted=(tuple({"chunk_id": item.get("chunk_id"), "rank": item.get("rank"), "document_id": item.get("document_id"), "generation_id": item.get("generation_id")} for item in supplemental_result.accepted) if supplemental_result else ()),
             supplemental_rejected=(tuple({"chunk_id": item.get("chunk_id"), "rank": item.get("rank"), "document_id": item.get("document_id"), "generation_id": item.get("generation_id")} for item in supplemental_result.rejected) if supplemental_result else ()),
-            provider_evidence_ids=tuple(f"E{index}" for index in range(1, len(grounding_candidates) + 1)),
+            provider_evidence_ids=provider_evidence_ids,
+            provider_primary_evidence_ids=provider_primary_evidence_ids,
+            provider_completed_evidence_ids=provider_completed_evidence_ids,
+            provider_supplemental_evidence_ids=provider_supplemental_evidence_ids,
+            provider_context_order=provider_context_order,
+            provider_context_sha256=provider_context_sha256,
+            provider_evidence_count=len(grounding_candidates),
+            provider_context_token_estimate=provider_context_token_estimate,
+            backend_second_query_called=bool(supplemental_result and supplemental_result.triggered),
+            coverage_after_parent_adjacent=coverage_after,
+            selected_coverage=selected_coverage,
+            generated_coverage=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
+            grounding_retained_coverage=selected_coverage if grounded and grounded.answer_points else (),
+            grounding_answer_point_identity=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
+            grounding_retained_answer_points=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
+            grounding_removed_answer_points=tuple(rejected_point_ids),
+            grounding_false_negative_diagnostics=(recovery.to_dict(),),
             generated_answer_points=tuple(generated_point_ids),
             rejected_answer_points=tuple(rejected_point_ids),
             support_validation_reason_codes=tuple(dict.fromkeys(support_reason_codes)),
