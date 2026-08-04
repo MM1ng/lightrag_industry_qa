@@ -89,6 +89,7 @@ class QueryApplicationService:
                 status_code=404,
             )
         if generation.status in {
+            VectorIndexGenerationStatus.building,
             VectorIndexGenerationStatus.failed,
             VectorIndexGenerationStatus.deleted,
         }:

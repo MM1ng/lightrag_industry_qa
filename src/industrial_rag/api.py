@@ -660,6 +660,10 @@ def create_app(
                 "QA_SUPPORT_VALIDATOR_V2_ENABLED": qa.support_validator_v2_enabled if qa else False,
                 "QA_STRUCTURED_GENERATION_ENABLED": qa.structured_generation_enabled if qa else False,
                 "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": qa.supplemental_retrieval_enabled if qa else False,
+                "QA_CLAIM_CITATION_PRUNING_ENABLED": qa.claim_citation_pruning_enabled if qa else False,
+                "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": qa.grounding_false_negative_recovery_enabled if qa else False,
+                "QA_COVERAGE_AWARE_SELECTION_ENABLED": qa.coverage_aware_selection_enabled if qa else False,
+                "QA_PARTIAL_GENERATION_ENABLED": qa.partial_generation_enabled if qa else False,
             },
         }
 

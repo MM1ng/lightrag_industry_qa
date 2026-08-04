@@ -1,0 +1,11 @@
+{
+  "terminal_outcome": "BLOCKED",
+  "single_blocking_root_cause": "Frozen J0 captured Development trace is non-regressing only on runtime identity and trace completeness, but fails the required R2 quality non-regression gate; deterministic recomputation cannot change captured model responses and rerunning J0 is prohibited.",
+  "failed_gates": [
+    {"gate": "supporting_citation_recall", "j0": 0.896551724137931, "r2": 0.9130434782608695},
+    {"gate": "false_rejection_rate", "j0": 0.1111111111111111, "r2": 0.08333333333333333},
+    {"gate": "question_level_citation_accuracy", "j0": 0.75, "r2": 0.9393939393939394}
+  ],
+  "preserved_baseline": {"candidate_activated": false, "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799", "validation_run": false, "holdout_run": false},
+  "next_human_dependency": "Authorize a new controlled Development model run or explicitly revise the frozen J0/R2 acceptance baseline; neither action is permitted by this goal."
+}

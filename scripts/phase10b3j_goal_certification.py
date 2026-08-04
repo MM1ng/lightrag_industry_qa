@@ -438,11 +438,18 @@ async def _run_lifecycle_contract() -> dict[str, Any]:
                 )
                 before = kb.active_vector_generation_id
                 active_result = await service.query_active(kb.id, "normal query")
-                building_result = await service.query_generation(kb.id, building.id, "building query")
                 blocked: dict[str, dict[str, Any]] = {}
-                for label, generation in (("failed", failed), ("deleting", deleted)):
+                for label, generation in (("building", building), ("failed", failed), ("deleting", deleted)):
                     try:
                         await service.query_generation(kb.id, generation.id, f"{label} query")
+                    except AppError as error:
+                        blocked[label] = {"http_status": error.status_code, "code": error.code}
+                for label, contract_kb_id, contract_generation_id in (
+                    ("missing_generation", kb.id, "e" * 32),
+                    ("wrong_kb", "e" * 32, active.id),
+                ):
+                    try:
+                        await service.query_generation(contract_kb_id, contract_generation_id, label)
                     except AppError as error:
                         blocked[label] = {"http_status": error.status_code, "code": error.code}
                 await session.refresh(kb)
@@ -452,9 +459,12 @@ async def _run_lifecycle_contract() -> dict[str, Any]:
                     "fixture": {"database": "temporary SQLite", "candidate_database_opened": False},
                     "contracts": {
                         "normal_query": {"http_status": 200, "generation_id": active_result.generation_id},
-                        "building": {"http_status": 200, "generation_id": building_result.generation_id},
+                        "ready": {"http_status": 200, "generation_id": active_result.generation_id},
+                        "building": blocked["building"],
                         "failed": blocked["failed"],
                         "deleting": {**blocked["deleting"], "persisted_generation_status": "deleted"},
+                        "missing_generation": blocked["missing_generation"],
+                        "wrong_kb": blocked["wrong_kb"],
                     },
                     "active_pointer_before": before,
                     "active_pointer_after": after,
@@ -466,9 +476,11 @@ async def _run_lifecycle_contract() -> dict[str, Any]:
                     "candidate_activation_performed": False,
                     "passed": (
                         active_result.generation_id == active.id
-                        and building_result.generation_id == building.id
+                        and blocked["building"] == {"http_status": 409, "code": "generation_invalid_state"}
                         and blocked["failed"] == {"http_status": 409, "code": "generation_invalid_state"}
                         and blocked["deleting"] == {"http_status": 409, "code": "generation_invalid_state"}
+                        and blocked["missing_generation"]["http_status"] == 404
+                        and blocked["wrong_kb"]["http_status"] == 404
                         and before == after == active.id
                     ),
                 }

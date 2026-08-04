@@ -38,13 +38,16 @@ def test_lifecycle_fixture_keeps_active_pointer_and_blocks_terminal_states() -> 
     assert lifecycle["normal_queries_keep_active"] is True
     assert lifecycle["active_pointer_unchanged"] is True
     assert lifecycle["contracts"]["normal_query"]["http_status"] == 200
-    assert lifecycle["contracts"]["building"]["http_status"] == 200
+    assert lifecycle["contracts"]["ready"]["http_status"] == 200
+    assert lifecycle["contracts"]["building"] == {"http_status": 409, "code": "generation_invalid_state"}
     assert lifecycle["contracts"]["failed"] == {"http_status": 409, "code": "generation_invalid_state"}
     assert lifecycle["contracts"]["deleting"] == {
         "http_status": 409,
         "code": "generation_invalid_state",
         "persisted_generation_status": "deleted",
     }
+    assert lifecycle["contracts"]["missing_generation"]["http_status"] == 404
+    assert lifecycle["contracts"]["wrong_kb"]["http_status"] == 404
 
 
 def test_machine_review_is_explicitly_not_human_review() -> None:
