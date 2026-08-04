@@ -94,6 +94,15 @@ class RetrievalExecutionTrace:
     completion_candidates: tuple[dict[str, object], ...] = ()
     completed_evidence: tuple[dict[str, object], ...] = ()
     coverage_requirements: tuple[str, ...] = ()
+    coverage_before: tuple[str, ...] = ()
+    coverage_after: tuple[str, ...] = ()
+    completion_triggered: bool = False
+    accepted_completion: tuple[dict[str, object], ...] = ()
+    completion_context_order: tuple[str, ...] = ()
+    completion_sent_to_provider: bool = False
+    completion_bound_answer_points: tuple[str, ...] = ()
+    completion_bound_claims: tuple[str, ...] = ()
+    completion_drop_reasons: tuple[str, ...] = ()
     coverage_status: str = "uncovered"
     grounding_audit: dict[str, Any] | None = None
 
@@ -139,6 +148,15 @@ class RetrievalExecutionTrace:
             "completion_candidates": list(self.completion_candidates),
             "completed_evidence": list(self.completed_evidence),
             "coverage_requirements": list(self.coverage_requirements),
+            "coverage_before": list(self.coverage_before),
+            "coverage_after": list(self.coverage_after),
+            "completion_triggered": self.completion_triggered,
+            "accepted_completion": list(self.accepted_completion),
+            "completion_context_order": list(self.completion_context_order),
+            "completion_sent_to_provider": self.completion_sent_to_provider,
+            "completion_bound_answer_points": list(self.completion_bound_answer_points),
+            "completion_bound_claims": list(self.completion_bound_claims),
+            "completion_drop_reasons": list(self.completion_drop_reasons),
             "coverage_status": self.coverage_status,
             "grounding_audit": self.grounding_audit,
         }

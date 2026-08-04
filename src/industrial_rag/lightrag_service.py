@@ -16,8 +16,10 @@ from industrial_rag.answer_grounding import (
     GroundingAudit,
     build_answer_plan,
     build_non_generation_audit,
+    classify_question_type,
 )
 from industrial_rag.citation_formatter import Citation, collect_citations, encode_chunk_header
+from industrial_rag.conditional_completion import plan_conditional_completion
 from industrial_rag.config import (
     SUPPORTED_QUERY_MODES,
     Settings,
@@ -25,7 +27,7 @@ from industrial_rag.config import (
     write_storage_metadata,
 )
 from industrial_rag.document_parser import DocumentChunk
-from industrial_rag.evidence_completion import ContextRecord, complete_evidence
+from industrial_rag.evidence_completion import ContextRecord
 from industrial_rag.evidence_policy import (
     EvidenceCandidate,
     _tokens,
@@ -349,6 +351,16 @@ def _build_retrieval_trace(
     completion_candidates: Sequence[dict[str, object]] = (),
     completed_evidence: Sequence[dict[str, object]] = (),
     completion_applied: bool = False,
+    coverage_requirements: Sequence[str] = (),
+    coverage_before: Sequence[str] = (),
+    coverage_after: Sequence[str] = (),
+    completion_triggered: bool = False,
+    accepted_completion: Sequence[dict[str, object]] = (),
+    completion_context_order: Sequence[str] = (),
+    completion_sent_to_provider: bool = False,
+    completion_bound_answer_points: Sequence[str] = (),
+    completion_bound_claims: Sequence[str] = (),
+    completion_drop_reasons: Sequence[str] = (),
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -428,6 +440,16 @@ def _build_retrieval_trace(
         completion_applied=completion_applied,
         completion_candidates=tuple(completion_candidates),
         completed_evidence=tuple(completed_evidence),
+        coverage_requirements=tuple(coverage_requirements),
+        coverage_before=tuple(coverage_before),
+        coverage_after=tuple(coverage_after),
+        completion_triggered=completion_triggered,
+        accepted_completion=tuple(accepted_completion),
+        completion_context_order=tuple(completion_context_order),
+        completion_sent_to_provider=completion_sent_to_provider,
+        completion_bound_answer_points=tuple(completion_bound_answer_points),
+        completion_bound_claims=tuple(completion_bound_claims),
+        completion_drop_reasons=tuple(completion_drop_reasons),
     )
 
 
@@ -605,6 +627,12 @@ class LightRAGService:
         completed_context: tuple[ContextRecord, ...] = ()
         completion_candidates: list[dict[str, object]] = []
         completed_evidence: list[dict[str, object]] = []
+        accepted_completion: list[dict[str, object]] = []
+        coverage_requirements: tuple[str, ...] = ()
+        coverage_before: tuple[str, ...] = ()
+        coverage_after: tuple[str, ...] = ()
+        completion_drop_reasons: list[str] = []
+        completion_triggered = False
         if decision.allowed and self.settings.evidence_completion_enabled:
             registry = _load_context_registry(self.settings)
             selected_context_records = [
@@ -612,15 +640,24 @@ class LightRAGService:
                 for item in decision.selected
                 if item.citation.chunk_id in registry
             ]
-            completed_context = complete_evidence(
+            plan = plan_conditional_completion(
+                classify_question_type(normalized_question),
                 selected_context_records,
                 registry,
+                is_negative=any(term in normalized_question for term in ("不存在", "没有", "无此", "是否存在")),
                 max_completion=self.settings.evidence_completion_max,
             )
+            coverage_requirements = plan.coverage_requirements
+            coverage_before = plan.before
+            coverage_after = plan.after
+            completion_triggered = bool(plan.accepted)
+            completed_context = tuple(item.record for item in plan.accepted)
+            completion_drop_reasons.extend(item.reason for item in plan.rejected)
             for item in completed_context:
-                source_type = "parent_context" if any(record.parent_chunk_id == item.chunk_id for record in selected_context_records) else "adjacent"
+                source_type = next((candidate.relation for candidate in plan.accepted if candidate.chunk_id == item.chunk_id), "adjacent")
+                source_type = "parent_context" if source_type == "parent" else "adjacent"
                 relation = next(("previous" if record.previous_chunk_id == item.chunk_id else "next" for record in selected_context_records if record.previous_chunk_id == item.chunk_id or record.next_chunk_id == item.chunk_id), None)
-                completed_evidence.append({
+                row = {
                     "chunk_id": item.chunk_id,
                     "document_id": item.document_id,
                     "document_name": item.document_name,
@@ -628,12 +665,17 @@ class LightRAGService:
                     "generation_id": item.generation_id,
                     "source_type": source_type,
                     "context_role": "context_only",
-                    "completion_reason": "bounded_parent_or_adjacent_context",
+                    "completion_reason": next((candidate.reason for candidate in plan.accepted if candidate.chunk_id == item.chunk_id), "coverage_gap"),
                     "adjacent_relation": relation,
-                    "used_for_answer": False,
+                    "used_for_answer": True,
                     "cited_in_answer": False,
-                })
-            completion_candidates = list(completed_evidence)
+                }
+                completed_evidence.append(row)
+                accepted_completion.append(row)
+            completion_candidates = [
+                {"chunk_id": item.chunk_id, "relation": item.relation, "reason": item.reason}
+                for item in plan.candidates
+            ]
         if not decision.allowed:
             audit = (
                 build_non_generation_audit(
@@ -659,6 +701,12 @@ class LightRAGService:
                 completion_candidates=completion_candidates,
                 completed_evidence=completed_evidence,
                 completion_applied=bool(completed_context),
+                coverage_requirements=coverage_requirements,
+                coverage_before=coverage_before,
+                coverage_after=coverage_after,
+                completion_triggered=completion_triggered,
+                accepted_completion=accepted_completion,
+                completion_drop_reasons=completion_drop_reasons,
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -668,6 +716,15 @@ class LightRAGService:
                 retrieval_meta,
                 trace,
             )
+        completion_candidates_for_grounding = tuple(
+            EvidenceCandidate(
+                Citation(item.document_name, item.page_start, item.chunk_id),
+                item.text,
+                len(decision.selected) + index,
+            )
+            for index, item in enumerate(completed_context, 1)
+        )
+        grounding_candidates = tuple(decision.selected) + completion_candidates_for_grounding
         context = _selected_context(decision.selected)
         if completed_context:
             context += "\n\n" + "\n\n".join(
@@ -718,7 +775,7 @@ class LightRAGService:
             )
         citations = tuple(item.citation for item in decision.selected)
         grounded = (
-            build_answer_plan(answer, decision.selected, citations)
+            build_answer_plan(answer, grounding_candidates, citations + tuple(item.citation for item in completion_candidates_for_grounding))
             if self.settings.answer_grounding_enabled
             else None
         )
@@ -727,7 +784,7 @@ class LightRAGService:
             normalized_query=normalized_question,
             options=options,
             retrieved=retrieved,
-            selected=decision.selected,
+            selected=grounding_candidates,
             cited=grounded.citations if grounded else citations,
             normalization_ms=normalization_ms,
             retrieval_ms=retrieval_ms,
@@ -738,6 +795,22 @@ class LightRAGService:
             completion_candidates=completion_candidates,
             completed_evidence=completed_evidence,
             completion_applied=bool(completed_context),
+            coverage_requirements=coverage_requirements,
+            coverage_before=coverage_before,
+            coverage_after=coverage_after,
+            completion_triggered=completion_triggered,
+            accepted_completion=accepted_completion,
+            completion_context_order=tuple(item.chunk_id for item in completed_context),
+            completion_sent_to_provider=bool(completed_context),
+            completion_bound_answer_points=tuple(
+                point.point_id for point in (grounded.answer_points if grounded else ())
+                if any(evidence_id.startswith("E") and int(evidence_id[1:]) > len(decision.selected) for evidence_id in point.evidence_ids)
+            ),
+            completion_bound_claims=tuple(
+                point.point_id for point in (grounded.answer_points if grounded else ())
+                if any(evidence_id.startswith("E") and int(evidence_id[1:]) > len(decision.selected) for evidence_id in point.evidence_ids)
+            ),
+            completion_drop_reasons=completion_drop_reasons,
         )
         return QueryResult(
             grounded.answer if grounded else answer,

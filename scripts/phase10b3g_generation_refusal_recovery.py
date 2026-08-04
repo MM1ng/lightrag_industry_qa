@@ -101,6 +101,8 @@ def main() -> int:
     by_category = Counter(x["failure_category"] for x in refusals)
     summary = {
         "scope": {"split": "development", "total_questions": len(rows), "generation_refusal_count": len(refusals), "validation_read": False, "holdout_read": False},
+        "prior_report_generation_refusal_count": 9,
+        "scope_count_discrepancy": "prior 52-question report says 9; current development capture contains 3. The six remaining rows are not inspected because validation rows are out of scope.",
         "question_ids": [x["question_id"] for x in refusals],
         "by_question_type": dict(sorted(by_type.items())),
         "by_failure_category": dict(sorted(by_category.items())),

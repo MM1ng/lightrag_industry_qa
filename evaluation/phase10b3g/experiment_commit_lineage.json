@@ -1,0 +1,101 @@
+{
+  "config": {
+    "model": "qwen-plus-2025-07-28",
+    "fallback": false,
+    "cache": false,
+    "mode": "naive",
+    "top_k": 12,
+    "chunk_top_k": 20,
+    "rerank": false,
+    "embedding": "text-embedding-v4",
+    "embedding_dim": 1024,
+    "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525"
+  },
+  "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+  "experiments": [
+    {
+      "experiment_id": "10b3f-audit",
+      "base_commit": "9fb882a",
+      "code_commit": "dd9ac76",
+      "changed_files": [
+        "src/industrial_rag/answer_grounding.py",
+        "src/industrial_rag/retrieval_trace.py"
+      ],
+      "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+      "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "evaluation_run_id": "phase10b3f-audit-capture",
+      "development_result": "audit_capture_gate_passed",
+      "validation_result": "audit_capture_gate_passed",
+      "accepted": true,
+      "rejection_reason": null
+    },
+    {
+      "experiment_id": "E1",
+      "base_commit": "9fb882a",
+      "code_commit": "9fb882a",
+      "changed_files": [],
+      "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+      "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "evaluation_run_id": "phase10b3e-final2",
+      "development_result": "not_independently_reproducible",
+      "validation_result": "not_independently_reproducible",
+      "accepted": false,
+      "rejection_reason": "No independently recorded experiment commit; final combination was committed together."
+    },
+    {
+      "experiment_id": "E2",
+      "base_commit": "9fb882a",
+      "code_commit": "9fb882a",
+      "changed_files": [],
+      "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+      "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "evaluation_run_id": "phase10b3e-final2",
+      "development_result": "not_independently_reproducible",
+      "validation_result": "not_independently_reproducible",
+      "accepted": false,
+      "rejection_reason": "No independently recorded experiment commit; final combination was committed together."
+    },
+    {
+      "experiment_id": "E3",
+      "base_commit": "9fb882a",
+      "code_commit": "9fb882a",
+      "changed_files": [],
+      "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+      "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "evaluation_run_id": "phase10b3e-final2",
+      "development_result": "not_independently_reproducible",
+      "validation_result": "not_independently_reproducible",
+      "accepted": false,
+      "rejection_reason": "No independently recorded experiment commit; final combination was committed together."
+    },
+    {
+      "experiment_id": "E4",
+      "base_commit": "9fb882a",
+      "code_commit": "9fb882a",
+      "changed_files": [],
+      "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+      "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "evaluation_run_id": "phase10b3e-final2",
+      "development_result": "not_independently_reproducible",
+      "validation_result": "not_independently_reproducible",
+      "accepted": false,
+      "rejection_reason": "No independently recorded experiment commit; final combination was committed together."
+    },
+    {
+      "experiment_id": "final-52",
+      "base_commit": "9fb882a",
+      "code_commit": "9fb882a",
+      "changed_files": [
+        "evaluation/phase10b3e/development_results.jsonl",
+        "evaluation/phase10b3e/validation_results.jsonl"
+      ],
+      "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+      "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+      "evaluation_run_id": "phase10b3e-final2",
+      "development_result": "52_records",
+      "validation_result": "52_records",
+      "accepted": false,
+      "rejection_reason": "Quality gates failed; Candidate remains inactive."
+    }
+  ]
+}

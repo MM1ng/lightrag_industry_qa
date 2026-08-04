@@ -1,0 +1,16 @@
+{
+  "experiment_id": "phase10b3g-final-52",
+  "evaluation_run_id": "phase10b3g-final-52",
+  "code_commit": "integration-pending",
+  "experiments": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4"
+  ],
+  "retrieval_config_unchanged": true,
+  "holdout_used": false,
+  "quality_gate_passed": false,
+  "candidate_activated": false
+}

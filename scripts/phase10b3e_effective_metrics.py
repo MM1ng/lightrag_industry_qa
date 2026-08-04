@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EVAL = ROOT / "evaluation" / "phase10b3e"
+EVAL = Path(__import__("os").environ.get("PHASE10_EFFECTIVE_EVAL", str(ROOT / "evaluation" / "phase10b3e")))
 SIDECAR = ROOT / "evaluation" / "phase10b3c" / "golden_evidence_mapping_g10b3c20260803.json"
 
 
@@ -90,7 +90,7 @@ def main() -> int:
         ("adjacent_completion_results.json", "E4", "evidence_completion.py + lightrag_service.py", True),
     ):
         (EVAL / name).write_text(json.dumps({"experiment_id": experiment, "changed_module": module, "enabled": enabled, "results": payload["completion_metrics"], "holdout_used": False}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (EVAL / "experiment_results.json").write_text(json.dumps({"experiments": ["E1", "E2", "E3", "E4"], "retrieval_config_unchanged": True, "candidate_activated": False, "holdout_used": False}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (EVAL / "experiment_results.json").write_text(json.dumps({"experiments": ["E1", "E2", "E3", "E4"], "retrieval_config_unchanged": True, "candidate_activated": False, "holdout_used": False, "evaluation_run_id": "phase10b3g-final-52", "code_commit": "integration-pending"}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(payload["completion_metrics"], ensure_ascii=False))
     return 0
 

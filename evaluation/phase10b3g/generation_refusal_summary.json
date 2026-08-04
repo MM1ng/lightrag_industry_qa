@@ -6,6 +6,8 @@
     "validation_read": false,
     "holdout_read": false
   },
+  "prior_report_generation_refusal_count": 9,
+  "scope_count_discrepancy": "prior 52-question report says 9; current development capture contains 3. The six remaining rows are not inspected because validation rows are out of scope.",
   "question_ids": [
     "S007",
     "S020",

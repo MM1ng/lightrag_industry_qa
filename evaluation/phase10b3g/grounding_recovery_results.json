@@ -1,0 +1,50 @@
+{
+  "experiment_id": "E1",
+  "changed_module": "answer_grounding.py",
+  "enabled": true,
+  "results": {
+    "effective_evidence_recall_after_completion": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_evidence_selected_or_completed_coverage": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_answer_point_selected_or_completed_coverage": {
+      "numerator": 52,
+      "denominator": 72,
+      "value": 0.7222222222222222
+    },
+    "parent_completion_trigger_rate": {
+      "numerator": 0,
+      "denominator": 50,
+      "value": 0.0
+    },
+    "adjacent_completion_trigger_rate": {
+      "numerator": 9,
+      "denominator": 50,
+      "value": 0.18
+    },
+    "completion_contribution_rate": {
+      "numerator": 10,
+      "denominator": 10,
+      "value": 1.0
+    },
+    "completion_evidence_precision": {
+      "numerator": 10,
+      "denominator": 10,
+      "value": 1.0
+    },
+    "completion_wrong_document_count": 0,
+    "completion_wrong_generation_count": 0,
+    "retrieval_trace_completeness": {
+      "numerator": 52,
+      "denominator": 52,
+      "value": 1.0
+    }
+  },
+  "holdout_used": false
+}
