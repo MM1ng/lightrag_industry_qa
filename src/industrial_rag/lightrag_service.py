@@ -45,6 +45,9 @@ from industrial_rag.retrieval_trace import (
 )
 from industrial_rag.structured_generation_policy import validate_answer_points
 from industrial_rag.supplemental_retrieval_policy import run_supplemental_retrieval
+from industrial_rag.supplemental_retrieval_policy import (
+    supplemental_query_sha256 as hash_supplemental_query,
+)
 from industrial_rag.vector_collections import VectorBackend
 
 QueryMode = Literal["mix", "hybrid", "local", "global", "naive"]
@@ -367,6 +370,7 @@ def _build_retrieval_trace(
     coverage_requirement_ids: Sequence[str] = (),
     coverage_funnel_stage: str = "initial",
     supplemental_retrieval_triggered: bool = False,
+    supplemental_query_text: str | None = None,
     supplemental_query_sha256: str | None = None,
     supplemental_candidates: Sequence[dict[str, object]] = (),
     supplemental_accepted: Sequence[dict[str, object]] = (),
@@ -468,6 +472,7 @@ def _build_retrieval_trace(
         coverage_requirement_ids=tuple(coverage_requirement_ids),
         coverage_funnel_stage=coverage_funnel_stage,
         supplemental_retrieval_triggered=supplemental_retrieval_triggered,
+        supplemental_query_text=supplemental_query_text,
         supplemental_query_sha256=supplemental_query_sha256,
         supplemental_candidates=tuple(supplemental_candidates),
         supplemental_accepted=tuple(supplemental_accepted),
@@ -719,11 +724,16 @@ class LightRAGService:
                 question_type=classify_question_type(normalized_question),
                 status="partial_answer",
                 is_negative=any(term in normalized_question for term in ("不存在", "没有", "无此", "是否存在")),
+                # Planning call: the actual bounded retrieval is performed
+                # below with the exact SupplementalQuery.question.  Keeping
+                # this side-effect-free avoids changing initial ranking.
+                retrieve=lambda _query: (),
             )
             if pre_supplemental.triggered and pre_supplemental.supplemental_query is not None:
+                supplemental_query = pre_supplemental.supplemental_query
                 supplemental_payload = await self._backend.aquery_data(
-                    normalized_question,
-                    QueryOptions(mode=options.mode, top_k=5, chunk_top_k=5),
+                    supplemental_query.question,
+                    QueryOptions(mode=options.mode, top_k=supplemental_query.top_k, chunk_top_k=supplemental_query.top_k),
                 )
                 supplemental_raw = _extract_retrieved(supplemental_payload)
                 supplemental_raw = [
@@ -736,7 +746,7 @@ class LightRAGService:
                     for item in supplemental_raw
                 ]
                 supplemental_result = run_supplemental_retrieval(
-                    normalized_question,
+                    supplemental_query.question,
                     knowledge_base_id=str(self.settings.qdrant_kb_id or ""),
                     generation_id=str(self.settings.qdrant_generation or ""),
                     selected=[{"chunk_id": item.citation.chunk_id} for item in decision.selected],
@@ -975,7 +985,8 @@ class LightRAGService:
             coverage_requirement_ids=coverage_requirements,
             coverage_funnel_stage=("supplemental" if supplemental_result and supplemental_result.triggered else ("completion" if completed_context else "initial")),
             supplemental_retrieval_triggered=bool(supplemental_result and supplemental_result.triggered),
-            supplemental_query_sha256=(hashlib.sha256(json.dumps(supplemental_result.to_dict(), ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest() if supplemental_result and supplemental_result.supplemental_query else None),
+            supplemental_query_text=(supplemental_result.supplemental_query.question if supplemental_result and supplemental_result.supplemental_query else None),
+            supplemental_query_sha256=(hash_supplemental_query(supplemental_result.supplemental_query.question) if supplemental_result and supplemental_result.supplemental_query else None),
             supplemental_candidates=(tuple(dict(item) for item in supplemental_result.retrieved) if supplemental_result else ()),
             supplemental_accepted=(tuple(dict(item) for item in supplemental_result.accepted) if supplemental_result else ()),
             provider_evidence_ids=tuple(f"E{index}" for index in range(1, len(grounding_candidates) + 1)),

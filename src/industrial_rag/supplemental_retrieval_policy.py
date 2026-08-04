@@ -8,6 +8,7 @@ every returned identity before it can become evidence.
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
@@ -84,6 +85,9 @@ class SupplementalRetrievalResult:
                 if self.supplemental_query
                 else None
             ),
+            "supplemental_query_sha256": supplemental_query_sha256(self.supplemental_query.question)
+            if self.supplemental_query
+            else None,
             "coverage_requirements": list(self.coverage_requirements),
             "coverage_gap": list(self.coverage_gap),
             "coverage_before": list(self.coverage_before),
@@ -95,6 +99,16 @@ class SupplementalRetrievalResult:
             "wrong_identity_chunk_ids": list(self.wrong_identity_chunk_ids),
             "rejection_reasons": dict(self.rejection_reasons),
         }
+
+
+def supplemental_query_sha256(query: str) -> str:
+    """Hash only the exact query string sent to the supplemental retriever.
+
+    Coverage metadata, KB/generation identifiers, and candidate payloads are
+    deliberately excluded so the trace proves which text was queried without
+    turning the digest into a hash of the entire retrieval result.
+    """
+    return hashlib.sha256(str(query).encode("utf-8")).hexdigest()
 
 
 def derive_coverage_requirements(question: str, question_type: str | None = None) -> tuple[str, ...]:

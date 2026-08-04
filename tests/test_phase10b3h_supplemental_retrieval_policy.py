@@ -4,6 +4,7 @@ from industrial_rag.supplemental_retrieval_policy import (
     build_supplemental_query,
     derive_coverage_requirements,
     run_supplemental_retrieval,
+    supplemental_query_sha256,
 )
 
 
@@ -98,4 +99,24 @@ def test_query_builder_preserves_question_and_identity():
     assert query.coverage_gap == ("step", "warning")
     assert query.top_k == 5
     assert query.attempt == 1
+
+
+def test_query_digest_only_hashes_exact_question_text():
+    query = build_supplemental_query(
+        "补充检索原始问题",
+        knowledge_base_id="kb-1",
+        generation_id="gen-1",
+        coverage_gap=("step",),
+    )
+    result = run_supplemental_retrieval(
+        query.question,
+        knowledge_base_id=query.knowledge_base_id,
+        generation_id=query.generation_id,
+        coverage_before=(),
+        question_type="procedure",
+        retrieve=lambda actual: [],
+    )
+    payload = result.to_dict()
+    assert payload["supplemental_query"]["question"] == query.question
+    assert payload["supplemental_query_sha256"] == supplemental_query_sha256(query.question)
 

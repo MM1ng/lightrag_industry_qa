@@ -127,6 +127,7 @@ class RetrievalExecutionTrace:
     coverage_requirement_ids: tuple[str, ...] = ()
     coverage_funnel_stage: str = "initial"
     supplemental_retrieval_triggered: bool = False
+    supplemental_query_text: str | None = None
     supplemental_query_sha256: str | None = None
     supplemental_candidates: tuple[dict[str, object], ...] = ()
     supplemental_accepted: tuple[dict[str, object], ...] = ()
@@ -194,6 +195,7 @@ class RetrievalExecutionTrace:
             "coverage_requirement_ids": list(self.coverage_requirement_ids),
             "coverage_funnel_stage": self.coverage_funnel_stage,
             "supplemental_retrieval_triggered": self.supplemental_retrieval_triggered,
+            "supplemental_query_text": self.supplemental_query_text,
             "supplemental_query_sha256": self.supplemental_query_sha256,
             "supplemental_candidates": list(self.supplemental_candidates),
             "supplemental_accepted": list(self.supplemental_accepted),
