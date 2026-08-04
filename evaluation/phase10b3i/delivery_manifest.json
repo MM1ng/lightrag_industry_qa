@@ -3,10 +3,10 @@
   "evaluation_run_id": "phase10b3i-i0-i1-development",
   "code_under_test_commit": "fb77693",
   "evaluation_manifest_commit": "fe21431",
-  "report_commit": "768a5d7",
+  "report_commit": "21e3159",
   "report_path": "docs/phase-10b3i-r2-metric-semantics-restoration-report.md",
   "test_verification": {
-    "pytest": "738 passed, 12 skipped, 2 warnings",
+    "pytest": "738 passed, 12 skipped, 1 warning",
     "tests_collected": 750,
     "ruff": "All checks passed!",
     "diff_check": "passed"
