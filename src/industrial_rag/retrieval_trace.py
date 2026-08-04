@@ -9,6 +9,7 @@ from typing import Any
 TRACE_VERSION = "phase10a-retrieval-trace-v1"
 GROUNDING_AUDIT_TRACE_VERSION = "phase10b3f-grounding-audit-v1"
 FEATURE_FLAG_TRACE_VERSION = "phase10b3i-feature-flags-v1"
+RUNTIME_LINEAGE_TRACE_VERSION = "phase10b3j-runtime-lineage-v2"
 
 
 def feature_flag_retrieval_config(
@@ -136,6 +137,29 @@ class RetrievalExecutionTrace:
     supplemental_accepted: tuple[dict[str, object], ...] = ()
     supplemental_rejected: tuple[dict[str, object], ...] = ()
     provider_evidence_ids: tuple[str, ...] = ()
+    # Runtime lineage captured around the provider boundary.  These fields are
+    # deliberately internal/admin-only; the public QueryResponse remains
+    # unchanged.  Empty values are meaningful when the corresponding phase is
+    # disabled (for example, supplemental retrieval in the frozen baseline).
+    provider_primary_evidence_ids: tuple[str, ...] = ()
+    provider_completed_evidence_ids: tuple[str, ...] = ()
+    provider_supplemental_evidence_ids: tuple[str, ...] = ()
+    provider_context_order: tuple[str, ...] = ()
+    provider_context_sha256: str | None = None
+    provider_evidence_count: int = 0
+    provider_context_truncated: bool = False
+    provider_context_token_estimate: int | None = None
+    backend_second_query_called: bool = False
+    coverage_after_parent_adjacent: tuple[str, ...] = ()
+    selected_coverage: tuple[str, ...] = ()
+    generated_coverage: tuple[str, ...] = ()
+    grounding_retained_coverage: tuple[str, ...] = ()
+    grounding_answer_point_identity: tuple[str, ...] = ()
+    grounding_support_candidate_ids: tuple[dict[str, object], ...] = ()
+    grounding_retained_answer_points: tuple[str, ...] = ()
+    grounding_removed_answer_points: tuple[str, ...] = ()
+    grounding_removal_reasons: tuple[dict[str, object], ...] = ()
+    grounding_false_negative_diagnostics: tuple[dict[str, object], ...] = ()
     generated_answer_points: tuple[str, ...] = ()
     rejected_answer_points: tuple[str, ...] = ()
     support_validation_reason_codes: tuple[str, ...] = ()
@@ -208,6 +232,25 @@ class RetrievalExecutionTrace:
             "supplemental_accepted": list(self.supplemental_accepted),
             "supplemental_rejected": list(self.supplemental_rejected),
             "provider_evidence_ids": list(self.provider_evidence_ids),
+            "provider_primary_evidence_ids": list(self.provider_primary_evidence_ids),
+            "provider_completed_evidence_ids": list(self.provider_completed_evidence_ids),
+            "provider_supplemental_evidence_ids": list(self.provider_supplemental_evidence_ids),
+            "provider_context_order": list(self.provider_context_order),
+            "provider_context_sha256": self.provider_context_sha256,
+            "provider_evidence_count": self.provider_evidence_count,
+            "provider_context_truncated": self.provider_context_truncated,
+            "provider_context_token_estimate": self.provider_context_token_estimate,
+            "backend_second_query_called": self.backend_second_query_called,
+            "coverage_after_parent_adjacent": list(self.coverage_after_parent_adjacent),
+            "selected_coverage": list(self.selected_coverage),
+            "generated_coverage": list(self.generated_coverage),
+            "grounding_retained_coverage": list(self.grounding_retained_coverage),
+            "grounding_answer_point_identity": list(self.grounding_answer_point_identity),
+            "grounding_support_candidate_ids": list(self.grounding_support_candidate_ids),
+            "grounding_retained_answer_points": list(self.grounding_retained_answer_points),
+            "grounding_removed_answer_points": list(self.grounding_removed_answer_points),
+            "grounding_removal_reasons": list(self.grounding_removal_reasons),
+            "grounding_false_negative_diagnostics": list(self.grounding_false_negative_diagnostics),
             "generated_answer_points": list(self.generated_answer_points),
             "rejected_answer_points": list(self.rejected_answer_points),
             "support_validation_reason_codes": list(self.support_validation_reason_codes),
