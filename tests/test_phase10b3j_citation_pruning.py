@@ -1,7 +1,9 @@
 from industrial_rag.claim_citation_pruning import (
     prune_claim_citations,
     prune_claims_and_citations,
+    prune_supported_claims_and_citations,
 )
+from industrial_rag.claim_support_matcher import match_claim_support
 
 
 def _cit(cid: str, eid: str, chunk: str, generation: str = "g1") -> dict[str, str]:
@@ -64,3 +66,100 @@ def test_same_chunk_does_not_generate_multiple_public_citations() -> None:
         citations,
     )
     assert result.claim["citation_ids"] == ["cite_1"]
+
+
+def test_support_matcher_accepts_only_identity_resolved_child_evidence() -> None:
+    result = match_claim_support(
+        {"claim_id": "P1", "text": "压力为5 MPa", "evidence_ids": ["E1"]},
+        {
+            "E1": {
+                "evidence_id": "E1",
+                "citation_id": "cite_1",
+                "chunk_id": "c1",
+                "generation_id": "g1",
+                "text": "压力为5 MPa",
+                "is_child": True,
+            }
+        },
+        expected_generation_id="g1",
+    )
+
+    assert result.supported is True
+    assert result.valid_evidence_ids == ("E1",)
+    assert result.invalid_evidence_ids == ()
+
+
+def test_support_matcher_rejects_unknown_wrong_generation_and_parent_evidence() -> None:
+    registry = {
+        "E_WRONG": {
+            "evidence_id": "E_WRONG",
+            "citation_id": "cite_wrong",
+            "chunk_id": "c-wrong",
+            "generation_id": "g2",
+            "text": "压力为5 MPa",
+            "is_child": True,
+        },
+        "E_PARENT": {
+            "evidence_id": "E_PARENT",
+            "citation_id": "cite_parent",
+            "chunk_id": "parent-1",
+            "generation_id": "g1",
+            "text": "压力为5 MPa",
+            "is_child": "false",
+        },
+    }
+
+    result = match_claim_support(
+        {
+            "claim_id": "P1",
+            "text": "压力为5 MPa",
+            "evidence_ids": ["UNKNOWN", "E_WRONG", "E_PARENT"],
+        },
+        registry,
+        expected_generation_id="g1",
+    )
+
+    assert result.supported is False
+    assert result.valid_evidence_ids == ()
+    assert result.invalid_evidence_ids == ("UNKNOWN", "E_WRONG", "E_PARENT")
+    assert result.reason_codes == (
+        "unknown_evidence_id",
+        "wrong_generation",
+        "parent_not_public_citation",
+    )
+
+
+def test_pruning_removes_unsupported_claims_independently_and_keeps_minimal_citations() -> None:
+    registry = {
+        "E1": {
+            "evidence_id": "E1",
+            "citation_id": "cite_1",
+            "chunk_id": "c1",
+            "generation_id": "g1",
+            "text": "压力为5 MPa",
+            "is_child": True,
+        },
+        "E2": {
+            "evidence_id": "E2",
+            "citation_id": "cite_2",
+            "chunk_id": "c2",
+            "generation_id": "g1",
+            "text": "允许超过5 MPa",
+            "is_child": True,
+        },
+    }
+    claims, metrics = prune_supported_claims_and_citations(
+        [
+            {"claim_id": "P1", "text": "压力为5 MPa", "evidence_ids": ["E1", "E2"], "citation_ids": ["cite_1", "cite_2"]},
+            {"claim_id": "P2", "text": "不得超过5 MPa", "evidence_ids": ["E2"], "citation_ids": ["cite_2"]},
+        ],
+        [_cit("cite_1", "E1", "c1"), _cit("cite_2", "E2", "c2")],
+        evidence_registry=registry,
+        expected_generation_id="g1",
+    )
+
+    assert claims == [
+        {"claim_id": "P1", "text": "压力为5 MPa", "evidence_ids": ["E1"], "citation_ids": ["cite_1"]}
+    ]
+    assert metrics["unsupported_claim_count_after"] == 1
+    assert metrics["removed_unsupported_claim_ids"] == ["P2"]

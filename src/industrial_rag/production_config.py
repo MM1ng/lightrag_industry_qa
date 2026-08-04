@@ -57,6 +57,7 @@ _ENV_NAMES = {
     "support_validator_v2_enabled": "QA_SUPPORT_VALIDATOR_V2_ENABLED",
     "structured_generation_enabled": "QA_STRUCTURED_GENERATION_ENABLED",
     "supplemental_retrieval_enabled": "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED",
+    "claim_citation_pruning_enabled": "QA_CLAIM_CITATION_PRUNING_ENABLED",
     "grounding_false_negative_recovery_enabled": "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED",
     "coverage_aware_selection_enabled": "QA_COVERAGE_AWARE_SELECTION_ENABLED",
     "partial_generation_enabled": "QA_PARTIAL_GENERATION_ENABLED",
@@ -120,6 +121,7 @@ class ProductionQASettings:
     support_validator_v2_enabled: bool = False
     structured_generation_enabled: bool = False
     supplemental_retrieval_enabled: bool = False
+    claim_citation_pruning_enabled: bool = False
     grounding_false_negative_recovery_enabled: bool = False
     coverage_aware_selection_enabled: bool = False
     partial_generation_enabled: bool = False
@@ -204,6 +206,7 @@ class ProductionQASettings:
                 "support_validator_v2_enabled",
                 "structured_generation_enabled",
                 "supplemental_retrieval_enabled",
+                "claim_citation_pruning_enabled",
                 "grounding_false_negative_recovery_enabled",
                 "coverage_aware_selection_enabled",
                 "partial_generation_enabled",

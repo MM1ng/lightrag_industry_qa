@@ -12,6 +12,8 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
 
+from industrial_rag.claim_support_matcher import match_claim_support
+
 
 @dataclass(frozen=True, slots=True)
 class CitationPruningResult:
@@ -25,6 +27,12 @@ class CitationPruningResult:
 
 def _as_id(value: Any) -> str:
     return str(value).strip() if value is not None else ""
+
+
+def _as_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
 
 
 def _citation_identity(citation: Mapping[str, Any]) -> tuple[str, str]:
@@ -65,11 +73,18 @@ def prune_claim_citations(
         evidence_id = _as_id(citation.get("evidence_id"))
         if not evidence_id:
             continue
-        if expected_generation_id and _as_id(citation.get("generation_id")) not in {
-            "",
-            expected_generation_id,
-        }:
+        if expected_generation_id and _as_id(citation.get("generation_id")) != expected_generation_id:
             continue
+        registry_entry = (evidence_registry or {}).get(evidence_id)
+        if registry_entry is not None:
+            if not _as_bool(registry_entry.get("is_child", registry_entry.get("citation_id") is not None)):
+                continue
+            if _as_id(registry_entry.get("context_role")) == "context_only":
+                continue
+            if _as_id(registry_entry.get("citation_id")) not in {"", _as_id(citation.get("citation_id"))}:
+                continue
+            if _as_id(registry_entry.get("chunk_id")) not in {"", _as_id(citation.get("chunk_id"))}:
+                continue
         by_evidence.setdefault(evidence_id, []).append(citation)
 
     unresolved = tuple(eid for eid in evidence_ids if eid not in by_evidence)
@@ -153,4 +168,58 @@ def prune_claims_and_citations(
     return [result.claim for result in results], metrics
 
 
-__all__ = ["CitationPruningResult", "prune_claim_citations", "prune_claims_and_citations"]
+def prune_supported_claims_and_citations(
+    claims: Sequence[Mapping[str, Any]],
+    citations: Sequence[Mapping[str, Any]],
+    *,
+    evidence_registry: Mapping[str, Mapping[str, Any]],
+    expected_generation_id: str,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Keep only independently supported claims with public child citations.
+
+    This is the J1 flag-on boundary for a caller that already owns response
+    construction.  It is deliberately pure so replay can use it without an
+    API, model, or Golden-set read.
+    """
+
+    retained: list[dict[str, Any]] = []
+    removed_claim_ids: list[str] = []
+    citation_edges_before = sum(len(_dedupe_ids(claim.get("citation_ids", ()))) for claim in claims)
+    for claim in claims:
+        support = match_claim_support(
+            claim,
+            evidence_registry,
+            expected_generation_id=expected_generation_id,
+        )
+        if not support.supported:
+            removed_claim_ids.append(_as_id(claim.get("claim_id")))
+            continue
+        pruned = prune_claim_citations(
+            support.claim,
+            citations,
+            evidence_registry=evidence_registry,
+            expected_generation_id=expected_generation_id,
+        ).claim
+        if not pruned["citation_ids"]:
+            removed_claim_ids.append(_as_id(claim.get("claim_id")))
+            continue
+        retained.append(pruned)
+    citation_edges_after = sum(len(claim["citation_ids"]) for claim in retained)
+    return retained, {
+        "claim_count_before": len(claims),
+        "claim_count_after": len(retained),
+        "citation_edges_before": citation_edges_before,
+        "citation_edges_after": citation_edges_after,
+        "unsupported_claim_count_after": len(removed_claim_ids),
+        "removed_unsupported_claim_ids": removed_claim_ids,
+        "citation_precision_improvement_possible": citation_edges_after < citation_edges_before,
+        "stable_order": True,
+    }
+
+
+__all__ = [
+    "CitationPruningResult",
+    "prune_claim_citations",
+    "prune_claims_and_citations",
+    "prune_supported_claims_and_citations",
+]

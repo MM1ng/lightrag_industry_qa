@@ -72,8 +72,8 @@ class Settings:
     support_validator_v2_enabled: bool = False
     structured_generation_enabled: bool = False
     supplemental_retrieval_enabled: bool = False
-    # Phase 10B-3J controls are also fail-closed.  They are intentionally
-    # configuration-only here; query-path wiring must opt in explicitly.
+    # Phase 10B-3J controls are fail-closed; query-path wiring opts in explicitly.
+    claim_citation_pruning_enabled: bool = False
     grounding_false_negative_recovery_enabled: bool = False
     coverage_aware_selection_enabled: bool = False
     partial_generation_enabled: bool = False
@@ -218,6 +218,10 @@ class Settings:
             (values.get("QA_SUPPLEMENTAL_RETRIEVAL_ENABLED") or "false").strip().lower()
             == "true"
         )
+        claim_citation_pruning_enabled = (
+            (values.get("QA_CLAIM_CITATION_PRUNING_ENABLED") or "false").strip().lower()
+            == "true"
+        )
         grounding_false_negative_recovery_enabled = (
             (values.get("QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED") or "false").strip().lower()
             == "true"
@@ -335,6 +339,7 @@ class Settings:
             support_validator_v2_enabled=support_validator_v2_enabled,
             structured_generation_enabled=structured_generation_enabled,
             supplemental_retrieval_enabled=supplemental_retrieval_enabled,
+            claim_citation_pruning_enabled=claim_citation_pruning_enabled,
             grounding_false_negative_recovery_enabled=grounding_false_negative_recovery_enabled,
             coverage_aware_selection_enabled=coverage_aware_selection_enabled,
             partial_generation_enabled=partial_generation_enabled,
@@ -359,12 +364,19 @@ class Settings:
 
     @property
     def phase10b3i_feature_flags(self) -> dict[str, bool]:
+        """Compatibility alias for the sanitized Phase 10B-3J flag set."""
+
+        return self.phase10b3j_feature_flags
+
+    @property
+    def phase10b3j_feature_flags(self) -> dict[str, bool]:
         """Sanitized experimental flags suitable for traces and diagnostics."""
 
         return {
             "QA_SUPPORT_VALIDATOR_V2_ENABLED": self.support_validator_v2_enabled,
             "QA_STRUCTURED_GENERATION_ENABLED": self.structured_generation_enabled,
             "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": self.supplemental_retrieval_enabled,
+            "QA_CLAIM_CITATION_PRUNING_ENABLED": self.claim_citation_pruning_enabled,
             "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": self.grounding_false_negative_recovery_enabled,
             "QA_COVERAGE_AWARE_SELECTION_ENABLED": self.coverage_aware_selection_enabled,
             "QA_PARTIAL_GENERATION_ENABLED": self.partial_generation_enabled,
@@ -372,10 +384,16 @@ class Settings:
 
     @property
     def phase10b3i_config_sha256(self) -> str:
-        """Stable digest of the non-secret Phase 10B-3I flag configuration."""
+        """Compatibility alias for the Phase 10B-3J non-secret flag digest."""
+
+        return self.phase10b3j_config_sha256
+
+    @property
+    def phase10b3j_config_sha256(self) -> str:
+        """Stable digest of the non-secret Phase 10B-3J flag configuration."""
 
         payload = json.dumps(
-            self.phase10b3i_feature_flags, ensure_ascii=False, sort_keys=True,
+            self.phase10b3j_feature_flags, ensure_ascii=False, sort_keys=True,
             separators=(",", ":"),
         ).encode("utf-8")
         return hashlib.sha256(payload).hexdigest()

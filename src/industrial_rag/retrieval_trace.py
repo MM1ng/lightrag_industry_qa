@@ -8,7 +8,7 @@ from typing import Any
 
 TRACE_VERSION = "phase10a-retrieval-trace-v1"
 GROUNDING_AUDIT_TRACE_VERSION = "phase10b3f-grounding-audit-v1"
-FEATURE_FLAG_TRACE_VERSION = "phase10b3i-feature-flags-v1"
+FEATURE_FLAG_TRACE_VERSION = "phase10b3j-feature-flags-v2"
 RUNTIME_LINEAGE_TRACE_VERSION = "phase10b3j-runtime-lineage-v2"
 
 

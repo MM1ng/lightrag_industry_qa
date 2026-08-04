@@ -15,7 +15,7 @@ APP_VERSION = "0.1.0-rc.1"
 RELEASE_CHANNEL = "rc"
 CONFIG_VERSION = "phase6-v1"
 STRATEGY_VERSION = "phase6b-v1"
-FEATURE_FLAG_CONFIG_VERSION = "phase10b3i-feature-flags-v1"
+FEATURE_FLAG_CONFIG_VERSION = "phase10b3j-feature-flags-v2"
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
