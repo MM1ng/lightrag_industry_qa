@@ -1,22 +1,66 @@
 {
-  "status": "not_measured",
-  "initial_metrics_unchanged": true,
-  "effective_evidence_recall_after_completion": {
-    "numerator": null,
-    "denominator": null,
-    "value": null
+  "initial_metrics": {
+    "chunk_recall_at_20": {
+      "numerator": 63,
+      "denominator": 72,
+      "value": 0.875
+    },
+    "mrr": {
+      "numerator": null,
+      "denominator": 50,
+      "value": 0.6994
+    },
+    "page_recall_at_20": {
+      "numerator": 50,
+      "denominator": 50,
+      "value": 1.0
+    },
+    "source": "phase10b3d_frozen_baseline"
   },
-  "completion_contribution_rate": {
-    "numerator": null,
-    "denominator": null,
-    "value": null
+  "completion_metrics": {
+    "effective_evidence_recall_after_completion": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_evidence_selected_or_completed_coverage": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_answer_point_selected_or_completed_coverage": {
+      "numerator": 52,
+      "denominator": 72,
+      "value": 0.7222222222222222
+    },
+    "parent_completion_trigger_rate": {
+      "numerator": 50,
+      "denominator": 50,
+      "value": 1.0
+    },
+    "adjacent_completion_trigger_rate": {
+      "numerator": 50,
+      "denominator": 50,
+      "value": 1.0
+    },
+    "completion_contribution_rate": {
+      "numerator": 0,
+      "denominator": 104,
+      "value": 0.0
+    },
+    "completion_evidence_precision": {
+      "numerator": 104,
+      "denominator": 104,
+      "value": 1.0
+    },
+    "completion_wrong_document_count": 0,
+    "completion_wrong_generation_count": 0,
+    "retrieval_trace_completeness": {
+      "numerator": 52,
+      "denominator": 52,
+      "value": 1.0
+    }
   },
-  "completion_evidence_precision": {
-    "numerator": null,
-    "denominator": null,
-    "value": null
-  },
-  "completion_wrong_document_count": null,
-  "completion_wrong_generation_count": null,
-  "reason": "Completion experiments were not eligible before replay gate passed."
+  "holdout_used": false,
+  "candidate_activated": false
 }

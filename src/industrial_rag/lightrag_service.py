@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import time
 from collections.abc import Awaitable, Callable, Sequence
@@ -24,6 +25,7 @@ from industrial_rag.config import (
     write_storage_metadata,
 )
 from industrial_rag.document_parser import DocumentChunk
+from industrial_rag.evidence_completion import ContextRecord, complete_evidence
 from industrial_rag.evidence_policy import (
     EvidenceCandidate,
     _tokens,
@@ -344,6 +346,9 @@ def _build_retrieval_trace(
     normalization: NormalizationResult | None = None,
     answer_plan: Sequence[AnswerPoint] = (),
     grounding_audit: GroundingAudit | None = None,
+    completion_candidates: Sequence[dict[str, object]] = (),
+    completed_evidence: Sequence[dict[str, object]] = (),
+    completion_applied: bool = False,
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -420,11 +425,63 @@ def _build_retrieval_trace(
         added_aliases=normalization.added_aliases if normalization else (),
         answer_plan=tuple(item.to_payload() for item in answer_plan),
         grounding_audit=(grounding_audit.to_payload() if grounding_audit is not None else None),
+        completion_applied=completion_applied,
+        completion_candidates=tuple(completion_candidates),
+        completed_evidence=tuple(completed_evidence),
     )
 
 
 def _generation_system_prompt(context: str) -> str:
     return _SYSTEM_PROMPT_BASE + _SELECTED_CONTEXT_LABEL + context
+
+
+def _load_context_registry(settings: Settings) -> dict[str, ContextRecord]:
+    """Load the immutable generation registry; never scan source PDFs at query time."""
+    candidates = (
+        settings.working_dir.parent / "context_registry" / "chunks.jsonl",
+        settings.working_dir / "context_registry" / "chunks.jsonl",
+    )
+    path = next((item for item in candidates if item.is_file()), None)
+    if path is None:
+        return {}
+    records: dict[str, ContextRecord] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        records[str(row["chunk_id"])] = ContextRecord(
+            knowledge_base_id=str(row.get("knowledge_base_id") or settings.qdrant_kb_id or ""),
+            generation_id=str(row.get("generation_id") or settings.qdrant_generation or ""),
+            document_id=str(row.get("document_id") or ""),
+            document_name=str(row.get("document_name") or ""),
+            chunk_id=str(row["chunk_id"]),
+            text=str(row.get("content") or ""),
+            page_start=int(row.get("page_start") or 1),
+            section_path=tuple(str(item) for item in row.get("section_path", ()) or ()),
+            parent_chunk_id=row.get("parent_chunk_id"),
+            previous_chunk_id=row.get("previous_chunk_id"),
+            next_chunk_id=row.get("next_chunk_id"),
+            table_id=row.get("table_id"),
+            table_header_chunk_id=row.get("table_header_chunk_id"),
+        )
+    parent_path = path.with_name("parents.jsonl")
+    if parent_path.is_file():
+        for line in parent_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            parent_id = str(row["parent_chunk_id"])
+            records[parent_id] = ContextRecord(
+                knowledge_base_id=str(row.get("knowledge_base_id") or settings.qdrant_kb_id or ""),
+                generation_id=str(row.get("generation_id") or settings.qdrant_generation or ""),
+                document_id=str(row.get("document_id") or ""),
+                document_name=str(row.get("document_name") or ""),
+                chunk_id=parent_id,
+                text=str(row.get("content") or ""),
+                page_start=int(row.get("page_start") or 1),
+                section_path=tuple(str(item) for item in row.get("section_path", ()) or ()),
+            )
+    return records
 
 
 class LightRAGService:
@@ -531,7 +588,11 @@ class LightRAGService:
             (item["file"], item["page"], item["chunk_id"]) for item in retrieved
         )
         selection_started = time.perf_counter()
-        decision = select_evidence(normalized_question, evidence)
+        decision = select_evidence(
+            normalized_question,
+            evidence,
+            diversify=self.settings.evidence_selection_diversity_enabled,
+        )
         if not decision.allowed and self.settings.answer_grounding_enabled:
             partial_decision = select_partial_evidence(normalized_question, evidence)
             if not partial_decision.allowed:
@@ -541,6 +602,38 @@ class LightRAGService:
             if partial_decision.allowed:
                 decision = partial_decision
         evidence_selection_ms = (time.perf_counter() - selection_started) * 1000
+        completed_context: tuple[ContextRecord, ...] = ()
+        completion_candidates: list[dict[str, object]] = []
+        completed_evidence: list[dict[str, object]] = []
+        if decision.allowed and self.settings.evidence_completion_enabled:
+            registry = _load_context_registry(self.settings)
+            selected_context_records = [
+                registry[item.citation.chunk_id]
+                for item in decision.selected
+                if item.citation.chunk_id in registry
+            ]
+            completed_context = complete_evidence(
+                selected_context_records,
+                registry,
+                max_completion=self.settings.evidence_completion_max,
+            )
+            for item in completed_context:
+                source_type = "parent_context" if any(record.parent_chunk_id == item.chunk_id for record in selected_context_records) else "adjacent"
+                relation = next(("previous" if record.previous_chunk_id == item.chunk_id else "next" for record in selected_context_records if record.previous_chunk_id == item.chunk_id or record.next_chunk_id == item.chunk_id), None)
+                completed_evidence.append({
+                    "chunk_id": item.chunk_id,
+                    "document_id": item.document_id,
+                    "document_name": item.document_name,
+                    "page_number": item.page_start,
+                    "generation_id": item.generation_id,
+                    "source_type": source_type,
+                    "context_role": "context_only",
+                    "completion_reason": "bounded_parent_or_adjacent_context",
+                    "adjacent_relation": relation,
+                    "used_for_answer": False,
+                    "cited_in_answer": False,
+                })
+            completion_candidates = list(completed_evidence)
         if not decision.allowed:
             audit = (
                 build_non_generation_audit(
@@ -563,6 +656,9 @@ class LightRAGService:
                 evidence_selection_ms=evidence_selection_ms,
                 normalization=normalization,
                 grounding_audit=audit,
+                completion_candidates=completion_candidates,
+                completed_evidence=completed_evidence,
+                completion_applied=bool(completed_context),
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -573,6 +669,11 @@ class LightRAGService:
                 trace,
             )
         context = _selected_context(decision.selected)
+        if completed_context:
+            context += "\n\n" + "\n\n".join(
+                f"[补充上下文：{item.document_name} 第{item.page_start}页]\n{item.text}"
+                for item in completed_context
+            )
         system_prompt = _generation_system_prompt(context)
         if self.settings.answer_grounding_enabled:
             system_prompt += (
@@ -603,6 +704,9 @@ class LightRAGService:
                 evidence_selection_ms=evidence_selection_ms,
                 normalization=normalization,
                 grounding_audit=audit,
+                completion_candidates=completion_candidates,
+                completed_evidence=completed_evidence,
+                completion_applied=bool(completed_context),
             )
             return QueryResult(
                 INSUFFICIENT_EVIDENCE_MESSAGE,
@@ -631,6 +735,9 @@ class LightRAGService:
             normalization=normalization,
             answer_plan=grounded.answer_points if grounded else (),
             grounding_audit=(grounded.grounding_audit if grounded and self.settings.grounding_audit_enabled else None),
+            completion_candidates=completion_candidates,
+            completed_evidence=completed_evidence,
+            completion_applied=bool(completed_context),
         )
         return QueryResult(
             grounded.answer if grounded else answer,

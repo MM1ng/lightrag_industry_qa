@@ -59,6 +59,11 @@ class RetrievalTraceResponse(BaseModel):
     grounding_audit: dict[str, Any] | None = None
     grounding_audit_version: str | None = None
     replay_eligible: bool = False
+    completion_applied: bool = False
+    completion_candidates: list[dict[str, Any]] = Field(default_factory=list)
+    completed_evidence: list[dict[str, Any]] = Field(default_factory=list)
+    coverage_requirements: list[str] = Field(default_factory=list)
+    coverage_status: str = "uncovered"
     retrieval_config: dict[str, Any]
     initial_results: list[RetrievalResultResponse]
     rerank_applied: bool

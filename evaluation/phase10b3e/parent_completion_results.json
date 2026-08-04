@@ -1,8 +1,50 @@
 {
-  "status": "blocked_before_experiment",
-  "replay_gate_passed": false,
-  "recovery_count": 0,
-  "reason": "Replay cannot improve the 9 refusal cases because all 9 contain no saved answer text; synthesizing from Golden Set is prohibited.",
-  "holdout_used": false,
-  "golden_set_modified": false
+  "experiment_id": "E3",
+  "changed_module": "evidence_completion.py + lightrag_service.py",
+  "enabled": true,
+  "results": {
+    "effective_evidence_recall_after_completion": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_evidence_selected_or_completed_coverage": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_answer_point_selected_or_completed_coverage": {
+      "numerator": 52,
+      "denominator": 72,
+      "value": 0.7222222222222222
+    },
+    "parent_completion_trigger_rate": {
+      "numerator": 50,
+      "denominator": 50,
+      "value": 1.0
+    },
+    "adjacent_completion_trigger_rate": {
+      "numerator": 50,
+      "denominator": 50,
+      "value": 1.0
+    },
+    "completion_contribution_rate": {
+      "numerator": 0,
+      "denominator": 104,
+      "value": 0.0
+    },
+    "completion_evidence_precision": {
+      "numerator": 104,
+      "denominator": 104,
+      "value": 1.0
+    },
+    "completion_wrong_document_count": 0,
+    "completion_wrong_generation_count": 0,
+    "retrieval_trace_completeness": {
+      "numerator": 52,
+      "denominator": 52,
+      "value": 1.0
+    }
+  },
+  "holdout_used": false
 }

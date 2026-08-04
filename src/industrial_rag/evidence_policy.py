@@ -130,7 +130,7 @@ class EvidenceDecision:
     selected: tuple[EvidenceCandidate, ...]
 
 
-def select_evidence(question: str, payload: object, *, limit: int = 3) -> EvidenceDecision:
+def select_evidence(question: str, payload: object, *, limit: int = 3, diversify: bool = False) -> EvidenceDecision:
     """Return traceable candidates that meet deterministic routing and overlap gates."""
     question_tokens = _tokens(question)
     question_conditions = _conditions(question)
@@ -148,9 +148,24 @@ def select_evidence(question: str, payload: object, *, limit: int = 3) -> Eviden
         for candidate in candidates
     ]
     ranked = sorted(scored, key=lambda item: (-item[0], item[1].rank))
-    selected = tuple(candidate for overlap, candidate in ranked if overlap >= 2)[
-        : min(max(limit, 0), _MAX_SELECTED)
-    ]
+    if not diversify:
+        selected = tuple(candidate for overlap, candidate in ranked if overlap >= 2)[: min(max(limit, 0), _MAX_SELECTED)]
+    else:
+        selected_list: list[EvidenceCandidate] = []
+        covered_tokens: set[str] = set()
+        cap = min(max(limit, 0), _MAX_SELECTED)
+        for overlap, candidate in ranked:
+            if overlap < 2 or len(selected_list) >= cap:
+                continue
+            candidate_tokens = set(_tokens(candidate.text))
+            # Prefer complementary evidence over duplicate chunks.  Original
+            # LightRAG rank remains the deterministic tie-breaker.
+            adds_coverage = bool(candidate_tokens - covered_tokens)
+            if selected_list and not adds_coverage:
+                continue
+            selected_list.append(candidate)
+            covered_tokens.update(candidate_tokens)
+        selected = tuple(selected_list)
     if not selected:
         return EvidenceDecision(False, None, ())
     return EvidenceDecision(True, routed_document, selected)

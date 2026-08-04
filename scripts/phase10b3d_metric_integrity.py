@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 import json
+import os
 from collections import Counter
 from pathlib import Path
 
 from industrial_rag.phase10_evaluation import evaluate_retrieval
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "evaluation" / "phase10b3d"
-RESULT_PATHS = [ROOT / "evaluation" / "phase10b3a" / "development_results.jsonl", ROOT / "evaluation" / "phase10b3a" / "validation_results.jsonl"]
+OUT = Path(os.environ.get("PHASE10_METRICS_OUTPUT", str(ROOT / "evaluation" / "phase10b3d")))
+RESULT_ROOT = Path(os.environ.get("PHASE10_METRICS_RESULT_ROOT", str(ROOT / "evaluation" / "phase10b3a")))
+RESULT_PATHS = [RESULT_ROOT / "development_results.jsonl", RESULT_ROOT / "validation_results.jsonl"]
 SIDECAR = ROOT / "evaluation" / "phase10b3c" / "golden_evidence_mapping_g10b3c20260803.json"
 REGISTRY = ROOT / "runtime" / "phase10b3c" / "kb_data" / "8fce4626859d44abb70a9ae5b0372cea" / "g10b3c20260803" / "context_registry"
 DEFINITION_VERSION = "phase10b3d-metric-policy-v1"

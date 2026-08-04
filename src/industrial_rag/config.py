@@ -63,6 +63,9 @@ class Settings:
     query_normalization_enabled: bool = False
     answer_grounding_enabled: bool = False
     grounding_audit_enabled: bool = False
+    evidence_selection_diversity_enabled: bool = False
+    evidence_completion_enabled: bool = False
+    evidence_completion_max: int = 2
     phase10b_query_mode: str = "mix"
     phase10b_top_k: int = 12
     phase10b_chunk_top_k: int = 20
@@ -186,6 +189,18 @@ class Settings:
         grounding_audit_enabled = (
             (values.get("QA_GROUNDING_AUDIT_ENABLED") or "false").strip().lower() == "true"
         )
+        evidence_selection_diversity_enabled = (
+            (values.get("QA_EVIDENCE_SELECTION_DIVERSITY_ENABLED") or "false").strip().lower() == "true"
+        )
+        evidence_completion_enabled = (
+            (values.get("QA_EVIDENCE_COMPLETION_ENABLED") or "false").strip().lower() == "true"
+        )
+        try:
+            evidence_completion_max = int(values.get("QA_EVIDENCE_COMPLETION_MAX") or "2")
+        except ValueError as error:
+            raise ValueError("QA_EVIDENCE_COMPLETION_MAX 必须是整数") from error
+        if not 0 <= evidence_completion_max <= 2:
+            raise ValueError("QA_EVIDENCE_COMPLETION_MAX 必须在 0 到 2 之间")
         phase10b_query_mode = (values.get("PHASE10B_QUERY_MODE") or "mix").strip().lower()
         try:
             phase10b_top_k = int(values.get("PHASE10B_TOP_K") or "12")
@@ -279,6 +294,9 @@ class Settings:
             query_normalization_enabled=query_normalization_enabled,
             answer_grounding_enabled=answer_grounding_enabled,
             grounding_audit_enabled=grounding_audit_enabled,
+            evidence_selection_diversity_enabled=evidence_selection_diversity_enabled,
+            evidence_completion_enabled=evidence_completion_enabled,
+            evidence_completion_max=evidence_completion_max,
             phase10b_query_mode=phase10b_query_mode,
             phase10b_top_k=phase10b_top_k,
             phase10b_chunk_top_k=phase10b_chunk_top_k,

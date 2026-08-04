@@ -1,0 +1,673 @@
+{
+  "count": 11,
+  "by_root_cause": {
+    "expected_chunk_recalled_not_selected": 1,
+    "partial_evidence_misclassified_as_refusal": 10
+  },
+  "rows": [
+    {
+      "question_id": "S020",
+      "split": "development",
+      "expected_evidence": [
+        {
+          "evidence_id": "S020-e1",
+          "document_name": "2196-ANSI-Manual-Chinese.pdf",
+          "page_number": 29,
+          "chunk_id": "cchunk-pymupdf-v1-护手册-99d80f6fd8a0-000-99d80f6fd8a0",
+          "evidence_text": "SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型 23\n\n13. 在轴承座 (134) 的外侧涂上一层薄薄的润滑剂并将该组合件滑动推入轴承架\n(228)。\n\n15. 将轴承架 (228) 固定在联接器 (108) 上。\n\na. 将定位销 (469B)、联接器螺栓 (370B) 和轴承架与联接器之间的垫片\n(360D) 对正。\n\nb. 以交叉方式上紧。\n\nc. 将轴旋转 360 度，轴应能自由转动。\n\n19. 将防旋转销与轴套 (126) 上的槽口对正。\n\n对于机械密封泵，请阅读制造商的装配说明。（请参见第 5 页的填料函。）\n\n22. 在轴的联轴器端使用叶轮扳手或带式扳手，顺时针旋转上紧。确保联轴器紧\n固在轴上。\n\na. 首先，在填料函底部放入两个填料环。\n\n对于机械密封泵，继续执行第19 步中的制造商说明。",
+          "role": "primary",
+          "relevance_grade": 2
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-e2388fe05f8eb9ad-000": 5
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-392aebff4bbbec9f-000",
+        "cchunk-pymupdf-v1-58f11d1e9bdc292c-000",
+        "cchunk-pymupdf-v1-5d75f7554358132e-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "expected_chunk_recalled_not_selected"
+    },
+    {
+      "question_id": "D005",
+      "split": "development",
+      "expected_evidence": [
+        {
+          "evidence_id": "D005-e1",
+          "document_name": "t1739cn.pdf",
+          "page_number": 12,
+          "chunk_id": "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c",
+          "evidence_text": "与所供水泵（泵组）运行稳定性和安全性有关的保修内容才会生效。\n\n• 泵壳必须冷却至环境温度。\n\n• 必须释放水泵压力，排空水泵。\n\n• 停用泵组时，始终应遵守手册中规定的程序。\n\n• 水泵处理存在健康危害的液体时应进行消毒。\n\n守所有调试相关说明要求。\n\n2.7. 未授权运行模式\n\n不允许在订单文件和本手册中规定的限值范围之外运行水泵（泵组）。只有按预期用途使用设备，\n\n2.8. 防冻\n\n在霜冻期不运行的水泵必须进行排水，避免霜冻造成损坏。拆卸底部管塞（3），排空水泵。或者也\n\n可以在正常水泵配置中使用防冻液。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 10",
+          "role": "primary",
+          "relevance_grade": 2
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-7227e2460f83a192-000": 2
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-8cb55fe1213f5d02-000",
+        "cchunk-pymupdf-v1-4e14a3b265877fb1-000",
+        "cchunk-pymupdf-v1-7227e2460f83a192-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "D012",
+      "split": "development",
+      "expected_evidence": [
+        {
+          "evidence_id": "D012-e1",
+          "document_name": "t1739cn.pdf",
+          "page_number": 22,
+          "chunk_id": "cchunk-pymupdf-v1--安装-4c0decacc13b-000-4c0decacc13b",
+          "evidence_text": "图5-4 ：安装示意图\n\n• 阀门\n\n• 过滤器\n\n• 弯管\n\n• 孔板\n\n• 等\n\n确保提供稳固的底板，尽量减少振动、延长检修间隔。\n\n避免曲率半径小于标称管径的1.5倍。\n\n避免管道系统横截面突然变化。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 20",
+          "role": "primary",
+          "relevance_grade": 2
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-b5a8f25cefe47aef-000": 2
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-b5a8f25cefe47aef-000",
+        "cchunk-pymupdf-v1-379fd6889fc7fe67-000",
+        "cchunk-pymupdf-v1-8cb55fe1213f5d02-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "根据 DESMI 手册 t1739cn.pdf 第22页内容，对吸入侧弯管、T型管、弯曲半径和管道截面变化的要求如下：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "**避免设置90度弯管、T型管或其他可能阻碍水泵吸入侧水流的部件**（来源：t1739cn.pdf page=22 chunk=cchunk-pymupdf-v1-379fd6889fc7fe67-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "**避免曲率半径小于标称管径的1.5倍**（来源：t1739cn.pdf page=22 chunk=cchunk-pymupdf-v1-b5a8f25cefe47aef-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "**避免管道系统横截面突然变化**（来源：t1739cn.pdf page=22 chunk=cchunk-pymupdf-v1-b5a8f25cefe47aef-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "以上要求均出自手册第22页的安装示意图说明部分。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "根据 DESMI 手册 t1739cn.pdf 第22页内容，对吸入侧弯管、T型管、弯曲半径和管道截面变化的要求如下：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "**避免设置90度弯管、T型管或其他可能阻碍水泵吸入侧水流的部件**（来源：t1739cn.pdf page=22 chunk=cchunk-pymupdf-v1-379fd6889fc7fe67-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "**避免曲率半径小于标称管径的1.5倍**（来源：t1739cn.pdf page=22 chunk=cchunk-pymupdf-v1-b5a8f25cefe47aef-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "**避免管道系统横截面突然变化**（来源：t1739cn.pdf page=22 chunk=cchunk-pymupdf-v1-b5a8f25cefe47aef-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "以上要求均出自手册第22页的安装示意图说明部分。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "D017",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "D017-e1",
+          "document_name": "t1739cn.pdf",
+          "page_number": 27,
+          "chunk_id": "cchunk-pymupdf-v1--安装-a9a63e1e9e9c-000-a9a63e1e9e9c",
+          "evidence_text": "6. 调整联轴器之间的间隙 S。\n\n联轴器外圆直径 联轴器之间的间隙\nD (mm) S (mm)\n\n90-160 2.5\n\n195-220 3\n\n280-320 4\n\n360-410 5\n\n480-540 6\n\n630 7\n\n710-800 8\n\n7. 锁紧联轴器的紧定螺钉。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n25 电邮：desmi@desmi.com www.desmi.com",
+          "role": "primary",
+          "relevance_grade": 2
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-3d4bbec2e5edecfe-000": 1
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-3d4bbec2e5edecfe-000",
+        "cchunk-pymupdf-v1-1f4215593f0cb976-000",
+        "cchunk-pymupdf-v1-a682444e38bfc94e-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "根据手册 t1739cn.pdf 第27页的内容，当联轴器外圆直径 D 为 360–410 mm 时，联轴器之间的间隙 S 应为 5 mm。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=27 chunk=cchunk-pymupdf-v1-3d4bbec2e5edecfe-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "根据手册 t1739cn.pdf 第27页的内容，当联轴器外圆直径 D 为 360–410 mm 时，联轴器之间的间隙 S 应为 5 mm。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=27 chunk=cchunk-pymupdf-v1-3d4bbec2e5edecfe-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "D019",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "D019-e1",
+          "document_name": "t1739cn.pdf",
+          "page_number": 31,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-84d31a6bae34-000-84d31a6bae34",
+          "evidence_text": "动前，应查看电机手册，确认是否需要为电机轴承加注润滑脂。\n\n水泵不运行时，必须每月至少转动2-3次泵轴，避免轴封和轴承因长期静置损坏。如果水泵内充满液\n\n体，也可以短时间启动。\n\n在特殊应用环境下，可能需要更频繁转动泵轴或启动，才能避免叶轮和/或轴封卡滞。\n\n在加压系统中，停转期间轴封经常会出现轻度泄漏 – 大多数情况下，这种泄漏在水泵启动后不久就\n\n会停止。\n\n不建议引导液体（无论单向或双向）流经被动转动的水泵，否则可能导致轴封损坏。\n\n从轴封寿命角度出发，建议至少在300 rpm转速条件下运行，从0加速到300 rpm不要超过1分钟，从\n\n300减速到0 rpm也不要超过1分钟。\n\n6.3.1. 启动程序\n\n启动水泵前应确认：\n\n- 泵轴可自由转动，没有刺耳噪声。\n\n- 泵壳和吸入管路已充满液体。\n\n短时间启动水泵，查看转动方向。如果方向正确（即箭头方向），就可以启动水泵。\n\n• 系统管道已经清洗。\n\n• 水泵、吸入管路和进水箱（如有配置）都已进行排气并充注待泵送液体。\n\n• 注液和排气管路都已关闭。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n29 电邮：desmi@desmi.com www.desmi.com",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "D019-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 32,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-db01d9f3b0b4-000-db01d9f3b0b4",
+          "evidence_text": "机械密封在运行期间仅会出现轻微泄漏或不可见泄漏（如蒸汽）的情况。机械密封免维护。\n\n小心\n\n小心\n\n调试、启动和关闭\n\n存在财产损坏的风险！\n\n在排出管路打开的情况下启动会导致电机过载，从而损坏电机。\n\n确保电机有足够的功率储备。\n\n使用一个软启动器。\n\n使用速度控制装置。\n\n1. 完全打开吸入压头/吸升管路上的截断装置。\n\n2. 关闭或稍微打开排出管路上的截断装置。\n\n3. 启动电机。\n\n4. 水泵达到全转速后，立即缓慢打开排出管路上的截断装置并对其进行调整，至满足工况点要求。\n\n6.4. 检查轴封\n\n6.5. 关闭\n\n存在损坏轴封的风险！\n\n泵内热量堆积会损坏轴封。\n\n泵组停转后，切断热源，始终让所处理液体完全冷却。\n\n吸入管路上的截断装置保持开启状态。\n\n1. 关闭排出管路上的截断装置。\n\n2. 切断电机电源，确保泵组平稳降速至完全停止。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 30",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-53f148860125f4f4-000": 8,
+        "cchunk-pymupdf-v1-0261999df5570bed-000": 6
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-3c48ca477586c617-000",
+        "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+        "cchunk-pymupdf-v1-0261999df5570bed-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "D020",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "D020-e1",
+          "document_name": "t1739cn.pdf",
+          "page_number": 32,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-db01d9f3b0b4-000-db01d9f3b0b4",
+          "evidence_text": "机械密封在运行期间仅会出现轻微泄漏或不可见泄漏（如蒸汽）的情况。机械密封免维护。\n\n小心\n\n小心\n\n调试、启动和关闭\n\n存在财产损坏的风险！\n\n在排出管路打开的情况下启动会导致电机过载，从而损坏电机。\n\n确保电机有足够的功率储备。\n\n使用一个软启动器。\n\n使用速度控制装置。\n\n1. 完全打开吸入压头/吸升管路上的截断装置。\n\n2. 关闭或稍微打开排出管路上的截断装置。\n\n3. 启动电机。\n\n4. 水泵达到全转速后，立即缓慢打开排出管路上的截断装置并对其进行调整，至满足工况点要求。\n\n6.4. 检查轴封\n\n6.5. 关闭\n\n存在损坏轴封的风险！\n\n泵内热量堆积会损坏轴封。\n\n泵组停转后，切断热源，始终让所处理液体完全冷却。\n\n吸入管路上的截断装置保持开启状态。\n\n1. 关闭排出管路上的截断装置。\n\n2. 切断电机电源，确保泵组平稳降速至完全停止。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 30",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "D020-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 33,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-98af0d342570-000-98af0d342570",
+          "evidence_text": "遵守订单文件中的操作参数要求。\n\n小心\n\n. 危险\n\n存在爆炸危险！\n\n调试、启动和关闭\n\n注意：如果排出管路配备了一个止回阀，只要考虑并遵守现场要求和规定，排出管路上的截断装\n\n置便可以保持开启状态。\n\n长期关机期间：\n\n1. 关闭吸入管路上的截断装置。\n\n2. 关闭辅助接口。\n\n存在财产损坏的风险！\n\n长期关机期间液体可能冻结，这会损坏水泵。\n\n排空水泵和冷却/加热室（如有配置），或者采取措施防止其冻结。\n\n存在所处理的高温或有毒液体泄漏的风险！\n\n运行水泵时，压力、温度、处理液体和转速不正确都会导致财产损坏、死亡或重伤事故。\n\n不允许用水泵处理未经授权的液体。\n\n不允许在截断装置关闭的情况下长时间运行水泵。\n\n未征得代斯米的书面许可，不允许在不正确的条件下运行水泵（如温度、压力或转速超过订单文\n\n件或铭牌上规定的数值）。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n31 电邮：desmi@desmi.com www.desmi.com",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-08ad51d60ec4d01b-000": 1,
+        "cchunk-pymupdf-v1-0261999df5570bed-000": 4
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-e1d1a306d81ddb56-000",
+        "cchunk-pymupdf-v1-f7bbb8547420f197-000",
+        "cchunk-pymupdf-v1-08ad51d60ec4d01b-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "C001",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "C001-e1",
+          "document_name": "2196-ANSI-Manual-Chinese.pdf",
+          "page_number": 9,
+          "chunk_id": "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+          "evidence_text": "SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型 3\n\n警告！\n\n2. 接收及存放\n\n接收泵\n\n如未正确提举和移动泵会导致严重的人身\n伤害。\n\n泵到货后，请立即认真检查该泵是否有运输时损坏的迹象。如有任何损坏，\n请立即向您的 Summit Pump 分销商报告。\n\n存放泵\n\n将泵存放在清洁、干燥的地方。请勿取下管路接头盖。至少每周用手旋转\n泵轴一次，以保持轴承上覆有保护油膜或油脂。如要长期存放，可向\nSummit Pump, Inc. 购买专用护理产品。",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "C001-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 15,
+          "chunk_id": "cchunk-pymupdf-v1-时存放-16847aea2304-000-16847aea2304",
+          "evidence_text": "4. 退还水泵（泵组）时必须填写并附上一份消毒证明，并注明任何已采取的安全和消毒措施。\n\n小心\n\n小心\n\n运输、保存和临时存放\n\n3.3. 存放/保存\n\n如果交付后一段时间安排调试，我们建议采取以下措施存放水泵（泵组）。\n\n存在财产损坏的风险！\n\n存放条件不正确可能导致水泵（泵组）损坏！\n\n确保存放地点的湿度适宜。\n\n确保存放地点干净，没有虫害。\n\n如果是室外存放，必须用防水材料盖住包装或无包装的水泵（泵组）和配件。\n\n存在财产损坏的风险！\n\n潮湿、污染或损坏的开口和接口，可能导致水泵泄漏或损坏！\n\n存放水泵时，应根据需要清理并封盖水泵的开口和接口。\n\n将水泵（泵组）存放在一个干燥、受保护的室内环境中，空气湿度尽量稳定。每个月手动转动一次\n\n泵轴。如果存放一台之前运行过的水泵（泵组），则必须遵守关闭措施的要求。\n\n另请访问以下地址获取“代斯米水泵存放和保存”文件：\n\nwww.desmi.com/media/vqkjqh54/t1534uk.pdf\n\n3.4. 退还制造商\n\n2. 始终对水泵进行冲洗清理，尤其是之前用于处理有毒、爆炸、高温或其他有害液体的水泵。\n\n3. 如果泵组处理的液体残留物可能在空气湿度条件下导致腐蚀损坏，或者接触到氧气后可能点燃，\n\n则必须对泵组进行中和处理，而且必须将无水惰性气体送入水泵确保干燥。\n\nDESMI Pumping Technology A/S\nT",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-7a7a1d9527900134-000": 6,
+        "cchunk-pymupdf-v1-bb26526f42418702-000": 12
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-7a7a1d9527900134-000",
+        "cchunk-pymupdf-v1-e1d1a306d81ddb56-000",
+        "cchunk-pymupdf-v1-53f148860125f4f4-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "C002",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "C002-e1",
+          "document_name": "2196-ANSI-Manual-Chinese.pdf",
+          "page_number": 11,
+          "chunk_id": "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+          "evidence_text": "SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型 5\n\n警告！\n\n对正\n\n切断泵驱动器。不这样做会导致人员严重\n受伤。\n\n对正泵\n1. 使用隔套式弹性联轴器以达到正确对正。\n\n2. 在连接两个半联轴器之前，检查并调整平行和角度对正，使误差保持在\n0.005 英寸内。\n\n3. 点动运行电机以检查旋转。其箭头应与泵上的箭头一致。\n\n在高温下工作的泵需要在工作温度下进行对正检查。\n\n填料函\n\n填料筒\n\n编织填料作为所有泵的标准设备提供。安装压盖螺栓的螺母时，仅用手拧\n紧。在启动时调节压盖螺栓的螺母，达到每分钟滴漏 40-65 滴。具体填料类\n型取决于待泵送液体的 pH 值、温度等。\n表1\n泵型号\nSTO MTO LTO XLO XLO-17\n填料尺寸 5/16\" 3/8\" 3/8\" 7/16\" 7/16\"\n填料环数量 5\n\n清洁、冷却的泵送物质可用于润滑填料。如果泵送物质不适合，必须提供外\n部润滑物。",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "C002-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 26,
+          "chunk_id": "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b",
+          "evidence_text": "安装\n\n5.3. 对中\n\n1. 用刀口尺 （1） 初步调整泵和电机联轴器水平方\n\n向和垂直方向的同轴度。检测时应在圆周方向每\n\n隔90°测一次。\n\n2. 调整电机轴与泵轴的对中，用塞尺检查高低偏差\n\n值，偏差值≤0.1 mm。检测时应在圆周方向每隔\n\n90°测一次。\n\n3. 根据高低偏差值将电机垫高相应厚度的垫片。\n\n4. 装上平垫与螺栓，对称锁紧电机底脚螺栓（2），\n\n有电机调整螺栓 （3 ）的底座，需拧紧电机调整\n\n螺栓 。\n\n5. 再次确认水平和垂直方向的对中偏差，如超过 0.1\n\nmm 需重新对中。检测时应在圆周方向每隔90° 测\n\n一次。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 24",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-3b58bc1e45428865-000": 15,
+        "cchunk-pymupdf-v1-1f4215593f0cb976-000": 4
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-1f4215593f0cb976-000",
+        "cchunk-pymupdf-v1-5cb922ccf2388a71-000",
+        "cchunk-pymupdf-v1-2e91d7e64f3794b6-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "C004",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "C004-e1",
+          "document_name": "2196-ANSI-Manual-Chinese.pdf",
+          "page_number": 17,
+          "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+          "evidence_text": "SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型 11\n\n警告！\n\n警告！\n\n小心！\n\n小心！\n\n叶轮间隙\n\n启动泵之前，先检查叶轮间隙。运输期间\n设置可能会发生改变。\n\n灌注\n\n启动离心泵之前，务必在入口管路和泵体中充入液体以灌注该泵。打开入口隔\n离阀和填料密封液阀时即开始进行灌注。\n\n启动\n\n如需启动泵\n1. 用手旋转泵；确保旋转部件能够自由转动。\n\n2. 确保入口阀打开。\n\n3. 将出口阀半关闭。\n\n4. 解除对泵驱动器电源的锁定。\n\n5. 电机一旦达到工作速度，就慢慢打开出口阀。\n\n6. 检查填料函的滴漏情况，必要时进行调整，达到每分钟滴漏 40-65 滴的速\n度。",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "C004-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 28,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-2a44c976502c-000-2a44c976502c",
+          "evidence_text": "工厂内完全润滑，也就是说，达到第8章再润滑表格中的计划运行时数前，不需要重新\n\n危险\n\n存在爆炸危险！\n\n小心\n\n调试、启动和关闭\n\n6. 调试、启动和关闭\n\n6.1. 调试/启动的前提条件\n\n调试/启动泵组前，应确保满足以下各项条件：\n\n• 泵组已正确连接到电源，而且配备了所有保护装置。\n\n• 水泵已充注待处理液体。水泵已完成排气。\n\n• 已检查旋转方向。\n\n• 所有必要的辅助接口都已完成连接并处于正常工作状态。\n\n• 如果可以重新润滑，则在启动水泵之前，按电机手册对电机轴承进行润滑！所有水泵轴承都已经\n\n润滑任何水泵轴承）。\n\n• 水泵（泵组）长时间停机后，必须开展水泵（泵组）恢复运行所需的相关工作。\n\n6.2. 水泵注液和排气\n\n水泵启动错误可能在泵内形成爆炸性环境，导致死亡或重伤事故。\n\n启动水泵前，应对吸入管路和水泵进行排气，再充注待处理液体。\n.\n\n存在财产损坏风险！\n\n干运行会导致水泵损耗增加。\n\n严禁在未注液的情况下运行泵组。\n\n水泵运行期间，不允许关闭吸入管路和/或供水管路上的截断装置。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 26",
+          "role": "supporting",
+          "relevance_grade": 1
+        },
+        {
+          "evidence_id": "C004-e3",
+          "document_name": "t1739cn.pdf",
+          "page_number": 29,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-2fc3d4695355-000-2fc3d4695355",
+          "evidence_text": "意：由于设计结构特性，为水泵调试/启动原因注液后，液压系统中仍可能存在少量未充满容\n\n积。不过，一旦电机启动，泵送作用会立即使该容积充满所处理的液体。\n\n1. 对水泵和吸入管路进行排气，再充注待处理液体。\n\n2. 完全打开吸入管路上的截断装置。\n\n3. 如有配置，应完全打开所有辅助供给管路（阻隔液、冲洗液等）。\n\n4. 打开真空平衡管路上的截断装置（如有配置），然后关闭真空密封截断装置（如有配置）。\n\n排气和注液\n\n代斯米注液装置有两种类型可供选配：注液泵和注液空气喷射器。\n\n自动排气和注液系统专为离心泵设计，防止液位低于水泵进水口时干运行。\n\n离心泵启动时，仅自动注液系统会先行激活。待时限继电器完成预设时序后，离心泵方开始运转。\n\n一旦离心泵达到所需出口压力，压力开关将立即切断注液系统。\n\n详细内容请查看手册。\n\nhttp://www.desmi.com/media/fo2dilig/t1488uk.pdf\n\nhttp://www.desmi.com/media/dtojxa0h/t1521uk.pdf\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n27 电邮：desmi@desmi.com www.desmi.com",
+          "role": "supporting",
+          "relevance_grade": 1
+        },
+        {
+          "evidence_id": "C004-e4",
+          "document_name": "t1739cn.pdf",
+          "page_number": 32,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-db01d9f3b0b4-000-db01d9f3b0b4",
+          "evidence_text": "机械密封在运行期间仅会出现轻微泄漏或不可见泄漏（如蒸汽）的情况。机械密封免维护。\n\n小心\n\n小心\n\n调试、启动和关闭\n\n存在财产损坏的风险！\n\n在排出管路打开的情况下启动会导致电机过载，从而损坏电机。\n\n确保电机有足够的功率储备。\n\n使用一个软启动器。\n\n使用速度控制装置。\n\n1. 完全打开吸入压头/吸升管路上的截断装置。\n\n2. 关闭或稍微打开排出管路上的截断装置。\n\n3. 启动电机。\n\n4. 水泵达到全转速后，立即缓慢打开排出管路上的截断装置并对其进行调整，至满足工况点要求。\n\n6.4. 检查轴封\n\n6.5. 关闭\n\n存在损坏轴封的风险！\n\n泵内热量堆积会损坏轴封。\n\n泵组停转后，切断热源，始终让所处理液体完全冷却。\n\n吸入管路上的截断装置保持开启状态。\n\n1. 关闭排出管路上的截断装置。\n\n2. 切断电机电源，确保泵组平稳降速至完全停止。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 30",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000": 5,
+        "cchunk-pymupdf-v1-4e14a3b265877fb1-000": null,
+        "cchunk-pymupdf-v1-3c48ca477586c617-000": null,
+        "cchunk-pymupdf-v1-0261999df5570bed-000": null
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-a94c7167b5a3f6ed-000",
+        "cchunk-pymupdf-v1-34cc49bd2766d02e-000",
+        "cchunk-pymupdf-v1-5204df83f2867fee-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "C005",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "C005-e1",
+          "document_name": "2196-ANSI-Manual-Chinese.pdf",
+          "page_number": 18,
+          "chunk_id": "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124",
+          "evidence_text": "12 SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型\n\n警告！\n\n8. 检查泵和电机的机械运作。\n\n停机\n\n如需使泵停机\n1. 逐渐关上出口阀并关闭电机电源。\n\n2. 切断泵驱动器的电源。",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "C005-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 32,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-db01d9f3b0b4-000-db01d9f3b0b4",
+          "evidence_text": "机械密封在运行期间仅会出现轻微泄漏或不可见泄漏（如蒸汽）的情况。机械密封免维护。\n\n小心\n\n小心\n\n调试、启动和关闭\n\n存在财产损坏的风险！\n\n在排出管路打开的情况下启动会导致电机过载，从而损坏电机。\n\n确保电机有足够的功率储备。\n\n使用一个软启动器。\n\n使用速度控制装置。\n\n1. 完全打开吸入压头/吸升管路上的截断装置。\n\n2. 关闭或稍微打开排出管路上的截断装置。\n\n3. 启动电机。\n\n4. 水泵达到全转速后，立即缓慢打开排出管路上的截断装置并对其进行调整，至满足工况点要求。\n\n6.4. 检查轴封\n\n6.5. 关闭\n\n存在损坏轴封的风险！\n\n泵内热量堆积会损坏轴封。\n\n泵组停转后，切断热源，始终让所处理液体完全冷却。\n\n吸入管路上的截断装置保持开启状态。\n\n1. 关闭排出管路上的截断装置。\n\n2. 切断电机电源，确保泵组平稳降速至完全停止。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 30",
+          "role": "supporting",
+          "relevance_grade": 1
+        },
+        {
+          "evidence_id": "C005-e3",
+          "document_name": "t1739cn.pdf",
+          "page_number": 33,
+          "chunk_id": "cchunk-pymupdf-v1-和关闭-98af0d342570-000-98af0d342570",
+          "evidence_text": "遵守订单文件中的操作参数要求。\n\n小心\n\n. 危险\n\n存在爆炸危险！\n\n调试、启动和关闭\n\n注意：如果排出管路配备了一个止回阀，只要考虑并遵守现场要求和规定，排出管路上的截断装\n\n置便可以保持开启状态。\n\n长期关机期间：\n\n1. 关闭吸入管路上的截断装置。\n\n2. 关闭辅助接口。\n\n存在财产损坏的风险！\n\n长期关机期间液体可能冻结，这会损坏水泵。\n\n排空水泵和冷却/加热室（如有配置），或者采取措施防止其冻结。\n\n存在所处理的高温或有毒液体泄漏的风险！\n\n运行水泵时，压力、温度、处理液体和转速不正确都会导致财产损坏、死亡或重伤事故。\n\n不允许用水泵处理未经授权的液体。\n\n不允许在截断装置关闭的情况下长时间运行水泵。\n\n未征得代斯米的书面许可，不允许在不正确的条件下运行水泵（如温度、压力或转速超过订单文\n\n件或铭牌上规定的数值）。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n31 电邮：desmi@desmi.com www.desmi.com",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-08ad51d60ec4d01b-000": 1,
+        "cchunk-pymupdf-v1-2db1a56a7e45ceb2-000": 4,
+        "cchunk-pymupdf-v1-0261999df5570bed-000": 13
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+        "cchunk-pymupdf-v1-4afb1bd71eb2e7fc-000",
+        "cchunk-pymupdf-v1-7227e2460f83a192-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    },
+    {
+      "question_id": "C006",
+      "split": "validation",
+      "expected_evidence": [
+        {
+          "evidence_id": "C006-e1",
+          "document_name": "2196-ANSI-Manual-Chinese.pdf",
+          "page_number": 10,
+          "chunk_id": "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93",
+          "evidence_text": "4 SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型\n\n警告！\n\n小心！\n\n小心！\n\n小心！\n\n位置\n\n地基\n\n管路连接 – 入口 / 出口\n\n所有管路必须单独支撑并与泵的入口法兰和出口法兰准确对正。最好在与泵\n法兰直接相连的接头处放置一小段软短管或波纹式短管。\n\n切勿用力将管路与泵法兰对正。\n\n出口管路应包含隔离阀和止回阀。止回阀防止泵反向旋转。将止回阀置于泵\n和隔离阀之间。隔离阀用于灌注、启动和停止系统。如果使用管路异径接\n头，将其置于泵与止回阀之间。",
+          "role": "primary",
+          "relevance_grade": 2
+        },
+        {
+          "evidence_id": "C006-e2",
+          "document_name": "t1739cn.pdf",
+          "page_number": 21,
+          "chunk_id": "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf",
+          "evidence_text": "X = 吸入管路在流态改变元件前的最小直管段长度\n\n. 警告\n\n5.2. 接管\n\n要求具备专业技能！\n\n接管不正确可能导致死亡或重伤事故。\n\n接管工作要求具备专业知识。只有经过授权的技术人员才可以开展这项工作。\n\n• 基础\n\n• 管道系统\n\n• 管道支架\n\n• 电机和水泵的检修区域和吊运点\n\n• 管道介质流量\n\n• 最佳工作范围\n\n• 电气接口（电缆和螺丝组件）\n\n• 电气干扰\n\n水泵前的管道系统 – 吸入管路\n\n流态改变元件：\n\n• 补偿器\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n19 电邮：desmi@desmi.com www.desmi.com",
+          "role": "supporting",
+          "relevance_grade": 1
+        },
+        {
+          "evidence_id": "C006-e3",
+          "document_name": "t1739cn.pdf",
+          "page_number": 22,
+          "chunk_id": "cchunk-pymupdf-v1--安装-4c0decacc13b-000-4c0decacc13b",
+          "evidence_text": "图5-4 ：安装示意图\n\n• 阀门\n\n• 过滤器\n\n• 弯管\n\n• 孔板\n\n• 等\n\n确保提供稳固的底板，尽量减少振动、延长检修间隔。\n\n避免曲率半径小于标称管径的1.5倍。\n\n避免管道系统横截面突然变化。\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n电邮：desmi@desmi.com www.desmi.com 20",
+          "role": "supporting",
+          "relevance_grade": 1
+        },
+        {
+          "evidence_id": "C006-e4",
+          "document_name": "t1739cn.pdf",
+          "page_number": 23,
+          "chunk_id": "cchunk-pymupdf-v1--安装-23fbf21e5cf5-000-23fbf21e5cf5",
+          "evidence_text": "注：在有些安装中和/或短期运行条件下，也允许更高的流速。\n\n• 泵脚的各个边缘都应与支撑托架完全接触。\n\n• 管道支撑的设计需涵盖所有可能的工况条件，包括冷态/热态、空管/满管、无压/承压状态下的\n\n管道受力情况。\n\n注意：管道需要独立的支撑，不能有任何的作用力作用到水泵，否则会造成机封和轴承的损坏。\n\n• 底板/底架上的所有螺栓都必须按建议扭矩拧紧。\n\n运行、减少潜在振动。\n\n建议管道设计\n\n图5-5\n\n建议管道内流速\n\n以下范围内的流速（v）\n\n• 进口侧 v < 3 m/s（注：分流至多台并联水泵的歧管内流速 v<1.5 m/s）\n\nDESMI Pumping Technology A/S\nTagholm 1\n9400 Nørresundby – Denmark\n电话：+45 96 32 81 11\n传真：+45 98 17 54 99\n21 电邮：desmi@desmi.com www.desmi.com",
+          "role": "supporting",
+          "relevance_grade": 1
+        }
+      ],
+      "initial_rank": {
+        "cchunk-pymupdf-v1-a9a1f3c1a7578885-000": null,
+        "cchunk-pymupdf-v1-b5a8f25cefe47aef-000": 9,
+        "cchunk-pymupdf-v1-031107a3c2337259-000": 4,
+        "cchunk-pymupdf-v1-58f5902fcdf80561-000": null
+      },
+      "selected_evidence": [
+        "cchunk-pymupdf-v1-031107a3c2337259-000",
+        "cchunk-pymupdf-v1-f1d515087d6f1eee-000",
+        "cchunk-pymupdf-v1-c252bcbee91ab8cc-000"
+      ],
+      "completed_evidence": [],
+      "parent_context_available": true,
+      "adjacent_context_available": true,
+      "answer_plan": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "grounding_result": [
+        {
+          "point_id": "P1",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ],
+      "final_status": "insufficient_evidence",
+      "root_cause": "partial_evidence_misclassified_as_refusal"
+    }
+  ]
+}

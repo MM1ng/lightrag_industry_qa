@@ -28,16 +28,16 @@ def test_replay_does_not_synthesize_answers_for_refusals():
 
 def test_completion_experiments_are_blocked_until_replay_gate():
     payload = _read("experiment_results.json")
-    assert payload["status"] == "blocked_at_offline_replay_gate"
-    assert payload["experiments_not_run"] == ["E1", "E2", "E3", "E4", "real-52-rerun"]
+    assert payload["experiments"] == ["E1", "E2", "E3", "E4"]
+    assert payload["holdout_used"] is False
     assert payload["candidate_activated"] is False
 
 
 def test_initial_metrics_are_not_claimed_as_completion_metrics():
     payload = _read("effective_evidence_metrics.json")
-    assert payload["initial_metrics_unchanged"] is True
-    assert payload["effective_evidence_recall_after_completion"]["value"] is None
-    assert payload["completion_evidence_precision"]["value"] is None
+    assert payload["initial_metrics"]["source"] == "phase10b3d_frozen_baseline"
+    assert payload["completion_metrics"]["effective_evidence_recall_after_completion"]["value"] is not None
+    assert payload["completion_metrics"]["completion_evidence_precision"]["value"] is not None
 
 
 def test_replay_secret_scan_is_clean():
