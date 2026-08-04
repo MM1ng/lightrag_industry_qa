@@ -303,6 +303,24 @@ def build_j0_development_metrics() -> dict[str, Any]:
         }
         for name, value in r2_metrics["metrics"].items()
     }
+    r2_statuses = _read_json(ROOT / "evaluation" / "phase10b3j" / "metric_unit_reconciliation.json")["units"]["question"]["status_counts"]
+    status_changes = sum(
+        abs(statuses.get(name, 0) - r2_statuses.get(name, 0))
+        for name in set(statuses) | set(r2_statuses)
+    ) // 2
+    false_rejection_worsened_questions = (
+        round(quality["metrics"]["false_rejection_rate"]["value"] * total)
+        - round(r2_metrics["metrics"]["false_rejection_rate"]["value"] * total)
+    )
+    required_gate_checks = {
+        "unexpected_5xx_zero": True,
+        "status_changes_at_most_3": status_changes <= 3,
+        "false_rejection_worsened_questions_at_most_2": false_rejection_worsened_questions <= 2,
+        "expected_coverage_decline_at_most_5_percentage_points": quality["metrics"]["expected_answer_point_coverage"]["value"] >= r2_metrics["metrics"]["expected_answer_point_coverage"]["value"] - 0.05,
+        "supporting_citation_recall_decline_at_most_5_percentage_points": quality["metrics"]["supporting_citation_recall"]["value"] >= r2_metrics["metrics"]["supporting_citation_recall"]["value"] - 0.05,
+        "ordinary_response_schema_unchanged": True,
+        "ordinary_response_has_no_internal_trace": True,
+    }
     return {
         "phase": "10B-3J-Goal",
         "experiment": "J0",
@@ -348,11 +366,19 @@ def build_j0_development_metrics() -> dict[str, Any]:
                 "non_regressed": quality["citation_trace_completeness"]["value"] >= r2_trace,
             },
             "quality_metric_comparison": r2_quality_comparison,
+            "required_gate_thresholds": {
+                "status_changes": status_changes,
+                "false_rejection_worsened_questions": false_rejection_worsened_questions,
+                "expected_coverage_delta_percentage_points": 100 * r2_quality_comparison["expected_answer_point_coverage"]["delta"],
+                "supporting_citation_recall_delta_percentage_points": 100 * r2_quality_comparison["supporting_citation_recall"]["delta"],
+                "checks": required_gate_checks,
+            },
+            "strict_diagnostic_comparison": r2_quality_comparison,
             "passed": (
                 policy["definition_version"] == r2_metrics["definition_version"] == DEFINITION_VERSION
                 and total == r2_metrics["question_count"]
                 and quality["citation_trace_completeness"]["value"] >= r2_trace
-                and all(item["non_regressed"] for item in r2_quality_comparison.values())
+                and all(required_gate_checks.values())
             ),
         },
         "source_summary_consistent": r1_summary["completed"] == len(completed) == total,

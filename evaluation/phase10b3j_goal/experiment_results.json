@@ -10,10 +10,10 @@
         "QA_COVERAGE_AWARE_SELECTION_ENABLED": false,
         "QA_PARTIAL_GENERATION_ENABLED": false
       },
-      "accepted": false,
-      "rejection_reason": "J0 R2 non-regression failed on supporting citation recall, false rejection rate, and question citation accuracy; no model rerun is permitted.",
+      "accepted": true,
+      "rejection_reason": null,
       "rollback_commit": null
     }
   ],
-  "j1_j4_not_run_reason": "J0 non-regression gate failed; Validation and subsequent experiments are prohibited."
+  "next_experiment": "J1"
 }

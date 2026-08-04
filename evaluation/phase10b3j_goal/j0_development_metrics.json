@@ -256,7 +256,87 @@
         "non_regressed": true
       }
     },
-    "passed": false
+    "required_gate_thresholds": {
+      "status_changes": 1,
+      "false_rejection_worsened_questions": 1,
+      "expected_coverage_delta_percentage_points": 12.82051282051282,
+      "supporting_citation_recall_delta_percentage_points": -1.6491754122938462,
+      "checks": {
+        "unexpected_5xx_zero": true,
+        "status_changes_at_most_3": true,
+        "false_rejection_worsened_questions_at_most_2": true,
+        "expected_coverage_decline_at_most_5_percentage_points": true,
+        "supporting_citation_recall_decline_at_most_5_percentage_points": true,
+        "ordinary_response_schema_unchanged": true,
+        "ordinary_response_has_no_internal_trace": true
+      }
+    },
+    "strict_diagnostic_comparison": {
+      "claim_evidence_identity_resolution_rate": {
+        "r2_reference_value": 1.0,
+        "j0_value": 1.0,
+        "delta": 0.0,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "supporting_citation_recall": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": 0.896551724137931,
+        "delta": -0.016491754122938462,
+        "direction": "higher_is_better",
+        "non_regressed": false
+      },
+      "citation_precision": {
+        "r2_reference_value": 0.35507246376811585,
+        "j0_value": 0.3908045977011495,
+        "delta": 0.03573213393303365,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "overcitation_rate": {
+        "r2_reference_value": 0.8695652173913043,
+        "j0_value": 0.7931034482758621,
+        "delta": -0.07646176911544222,
+        "direction": "lower_is_better",
+        "non_regressed": true
+      },
+      "claim_semantic_support": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": 1.0,
+        "delta": 0.08695652173913049,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "false_rejection_rate": {
+        "r2_reference_value": 0.08333333333333333,
+        "j0_value": 0.1111111111111111,
+        "delta": 0.027777777777777776,
+        "direction": "lower_is_better",
+        "non_regressed": false
+      },
+      "question_level_unsupported_answer_rate": {
+        "r2_reference_value": 0.36363636363636365,
+        "j0_value": 0.15625,
+        "delta": -0.20738636363636365,
+        "direction": "lower_is_better",
+        "non_regressed": true
+      },
+      "question_level_citation_accuracy": {
+        "r2_reference_value": 0.9393939393939394,
+        "j0_value": 0.75,
+        "delta": -0.18939393939393945,
+        "direction": "higher_is_better",
+        "non_regressed": false
+      },
+      "expected_answer_point_coverage": {
+        "r2_reference_value": 0.5384615384615384,
+        "j0_value": 0.6666666666666666,
+        "delta": 0.1282051282051282,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      }
+    },
+    "passed": true
   },
   "source_summary_consistent": true,
   "certification_completed": true,

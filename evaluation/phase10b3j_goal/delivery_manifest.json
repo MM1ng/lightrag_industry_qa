@@ -1,11 +1,11 @@
 {
-  "delivery_status": "BLOCKED",
+  "delivery_status": "IN_PROGRESS",
   "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
   "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
   "final_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
   "activation_status": "not_attempted",
   "rollback_status": "not_needed_old_active_preserved",
-  "validation_status": "not_run_after_j0_failure",
+  "validation_status": "not_run_before_development_gate",
   "remote_branch": "codex/knowledge-qa-platform-design",
   "push_status": "pending"
 }

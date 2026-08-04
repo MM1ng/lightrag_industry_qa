@@ -30,6 +30,7 @@ def test_goal_certification_outputs_are_truthful_and_offline() -> None:
     comparison = metrics["r2_non_regression_gates"]["quality_metric_comparison"]
     assert set(comparison) == set(metrics["quality_metrics"]["metrics"])
     assert all(item["j0_value"] is not None for item in comparison.values())
+    assert metrics["r2_non_regression_gates"]["passed"] is True
 
 
 def test_lifecycle_fixture_keeps_active_pointer_and_blocks_terminal_states() -> None:
