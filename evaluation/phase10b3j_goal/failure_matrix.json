@@ -1,4 +1,9 @@
 {
-  "status": "superseded",
-  "superseded_reason": "The prior artifact incorrectly applied a strict all-metrics-no-decline comparison. The original J0 gate uses bounded tolerances and passes; see j0_development_metrics.json."
+  "terminal_outcome": "BLOCKED",
+  "single_root_cause": "The only permitted Citation Precision repair, J1 strict claim citation pruning, completed the Development run at 38.89% Citation Precision, below the required 80.00%. The J1 failure rule requires rollback and terminal B when Citation Precision remains the primary blocker.",
+  "evidence": "evaluation/phase10b3j_goal/j1_results.json",
+  "failed_experiment": "J1",
+  "rollback_completed": true,
+  "not_run": ["J2", "J3", "J4", "Validation", "final_52", "Candidate activation"],
+  "human_dependency": "A human-approved change to the allowed strategy boundary is required before any further citation-quality repair."
 }

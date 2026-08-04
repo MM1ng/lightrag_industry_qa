@@ -1,5 +1,5 @@
 {
-  "delivery_status": "IN_PROGRESS",
+  "delivery_status": "BLOCKED",
   "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
   "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
   "final_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
@@ -7,5 +7,18 @@
   "rollback_status": "not_needed_old_active_preserved",
   "validation_status": "not_run_before_development_gate",
   "remote_branch": "codex/knowledge-qa-platform-design",
-  "push_status": "pending"
+  "push_status": "pending",
+  "terminal_reason": "J1 Citation Precision 38.89% is below the required 80.00%; J1 was rolled back.",
+  "phase10c_allowed": false
+  ,"test_results": {
+    "pytest_collected": 774,
+    "pytest_passed": 757,
+    "pytest_skipped": 12,
+    "pytest_failed": 5,
+    "pytest_warnings": 2,
+    "pytest_failure_scope": "missing local parser raw/PDF artifacts, a parser mapping source mismatch, and an absent Phase 7 RC ZIP; none are caused by J1 or its rollback",
+    "focused_post_rollback": "35 passed, 1 warning",
+    "ruff": "pass",
+    "secret_scan": "pass; confirmed_secret_count=0"
+  }
 }

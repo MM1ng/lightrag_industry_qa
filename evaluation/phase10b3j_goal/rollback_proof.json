@@ -1,0 +1,9 @@
+{
+  "status": "completed",
+  "scope": "J1 application wiring only",
+  "reverted_code_commit": "3c4a73f37db48ba60df9947b5e522d65a023b6ca",
+  "rollback_commit": "6a11bdb8980f379bec579e125b789ea2a28bbfa0",
+  "candidate_activation": "not_attempted",
+  "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_generation_unchanged": true
+}
