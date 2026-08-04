@@ -1,7 +1,7 @@
 {
   "phase": "10B-3H",
   "evaluation_run_id": "phase10b3h-final-52",
-  "code_commit": "integration-pending",
+  "code_commit": "4e6db77",
   "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
   "candidate_generation_name": "g10b3c20260803",
   "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",

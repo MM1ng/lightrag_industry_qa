@@ -12,11 +12,11 @@
 | agent_a_commit | `c0f46bb37ae50dbc8ee404f8112625fb389cf005` |
 | agent_b_commit | `052db1039fc05c4eb9974228ca11521003f95ed1` + `6b55a4e` |
 | agent_c_commit | `4d862db5c1d703c00024d9a9db5c75265193b8a7` |
-| integration_commit | 待最终集成提交 |
-| code_under_test_commit | 待最终集成提交 |
-| evaluation_run_commit | 待最终集成提交 |
-| report_commit | 待最终报告提交 |
-| final_delivery_commit | 待最终报告提交 |
+| integration_commit | `4e6db77` |
+| code_under_test_commit | `4e6db77` |
+| evaluation_run_commit | `4e6db77` |
+| report_commit | `4e6db77` |
+| final_delivery_commit | `4e6db77` |
 | evaluation_run_id | `phase10b3h-final-52` |
 | config_sha256 | `49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22` |
 | dataset_sha256 | `22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3` |
