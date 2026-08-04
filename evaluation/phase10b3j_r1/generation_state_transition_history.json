@@ -1,0 +1,18 @@
+{
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "observed_history": [
+    {
+      "status": "failed",
+      "source_db": "runtime/phase10b3b/industrial_rag_staging.db",
+      "note": "wrong runtime database"
+    },
+    {
+      "status": "ready",
+      "source_db": "runtime/phase10b3c/industrial_rag_candidate.db",
+      "note": "ready before query; no mutation performed"
+    }
+  ],
+  "active_pointer_before": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_pointer_after": "a2d1c77ce08b414495e9d845cc42f799",
+  "state_mutation_performed": false
+}

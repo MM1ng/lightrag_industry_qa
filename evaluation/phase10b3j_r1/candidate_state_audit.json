@@ -1,0 +1,34 @@
+{
+  "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "generation_name": "g10b3c20260803",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "lifecycle_state": "ready",
+  "queryable": true,
+  "active": false,
+  "created_at": "2026-08-03 14:05:44.618821",
+  "updated_at": null,
+  "ready_at": null,
+  "failure_reason": null,
+  "collection_name": {
+    "chunks": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_chunks",
+    "entities": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_entities",
+    "relationships": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_relationships"
+  },
+  "context_registry_path": "D:\\industrial_energy_agent\\runtime\\phase10b3c\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\g10b3c20260803\\context_registry",
+  "document_count": 2,
+  "child_chunk_count": 453,
+  "parent_chunk_count": 447,
+  "relationship_count": 1355,
+  "embedding_model": "text-embedding-v4",
+  "embedding_dimension": 1024,
+  "distance_metric": "Cosine",
+  "active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "old_active_status": "active",
+  "same_kb_as_active": true,
+  "collections_exist": true,
+  "qdrant_point_counts": {
+    "chunks": 453,
+    "entities": 570,
+    "relationships": 555
+  }
+}

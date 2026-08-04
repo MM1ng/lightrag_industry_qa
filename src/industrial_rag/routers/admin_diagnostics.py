@@ -75,6 +75,26 @@ class RetrievalTraceResponse(BaseModel):
     original_query_sha256: str | None = None
     normalized_query_sha256: str | None = None
     provider_evidence_ids: list[str] = Field(default_factory=list)
+    provider_primary_evidence_ids: list[str] = Field(default_factory=list)
+    provider_completed_evidence_ids: list[str] = Field(default_factory=list)
+    provider_supplemental_evidence_ids: list[str] = Field(default_factory=list)
+    provider_context_order: list[str] = Field(default_factory=list)
+    provider_context_sha256: str | None = None
+    provider_evidence_count: int = 0
+    provider_context_truncated: bool = False
+    provider_context_token_estimate: int | None = None
+    backend_second_query_called: bool = False
+    coverage_before: list[str] = Field(default_factory=list)
+    coverage_after_parent_adjacent: list[str] = Field(default_factory=list)
+    selected_coverage: list[str] = Field(default_factory=list)
+    generated_coverage: list[str] = Field(default_factory=list)
+    grounding_retained_coverage: list[str] = Field(default_factory=list)
+    grounding_answer_point_identity: list[str] = Field(default_factory=list)
+    grounding_support_candidate_ids: list[dict[str, Any]] = Field(default_factory=list)
+    grounding_retained_answer_points: list[str] = Field(default_factory=list)
+    grounding_removed_answer_points: list[str] = Field(default_factory=list)
+    grounding_removal_reasons: list[dict[str, Any]] = Field(default_factory=list)
+    grounding_false_negative_diagnostics: list[dict[str, Any]] = Field(default_factory=list)
     generated_answer_points: list[str] = Field(default_factory=list)
     rejected_answer_points: list[str] = Field(default_factory=list)
     support_validation_reason_codes: list[str] = Field(default_factory=list)

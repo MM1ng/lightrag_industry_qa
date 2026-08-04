@@ -1,0 +1,28 @@
+{
+  "phase": "10B-3J-R1",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "golden_set": "evaluation/phase10/expanded_golden_set.jsonl",
+  "golden_set_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "development_questions": 36,
+  "validation_run": false,
+  "holdout_run": false,
+  "j1_j4_run": false,
+  "candidate_activated": false,
+  "active_pointer_changed": false,
+  "artifacts": {
+    "evaluation/phase10b3j_r1/candidate_artifact_integrity.json": "bef2a4f977a14441074ed5cf39cba6a5c91b1770216febdd065ef0122983c7d2",
+    "evaluation/phase10b3j_r1/candidate_state_audit.json": "2d3af3f1fbe5b51c9f666153de6522fc05981e8e1f1fa23a082557dba12b1b43",
+    "evaluation/phase10b3j_r1/commit_lineage.json": "811676d52a30324fd9b1e76afbad77768e135f3afb2157cb21ecc1fa7586f14d",
+    "evaluation/phase10b3j_r1/coverage_predicate_matrix.jsonl": "b0610baac3d73989f42dd9e8548f09809f75b70d3a26dcdd16668ca16b44e524",
+    "evaluation/phase10b3j_r1/generation_invalid_state_root_cause.json": "0e18bfb988af0983302fb949b8d58d21df9db015c9d6d0245351f8fb5e6b073d",
+    "evaluation/phase10b3j_r1/generation_state_transition_history.json": "c70f6f36dfca5a6fbdec9252536b180a1b98654215524c51339eeeb795191d2a",
+    "evaluation/phase10b3j_r1/grounding_removal_matrix.jsonl": "af66d9e4f8f8ebf14904e88bde4fad47b98bd3bd3dcf471cfa92aa81d730c3ea",
+    "evaluation/phase10b3j_r1/instrumentation_non_regression.json": "8c400acde374a8c2f0f32d24cce4c68ed57fb3fe2bfa101cb590a1b98b522370",
+    "evaluation/phase10b3j_r1/j0_development_results.jsonl": "9de46793cf441eb3c02306e16a50758e0acb763065b678c80f208fbc8ecddb32",
+    "evaluation/phase10b3j_r1/j0_development_summary.json": "1fd115158cc7e3b2377d84fe0db219bb3fac2d6f3395ca2da6d985305c7494af",
+    "evaluation/phase10b3j_r1/j0_smoke_results.jsonl": "bc25065c34f3d3fcde8e90f47d3fca6caf4971d424ef994909ceb44cd78d895d",
+    "evaluation/phase10b3j_r1/provider_lineage_matrix.jsonl": "95a689aba36a0abed15b55d3da9a00bc7bd4fbcc98f78a31c28c3024842196b4",
+    "evaluation/phase10b3j_r1/queryability_contract_results.json": "743e40ad07519be57426fe773780fc4bd93c76cc21e1ac5c149dee8a14830cbf",
+    "evaluation/phase10b3j_r1/runtime_identity.json": "e5c85c5c0a2fce871cc3d2fefb71521995751be8ae442ee21a4069b82323b418"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "context_registry_manifest_sha256": "c64db0fc114a5acb5bd1bebd3b4031165d3f65e3a58526bd72115b57b1a2112d",
+  "chunks_jsonl_sha256": "98ce629da3e1f2f036f642c02561fde6e05ba2f6a5e147d86371d5e21ad43a02",
+  "parents_jsonl_sha256": "0b7abe03980d33868556e712ac8e7126cdf3c8f9c70e2c253461fca70e968b37",
+  "relationships_jsonl_sha256": "b5dfc4ba18b8fe31433fa535aad7c222225ceefbf2669c354968d1800f91b255",
+  "chunk_id_unique": true,
+  "registry_counts": {
+    "chunks": 453,
+    "parents": 447,
+    "relationships": 1355
+  },
+  "qdrant_point_counts": {
+    "chunks": 453,
+    "entities": 570,
+    "relationships": 555
+  },
+  "collection_status": "green",
+  "embedding_dimension_match": true,
+  "content_sha_consistency": "manifest_available_not_recomputed",
+  "cross_generation_relationships": false,
+  "artifact_complete": true
+}

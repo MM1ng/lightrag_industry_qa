@@ -1,0 +1,11 @@
+{
+  "phase": "10B-3J-R1",
+  "integration_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
+  "report_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
+  "remote_branch": "codex/knowledge-qa-platform-design",
+  "pushed": false,
+  "push_failure_reason": "pending commit and push",
+  "pytest": "pending fresh post-change run",
+  "ruff": "pending fresh post-change run",
+  "secret_scan_confirmed_secret_count": 0
+}

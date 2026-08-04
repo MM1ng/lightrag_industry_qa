@@ -1,0 +1,16 @@
+{
+  "root_cause": "wrong_runtime_environment",
+  "route": "POST /v1/knowledge-bases/{kb_id}/generations/{generation_id}/query",
+  "request_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "resolved_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "staging_db_state": "failed",
+  "candidate_db_state": "ready",
+  "failed_predicate": "generation.status in {failed, deleted}",
+  "source_file": "src/industrial_rag/services/query_application_service.py",
+  "function": "QueryApplicationService._query",
+  "line": 92,
+  "error_code": "generation_invalid_state",
+  "status_code": 409,
+  "active_pointer": "a2d1c77ce08b414495e9d845cc42f799",
+  "repair": "runtime DATABASE_URL switched to candidate DB only; no generation or active-pointer mutation"
+}
