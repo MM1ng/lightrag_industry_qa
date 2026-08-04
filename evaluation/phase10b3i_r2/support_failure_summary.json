@@ -1,0 +1,6 @@
+{
+  "case_count": 5,
+  "fields_non_null": true,
+  "source": "raw_claim_and_registry_evidence_semantic_audit",
+  "holdout_used": false
+}

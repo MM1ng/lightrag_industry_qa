@@ -1,0 +1,7 @@
+{
+  "case_count": 5,
+  "classification_counts": {
+    "only_wrong_citations": 5
+  },
+  "holdout_used": false
+}

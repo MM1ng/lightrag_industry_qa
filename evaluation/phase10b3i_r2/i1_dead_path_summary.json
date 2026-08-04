@@ -1,0 +1,11 @@
+{
+  "record_count": 36,
+  "triggered": 0,
+  "trigger_eligible_count": 0,
+  "reason_counts": {
+    "missing_trace_field:coverage_before_blocks_missing_gap_predicate": 36
+  },
+  "runtime_predicate": "coverage_before missing in persisted trace prevents evaluating missing-gap gate; coverage_after missing prevents parent_adjacent_resolved gate",
+  "validation_run": false,
+  "holdout_used": false
+}
