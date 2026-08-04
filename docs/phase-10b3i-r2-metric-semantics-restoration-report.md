@@ -64,7 +64,7 @@ Citation 审计保存 expected/actual/supporting/unsupported Chunk、precision�
 - Validation：未运行；Holdout：未读取。
 - Candidate：未激活；Phase 10C：不允许。
 - R2 定向测试：6 passed。
-- 全量测试基线仍为前一轮已验证的 `732 passed, 12 skipped, 1 warning`；Ruff 通过；Secret scan `confirmed_secret_count=0`。
+- 全量 pytest：`738 passed, 12 skipped, 2 warnings`；750 tests collected。两条 warning 为 Starlette/httpx 弃用提示和 Phase 9 测试线程退出时的 aiosqlite Event Loop 警告；Ruff 通过；Secret scan `confirmed_secret_count=0`。
 
 ## 阶段状态
 
