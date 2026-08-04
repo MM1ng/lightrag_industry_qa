@@ -1,0 +1,389 @@
+{
+  "failure_stage_enum": [
+    "citation_wrong_evidence",
+    "completion_not_triggered",
+    "completion_rejected",
+    "evaluation_mapping_error",
+    "generation_omitted",
+    "generation_refusal",
+    "grounding_false_negative",
+    "grounding_false_positive",
+    "provider_context_missing",
+    "recalled_not_selected",
+    "retrieval_missing",
+    "unknown"
+  ],
+  "buckets": {
+    "unknown": [
+      {
+        "question_id": "S001",
+        "expected_point_id": "S001-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S002",
+        "expected_point_id": "S002-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S003",
+        "expected_point_id": "S003-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S004",
+        "expected_point_id": "S004-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S005",
+        "expected_point_id": "S005-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S008",
+        "expected_point_id": "S008-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S009",
+        "expected_point_id": "S009-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S010",
+        "expected_point_id": "S010-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S011",
+        "expected_point_id": "S011-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S012",
+        "expected_point_id": "S012-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S014",
+        "expected_point_id": "S014-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S015",
+        "expected_point_id": "S015-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S016",
+        "expected_point_id": "S016-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S017",
+        "expected_point_id": "S017-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S018",
+        "expected_point_id": "S018-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "S019",
+        "expected_point_id": "S019-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D001",
+        "expected_point_id": "D001-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D002",
+        "expected_point_id": "D002-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D003",
+        "expected_point_id": "D003-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D004",
+        "expected_point_id": "D004-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D006",
+        "expected_point_id": "D006-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D007",
+        "expected_point_id": "D007-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D008",
+        "expected_point_id": "D008-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D009",
+        "expected_point_id": "D009-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D010",
+        "expected_point_id": "D010-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D011",
+        "expected_point_id": "D011-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D012",
+        "expected_point_id": "D012-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D013",
+        "expected_point_id": "D013-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D014",
+        "expected_point_id": "D014-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D015",
+        "expected_point_id": "D015-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D015",
+        "expected_point_id": "D015-p2",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D016",
+        "expected_point_id": "D016-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "D018",
+        "expected_point_id": "D018-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "C001",
+        "expected_point_id": "C001-p2",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "C003",
+        "expected_point_id": "C003-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "C003",
+        "expected_point_id": "C003-p2",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "C007",
+        "expected_point_id": "C007-p5",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "C008",
+        "expected_point_id": "C008-p1",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "C008",
+        "expected_point_id": "C008-p2",
+        "reason": "no point-level failure observed"
+      },
+      {
+        "question_id": "A002",
+        "expected_point_id": "A002-p1",
+        "reason": "no point-level failure observed"
+      }
+    ],
+    "generation_omitted": [
+      {
+        "question_id": "S006",
+        "expected_point_id": "S006-p1",
+        "reason": "available evidence did not become a claim"
+      }
+    ],
+    "generation_refusal": [
+      {
+        "question_id": "S007",
+        "expected_point_id": "S007-p1",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "S013",
+        "expected_point_id": "S013-p1",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "D005",
+        "expected_point_id": "D005-p1",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "D017",
+        "expected_point_id": "D017-p1",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "D019",
+        "expected_point_id": "D019-p2",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "D020",
+        "expected_point_id": "D020-p2",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "C002",
+        "expected_point_id": "C002-p2",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "C004",
+        "expected_point_id": "C004-p1",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "C005",
+        "expected_point_id": "C005-p3",
+        "reason": "provider refusal or insufficient evidence"
+      },
+      {
+        "question_id": "C006",
+        "expected_point_id": "C006-p2",
+        "reason": "provider refusal or insufficient evidence"
+      }
+    ],
+    "recalled_not_selected": [
+      {
+        "question_id": "S011",
+        "expected_point_id": "S011-p2",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "S017",
+        "expected_point_id": "S017-p2",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "S020",
+        "expected_point_id": "S020-p1",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "D019",
+        "expected_point_id": "D019-p1",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "D020",
+        "expected_point_id": "D020-p1",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "C001",
+        "expected_point_id": "C001-p1",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "C002",
+        "expected_point_id": "C002-p1",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "C005",
+        "expected_point_id": "C005-p1",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "C005",
+        "expected_point_id": "C005-p2",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "C006",
+        "expected_point_id": "C006-p3",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "C007",
+        "expected_point_id": "C007-p2",
+        "reason": "initial candidate was not selected"
+      },
+      {
+        "question_id": "A001",
+        "expected_point_id": "A001-p1",
+        "reason": "initial candidate was not selected"
+      }
+    ],
+    "retrieval_missing": [
+      {
+        "question_id": "C003",
+        "expected_point_id": "C003-p3",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C004",
+        "expected_point_id": "C004-p2",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C004",
+        "expected_point_id": "C004-p3",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C004",
+        "expected_point_id": "C004-p4",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C006",
+        "expected_point_id": "C006-p1",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C006",
+        "expected_point_id": "C006-p4",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C007",
+        "expected_point_id": "C007-p1",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C007",
+        "expected_point_id": "C007-p3",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      },
+      {
+        "question_id": "C007",
+        "expected_point_id": "C007-p4",
+        "reason": "mapped expected candidate chunk absent from initial results"
+      }
+    ]
+  },
+  "holdout_used": false
+}

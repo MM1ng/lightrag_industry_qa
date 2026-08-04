@@ -1,0 +1,32 @@
+{
+  "record_count": 72,
+  "question_count": 50,
+  "point_count": 72,
+  "split_counts": {
+    "development": 39,
+    "validation": 33
+  },
+  "failure_stage_counts": {
+    "unknown": 40,
+    "generation_omitted": 1,
+    "generation_refusal": 10,
+    "recalled_not_selected": 12,
+    "retrieval_missing": 9
+  },
+  "failure_stage_enum": [
+    "citation_wrong_evidence",
+    "completion_not_triggered",
+    "completion_rejected",
+    "evaluation_mapping_error",
+    "generation_omitted",
+    "generation_refusal",
+    "grounding_false_negative",
+    "grounding_false_positive",
+    "provider_context_missing",
+    "recalled_not_selected",
+    "retrieval_missing",
+    "unknown"
+  ],
+  "holdout_used": false,
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525"
+}
