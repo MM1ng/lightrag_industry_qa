@@ -12,11 +12,11 @@ Phase 10B-3G 完成了 Completion Lineage 审计、条件触发接线和一次�
 | agent_a_commit | `3db7792` |
 | agent_b_commit | `02b0a7d` |
 | agent_c_commit | `07e0e925a11d9dfc3947a9e8d168643deb730acc` |
-| integration_commit | 集成提交见最终 Git HEAD |
-| code_under_test_commit | 集成后的最终提交 |
-| evaluation_run_commit | 集成后的最终提交 |
-| report_commit | 集成后的最终提交 |
-| final_delivery_commit | 集成后的最终提交 |
+| integration_commit | `7fe9e09` |
+| code_under_test_commit | `7fe9e09` |
+| evaluation_run_commit | `7fe9e09` |
+| report_commit | `7fe9e09` |
+| final_delivery_commit | `7fe9e09` |
 | candidate_generation_id | `5bca792c08fcf2f7b08cbaed09b6d525` |
 | candidate_generation_name | `g10b3c20260803` |
 | old_active_generation_id | `a2d1c77ce08b414495e9d845cc42f799` |

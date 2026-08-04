@@ -32,7 +32,7 @@
     {
       "experiment_id": "E1",
       "base_commit": "9fb882a",
-      "code_commit": "9fb882a",
+      "code_commit": "7fe9e09",
       "changed_files": [],
       "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
       "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
@@ -45,7 +45,7 @@
     {
       "experiment_id": "E2",
       "base_commit": "9fb882a",
-      "code_commit": "9fb882a",
+      "code_commit": "7fe9e09",
       "changed_files": [],
       "runtime_config_sha": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
       "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
@@ -84,7 +84,7 @@
     {
       "experiment_id": "final-52",
       "base_commit": "9fb882a",
-      "code_commit": "9fb882a",
+      "code_commit": "7fe9e09",
       "changed_files": [
         "evaluation/phase10b3e/development_results.jsonl",
         "evaluation/phase10b3e/validation_results.jsonl"
