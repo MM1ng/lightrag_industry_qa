@@ -1,0 +1,14 @@
+{
+  "review_type": "multi_agent_machine_review",
+  "status": "machine_review_completed",
+  "case_count": 15,
+  "decision_counts": {
+    "machine_needs_human_review": 3,
+    "machine_supported": 12
+  },
+  "reviewer1_path": "evaluation/phase10b3j_goal/reviewer1_results.jsonl",
+  "reviewer2_path": "evaluation/phase10b3j_goal/reviewer2_results.jsonl",
+  "adjudicated_path": "evaluation/phase10b3j_goal/adjudicated_results.jsonl",
+  "human_review_performed": false,
+  "model_queries_made": false
+}

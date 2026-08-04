@@ -1,0 +1,130 @@
+{
+  "phase": "10B-3J-Goal",
+  "experiment": "J0",
+  "split": "development",
+  "metric_definition": {
+    "definition_version": "phase10b3d-metric-policy-v1",
+    "source_path": "evaluation/phase10b3d/metric_policy.json",
+    "source_sha256": "8850674f37430afece9088b53e9f1eaa874b831d341db04bc42e648b55bcd03d"
+  },
+  "input_evidence": {
+    "j0_results_path": "evaluation/phase10b3j_r1/j0_development_results.jsonl",
+    "j0_results_sha256": "9de46793cf441eb3c02306e16a50758e0acb763065b678c80f208fbc8ecddb32",
+    "r2_reference_path": "evaluation/phase10b3i_r2/i0_development_metrics.json",
+    "r2_reference_sha256": "01dea62ec1a9bc40bc940993359bdfa37d193dcbbe661cfe42bb77b950e35d7e",
+    "golden_read": false,
+    "holdout_read": false,
+    "model_queries_made": false
+  },
+  "question_count": 36,
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "status_distribution": {
+    "insufficient_evidence": 4,
+    "partial_answer": 30,
+    "success": 2
+  },
+  "runtime_certification_metrics": {
+    "completed_query_rate": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "substantive_response_rate": {
+      "numerator": 32,
+      "denominator": 36,
+      "value": 0.8888888888888888,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "refusal_rate": {
+      "numerator": 4,
+      "denominator": 36,
+      "value": 0.1111111111111111,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "failed_response_rate": {
+      "numerator": 0,
+      "denominator": 36,
+      "value": 0.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "trace_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "candidate_generation_correct_rate": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "provider_lineage_complete_rate": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    }
+  },
+  "r2_non_regression_gates": {
+    "comparison_scope": "runtime and lineage only; semantic quality metrics were not recomputed without a permitted expected-answer source",
+    "metric_definition_matches": true,
+    "development_question_count_matches": true,
+    "trace_completeness_non_regressed": true,
+    "r2_quality_metric_comparison": {
+      "claim_evidence_identity_resolution_rate": {
+        "r2_reference_value": 1.0,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "supporting_citation_recall": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "citation_precision": {
+        "r2_reference_value": 0.35507246376811585,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "overcitation_rate": {
+        "r2_reference_value": 0.8695652173913043,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "claim_semantic_support": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "false_rejection_rate": {
+        "r2_reference_value": 0.08333333333333333,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "question_level_unsupported_answer_rate": {
+        "r2_reference_value": 0.36363636363636365,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "question_level_citation_accuracy": {
+        "r2_reference_value": 0.9393939393939394,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      },
+      "expected_answer_point_coverage": {
+        "r2_reference_value": 0.5384615384615384,
+        "j0_value": null,
+        "comparison": "not_assessed_without_re-reading_golden_or_candidate_registry"
+      }
+    },
+    "semantic_quality_non_regression": "not_assessed",
+    "passed": true
+  },
+  "source_summary_consistent": true,
+  "validation_run": false,
+  "holdout_run": false,
+  "candidate_activation_performed": false,
+  "phase10c_allowed": false
+}
