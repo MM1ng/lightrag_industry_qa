@@ -25,10 +25,7 @@ from industrial_rag.auth import (
     require_admin_actor,
 )
 from industrial_rag.citation_formatter import Citation
-from industrial_rag.claim_citation_pruning import (
-    prune_claim_citations,
-    prune_supported_claims_and_citations,
-)
+from industrial_rag.claim_citation_pruning import prune_claim_citations
 from industrial_rag.config import Settings
 from industrial_rag.db.session import close_db, get_session, init_db
 from industrial_rag.errors import AppError
@@ -279,9 +276,6 @@ def _claims_for_result(
     citations: list[CitationResponse],
     *,
     allow_legacy_fallback: bool = True,
-    claim_citation_pruning_enabled: bool = False,
-    evidence_context: tuple[dict[str, Any], ...] = (),
-    expected_generation_id: str | None = None,
 ) -> list[ClaimResponse]:
     points = [point for point in result.answer_points if point.support_status == "supported"]
     if not points:
@@ -320,26 +314,7 @@ def _claims_for_result(
         }
         pruned = prune_claim_citations(claim, citation_rows).claim
         output.append(ClaimResponse(**pruned))
-    if not claim_citation_pruning_enabled:
-        return output
-    registry_by_id = {str(item.get("evidence_id")): dict(item) for item in evidence_context}
-    for citation in citations:
-        if not citation.evidence_id or citation.evidence_id not in registry_by_id:
-            continue
-        registry_by_id[citation.evidence_id].update(
-            {
-                "citation_id": citation.citation_id,
-                "chunk_id": citation.chunk_id,
-                "generation_id": citation.generation_id,
-            }
-        )
-    supported, _metrics = prune_supported_claims_and_citations(
-        [claim.model_dump() for claim in output],
-        citation_rows,
-        evidence_registry=registry_by_id,
-        expected_generation_id=expected_generation_id or "",
-    )
-    return [ClaimResponse(**claim) for claim in supported]
+    return output
 
 
 def _evidence_for_result(
@@ -949,82 +924,31 @@ def create_app(
                 generation_id=execution.generation_id,
             )
         else:
-            claim_pruning_enabled = base_settings.claim_citation_pruning_enabled
-            evidence_id_by_chunk = (
-                {
-                    str(item.get("chunk_id")): str(item.get("evidence_id"))
-                    for item in result.evidence_context
-                    if item.get("chunk_id") and item.get("evidence_id")
-                }
-                if claim_pruning_enabled
-                else {}
-            )
             citations = [
                 _citation_response(
                     citation,
                     index,
                     generation_id=execution.generation_id,
                     document_id=execution.citation_document_ids.get(citation.source_file),
-                    evidence_id=evidence_id_by_chunk.get(citation.chunk_id, f"E{index}"),
+                    evidence_id=f"E{index}",
                 )
                 for index, citation in enumerate(result.citations, start=1)
             ]
-            claims = _claims_for_result(
-                result,
-                citations,
-                allow_legacy_fallback=False,
-                claim_citation_pruning_enabled=claim_pruning_enabled,
-                evidence_context=result.evidence_context,
-                expected_generation_id=execution.generation_id,
+            response = QueryResponse(
+                request_id=request_id,
+                trace_id=trace_id,
+                status=result.answer_status,
+                answer=result.answer,
+                citations=citations,
+                claims=_claims_for_result(result, citations, allow_legacy_fallback=False),
+                latency_ms=latency_ms,
+                retrieved_chunk_ids=list(result.retrieval_chunk_ids),
+                shadow_audit=audit,
+                generation_id=execution.generation_id,
+                evidence=_evidence_for_result(
+                    result, citations, generation_id=execution.generation_id
+                ),
             )
-            if claim_pruning_enabled:
-                referenced_citations = {
-                    citation_id for claim in claims for citation_id in claim.citation_ids
-                }
-                citations = [
-                    citation for citation in citations if citation.citation_id in referenced_citations
-                ]
-                if not claims:
-                    response = QueryResponse(
-                        request_id=request_id,
-                        trace_id=trace_id,
-                        status="insufficient_evidence",
-                        answer=INSUFFICIENT_EVIDENCE_MESSAGE,
-                        citations=[],
-                        claims=[],
-                        latency_ms=latency_ms,
-                        retrieved_chunk_ids=list(result.retrieval_chunk_ids),
-                        shadow_audit=audit,
-                        generation_id=execution.generation_id,
-                    )
-                else:
-                    response = QueryResponse(
-                        request_id=request_id,
-                        trace_id=trace_id,
-                        status="partial_answer" if len(claims) < len(result.answer_points) else result.answer_status,
-                        answer="\n".join(claim.text for claim in claims),
-                        citations=citations,
-                        claims=claims,
-                        latency_ms=latency_ms,
-                        retrieved_chunk_ids=list(result.retrieval_chunk_ids),
-                        shadow_audit=audit,
-                        generation_id=execution.generation_id,
-                        evidence=_evidence_for_result(result, citations, generation_id=execution.generation_id),
-                    )
-            else:
-                response = QueryResponse(
-                    request_id=request_id,
-                    trace_id=trace_id,
-                    status=result.answer_status,
-                    answer=result.answer,
-                    citations=citations,
-                    claims=claims,
-                    latency_ms=latency_ms,
-                    retrieved_chunk_ids=list(result.retrieval_chunk_ids),
-                    shadow_audit=audit,
-                    generation_id=execution.generation_id,
-                    evidence=_evidence_for_result(result, citations, generation_id=execution.generation_id),
-                )
         from industrial_rag.services.retrieval_trace_service import (
             RetrievalTraceService,
         )
