@@ -1,0 +1,13 @@
+{
+  "point_count": 39,
+  "stage_counts": {
+    "citation_wrong_evidence": 21,
+    "covered_final_emitted": 3,
+    "recalled_not_selected": 3,
+    "selected_not_available_to_provider": 12
+  },
+  "covered_final_emitted": 3,
+  "unknown_count": 0,
+  "holdout_used": false,
+  "validation_used": false
+}

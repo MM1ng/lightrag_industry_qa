@@ -1,0 +1,22 @@
+{
+  "input_integrity_passed": true,
+  "issues": [],
+  "i0_record_count": 36,
+  "i1_record_count": 36,
+  "i0_question_id_unique": true,
+  "i1_question_id_unique": true,
+  "splits": [
+    "development"
+  ],
+  "candidate_generation_ids": [
+    "5bca792c08fcf2f7b08cbaed09b6d525"
+  ],
+  "request_id_present": true,
+  "trace_present": true,
+  "response_status_present": true,
+  "answer_points_present": true,
+  "claims_citations_evidence_present": true,
+  "expected_point_unique": true,
+  "validation_records": 0,
+  "holdout_records": 0
+}

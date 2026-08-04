@@ -1,0 +1,173 @@
+{
+  "phase": "10B-3I-R1",
+  "split": "development",
+  "definition_version": "phase10b3i-r1-v1",
+  "question_count": 36,
+  "positive_count": 36,
+  "negative_count": 0,
+  "expected_answer_point_count": 39,
+  "expected_evidence_count": 39,
+  "status_counts": {
+    "success": 3,
+    "partial_answer": 30,
+    "insufficient_evidence": 3
+  },
+  "metrics": {
+    "false_rejection_rate": {
+      "numerator": 3,
+      "denominator": 36,
+      "value": 0.08333333333333333,
+      "included_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "excluded_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "definition_version": "positive answerable questions refused",
+      "split": "development"
+    },
+    "negative_rejection_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "value": null,
+      "included_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "excluded_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "definition_version": "negative questions refused",
+      "split": "development"
+    },
+    "question_level_unsupported_answer_rate": {
+      "numerator": 24,
+      "denominator": 33,
+      "value": 0.7272727272727273,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "definition_version": "substantive question has an emitted point with incorrect support/citation",
+      "split": "development"
+    },
+    "question_level_citation_accuracy": {
+      "numerator": 3,
+      "denominator": 33,
+      "value": 0.09090909090909091,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "definition_version": "all emitted points in a substantive response have exact citation support",
+      "split": "development"
+    },
+    "emitted_answer_point_support_rate": {
+      "numerator": 3,
+      "denominator": 29,
+      "value": 0.10344827586206896,
+      "included_statuses": [
+        "final_emitted"
+      ],
+      "excluded_statuses": [
+        "not_final_emitted"
+      ],
+      "definition_version": "emitted point has exact expected evidence citation",
+      "split": "development"
+    },
+    "unsupported_emitted_answer_point_rate": {
+      "numerator": 26,
+      "denominator": 29,
+      "value": 0.896551724137931,
+      "included_statuses": [
+        "final_emitted"
+      ],
+      "excluded_statuses": [
+        "not_final_emitted"
+      ],
+      "definition_version": "emitted point lacks exact expected evidence citation",
+      "split": "development"
+    },
+    "expected_answer_point_coverage": {
+      "numerator": 3,
+      "denominator": 39,
+      "value": 0.07692307692307693,
+      "included_statuses": [
+        "covered_final_emitted"
+      ],
+      "excluded_statuses": [
+        "all other funnel stages"
+      ],
+      "definition_version": "expected point is finally emitted with exact citation",
+      "split": "development"
+    },
+    "missing_expected_answer_point_rate": {
+      "numerator": 36,
+      "denominator": 39,
+      "value": 0.9230769230769231,
+      "included_statuses": [
+        "all other funnel stages"
+      ],
+      "excluded_statuses": [
+        "covered_final_emitted"
+      ],
+      "definition_version": "expected point is not covered_final_emitted",
+      "split": "development"
+    },
+    "claim_citation_exact_mapping_rate": {
+      "numerator": 198,
+      "denominator": 198,
+      "value": 1.0,
+      "included_statuses": [
+        "claims"
+      ],
+      "excluded_statuses": [
+        "no_claims"
+      ],
+      "definition_version": "claim evidence IDs resolve to response evidence registry",
+      "split": "development"
+    },
+    "evidence_panel_completeness": {
+      "numerator": 33,
+      "denominator": 33,
+      "value": 1.0,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "definition_version": "substantive response has an evidence array",
+      "split": "development"
+    },
+    "trace_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "included_statuses": [
+        "all development rows"
+      ],
+      "excluded_statuses": [],
+      "definition_version": "saved request has response and trace",
+      "split": "development"
+    }
+  },
+  "integrity": {
+    "input_integrity_passed": true,
+    "validation_records": 0,
+    "holdout_records": 0
+  }
+}

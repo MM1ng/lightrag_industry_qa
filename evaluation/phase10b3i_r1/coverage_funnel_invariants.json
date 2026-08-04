@@ -1,0 +1,13 @@
+{
+  "development_expected_point_count": 39,
+  "point_count_matches_expected": true,
+  "counts_sum_point_count": true,
+  "unique_points": true,
+  "covered_final_emitted_numerator": 3,
+  "failure_count": 36,
+  "unknown_due_to_missing_audit_data": 0,
+  "contradiction_count": 0,
+  "no_validation": true,
+  "no_holdout": true,
+  "final_funnel_valid": true
+}
