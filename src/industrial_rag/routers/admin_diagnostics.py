@@ -64,6 +64,22 @@ class RetrievalTraceResponse(BaseModel):
     completed_evidence: list[dict[str, Any]] = Field(default_factory=list)
     coverage_requirements: list[str] = Field(default_factory=list)
     coverage_status: str = "uncovered"
+    feature_flags: dict[str, Any] = Field(default_factory=dict)
+    supplemental_query_text: str | None = None
+    supplemental_query_sha256: str | None = None
+    supplemental_query_different_from_normalized: bool = False
+    supplemental_retrieval_triggered: bool = False
+    supplemental_candidates: list[dict[str, Any]] = Field(default_factory=list)
+    supplemental_accepted: list[dict[str, Any]] = Field(default_factory=list)
+    supplemental_rejected: list[dict[str, Any]] = Field(default_factory=list)
+    original_query_sha256: str | None = None
+    normalized_query_sha256: str | None = None
+    provider_evidence_ids: list[str] = Field(default_factory=list)
+    generated_answer_points: list[str] = Field(default_factory=list)
+    rejected_answer_points: list[str] = Field(default_factory=list)
+    support_validation_reason_codes: list[str] = Field(default_factory=list)
+    final_answer_point_ids: list[str] = Field(default_factory=list)
+    unresolved_requirement_ids: list[str] = Field(default_factory=list)
     retrieval_config: dict[str, Any]
     initial_results: list[RetrievalResultResponse]
     rerank_applied: bool
