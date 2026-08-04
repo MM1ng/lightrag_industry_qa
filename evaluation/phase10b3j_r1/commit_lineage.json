@@ -7,6 +7,6 @@
   "integration_commit": "b66befdf37eb07ffe80abdf0b2ce17cbf46f2caa",
   "report_commit": "b66befdf37eb07ffe80abdf0b2ce17cbf46f2caa",
   "remote_branch": "codex/knowledge-qa-platform-design",
-  "pushed": false,
-  "push_failure_reason": "not yet pushed"
+  "pushed": true,
+  "push_failure_reason": null
 }
