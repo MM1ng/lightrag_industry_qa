@@ -45,6 +45,11 @@ def _candidate_ids(point: Mapping[str, Any], golden: Mapping[str, Any], mapping:
 def _claim_support(point_id: str, response: Mapping[str, Any], expected_ids: set[str]) -> tuple[bool, bool, set[str]]:
     citations = {str(item.get("citation_id")): item for item in response.get("citations", [])}
     claims = [item for item in response.get("claims", []) if str(item.get("claim_id")) == point_id]
+    # Public APIs may compact a golden ``S001-p1`` into ``P1``.  This is an
+    # identifier normalization only; evidence identity still must match.
+    if not claims and "-" in point_id:
+        suffix = point_id.rsplit("-", 1)[-1].casefold()
+        claims = [item for item in response.get("claims", []) if str(item.get("claim_id", "")).casefold().lstrip("_") == suffix]
     generated = bool(claims)
     retained = False
     cited_chunks: set[str] = set()
