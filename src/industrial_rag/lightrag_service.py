@@ -13,6 +13,7 @@ from typing import Any, Literal, Protocol, cast
 
 from industrial_rag.answer_grounding import (
     AnswerPoint,
+    GroundedAnswer,
     GroundingAudit,
     build_answer_plan,
     build_non_generation_audit,
@@ -45,6 +46,13 @@ from industrial_rag.retrieval_trace import (
     RetrievalTraceItem,
     SelectedEvidenceTrace,
     feature_flag_retrieval_config,
+)
+from industrial_rag.structured_citation_output import (
+    RequirementRegistry,
+    SourceRegistry,
+    StructuredCitationDecision,
+    render_public_citation_numbers,
+    validate_structured_citation_output,
 )
 from industrial_rag.structured_generation_policy import validate_answer_points
 from industrial_rag.supplemental_retrieval_policy import run_supplemental_retrieval
@@ -97,7 +105,14 @@ class LightRAGBackend(Protocol):
 
     async def aquery_data(self, query: str, param: QueryOptions) -> dict[str, object]: ...
 
-    async def generate(self, question: str, context: str, system_prompt: str) -> str: ...
+    async def generate(
+        self,
+        question: str,
+        context: str,
+        system_prompt: str,
+        *,
+        response_format: dict[str, str] | None = None,
+    ) -> str: ...
 
 
 class _OfficialBackend:
@@ -138,8 +153,16 @@ class _OfficialBackend:
     async def aquery_data(self, query: str, param: QueryOptions) -> dict[str, object]:
         return cast(dict[str, object], await self._rag.aquery_data(query, self._param(param)))
 
-    async def generate(self, question: str, context: str, system_prompt: str) -> str:
-        result = await self._llm_model_func(question, system_prompt=system_prompt)
+    async def generate(
+        self,
+        question: str,
+        context: str,
+        system_prompt: str,
+        *,
+        response_format: dict[str, str] | None = None,
+    ) -> str:
+        options = {"response_format": response_format} if response_format else {}
+        result = await self._llm_model_func(question, system_prompt=system_prompt, **options)
         if not isinstance(result, str):
             raise RuntimeError("LightRAG LLM returned a streaming response unexpectedly")
         return result
@@ -405,6 +428,19 @@ def _build_retrieval_trace(
     grounding_removed_answer_points: Sequence[str] = (),
     grounding_removal_reasons: Sequence[dict[str, object]] = (),
     grounding_false_negative_diagnostics: Sequence[dict[str, object]] = (),
+    structured_citation_flag: bool = False,
+    json_mode_enabled: bool = False,
+    source_registry_count: int = 0,
+    source_registry_sha256: str | None = None,
+    requirement_registry_count: int = 0,
+    requirement_registry_sha256: str | None = None,
+    provider_raw_response_sha256: str | None = None,
+    parsed_structured_output_sha256: str | None = None,
+    structured_output_valid: bool = False,
+    structured_citation_fallback: bool = False,
+    structured_citation_fallback_mode: str | None = None,
+    structured_citation_fallback_reason: str | None = None,
+    backend_generate_call_count: int = 0,
 ) -> RetrievalExecutionTrace:
     selected_identities = {
         (item.citation.source_file, item.citation.page_number, item.citation.chunk_id)
@@ -525,6 +561,19 @@ def _build_retrieval_trace(
         provider_context_truncated=provider_context_truncated,
         provider_context_token_estimate=provider_context_token_estimate,
         backend_second_query_called=backend_second_query_called,
+        structured_citation_flag=structured_citation_flag,
+        json_mode_enabled=json_mode_enabled,
+        source_registry_count=source_registry_count,
+        source_registry_sha256=source_registry_sha256,
+        requirement_registry_count=requirement_registry_count,
+        requirement_registry_sha256=requirement_registry_sha256,
+        provider_raw_response_sha256=provider_raw_response_sha256,
+        parsed_structured_output_sha256=parsed_structured_output_sha256,
+        structured_output_valid=structured_output_valid,
+        structured_citation_fallback=structured_citation_fallback,
+        structured_citation_fallback_mode=structured_citation_fallback_mode,
+        structured_citation_fallback_reason=structured_citation_fallback_reason,
+        backend_generate_call_count=backend_generate_call_count,
         coverage_after_parent_adjacent=tuple(coverage_after_parent_adjacent),
         selected_coverage=tuple(selected_coverage),
         generated_coverage=tuple(generated_coverage),
@@ -545,6 +594,40 @@ def _build_retrieval_trace(
 
 def _generation_system_prompt(context: str) -> str:
     return _SYSTEM_PROMPT_BASE + _SELECTED_CONTEXT_LABEL + context
+
+
+def _structured_citation_system_prompt(
+    registry: SourceRegistry,
+    requirements: RequirementRegistry,
+) -> str:
+    """Build the exact child-only provider context for structured citations."""
+
+    sources = "\n\n".join(
+        "\n".join(
+            (
+                f"Source {entry.source_id}",
+                f"document_name={entry.evidence.document_name}",
+                f"child_chunk_id={entry.evidence.chunk_id}",
+                f"generation_id={entry.evidence.generation_id}",
+                f"content={entry.evidence.text}",
+            )
+        )
+        for entry in registry.entries
+    )
+    unresolved = ", ".join(
+        f"{entry.requirement_id}:{entry.label}" for entry in requirements.entries
+    ) or "(none)"
+    return (
+        _SYSTEM_PROMPT_BASE
+        + "请只输出合法JSON，不要输出Markdown代码块或其他文字。\n"
+        + "只能使用下列 Source ID；不要输出数据库 Chunk ID。每个 answer_point 必须有 1 到 2 个不同 source_ids。\n"
+        + "Source 足够时不要添加第二个；没有直接证据的答案点不要输出。\n"
+        + "若有答案点且有未解决项，使用 partial_answer；没有答案点时使用 insufficient_evidence。\n"
+        + "输出格式：{\"status\":\"success|partial_answer|insufficient_evidence\",\"answer_points\":[{\"text\":\"...\",\"source_ids\":[\"S1\"]}],\"unresolved_requirement_ids\":[\"R1\"]}\n"
+        + f"当前 Requirement IDs：{unresolved}\n\n"
+        + "以下是可直接公开引用的 Child Sources：\n"
+        + sources
+    )
 
 
 def _phase10b3i_trace_flags(settings: Settings) -> tuple[tuple[str, object], ...]:
@@ -919,13 +1002,54 @@ class LightRAGService:
         provider_context_sha256 = hashlib.sha256(context.encode("utf-8")).hexdigest()
         provider_context_token_estimate = max(1, len(context) // 4) if context else 0
         selected_coverage = tuple(coverage_after)
-        system_prompt = _generation_system_prompt(context)
-        if self.settings.answer_grounding_enabled:
-            system_prompt += (
-                "答案可靠性要求：将每个可验证答案点绑定到证据中的具体内容；"
-                "未覆盖内容必须明确说明，不得补充常识或推断。\n"
+        structured_enabled = self.settings.structured_citation_output_enabled
+        source_registry = SourceRegistry.from_evidence(
+            tuple(
+                EvidenceRef(
+                    evidence_id=f"E{index}",
+                    chunk_id=item.citation.chunk_id,
+                    generation_id=str(self.settings.qdrant_generation or ""),
+                    document_name=item.citation.source_file,
+                    citation_id=f"cite_{index}",
+                    context_role="primary",
+                    text=item.text,
+                    is_child=True,
+                )
+                for index, item in enumerate(decision.selected, 1)
             )
-        answer = (await self._backend.generate(normalized_question, context, system_prompt)).strip()
+        )
+        requirement_registry = RequirementRegistry.from_requirements(coverage_requirements)
+        structured_decision: StructuredCitationDecision | None = None
+        structured_forced_status: Literal["insufficient_evidence"] | None = None
+        backend_generate_call_count = 1
+        if structured_enabled:
+            system_prompt = _structured_citation_system_prompt(
+                source_registry, requirement_registry
+            )
+            answer = (
+                await self._backend.generate(
+                    normalized_question,
+                    context,
+                    system_prompt,
+                    response_format={"type": "json_object"},
+                )
+            ).strip()
+            structured_decision = validate_structured_citation_output(
+                answer,
+                source_registry,
+                requirement_registry,
+                str(self.settings.qdrant_generation or ""),
+            )
+        else:
+            system_prompt = _generation_system_prompt(context)
+            if self.settings.answer_grounding_enabled:
+                system_prompt += (
+                    "答案可靠性要求：将每个可验证答案点绑定到证据中的具体内容；"
+                    "未覆盖内容必须明确说明，不得补充常识或推断。\n"
+                )
+            answer = (
+                await self._backend.generate(normalized_question, context, system_prompt)
+            ).strip()
         if not answer:
             audit = (
                 build_non_generation_audit(
@@ -963,11 +1087,87 @@ class LightRAGService:
                 trace,
             )
         citations = tuple(item.citation for item in decision.selected)
-        grounded = (
-            build_answer_plan(answer, grounding_candidates, citations + tuple(item.citation for item in completion_candidates_for_grounding))
-            if self.settings.answer_grounding_enabled
-            else None
-        )
+        if structured_decision is not None and structured_decision.valid:
+            citations_by_chunk = {
+                item.citation.chunk_id: item.citation for item in decision.selected
+            }
+            public_numbers = render_public_citation_numbers(
+                structured_decision.answer_points
+            )
+            rendered_points: list[AnswerPoint] = []
+            rendered_citations: list[Citation] = []
+            for index, (point, numbers) in enumerate(
+                zip(structured_decision.answer_points, public_numbers, strict=True), 1
+            ):
+                evidence_ids = tuple(
+                    source_registry.resolve(source_id).evidence_id
+                    for source_id in point.source_ids
+                    if source_registry.resolve(source_id) is not None
+                )
+                for source_id in point.source_ids:
+                    source = source_registry.resolve(source_id)
+                    if source is None:
+                        continue
+                    citation = citations_by_chunk[source.chunk_id]
+                    if citation not in rendered_citations:
+                        rendered_citations.append(citation)
+                rendered_points.append(
+                    AnswerPoint(
+                        point_id=f"P{index}",
+                        content=(
+                            point.text
+                            + ""
+                            .join(f"[{number}]" for number in numbers)
+                        ),
+                        evidence_ids=evidence_ids,
+                        support_status="supported",
+                    )
+                )
+            answer = "\n".join(point.content for point in rendered_points)
+            citations = tuple(rendered_citations)
+            grounded = GroundedAnswer(
+                answer=answer,
+                citations=citations,
+                answer_points=tuple(rendered_points),
+                status=structured_decision.status,
+            )
+        elif (
+            structured_decision is not None
+            and structured_decision.fallback_mode == "fallback_to_j0_postprocessing"
+        ):
+            answer = "\n".join(
+                point.text for point in structured_decision.answer_points
+            )
+            grounded = (
+                build_answer_plan(
+                    answer,
+                    grounding_candidates,
+                    citations
+                    + tuple(
+                        item.citation for item in completion_candidates_for_grounding
+                    ),
+                )
+                if self.settings.answer_grounding_enabled
+                else None
+            )
+        elif structured_decision is not None:
+            answer = INSUFFICIENT_EVIDENCE_MESSAGE
+            citations = ()
+            grounded = None
+            structured_forced_status = "insufficient_evidence"
+        else:
+            grounded = (
+                build_answer_plan(
+                    answer,
+                    grounding_candidates,
+                    citations
+                    + tuple(
+                        item.citation for item in completion_candidates_for_grounding
+                    ),
+                )
+                if self.settings.answer_grounding_enabled
+                else None
+            )
         support_reason_codes: list[str] = []
         generated_point_ids: list[str] = []
         rejected_point_ids: list[str] = []
@@ -990,7 +1190,11 @@ class LightRAGService:
             grounding_removed_point_ids=tuple(rejected_point_ids),
             generation_status=grounded.status if grounded else "success",
         )
-        if grounded is not None and self.settings.support_validator_v2_enabled:
+        if (
+            grounded is not None
+            and self.settings.support_validator_v2_enabled
+            and not (structured_decision is not None and structured_decision.valid)
+        ):
             evidence_registry = {
                 f"E{index}": EvidenceRef(
                     evidence_id=f"E{index}",
@@ -1108,6 +1312,41 @@ class LightRAGService:
             provider_evidence_count=len(grounding_candidates),
             provider_context_token_estimate=provider_context_token_estimate,
             backend_second_query_called=bool(supplemental_result and supplemental_result.triggered),
+            structured_citation_flag=structured_enabled,
+            json_mode_enabled=structured_enabled,
+            source_registry_count=len(source_registry.entries),
+            source_registry_sha256=source_registry.sha256 if structured_enabled else None,
+            requirement_registry_count=len(requirement_registry.entries),
+            requirement_registry_sha256=(
+                requirement_registry.sha256 if structured_enabled else None
+            ),
+            provider_raw_response_sha256=(
+                structured_decision.raw_response_sha256
+                if structured_decision is not None
+                else None
+            ),
+            parsed_structured_output_sha256=(
+                structured_decision.parsed_output_sha256
+                if structured_decision is not None
+                else None
+            ),
+            structured_output_valid=(
+                structured_decision.valid if structured_decision is not None else False
+            ),
+            structured_citation_fallback=bool(
+                structured_decision and structured_decision.fallback_mode
+            ),
+            structured_citation_fallback_mode=(
+                structured_decision.fallback_mode
+                if structured_decision is not None
+                else None
+            ),
+            structured_citation_fallback_reason=(
+                structured_decision.fallback_reason
+                if structured_decision is not None
+                else None
+            ),
+            backend_generate_call_count=backend_generate_call_count,
             coverage_after_parent_adjacent=coverage_after,
             selected_coverage=selected_coverage,
             generated_coverage=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
@@ -1120,7 +1359,11 @@ class LightRAGService:
             rejected_answer_points=tuple(rejected_point_ids),
             support_validation_reason_codes=tuple(dict.fromkeys(support_reason_codes)),
             final_answer_point_ids=tuple(point.point_id for point in (grounded.answer_points if grounded else ())),
-            unresolved_requirement_ids=tuple(item for item in coverage_requirements if item not in coverage_after),
+            unresolved_requirement_ids=(
+                structured_decision.unresolved_requirement_ids
+                if structured_decision is not None
+                else tuple(item for item in coverage_requirements if item not in coverage_after)
+            ),
         )
         return QueryResult(
             grounded.answer if grounded else answer,
@@ -1129,7 +1372,11 @@ class LightRAGService:
             retrieval_chunk_ids,
             retrieval_meta,
             trace,
-            grounded.status if grounded else "success",
+            (
+                grounded.status
+                if grounded
+                else (structured_forced_status or "success")
+            ),
             grounded.answer_points if grounded else (),
             grounded.failure_categories if grounded else (),
         )

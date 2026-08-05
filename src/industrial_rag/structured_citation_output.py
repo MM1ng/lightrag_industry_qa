@@ -120,6 +120,7 @@ class ProviderAnswerPoint(BaseModel):
 class ProviderStructuredOutput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    status: StructuredStatus | None = None
     answer_points: list[ProviderAnswerPoint]
     unresolved_requirement_ids: list[StrictStr] = Field(default_factory=list)
 

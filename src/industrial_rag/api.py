@@ -794,7 +794,7 @@ def create_app(
         response = QueryResponse(
             request_id=request_id,
             trace_id=trace_id,
-            status="success",
+            status=result.answer_status,
             answer=result.answer,
             citations=citations,
             claims=_claims_for_result(result, citations),

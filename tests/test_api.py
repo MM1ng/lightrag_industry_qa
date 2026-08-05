@@ -130,6 +130,22 @@ def test_query_returns_insufficient_evidence_without_claims_or_citations() -> No
     assert body["claims"] == []
 
 
+def test_query_preserves_partial_answer_status_when_citations_exist() -> None:
+    runtime = FakeRuntime(
+        result=QueryResult(
+            answer="已回答可证实部分。[1]",
+            citations=(Citation("设备维护手册.pdf", 12, "pump-p12-c3"),),
+            mode="mix",
+            answer_status="partial_answer",
+        )
+    )
+    with TestClient(_app(runtime)) as client:
+        response = client.post("/v1/query", json={"query": "有一部分答案的问题"})
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "partial_answer"
+
+
 def test_query_accepts_exact_request_boundaries() -> None:
     runtime = FakeRuntime()
     history = [{"role": "user", "content": "h" * 2000} for _ in range(10)]
