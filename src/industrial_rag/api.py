@@ -664,6 +664,7 @@ def create_app(
                 "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": qa.grounding_false_negative_recovery_enabled if qa else False,
                 "QA_COVERAGE_AWARE_SELECTION_ENABLED": qa.coverage_aware_selection_enabled if qa else False,
                 "QA_PARTIAL_GENERATION_ENABLED": qa.partial_generation_enabled if qa else False,
+                "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": qa.structured_citation_output_enabled if qa else False,
             },
         }
 

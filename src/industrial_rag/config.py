@@ -77,6 +77,7 @@ class Settings:
     grounding_false_negative_recovery_enabled: bool = False
     coverage_aware_selection_enabled: bool = False
     partial_generation_enabled: bool = False
+    structured_citation_output_enabled: bool = False
     phase10b_query_mode: str = "mix"
     phase10b_top_k: int = 12
     phase10b_chunk_top_k: int = 20
@@ -234,6 +235,12 @@ class Settings:
             (values.get("QA_PARTIAL_GENERATION_ENABLED") or "false").strip().lower()
             == "true"
         )
+        structured_citation_output_enabled = (
+            (values.get("QA_STRUCTURED_CITATION_OUTPUT_ENABLED") or "false")
+            .strip()
+            .lower()
+            == "true"
+        )
         try:
             evidence_completion_max = int(values.get("QA_EVIDENCE_COMPLETION_MAX") or "2")
         except ValueError as error:
@@ -343,6 +350,7 @@ class Settings:
             grounding_false_negative_recovery_enabled=grounding_false_negative_recovery_enabled,
             coverage_aware_selection_enabled=coverage_aware_selection_enabled,
             partial_generation_enabled=partial_generation_enabled,
+            structured_citation_output_enabled=structured_citation_output_enabled,
             phase10b_query_mode=phase10b_query_mode,
             phase10b_top_k=phase10b_top_k,
             phase10b_chunk_top_k=phase10b_chunk_top_k,
@@ -380,6 +388,7 @@ class Settings:
             "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": self.grounding_false_negative_recovery_enabled,
             "QA_COVERAGE_AWARE_SELECTION_ENABLED": self.coverage_aware_selection_enabled,
             "QA_PARTIAL_GENERATION_ENABLED": self.partial_generation_enabled,
+            "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": self.structured_citation_output_enabled,
         }
 
     @property

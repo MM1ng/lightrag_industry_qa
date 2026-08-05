@@ -28,6 +28,7 @@ def test_phase10b3i_flags_default_false_and_digest_is_stable() -> None:
         "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": False,
         "QA_COVERAGE_AWARE_SELECTION_ENABLED": False,
         "QA_PARTIAL_GENERATION_ENABLED": False,
+        "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": False,
     }
     assert len(settings.phase10b3i_config_sha256) == 64
     assert settings.phase10b3i_config_sha256 == Settings.from_mapping(_values()).phase10b3i_config_sha256
@@ -44,6 +45,7 @@ def test_phase10b3i_flags_parse_independently() -> None:
             "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": "true",
             "QA_COVERAGE_AWARE_SELECTION_ENABLED": "true",
             "QA_PARTIAL_GENERATION_ENABLED": "true",
+            "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": "true",
         }
     )
     assert settings.support_validator_v2_enabled is True
@@ -53,6 +55,7 @@ def test_phase10b3i_flags_parse_independently() -> None:
     assert settings.grounding_false_negative_recovery_enabled is True
     assert settings.coverage_aware_selection_enabled is True
     assert settings.partial_generation_enabled is True
+    assert settings.structured_citation_output_enabled is True
     assert settings.phase10b3i_config_sha256 != Settings.from_mapping(_values()).phase10b3i_config_sha256
     pruning_only = Settings.from_mapping(
         {**_values(), "QA_CLAIM_CITATION_PRUNING_ENABLED": "true"}
@@ -91,6 +94,7 @@ def test_production_summary_accepts_flags_without_changing_frozen_strategy() -> 
             "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": "true",
             "QA_COVERAGE_AWARE_SELECTION_ENABLED": "true",
             "QA_PARTIAL_GENERATION_ENABLED": "true",
+            "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": "true",
         }
     )
     assert config.support_validator_v2_enabled is True
@@ -99,4 +103,5 @@ def test_production_summary_accepts_flags_without_changing_frozen_strategy() -> 
     assert config.grounding_false_negative_recovery_enabled is True
     assert config.coverage_aware_selection_enabled is True
     assert config.partial_generation_enabled is True
+    assert config.structured_citation_output_enabled is True
     assert config.strategy_hash() == ProductionQASettings().strategy_hash()

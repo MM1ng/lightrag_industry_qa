@@ -41,6 +41,13 @@ def test_runtime_lineage_fields_are_serialized_without_public_answer_fields():
     assert payload["trace_version"] == RUNTIME_LINEAGE_TRACE_VERSION
     assert payload["provider_context_order"] == ["E1", "E2"]
     assert payload["grounding_support_candidate_ids"][0]["point_id"] == "P1"
+    assert payload["structured_citation_flag"] is False
+    assert payload["json_mode_enabled"] is False
+    assert payload["source_registry_count"] == 0
+    assert payload["requirement_registry_count"] == 0
+    assert payload["structured_output_valid"] is False
+    assert payload["structured_citation_fallback"] is False
+    assert payload["backend_generate_call_count"] == 0
     # Runtime lineage payload itself has no public answer fields; the admin
     # diagnostics adapter is responsible for exposing it, not QueryResponse.
     assert "answer" not in payload

@@ -61,6 +61,7 @@ _ENV_NAMES = {
     "grounding_false_negative_recovery_enabled": "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED",
     "coverage_aware_selection_enabled": "QA_COVERAGE_AWARE_SELECTION_ENABLED",
     "partial_generation_enabled": "QA_PARTIAL_GENERATION_ENABLED",
+    "structured_citation_output_enabled": "QA_STRUCTURED_CITATION_OUTPUT_ENABLED",
     "locked": "QA_LOCKED",
 }
 
@@ -125,6 +126,7 @@ class ProductionQASettings:
     grounding_false_negative_recovery_enabled: bool = False
     coverage_aware_selection_enabled: bool = False
     partial_generation_enabled: bool = False
+    structured_citation_output_enabled: bool = False
     locked: bool = True
 
     def __post_init__(self) -> None:
@@ -210,6 +212,7 @@ class ProductionQASettings:
                 "grounding_false_negative_recovery_enabled",
                 "coverage_aware_selection_enabled",
                 "partial_generation_enabled",
+                "structured_citation_output_enabled",
                 "locked",
             }:
                 data[key] = _as_bool(value, env_name)

@@ -150,6 +150,19 @@ class RetrievalExecutionTrace:
     provider_context_truncated: bool = False
     provider_context_token_estimate: int | None = None
     backend_second_query_called: bool = False
+    structured_citation_flag: bool = False
+    json_mode_enabled: bool = False
+    source_registry_count: int = 0
+    source_registry_sha256: str | None = None
+    requirement_registry_count: int = 0
+    requirement_registry_sha256: str | None = None
+    provider_raw_response_sha256: str | None = None
+    parsed_structured_output_sha256: str | None = None
+    structured_output_valid: bool = False
+    structured_citation_fallback: bool = False
+    structured_citation_fallback_mode: str | None = None
+    structured_citation_fallback_reason: str | None = None
+    backend_generate_call_count: int = 0
     coverage_after_parent_adjacent: tuple[str, ...] = ()
     selected_coverage: tuple[str, ...] = ()
     generated_coverage: tuple[str, ...] = ()
@@ -241,6 +254,19 @@ class RetrievalExecutionTrace:
             "provider_context_truncated": self.provider_context_truncated,
             "provider_context_token_estimate": self.provider_context_token_estimate,
             "backend_second_query_called": self.backend_second_query_called,
+            "structured_citation_flag": self.structured_citation_flag,
+            "json_mode_enabled": self.json_mode_enabled,
+            "source_registry_count": self.source_registry_count,
+            "source_registry_sha256": self.source_registry_sha256,
+            "requirement_registry_count": self.requirement_registry_count,
+            "requirement_registry_sha256": self.requirement_registry_sha256,
+            "provider_raw_response_sha256": self.provider_raw_response_sha256,
+            "parsed_structured_output_sha256": self.parsed_structured_output_sha256,
+            "structured_output_valid": self.structured_output_valid,
+            "structured_citation_fallback": self.structured_citation_fallback,
+            "structured_citation_fallback_mode": self.structured_citation_fallback_mode,
+            "structured_citation_fallback_reason": self.structured_citation_fallback_reason,
+            "backend_generate_call_count": self.backend_generate_call_count,
             "coverage_after_parent_adjacent": list(self.coverage_after_parent_adjacent),
             "selected_coverage": list(self.selected_coverage),
             "generated_coverage": list(self.generated_coverage),
