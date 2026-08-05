@@ -11,7 +11,7 @@ import json
 from dataclasses import dataclass
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError
 
 from industrial_rag.evidence_answer_schema import EvidenceRef
 
@@ -113,15 +113,15 @@ class RequirementRegistry:
 class ProviderAnswerPoint(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    text: str
-    source_ids: list[str]
+    text: StrictStr = Field(min_length=1)
+    source_ids: list[StrictStr]
 
 
 class ProviderStructuredOutput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     answer_points: list[ProviderAnswerPoint]
-    unresolved_requirement_ids: list[str] = Field(default_factory=list)
+    unresolved_requirement_ids: list[StrictStr] = Field(default_factory=list)
 
 
 @dataclass(frozen=True, slots=True)
@@ -142,6 +142,55 @@ class StructuredCitationDecision:
     parsed_output_sha256: str | None = None
 
 
+def render_public_citation_numbers(
+    points: tuple[StructuredCitationPoint, ...],
+) -> tuple[tuple[int, ...], ...]:
+    """Allocate public citation numbers by first answer appearance."""
+
+    assigned: dict[str, int] = {}
+    rendered: list[tuple[int, ...]] = []
+    for point in points:
+        numbers: list[int] = []
+        for source_id in point.source_ids:
+            if source_id not in assigned:
+                assigned[source_id] = len(assigned) + 1
+            numbers.append(assigned[source_id])
+        rendered.append(tuple(numbers))
+    return tuple(rendered)
+
+
+def _safe_failure(payload: str, reason: str) -> StructuredCitationDecision:
+    return StructuredCitationDecision(
+        valid=False,
+        status="insufficient_evidence",
+        answer_points=(),
+        unresolved_requirement_ids=(),
+        fallback_mode="safe_failure_no_second_generation",
+        fallback_reason=reason,
+        raw_response_sha256=hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+    )
+
+
+def _citation_fallback(
+    *,
+    points: tuple[StructuredCitationPoint, ...],
+    unresolved: tuple[str, ...],
+    payload: str,
+    parsed_sha: str,
+    reasons: list[str],
+) -> StructuredCitationDecision:
+    return StructuredCitationDecision(
+        valid=False,
+        status="partial_answer" if unresolved else "success",
+        answer_points=points,
+        unresolved_requirement_ids=unresolved,
+        fallback_mode="fallback_to_j0_postprocessing",
+        fallback_reason=";".join(dict.fromkeys(reasons)),
+        raw_response_sha256=hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+        parsed_output_sha256=parsed_sha,
+    )
+
+
 def validate_structured_citation_output(
     payload: str,
     registry: SourceRegistry,
@@ -151,12 +200,42 @@ def validate_structured_citation_output(
     """Validate the minimum output contract and derive its consistent status."""
 
     raw_sha = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-    parsed = ProviderStructuredOutput.model_validate_json(payload)
+    try:
+        parsed = ProviderStructuredOutput.model_validate_json(payload)
+    except ValidationError as error:
+        return _safe_failure(payload, f"core_schema_invalid:{error.errors()[0]['type']}")
     points = tuple(
         StructuredCitationPoint(point.text, tuple(point.source_ids))
         for point in parsed.answer_points
     )
     unresolved = tuple(parsed.unresolved_requirement_ids)
+    parsed_sha = _sha256(parsed.model_dump(mode="json"))
+    reasons: list[str] = []
+    for point in points:
+        if len(point.source_ids) > 2:
+            reasons.append("too_many_source_ids")
+        if len(set(point.source_ids)) != len(point.source_ids):
+            reasons.append("duplicate_source_id")
+        for source_id in point.source_ids:
+            source = registry.resolve(source_id)
+            if source is None:
+                reasons.append("unknown_source_id")
+            elif source.generation_id != generation_id:
+                reasons.append("wrong_generation")
+            elif not source.is_child or not source.citation_id or not source.text.strip():
+                reasons.append("parent_without_child_mapping")
+    if len(set(unresolved)) != len(unresolved):
+        reasons.append("duplicate_requirement_id")
+    if any(requirement_id not in requirements.requirement_ids for requirement_id in unresolved):
+        reasons.append("unknown_requirement_id")
+    if reasons:
+        return _citation_fallback(
+            points=points,
+            unresolved=unresolved,
+            payload=payload,
+            parsed_sha=parsed_sha,
+            reasons=reasons,
+        )
     status: StructuredStatus
     if not points:
         status = "insufficient_evidence"
@@ -170,5 +249,5 @@ def validate_structured_citation_output(
         answer_points=points,
         unresolved_requirement_ids=unresolved,
         raw_response_sha256=raw_sha,
-        parsed_output_sha256=_sha256(parsed.model_dump(mode="json")),
+        parsed_output_sha256=parsed_sha,
     )
