@@ -3,6 +3,7 @@
 ## Status and provenance
 
 - Parent commit: `6c5f8c581b93140430dda234cd051442555463aa`
+- Specification content commit: `d55027610bdcec8b469e21f1ba8aaed4ba004db8`
 - Remote branch: `codex/knowledge-qa-platform-design`
 - Remote head before this specification: `dc5c46440fa29489a3056f038e01bab733d6e288`
 - Candidate generation: `5bca792c08fcf2f7b08cbaed09b6d525`
