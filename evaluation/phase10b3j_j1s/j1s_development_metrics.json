@@ -1,0 +1,178 @@
+{
+  "phase": "10B-3J-J1S",
+  "experiment": "J1S",
+  "split": "development",
+  "run_mode": "single_saved_development_run_reconciled_from_immutable_trace",
+  "question_count": 36,
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "metric_method": "saved J1S answer and citation records matched against immutable Development child-identity sidecar; no provider, retrieval, Validation, or Holdout access",
+  "input_paths": {
+    "saved_results": "evaluation/phase10b3j_j1s/development_results.jsonl",
+    "reconciled_results": "evaluation/phase10b3j_j1s/development_results_reconciled.jsonl",
+    "development_identity_sidecar": "evaluation/phase10b3c/golden_evidence_mapping_g10b3c20260803.json"
+  },
+  "model_or_retrieval_calls_made": false,
+  "validation_run": false,
+  "holdout_read": false,
+  "metrics": {
+    "status_counts": {
+      "success": 32,
+      "insufficient_evidence": 4
+    },
+    "expected_answer_point_count": 39,
+    "emitted_answer_point_count": 32,
+    "supporting_citation_recall": {
+      "numerator": 24,
+      "denominator": 32,
+      "value": 0.75
+    },
+    "expected_answer_point_coverage": {
+      "numerator": 24,
+      "denominator": 39,
+      "value": 0.6153846153846154
+    },
+    "citation_precision": {
+      "numerator": 24.0,
+      "denominator": 32,
+      "value": 0.75
+    },
+    "overcitation_rate": {
+      "numerator": 0,
+      "denominator": 32,
+      "value": 0.0
+    },
+    "false_rejection_rate": {
+      "numerator": 4,
+      "denominator": 36,
+      "value": 0.1111111111111111
+    },
+    "question_level_citation_accuracy": {
+      "numerator": 24,
+      "denominator": 32,
+      "value": 0.75
+    },
+    "question_unsupported_answer_rate": {
+      "numerator": 8,
+      "denominator": 32,
+      "value": 0.25
+    },
+    "structured_json_valid_rate": {
+      "numerator": 35,
+      "denominator": 36,
+      "value": 0.9722222222222222
+    },
+    "structured_citation_fallback_rate": {
+      "numerator": 1,
+      "denominator": 36,
+      "value": 0.027777777777777776
+    },
+    "wrong_generation_count": 0,
+    "trace_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0
+    }
+  },
+  "acceptance_gates": {
+    "supporting_citation_recall": {
+      "metric": "supporting_citation_recall",
+      "value": 0.75,
+      "threshold": ">=0.8966",
+      "passed": false
+    },
+    "expected_answer_point_coverage": {
+      "metric": "expected_answer_point_coverage",
+      "value": 0.6153846153846154,
+      "threshold": ">=0.6667",
+      "passed": false
+    },
+    "citation_precision": {
+      "metric": "citation_precision",
+      "value": 0.75,
+      "threshold": ">=0.8",
+      "passed": false
+    },
+    "question_citation_accuracy": {
+      "metric": "question_level_citation_accuracy",
+      "value": 0.75,
+      "threshold": ">=0.95",
+      "passed": false
+    },
+    "overcitation": {
+      "metric": "overcitation_rate",
+      "value": 0.0,
+      "threshold": "<=0.2",
+      "passed": true
+    },
+    "false_rejection": {
+      "metric": "false_rejection_rate",
+      "value": 0.1111111111111111,
+      "threshold": "<=0.1111",
+      "passed": false
+    },
+    "question_unsupported_not_higher_than_j0": {
+      "metric": "question_unsupported_answer_rate",
+      "value": 0.25,
+      "j0_value": 0.15625,
+      "passed": false
+    },
+    "structured_json_valid_rate": {
+      "metric": "structured_json_valid_rate",
+      "value": 0.9722222222222222,
+      "threshold": ">=0.95",
+      "passed": true
+    },
+    "fallback_rate": {
+      "metric": "structured_citation_fallback_rate",
+      "value": 0.027777777777777776,
+      "threshold": "<=0.1",
+      "passed": true
+    },
+    "wrong_generation_zero": {
+      "value": 0,
+      "threshold": "==0",
+      "passed": true
+    },
+    "trace_completeness": {
+      "metric": "trace_completeness",
+      "value": 1.0,
+      "threshold": ">=1.0",
+      "passed": true
+    },
+    "claim_semantic_support": {
+      "value": null,
+      "required": "not lower than J0=1.0",
+      "passed": false,
+      "reason": "current saved J1S Trace has no grounding_audit; no offline Claim-level entailment adapter was approved or run"
+    },
+    "fabricated_citation": {
+      "value": null,
+      "required": "==0",
+      "passed": false,
+      "reason": "not separately adjudicated after failed identity gates"
+    },
+    "unexpected_5xx": {
+      "value": 0,
+      "threshold": "==0",
+      "passed": true,
+      "evidence": "all 36 saved ordinary responses contain request_id and persisted Trace"
+    },
+    "confirmed_secret_count": {
+      "value": 0,
+      "threshold": "==0",
+      "passed": true,
+      "evidence": "existing J1S artifacts contain hashes only; no credentials written"
+    }
+  },
+  "accepted": false,
+  "failed_gates": [
+    "supporting_citation_recall",
+    "expected_answer_point_coverage",
+    "citation_precision",
+    "question_citation_accuracy",
+    "false_rejection",
+    "question_unsupported_not_higher_than_j0",
+    "claim_semantic_support",
+    "fabricated_citation"
+  ]
+}

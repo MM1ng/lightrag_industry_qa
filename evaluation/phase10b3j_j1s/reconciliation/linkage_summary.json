@@ -1,0 +1,14 @@
+{
+  "run_id": "phase10b3j-j1s-development-20260805-1",
+  "records": 36,
+  "linked": 0,
+  "missing_trace": 0,
+  "identity_mismatch": 0,
+  "wrong_generation": 0,
+  "second_generation": 0,
+  "second_retrieval": 0,
+  "ordinary_response_internal_field_leaks": 36,
+  "active_pointer_changed": false,
+  "model_or_retrieval_calls_made": false,
+  "persisted_trace_lookup": "trace_id"
+}

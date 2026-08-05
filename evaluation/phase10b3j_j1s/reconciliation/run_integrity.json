@@ -1,0 +1,30 @@
+{
+  "run_id": "phase10b3j-j1s-development-20260805-1",
+  "code_under_test_commit": "5a89583285cd6bab92dc84667c2596b47b6fd008",
+  "runtime_container": {
+    "name": "industrial-rag-j1s-preflight",
+    "id": "4b9d9d63c77f203cb5718dacfb08352e3d2fb2f7ed163349b96cf906a486f70b",
+    "image": "industrial-rag-j1s-runtime:local",
+    "status_at_certification": "exited"
+  },
+  "config_sha256": [
+    "d5b249c76bcf6b198123917736f391f49105912ede3b1f4a77dbd3af4f246b42"
+  ],
+  "response_file": {
+    "path": "evaluation/phase10b3j_j1s/development_results.jsonl",
+    "sha256": "9995758300bd29e3956aee61e91c231aaac9e63f6e5402b61acd3df70115f6ff",
+    "record_count": 36
+  },
+  "candidate_database_read_only_snapshot": {
+    "path": "D:/industrial_energy_agent/runtime/phase10b3c/industrial_rag_candidate.db",
+    "sha256_at_reconciliation": "8c4270a2726d9d815ec7eb7d8e1da3a6aa800593311c5fc07946dc935f78325f",
+    "read_mode": "sqlite_uri_mode_ro"
+  },
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "run_started_at": "2026-08-05T02:23:31.787491+00:00",
+  "run_finished_at": "2026-08-05T02:24:38.239317+00:00",
+  "historical_inputs_mutated": false,
+  "model_or_retrieval_calls_made_by_reconciliation": false,
+  "reconciliation_trace_lookup": "trace_id"
+}

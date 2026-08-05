@@ -1,0 +1,47 @@
+{
+  "phase": "10B-3J-J1S-R",
+  "run_id": "phase10b3j-j1s-development-20260805-1",
+  "j1s_accepted": false,
+  "acceptance_mode": "rejected_after_offline_trace_compatibility_and_quality_certification",
+  "runtime_trace_version_gate": false,
+  "offline_trace_compatibility_certified": true,
+  "gate_checks": {
+    "supporting_citation_recall": false,
+    "expected_answer_point_coverage": false,
+    "citation_precision": false,
+    "question_citation_accuracy": false,
+    "overcitation_rate": true,
+    "false_rejection": true,
+    "question_unsupported_not_higher_than_j0": false,
+    "claim_semantic_support_not_lower_than_j0": false,
+    "structured_json_valid_rate": true,
+    "fallback_rate": true,
+    "identity_resolution": false,
+    "evidence_panel_completeness": true,
+    "provider_lineage_completeness": true,
+    "response_trace_linkage": false,
+    "required_j1s_audit_fields": true,
+    "wrong_generation": true,
+    "fabricated_citation": true,
+    "unexpected_5xx": true,
+    "confirmed_secret_count": true
+  },
+  "failed_gates": [
+    "supporting_citation_recall",
+    "expected_answer_point_coverage",
+    "citation_precision",
+    "question_citation_accuracy",
+    "question_unsupported_not_higher_than_j0",
+    "claim_semantic_support_not_lower_than_j0",
+    "identity_resolution",
+    "response_trace_linkage"
+  ],
+  "required_post_failure_state": {
+    "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": false,
+    "fallback_strategy": "J0",
+    "j2_allowed": false,
+    "validation_allowed": false,
+    "candidate_activation_allowed": false,
+    "phase_10c_allowed": false
+  }
+}

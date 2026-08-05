@@ -67,3 +67,55 @@ def test_admin_trace_contract_preserves_runtime_lineage_fields() -> None:
     assert trace.provider_context_sha256 == "hash"
     assert trace.coverage_before == ["req-1"]
     assert trace.coverage_after_parent_adjacent == ["req-1"]
+
+
+def test_admin_trace_exposes_structured_citation_audit_fields() -> None:
+    """The admin-only projection must preserve J1S audit fields already in Trace."""
+
+    from industrial_rag.routers.admin_diagnostics import RetrievalTraceResponse
+
+    payload = {
+        "request_id": "r",
+        "trace_id": "t",
+        "trace_version": "phase10a-retrieval-trace-v1",
+        "knowledge_base_id": "kb",
+        "generation_id": "g",
+        "generation_epoch": 0,
+        "original_query": "q",
+        "normalized_query": "q",
+        "retrieval_config": {},
+        "initial_results": [],
+        "rerank_applied": False,
+        "reranked_results": [],
+        "final_selected_chunks": [],
+        "normalization_ms": 0,
+        "retrieval_ms": 0,
+        "rerank_ms": 0,
+        "evidence_selection_ms": 0,
+        "end_to_end_ms": 0,
+        "created_at": "now",
+        "expires_at": "later",
+        "structured_citation_flag": True,
+        "json_mode_enabled": True,
+        "source_registry_count": 2,
+        "source_registry_sha256": "source-sha",
+        "requirement_registry_count": 1,
+        "requirement_registry_sha256": "requirement-sha",
+        "provider_raw_response_sha256": "raw-sha",
+        "parsed_structured_output_sha256": "parsed-sha",
+        "structured_output_valid": True,
+        "structured_citation_fallback": False,
+        "structured_citation_fallback_mode": None,
+        "structured_citation_fallback_reason": None,
+        "backend_generate_call_count": 1,
+        "backend_second_query_called": False,
+    }
+
+    trace = RetrievalTraceResponse.model_validate(payload)
+
+    assert trace.structured_citation_flag is True
+    assert trace.source_registry_sha256 == "source-sha"
+    assert trace.requirement_registry_count == 1
+    assert trace.provider_raw_response_sha256 == "raw-sha"
+    assert trace.parsed_structured_output_sha256 == "parsed-sha"
+    assert trace.backend_generate_call_count == 1

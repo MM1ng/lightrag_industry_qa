@@ -1,0 +1,47 @@
+{
+  "phase": "10B-3J-J1S-R",
+  "run_id": "phase10b3j-j1s-development-20260805-1",
+  "code_under_test_commit": "5a89583285cd6bab92dc84667c2596b47b6fd008",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "final_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "j1s_accepted": false,
+  "fallback_strategy": "J0",
+  "feature_flag_required_value": false,
+  "validation_run": false,
+  "holdout_read": false,
+  "candidate_activated": false,
+  "j2_allowed": false,
+  "phase_10c_allowed": false,
+  "reconciliation_artifacts": {
+    "run_integrity.json": "7d035c9619cb8ced375ab0149e0be30d3b6d6bae48ce5671a57cb1a2b28dcda5",
+    "response_trace_linkage.jsonl": "268e8cef9acecbf9975a79e47f9f8c6495d8528c8df3620eac4b4dc1eb7b3f3a",
+    "linkage_summary.json": "f216f4df424433354f6e802c4f9232d5fc66d38f683ac0eda3bca52dca7c7af9",
+    "trace_compatibility_matrix.jsonl": "f76d3f15457f36e83b1642715c658d92c59e83859363b77187aa5615991704ae",
+    "d014_fallback_audit.json": "83398c3ff30d9bca4a717b7c411d3f79f84363771fd20388202bd64d15321723",
+    "final_development_results.jsonl": "5a93f25f0da3a75d6a21386cf77f18b8197674e64508d9408974c1acb4cb2c9b",
+    "j1s_metrics.json": "8c63aa5e12a6cb1b0639b36dafe6674b3171457645ba06338344566a81eaf059",
+    "j1s_gate_result.json": "23afaf31a7b44d28d99f86193e981d4539543b0d9335e7e84a8927c4878c4ee1",
+    "future_runner_governance_fix.json": "65bc087bfcaecc3185282a0fcbf203a48194e9f2640dba19c1a2e61867717a43",
+    "secret_scan.json": "9619dbaf5ffc6c5dca2f0972b4991dfed05eb6f707720bbcb7b8886d9fe54360"
+  },
+  "report": "docs/phase-10b3j-j1s-final-certification-report.md",
+  "test_results": {
+    "focused_pytest": "22 passed",
+    "full_pytest": {
+      "passed": 790,
+      "skipped": 12,
+      "failed": 5,
+      "warnings": 1,
+      "known_unrelated_failures": [
+        "test_mineru_block_policy raw artifact absent",
+        "test_parser_backend_comparison PDF/evidence mapping assets absent",
+        "test_phase10a_golden_set child artifact hash drift",
+        "test_phase7 RC ZIP absent"
+      ]
+    },
+    "ruff": "passed"
+  },
+  "secret_scan_sha256": "9619dbaf5ffc6c5dca2f0972b4991dfed05eb6f707720bbcb7b8886d9fe54360",
+  "report_sha256": "dffa2161baa3fcb27b54793e53b4fe0e5b5c0fa33c21929098daf978ebcf8316"
+}

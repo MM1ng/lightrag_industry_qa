@@ -84,6 +84,21 @@ class RetrievalTraceResponse(BaseModel):
     provider_context_truncated: bool = False
     provider_context_token_estimate: int | None = None
     backend_second_query_called: bool = False
+    # Admin-only structured-citation audit fields.  They deliberately do not
+    # belong to the public query response schema.
+    structured_citation_flag: bool = False
+    json_mode_enabled: bool = False
+    source_registry_count: int = 0
+    source_registry_sha256: str | None = None
+    requirement_registry_count: int = 0
+    requirement_registry_sha256: str | None = None
+    provider_raw_response_sha256: str | None = None
+    parsed_structured_output_sha256: str | None = None
+    structured_output_valid: bool = False
+    structured_citation_fallback: bool = False
+    structured_citation_fallback_mode: str | None = None
+    structured_citation_fallback_reason: str | None = None
+    backend_generate_call_count: int = 0
     coverage_before: list[str] = Field(default_factory=list)
     coverage_after_parent_adjacent: list[str] = Field(default_factory=list)
     selected_coverage: list[str] = Field(default_factory=list)
