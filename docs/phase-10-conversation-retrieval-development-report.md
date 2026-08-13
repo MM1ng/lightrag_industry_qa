@@ -19,7 +19,25 @@ Hit Recall@K is any gold chunk in top K. Evidence Recall@K is the number of uniq
 
 ## Result
 
-The report is intentionally `BLOCKED`. The configured Development Qdrant endpoint `http://127.0.0.1:17333` was unreachable while `LightRAGService.initialize()` checked collections. No retrieval call ran, no index was modified, and no Recall/MRR value was fabricated.
+The real Development retrieval run is `READY`. The Qdrant container `ira-phase9b-qdrant-staging` is running `qdrant/qdrant:v1.13.6` on `http://127.0.0.1:17333`. The configured Generation was restored from its existing local LightRAG workspace and verified before evaluation:
+
+- chunks: 453
+- entities: 1,012
+- relationships: 1,061
+- all collections: green, with the expected KB and Generation payload ownership
+
+The evaluator executed 36 real retrieval calls (18 cases × BEFORE/AFTER), with the same KB, Generation, workspace, vector backend, embedding model, and query options in both paths. No answer-quality metrics were rerun.
+
+| Metric | BEFORE | AFTER | Delta |
+| --- | ---: | ---: | ---: |
+| Hit Recall@5 | 0.6111 | 0.9444 | +0.3333 |
+| Evidence Recall@5 | 0.6111 | 0.9444 | +0.3333 |
+| MRR@5 | 0.4491 | 0.7593 | +0.3102 |
+| Hit Recall@10 | 0.7222 | 1.0000 | +0.2778 |
+| Evidence Recall@10 | 0.7222 | 1.0000 | +0.2778 |
+| MRR@10 | 0.4632 | 0.7662 | +0.3030 |
+
+The rewrite validation remained 18/18 (accuracy 1.0). Ten cases improved, five were unchanged, and three regressed only in rank while retaining gold evidence in the evaluated cutoffs: `conv-d001`, `conv-d006`, and `conv-d007`. Full per-case ranks and deltas are recorded in the machine-readable report.
 
 Run with the project environment after starting the configured Development Qdrant:
 
