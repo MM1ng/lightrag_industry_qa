@@ -1,0 +1,68 @@
+{
+  "status": "BLOCKED",
+  "blocker": {
+    "reason_code": "qdrant_unavailable",
+    "message": "Configured Development Qdrant at http://127.0.0.1:17333 was unreachable during LightRAG initialization; no retrieval call was executed.",
+    "index_modified": false,
+    "ingest_performed": false
+  },
+  "dataset": {
+    "path": "data/evaluation/conversation_retrieval_development.jsonl",
+    "case_count": 18,
+    "source_question_ids": [
+      "S001", "S002", "S003", "S004", "S007", "S008", "S009", "S011", "S012", "S017", "S020",
+      "D001", "D004", "D006", "D008", "D010", "D011", "D016"
+    ],
+    "category_distribution": {
+      "Pronoun Resolution": 5,
+      "Property Inheritance": 5,
+      "Topic Continuation": 4,
+      "Ellipsis": 4
+    },
+    "source_gold": "evaluation/phase10/expanded_golden_set.jsonl",
+    "development_only_guard": true,
+    "allowed_source_ids": "S001-S020 + D001-D016",
+    "gold_chunk_provenance": "directly copied from source expected_evidence[].chunk_id"
+  },
+  "rewrite": {
+    "rewrite_accuracy": 1.0,
+    "rewritten_cases": 18,
+    "failed_cases": [],
+    "ambiguous_cases": [],
+    "standalone_mismatch_cases": [],
+    "unnecessary_rewrite": null,
+    "note": "All 18 cases pass existing deterministic QueryRewriter validation; no main rewrite logic was changed."
+  },
+  "before": null,
+  "after": null,
+  "delta": null,
+  "improved_cases": [],
+  "unchanged_cases": [],
+  "regressed_cases": [],
+  "metrics_definition": {
+    "hit_recall": "any gold chunk appears in top K",
+    "evidence_recall": "unique retrieved gold chunks divided by total gold chunks",
+    "mrr": "reciprocal rank of first gold chunk within K, otherwise 0",
+    "ks": [5, 10],
+    "before_input": "normalized dependent_query",
+    "after_input": "normalized rewritten standalone_query",
+    "same_options": "mode, top_k, chunk_top_k, rerank, KB, generation, workspace, vector backend, embedding"
+  },
+  "fingerprint": {
+    "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation_id": "g5162e7fb4208635103ff4ebb",
+    "workspace": "D:/industrial_energy_agent/evaluation/experiments/phase4/parent_expansion/tmp/phase4_index/kb_data/8fce4626859d44abb70a9ae5b0372cea/qdrant/generations/g5162e7fb4208635103ff4ebb/workspace",
+    "vector_backend": "qdrant",
+    "embedding_model": "text-embedding-v4",
+    "query_mode": "naive",
+    "top_k": 12,
+    "chunk_top_k": 20,
+    "rerank_enabled": false,
+    "retrieval_calls_executed": 0
+  },
+  "test_results": {
+    "focused_evaluator_tests": "11 passed",
+    "full_suite_before_r2": "911 passed, 12 skipped",
+    "full_suite_after_r2": "922 passed, 12 skipped, 13 warnings"
+  }
+}
