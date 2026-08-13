@@ -38,6 +38,7 @@ from app.components.knowledge_base_selector import (  # noqa: E402
     knowledge_base_label,
     queryable_knowledge_bases,
 )
+from app.feedback_ui import FEEDBACK_REASON_LABELS  # noqa: E402
 from app.p3_chat import append_p3_answer, build_p3_history  # noqa: E402
 from app.pages.chat_page import render_chat_page  # noqa: E402
 from app.pages.graph_page import render_graph_page  # noqa: E402
@@ -255,6 +256,80 @@ def _render_assistant_message(msg: AssistantMessage) -> None:
                     st.markdown(f"**{evidence['label']}** · {evidence['document_name']} · 第{evidence['page']}页")
                     st.caption(f"Chunk：{evidence['chunk_id']} · 支撑：{', '.join(evidence['supports_claim_ids']) or '上下文'}")
                     st.write(evidence["excerpt"])
+        _render_feedback_controls(msg)
+
+
+def _render_feedback_controls(msg: AssistantMessage) -> None:
+    """Render two small answer-level feedback controls without changing chat state."""
+    if not msg.request_id:
+        return
+
+    submissions = st.session_state.setdefault("feedback_submissions", {})
+    if msg.request_id in submissions:
+        st.caption("感谢你的反馈。")
+        return
+
+    pending_request_id = st.session_state.get("feedback_pending_request_id")
+    if pending_request_id != msg.request_id:
+        helpful_col, unhelpful_col = st.columns(2)
+        with helpful_col:
+            if st.button(
+                "有帮助",
+                key=f"feedback-helpful-{msg.message_id}",
+                icon=":material/thumb_up:",
+            ):
+                _send_feedback(msg, "helpful")
+        with unhelpful_col:
+            if st.button(
+                "没帮助",
+                key=f"feedback-unhelpful-{msg.message_id}",
+                icon=":material/thumb_down:",
+            ):
+                st.session_state["feedback_pending_request_id"] = msg.request_id
+        if st.session_state.get("feedback_pending_request_id") != msg.request_id:
+            return
+
+    labels = [label for label, _ in FEEDBACK_REASON_LABELS]
+    selected_label = st.selectbox(
+        "没帮助的原因",
+        labels,
+        key=f"feedback-reason-{msg.message_id}",
+    )
+    selected_reason = dict(FEEDBACK_REASON_LABELS)[selected_label]
+    comment = st.text_area(
+        "补充说明（可选）",
+        max_chars=1000,
+        key=f"feedback-comment-{msg.message_id}",
+    )
+    if st.button(
+        "提交没帮助反馈",
+        key=f"feedback-submit-{msg.message_id}",
+        icon=":material/send:",
+    ):
+        _send_feedback(msg, "unhelpful", selected_reason, comment)
+
+
+def _send_feedback(
+    msg: AssistantMessage,
+    feedback_type: str,
+    feedback_reason: str | None = None,
+    feedback_comment: str | None = None,
+) -> None:
+    try:
+        _get_client(API_BASE_URL, API_KEY, _api_timeout_seconds()).submit_feedback(
+            request_id=msg.request_id or "",
+            feedback_type=feedback_type,  # type: ignore[arg-type]
+            feedback_reason=feedback_reason,
+            feedback_comment=feedback_comment,
+        )
+    except ApiError as exc:
+        st.error(f"反馈提交失败 [{exc.code}]：{exc.message}")
+        return
+    submissions = st.session_state.setdefault("feedback_submissions", {})
+    submissions[msg.request_id] = feedback_type
+    if st.session_state.get("feedback_pending_request_id") == msg.request_id:
+        st.session_state.pop("feedback_pending_request_id", None)
+    st.success("反馈已记录。")
 
 
 def _render_message_meta(msg: AssistantMessage) -> None:

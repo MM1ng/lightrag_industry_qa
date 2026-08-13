@@ -110,6 +110,7 @@ async def list_knowledge_bases(
 @router.get("/{kb_id}", response_model=KnowledgeBaseDetail)
 async def get_knowledge_base(
     kb_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> KnowledgeBaseDetail:
     svc = KnowledgeBaseService(session)

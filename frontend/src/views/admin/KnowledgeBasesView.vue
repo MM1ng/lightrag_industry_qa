@@ -1,0 +1,16 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { ApiClient, ApiClientError } from '../../api/client'
+import { useSessionStore } from '../../app/stores/session'
+import type { KnowledgeBase } from '../../types/api'
+
+const session = useSessionStore(); const client = new ApiClient('', () => session.adminToken); const items = ref<KnowledgeBase[]>([]); const error = ref(''); const loading = ref(false)
+async function load() { loading.value = true; try { items.value = await client.listKnowledgeBases() } catch (cause) { error.value = cause instanceof ApiClientError ? cause.message : '知识库暂时无法读取。' } finally { loading.value = false } }
+onMounted(load)
+</script>
+
+<template><section class="admin-page"><div class="heading"><div><span class="eyebrow">ADMIN / KNOWLEDGE BASES</span><h1>知识库</h1><p>查看当前知识库状态和文档规模；危险操作仍需要后端授权。</p></div><button class="refresh" @click="load">刷新</button></div><p v-if="error" class="error">{{ error }}</p><div v-if="loading" class="empty">读取中…</div><div v-else class="kb-grid"><article v-for="kb in items" :key="kb.id" class="kb-card" :class="{ active: session.activeKnowledgeBaseId === kb.id }"><div class="card-top"><span class="status">{{ kb.status }}</span><span class="mono">{{ kb.id.slice(0, 8) }}</span></div><h2>{{ kb.name }}</h2><p>{{ kb.description || '未设置描述' }}</p><div class="metrics"><span><b>{{ kb.document_count }}</b> 文档</span><span><b>{{ kb.active_document_count ?? 0 }}</b> 生效</span><span><b>{{ kb.chunk_count ?? 0 }}</b> chunks</span></div><button class="select" @click="session.selectKnowledgeBase(kb.id)">{{ session.activeKnowledgeBaseId === kb.id ? '当前手册' : '设为当前手册' }}</button></article><div v-if="!items.length" class="empty">暂无可用知识库。</div></div></section></template>
+
+<style scoped>
+.admin-page { max-width: 1180px; margin: 0 auto; } .heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 24px; } .eyebrow { color: var(--color-amber); font: 11px Bahnschrift, monospace; letter-spacing: .12em; } h1 { margin: 9px 0 7px; font-size: 38px; letter-spacing: -.05em; } .heading p { margin: 0; color: var(--color-muted); } .refresh, .select { min-height: 40px; padding: 0 13px; border: 1px solid var(--color-line); border-radius: var(--radius-control); color: var(--color-cobalt); background: white; font-weight: 700; } .kb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; } .kb-card { padding: 18px; border: 1px solid var(--color-line); border-radius: var(--radius-panel); background: white; box-shadow: var(--shadow-panel); } .kb-card.active { border-color: #8fb1ef; box-shadow: 0 0 0 3px var(--color-cobalt-soft); } .card-top { display: flex; justify-content: space-between; color: var(--color-muted); font-size: 11px; } .status { color: var(--color-success); font-weight: 700; } .mono { font: 10px Bahnschrift, monospace; } h2 { margin: 20px 0 5px; font-size: 19px; } .kb-card p { min-height: 42px; margin: 0; color: var(--color-muted); font-size: 13px; line-height: 1.6; } .metrics { display: flex; gap: 12px; margin: 18px 0; color: var(--color-muted); font-size: 11px; } .metrics b { display: block; color: var(--color-ink); font-size: 19px; } .select { width: 100%; } .empty, .error { padding: 16px; color: var(--color-muted); background: white; } .error { color: var(--color-danger); }
+</style>

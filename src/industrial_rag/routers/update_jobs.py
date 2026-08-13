@@ -22,6 +22,7 @@ router = APIRouter(
 @router.get("", response_model=PaginatedResponse)
 async def list_update_jobs(
     kb_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     offset: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
     session: AsyncSession = Depends(get_session),
@@ -36,6 +37,7 @@ async def list_update_jobs(
 async def get_update_job(
     kb_id: str,
     job_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> UpdateJobSummary:
     svc = IncrementalUpdateService(session)

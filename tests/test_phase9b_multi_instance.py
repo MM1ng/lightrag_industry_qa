@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
+from industrial_rag.answer_grounding import AnswerPoint
 from industrial_rag.citation_formatter import Citation
 from industrial_rag.config import Settings
 from industrial_rag.db.models import (
@@ -38,10 +39,12 @@ class _GenerationRuntime:
 
     async def query(self, question: str, *, mode: str) -> QueryResult:
         generation = self.settings.qdrant_generation or "none"
+        answer = f"{question}:{generation}"
         return QueryResult(
-            answer=f"{question}:{generation}",
+            answer=answer,
             citations=(Citation("manual.pdf", 1, f"chunk-{generation}"),),
             mode=mode,
+            answer_points=(AnswerPoint("P1", answer, ("E1",), "supported"),),
         )
 
 

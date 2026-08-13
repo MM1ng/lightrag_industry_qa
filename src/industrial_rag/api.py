@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from typing import Annotated, Any, Literal, Protocol
 from uuid import uuid4
 
-from fastapi import Depends, FastAPI, Request
+from fastapi import BackgroundTasks, Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StringConstraints
@@ -27,6 +27,7 @@ from industrial_rag.auth import (
 from industrial_rag.citation_formatter import Citation
 from industrial_rag.claim_citation_pruning import prune_claim_citations
 from industrial_rag.config import Settings
+from industrial_rag.citation_selection import select_runtime_citations
 from industrial_rag.db.session import close_db, get_session, init_db
 from industrial_rag.errors import AppError
 from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
@@ -34,6 +35,8 @@ from industrial_rag.operational_metrics import operational_metrics
 from industrial_rag.routers import (
     admin_diagnostics,
     documents,
+    feedback,
+    graph,
     generation_gc,
     generations,
     knowledge_bases,
@@ -41,6 +44,11 @@ from industrial_rag.routers import (
     update_jobs,
 )
 from industrial_rag.runtime import LightRAGRuntime
+from industrial_rag.services.answer_feedback_service import (
+    ELIGIBLE_ANSWER_STATUSES,
+    AnswerFeedbackService,
+    extract_retrieved_chunk_summaries,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -133,6 +141,7 @@ _ERRORS: dict[str, tuple[int, str, bool]] = {
     "UNAUTHORIZED": (401, "未提供有效的服务凭据。", False),
     "ADMIN_PERMISSION_REQUIRED": (403, "该操作需要管理员权限。", False),
     "RETRIEVAL_TRACE_NOT_FOUND": (404, "检索追踪记录不存在或已过期。", False),
+    "FEEDBACK_NOT_FOUND": (404, "该请求没有可反馈的业务回答。", False),
     "INDEX_NOT_READY": (503, "知识库索引尚未就绪，请稍后重试。", True),
     "TIMEOUT": (504, "知识库查询超时，请稍后重试。", True),
     "UPSTREAM_UNAVAILABLE": (502, "知识库服务暂时不可用，请稍后重试。", True),
@@ -256,6 +265,66 @@ def _log_result(*, request_id: str, status: str, latency_ms: int) -> None:
     )
 
 
+def _snapshot_answer_status(status: str) -> str | None:
+    if status in {"success", "partial_answer"}:
+        return "answered"
+    if status == "insufficient_evidence":
+        return "insufficient_evidence"
+    if status == "safety_blocked":
+        return "refused"
+    return None
+
+
+def _queue_answer_snapshot(
+    background_tasks: BackgroundTasks,
+    *,
+    request_id: str,
+    trace_id: str | None,
+    generation_id: str | None,
+    knowledge_base_id: str | None,
+    question: str,
+    response: QueryResponse,
+    retrieval_trace: Any = None,
+) -> None:
+    answer_status = _snapshot_answer_status(response.status)
+    if answer_status not in ELIGIBLE_ANSWER_STATUSES:
+        return
+    background_tasks.add_task(
+        AnswerFeedbackService.record_answer_best_effort,
+        request_id=request_id,
+        trace_id=trace_id,
+        generation_id=generation_id,
+        knowledge_base_id=knowledge_base_id,
+        question=question,
+        answer=response.answer,
+        answer_status=answer_status,
+        citations=[citation.model_dump(exclude_none=True) for citation in response.citations],
+        retrieved_chunks=extract_retrieved_chunk_summaries(retrieval_trace),
+    )
+
+
+def _queue_refusal_snapshot(
+    background_tasks: BackgroundTasks,
+    *,
+    request_id: str,
+    trace_id: str | None,
+    knowledge_base_id: str | None,
+    question: str,
+) -> None:
+    background_tasks.add_task(
+        AnswerFeedbackService.record_answer_best_effort,
+        request_id=request_id,
+        trace_id=trace_id,
+        generation_id=None,
+        knowledge_base_id=knowledge_base_id,
+        question=question,
+        answer=_ERRORS["SAFETY_POLICY_BLOCKED"][1],
+        answer_status="refused",
+        citations=[],
+        retrieved_chunks=[],
+    )
+
+
 def _api_keys_from_environment() -> tuple[str | None, str | None]:
     return (
         (os.environ.get("SERVICE_API_KEY") or "").strip() or None,
@@ -317,6 +386,28 @@ def _claims_for_result(
     return output
 
 
+def _claims_and_runtime_citations(
+    result: QueryResult,
+    citations: list[CitationResponse],
+    *,
+    allow_legacy_fallback: bool = False,
+) -> tuple[list[ClaimResponse], list[CitationResponse]]:
+    """Project top-level citations from final runtime claim evidence only."""
+
+    claims = _claims_for_result(
+        result,
+        citations,
+        allow_legacy_fallback=allow_legacy_fallback,
+    )
+    selection = select_runtime_citations(
+        claims=[claim.model_dump() for claim in claims],
+        response_evidence=[citation.model_dump(exclude_none=True) for citation in citations],
+    )
+    retained_ids = {str(item.get("citation_id")) for item in selection.citations}
+    projected = [citation for citation in citations if citation.citation_id in retained_ids]
+    return claims, projected
+
+
 def _evidence_for_result(
     result: QueryResult,
     citations: list[CitationResponse],
@@ -362,6 +453,28 @@ def _query_schema(history: list[dict[str, str]]) -> dict[str, object]:
         "query": QueryText,
         "history": list[HistoryMessage],  # type: ignore[dict-item]
     }
+
+
+def _is_public_browser_request(request: Request) -> bool:
+    """Allow the browser's ordinary-user surface without exposing service keys.
+
+    The legacy ``/v1/query`` endpoint remains service-authenticated. The Vue
+    workbench uses only the explicitly public, read-only/query paths below;
+    every management mutation and admin diagnostic stays behind Bearer auth.
+    """
+    path = request.url.path
+    if request.method == "GET" and path == "/v1/knowledge-bases":
+        return True
+    if path.startswith("/v1/graph/") and request.method == "GET":
+        return True
+    if path == "/v1/feedback" and request.method == "POST":
+        return True
+    return (
+        request.method == "POST"
+        and len(path.strip("/").split("/")) == 4
+        and path.startswith("/v1/knowledge-bases/")
+        and path.endswith("/query")
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -545,6 +658,11 @@ def create_app(
             return await call_next(request)
         path = request.url.path
         if path in {"/readyz", "/healthz", "/ready", "/health", "/version"}:
+            return await call_next(request)
+        if _is_public_browser_request(request):
+            request.state.authenticated_actor = AuthenticatedActor(
+                role="service", actor="public-browser", credential_type="anonymous"
+            )
             return await call_next(request)
         actor = authenticate_bearer(
             request.headers.get("Authorization"),
@@ -733,6 +851,7 @@ def create_app(
     def query(
         payload: QueryRequest,
         request: Request,
+        background_tasks: BackgroundTasks,
     ) -> QueryResponse | JSONResponse:
         request_id = _request_id_for(request)
         trace_id = _trace_id_for(request)
@@ -746,6 +865,13 @@ def create_app(
                 status_code=403,
             )
             _log_result(request_id=request_id, status="SAFETY_POLICY_BLOCKED", latency_ms=0)
+            _queue_refusal_snapshot(
+                background_tasks,
+                request_id=request_id,
+                trace_id=trace_id,
+                knowledge_base_id=None,
+                question=payload.query,
+            )
             return response
         runtime: QueryRuntime | None = request.app.state.runtime
         if runtime is None:
@@ -785,6 +911,16 @@ def create_app(
                 status="insufficient_evidence",
                 latency_ms=latency_ms,
             )
+            _queue_answer_snapshot(
+                background_tasks,
+                request_id=request_id,
+                trace_id=trace_id,
+                generation_id=None,
+                knowledge_base_id=None,
+                question=payload.query,
+                response=response,
+                retrieval_trace=result.retrieval_trace,
+            )
             return response
 
         citations = [
@@ -802,6 +938,16 @@ def create_app(
             evidence=_evidence_for_result(result, citations, generation_id=None),
         )
         _log_result(request_id=request_id, status=result.answer_status, latency_ms=latency_ms)
+        _queue_answer_snapshot(
+            background_tasks,
+            request_id=request_id,
+            trace_id=trace_id,
+            generation_id=None,
+            knowledge_base_id=None,
+            question=payload.query,
+            response=response,
+            retrieval_trace=result.retrieval_trace,
+        )
         if os.environ.get("CITATION_SHADOW_AUDIT_ENABLED", "false").lower() == "true":
             from industrial_rag.shadow_audit import CitationShadowAudit
 
@@ -836,6 +982,7 @@ def create_app(
         request: Request,
         *,
         generation_id: str | None = None,
+        background_tasks: BackgroundTasks | None = None,
     ) -> QueryResponse | JSONResponse:
         request_id = _request_id_for(request)
         trace_id = _trace_id_for(request)
@@ -843,12 +990,21 @@ def create_app(
 
         safety = evaluate_input(payload.query)
         if not safety.allowed:
-            return _error_response(
+            response = _error_response(
                 "SAFETY_POLICY_BLOCKED",
                 request_id=request_id,
                 trace_id=trace_id,
                 status_code=403,
             )
+            if background_tasks is not None:
+                _queue_refusal_snapshot(
+                    background_tasks,
+                    request_id=request_id,
+                    trace_id=trace_id,
+                    knowledge_base_id=kb_id,
+                    question=payload.query,
+                )
+            return response
         runtime_manager = getattr(request.app.state, "runtime_manager", None)
         base_settings = getattr(request.app.state, "resolved_settings", None)
         if runtime_manager is None or base_settings is None:
@@ -935,19 +1091,24 @@ def create_app(
                 )
                 for index, citation in enumerate(result.citations, start=1)
             ]
+            claims, projected_citations = _claims_and_runtime_citations(
+                result,
+                citations,
+                allow_legacy_fallback=False,
+            )
             response = QueryResponse(
                 request_id=request_id,
                 trace_id=trace_id,
                 status=result.answer_status,
                 answer=result.answer,
-                citations=citations,
-                claims=_claims_for_result(result, citations, allow_legacy_fallback=False),
+                citations=projected_citations,
+                claims=claims,
                 latency_ms=latency_ms,
                 retrieved_chunk_ids=list(result.retrieval_chunk_ids),
                 shadow_audit=audit,
                 generation_id=execution.generation_id,
                 evidence=_evidence_for_result(
-                    result, citations, generation_id=execution.generation_id
+                    result, projected_citations, generation_id=execution.generation_id
                 ),
             )
         from industrial_rag.services.retrieval_trace_service import (
@@ -961,6 +1122,17 @@ def create_app(
             execution=execution,
             end_to_end_ms=float(latency_ms),
         )
+        if background_tasks is not None:
+            _queue_answer_snapshot(
+                background_tasks,
+                request_id=request_id,
+                trace_id=trace_id,
+                generation_id=execution.generation_id,
+                knowledge_base_id=kb_id,
+                question=payload.query,
+                response=response,
+                retrieval_trace=execution.result.retrieval_trace,
+            )
         return response
 
     @application.post(
@@ -972,8 +1144,11 @@ def create_app(
         kb_id: str,
         payload: QueryRequest,
         request: Request,
+        background_tasks: BackgroundTasks,
     ) -> QueryResponse | JSONResponse:
-        return await _execute_kb_query(kb_id, payload, request)
+        return await _execute_kb_query(
+            kb_id, payload, request, background_tasks=background_tasks
+        )
 
     @application.post(
         "/v1/knowledge-bases/{kb_id}/generations/{generation_id}/query",
@@ -985,6 +1160,7 @@ def create_app(
         generation_id: str,
         payload: QueryRequest,
         request: Request,
+        background_tasks: BackgroundTasks,
         _actor: AuthenticatedActor = Depends(require_admin_actor),
     ) -> QueryResponse | JSONResponse:
         return await _execute_kb_query(
@@ -992,6 +1168,7 @@ def create_app(
             payload,
             request,
             generation_id=generation_id,
+            background_tasks=background_tasks,
         )
 
     # ------------------------------------------------------------------
@@ -999,6 +1176,9 @@ def create_app(
     # ------------------------------------------------------------------
 
     application.include_router(admin_diagnostics.router)
+    application.include_router(feedback.router)
+    application.include_router(feedback.compat_router)
+    application.include_router(graph.router)
     application.include_router(knowledge_bases.router)
     application.include_router(documents.router)
     application.include_router(tasks.router)

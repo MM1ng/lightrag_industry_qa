@@ -469,6 +469,7 @@ def _build_retrieval_trace(
                 matched_terms=tuple(sorted(question_terms & candidate_terms)),
                 used_for_answer=identity in selected_identities,
                 cited_in_answer=identity in cited_identities,
+                content_excerpt=str(item.get("content") or "")[:240],
             )
         )
     final_selected = tuple(

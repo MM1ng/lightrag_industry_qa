@@ -24,7 +24,12 @@ if ($LASTEXITCODE -ne 0) {
     if ($LASTEXITCODE -ne 0) { Write-Output "MIGRATION_FAILED"; exit 1 }
 }
 try {
-    $r = Invoke-RestMethod "http://127.0.0.1:16333/collections" -TimeoutSec 5
+    $qdrantUrl = [Environment]::GetEnvironmentVariable("QDRANT_URL", "Process")
+    if (-not $qdrantUrl) {
+        Write-Output "QDRANT_URL_MISSING"
+        exit 1
+    }
+    $r = Invoke-RestMethod ("{0}/collections" -f $qdrantUrl.TrimEnd("/")) -TimeoutSec 5
     Write-Output "qdrant ok"
 } catch {
     Write-Output "QDRANT_NOT_READY"; exit 1

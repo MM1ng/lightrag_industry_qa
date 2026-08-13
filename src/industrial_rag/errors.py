@@ -33,6 +33,7 @@ class AppErrorCode:
     path_traversal_rejected = "path_traversal_rejected"
     empty_file = "empty_file"
     retrieval_trace_not_found = "RETRIEVAL_TRACE_NOT_FOUND"
+    feedback_not_found = "FEEDBACK_NOT_FOUND"
 
 
 HTTP_STATUS_MAP: dict[str, int] = {

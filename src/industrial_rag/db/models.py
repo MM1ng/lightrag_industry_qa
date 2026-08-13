@@ -609,3 +609,53 @@ class RetrievalTraceRecord(Base):
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
     )
+
+
+class AnswerFeedbackRecord(Base):
+    """Persisted answer snapshot and optional user/reviewer labels.
+
+    This table is intentionally separate from the TTL-bounded retrieval trace.
+    It contains only the bounded data needed to review an answer later.
+    """
+
+    __tablename__ = "answer_feedback"
+    __table_args__ = (
+        UniqueConstraint(
+            "request_id", name="uq_answer_feedback_request_id"
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_uuid)
+    request_id: Mapped[str] = mapped_column(
+        String(64), nullable=False, index=True
+    )
+    trace_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    generation_id: Mapped[str | None] = mapped_column(
+        String(32), nullable=True, index=True
+    )
+    knowledge_base_id: Mapped[str | None] = mapped_column(
+        String(32), nullable=True, index=True
+    )
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    answer: Mapped[str] = mapped_column(Text, nullable=False)
+    answer_status: Mapped[str] = mapped_column(
+        String(32), nullable=False, index=True
+    )
+    feedback_type: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    feedback_reason: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    feedback_comment: Mapped[str | None] = mapped_column(Text, nullable=True)
+    citations: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    retrieved_chunks: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow, index=True
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow, onupdate=_utcnow
+    )
+
+    answer_correct: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    answer_complete: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    citation_supported: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    refusal_appropriate: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    root_cause: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    review_notes: Mapped[str | None] = mapped_column(Text, nullable=True)

@@ -98,6 +98,7 @@ async def replace_document(
 @router.get("", response_model=PaginatedResponse)
 async def list_documents(
     kb_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     include_deleted: bool = Query(False),
     status: str | None = Query(None),
     offset: int = Query(0, ge=0),
@@ -124,6 +125,7 @@ async def list_documents(
 async def get_document(
     kb_id: str,
     doc_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> DocumentSummary:
     svc = DocumentService(session)

@@ -30,6 +30,7 @@ def _summary(g: dict) -> GenerationSummary:
 @router.get("", response_model=list[GenerationSummary])
 async def list_generations(
     kb_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> list[GenerationSummary]:
     svc = IncrementalUpdateService(session)
@@ -40,6 +41,7 @@ async def list_generations(
 async def get_generation(
     kb_id: str,
     generation_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> GenerationSummary:
     svc = IncrementalUpdateService(session)
@@ -107,6 +109,7 @@ async def rollback_generation(
 async def generation_diff(
     kb_id: str,
     generation_id: str,
+    _actor: AuthenticatedActor = Depends(require_admin_actor),
     session: AsyncSession = Depends(get_session),
 ) -> dict:
     svc = IncrementalUpdateService(session)

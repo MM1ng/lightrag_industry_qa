@@ -29,6 +29,7 @@ _PUBLIC_ERROR_CODES = frozenset(
         "SERVICE_BUSY",
         "TIMEOUT",
         "INGESTION_IN_PROGRESS",
+        "FEEDBACK_NOT_FOUND",
     }
 )
 
@@ -202,6 +203,25 @@ class KnowledgeApiClient:
             return self._client.get("/readyz", timeout=5.0).status_code == 200
         except httpx.HTTPError:
             return False
+
+    def submit_feedback(
+        self,
+        *,
+        request_id: str,
+        feedback_type: Literal["helpful", "unhelpful"],
+        feedback_reason: str | None = None,
+        feedback_comment: str | None = None,
+    ) -> None:
+        """Submit only feedback fields; the API resolves the answer snapshot."""
+        payload: dict[str, Any] = {
+            "request_id": request_id,
+            "feedback_type": feedback_type,
+        }
+        if feedback_reason is not None:
+            payload["feedback_reason"] = feedback_reason
+        if feedback_comment is not None:
+            payload["feedback_comment"] = feedback_comment
+        self._request("POST", "/v1/feedback", json=payload)
 
     def _parse_response(self, response: httpx.Response) -> ApiQueryResult:
         body = self._json_object(response)

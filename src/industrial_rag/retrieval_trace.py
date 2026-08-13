@@ -46,6 +46,10 @@ class RetrievalTraceItem:
     reranked_score: float | None = None
     used_for_answer: bool = False
     cited_in_answer: bool = False
+    # Bounded in-memory excerpt used by Phase 11 sample capture. It is
+    # intentionally omitted from to_payload() so the persisted diagnostic
+    # trace does not retain document content.
+    content_excerpt: str = ""
 
     def to_payload(self) -> dict[str, Any]:
         return {

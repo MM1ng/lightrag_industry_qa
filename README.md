@@ -104,6 +104,41 @@ Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/v1/query' -Headers $h
 
 `history` 可选，格式为最多 10 条 `user` 或 `assistant` 消息，每条内容最多 2000 个字符。它会被校验以保证请求边界，但当前版本不会将历史传给运行时、保存，或在后续请求中复用。
 
+## Vue 知识问答工作台
+
+迁移期的统一前端位于 `frontend/`，普通用户入口为 `/chat` 和 `/graph`，管理员入口为 `/admin/login`，验证后可访问知识库、文档、更新任务和 Generation 页面。前端通过 Vite 将 `/v1`、`/readyz` 和 `/health` 代理到 `http://127.0.0.1:8000`；生产构建由 FastAPI 或独立静态服务器提供 `frontend/dist`。
+
+启动本地 Vue 工作台：
+
+```powershell
+cd D:\industrial_energy_agent
+npm --prefix frontend install
+.\scripts\start_frontend.ps1
+```
+
+一键启动 Qdrant、FastAPI 和 Vue 工作台，并自动打开浏览器：
+
+```powershell
+cd D:\industrial_energy_agent
+.\scripts\start_workbench.ps1
+```
+
+如果只想启动服务、不打开浏览器，使用 `-NoBrowser`。脚本会自动加载 `.env.local_staging`，并检查后端 `/readyz` 与前端 `/chat`。
+
+也可以直接在 `frontend/` 目录执行 `npm run dev`。复制 `frontend/.env.example` 为 `frontend/.env` 后，可用 `VITE_API_BASE_URL` 指向非默认 API 地址；留空时使用开发代理。真实问答验证仍需要先启动 FastAPI、完成知识库导入并确认 `/readyz` 就绪。Streamlit 入口 `scripts\start_ui.ps1` 和 `app\streamlit_app.py` 保留为迁移期回退，不会被 Vue 构建覆盖。
+
+普通用户不会看到 Chunk、Generation、trace、模型名或凭据；管理员 Bearer 凭据只保存在当前页面内存中，刷新后需要重新验证。后端仍对每个管理接口执行真实权限校验。
+
+### 冻结索引管理元数据回填
+
+如果接入的是已经构建完成的 `phase4_frozen_index`，索引本身可能已有文档和 chunks，但管理库没有对应的 `documents` 记录。此时只执行一次 dry-run：
+
+```powershell
+python scripts\backfill_frozen_index_metadata.py --knowledge-base-id 8fce4626859d44abb70a9ae5b0372cea
+```
+
+确认输出的文档数和 chunks 与现有 Generation 一致后，加上 `--apply` 执行回填。工具会把源 PDF 复制到该知识库的标准 uploads 目录，登记 `indexed/done/done` 文档状态并更新知识库文档与 chunks 统计；不会调用 LightRAG、Qdrant，不会创建历史更新任务，也不会修改 Generation。工具可重复执行，重复文件会跳过。
+
 ### 公共错误格式
 
 所有 API 错误均返回不包含内部异常或密钥的公共 JSON：`request_id`、`code`、`message` 和 `retryable`。错误代码包括：

@@ -57,6 +57,7 @@ include = [
   "scripts/inspect_environment.py",
   "scripts/parse_manuals.py",
   "scripts/ingest_documents.py",
+  "scripts/backfill_frozen_index_metadata.py",
   "scripts/smoke_test.py",
 ]
 

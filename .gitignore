@@ -79,3 +79,13 @@ desktop.ini
 
 # Local process pid files (Phase 7 scripts)
 .run/
+
+# Local workbench and evaluation artifacts
+runtime/**
+evaluation/**
+reports/**
+.playwright-mcp/**
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+current-ui.png
