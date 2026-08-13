@@ -1,4 +1,4 @@
-"""Development-only retrieval proof for conversation-aware query rewriting."""
+"""Legacy/frozen Development evaluator; new runs use the Ragas migration runner."""
 
 from __future__ import annotations
 
