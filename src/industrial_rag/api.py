@@ -25,9 +25,9 @@ from industrial_rag.auth import (
     require_admin_actor,
 )
 from industrial_rag.citation_formatter import Citation
+from industrial_rag.citation_selection import select_runtime_citations
 from industrial_rag.claim_citation_pruning import prune_claim_citations
 from industrial_rag.config import Settings
-from industrial_rag.citation_selection import select_runtime_citations
 from industrial_rag.db.session import close_db, get_session, init_db
 from industrial_rag.errors import AppError
 from industrial_rag.lightrag_service import INSUFFICIENT_EVIDENCE_MESSAGE, QueryResult
@@ -36,9 +36,9 @@ from industrial_rag.routers import (
     admin_diagnostics,
     documents,
     feedback,
-    graph,
     generation_gc,
     generations,
+    graph,
     knowledge_bases,
     tasks,
     update_jobs,
@@ -153,6 +153,8 @@ _ERRORS: dict[str, tuple[int, str, bool]] = {
     "ANSWER_MODEL_FAILED": (502, "答案模型暂时不可用，请稍后重试。", True),
     "QA_TIMEOUT": (504, "问答请求超时，请稍后重试。", True),
     "SAFETY_POLICY_BLOCKED": (403, "该请求涉及高风险操作或超出系统安全边界，系统仅提供信息检索与分析，请人工复核。", False),
+    "QUERY_REWRITE_AMBIGUOUS": (422, "当前问题存在多个可能的指代对象，请明确设备或对象后重试。", False),
+    "QUERY_REWRITE_FAILED": (422, "当前问题依赖会话上下文，但无法安全改写，请补充明确的设备或对象。", False),
     "CITATION_AUDIT_WARNING": (200, "引用审计发现警告，请人工复核。", False),
     "INTERNAL_ERROR": (500, "系统内部错误，请稍后重试。", False),
 }
@@ -1026,12 +1028,15 @@ def create_app(
                     runtime_manager=runtime_manager,
                 )
                 if generation_id is None:
-                    execution = await service.query_active(kb_id, payload.query)
+                    execution = await service.query_active(
+                        kb_id, payload.query, history=[item.model_dump() for item in payload.history]
+                    )
                 else:
                     execution = await service.query_generation(
                         kb_id,
                         generation_id,
                         payload.query,
+                        history=[item.model_dump() for item in payload.history],
                         disable_llm_cache=(
                             request.headers.get("x-validation-disable-llm-cache") == "1"
                         ),

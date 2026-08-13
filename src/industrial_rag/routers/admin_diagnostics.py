@@ -51,6 +51,15 @@ class RetrievalTraceResponse(BaseModel):
     generation_epoch: int
     original_query: str
     normalized_query: str
+    rewritten_query: str | None = None
+    retrieval_query: str | None = None
+    history_available: bool = False
+    history_message_count: int = 0
+    history_used: bool = False
+    rewrite_required: bool = False
+    rewrite_status: str = "unchanged"
+    rewrite_reason: str = "none"
+    rewrite_version: str | None = None
     detected_model: str | None = None
     detected_component: str | None = None
     detected_parameter: str | None = None

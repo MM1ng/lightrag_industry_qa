@@ -6,6 +6,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from typing import Any
 
+from industrial_rag.conversation.query_rewriter import QueryRewriteResult
+
 TRACE_VERSION = "phase10a-retrieval-trace-v1"
 GROUNDING_AUDIT_TRACE_VERSION = "phase10b3f-grounding-audit-v1"
 FEATURE_FLAG_TRACE_VERSION = "phase10b3j-feature-flags-v2"
@@ -184,6 +186,32 @@ class RetrievalExecutionTrace:
     unresolved_requirement_ids: tuple[str, ...] = ()
     coverage_status: str = "uncovered"
     grounding_audit: dict[str, Any] | None = None
+    rewritten_query: str | None = None
+    retrieval_query: str | None = None
+    history_available: bool = False
+    history_message_count: int = 0
+    history_used: bool = False
+    rewrite_required: bool = False
+    rewrite_status: str = "unchanged"
+    rewrite_reason: str = "none"
+    rewrite_version: str | None = None
+
+    def with_query_rewrite(
+        self, result: QueryRewriteResult, *, retrieval_query: str
+    ) -> RetrievalExecutionTrace:
+        return replace(
+            self,
+            original_query=result.original_query,
+            rewritten_query=result.standalone_query if result.status == "rewritten" else None,
+            retrieval_query=retrieval_query,
+            history_available=result.history_available,
+            history_message_count=result.history_message_count,
+            history_used=result.history_used,
+            rewrite_required=result.history_dependent,
+            rewrite_status=result.status,
+            rewrite_reason=result.rewrite_reason,
+            rewrite_version=result.to_trace()["rewrite_version"],
+        )
 
     def with_document_ids(self, document_ids: Mapping[str, str]) -> RetrievalExecutionTrace:
         return replace(
@@ -207,6 +235,15 @@ class RetrievalExecutionTrace:
             "trace_version": self.trace_version,
             "original_query": self.original_query,
             "normalized_query": self.normalized_query,
+            "rewritten_query": self.rewritten_query,
+            "retrieval_query": self.retrieval_query,
+            "history_available": self.history_available,
+            "history_message_count": self.history_message_count,
+            "history_used": self.history_used,
+            "rewrite_required": self.rewrite_required,
+            "rewrite_status": self.rewrite_status,
+            "rewrite_reason": self.rewrite_reason,
+            "rewrite_version": self.rewrite_version,
             "retrieval_config": dict(self.retrieval_config),
             "initial_results": [item.to_payload() for item in self.initial_results],
             "rerank_applied": self.rerank_applied,

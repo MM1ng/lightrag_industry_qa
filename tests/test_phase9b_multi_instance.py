@@ -29,6 +29,7 @@ class _GenerationRuntime:
         self.settings = settings
         self.initialized = False
         self.closed = False
+        self.questions: list[str] = []
 
     async def initialize(self) -> None:
         self.initialized = True
@@ -38,6 +39,7 @@ class _GenerationRuntime:
         self.closed = True
 
     async def query(self, question: str, *, mode: str) -> QueryResult:
+        self.questions.append(question)
         generation = self.settings.qdrant_generation or "none"
         answer = f"{question}:{generation}"
         return QueryResult(
@@ -133,6 +135,60 @@ async def test_candidate_query_does_not_change_active_pointer(multi_instance_sta
     assert result.result.answer == "candidate:g-new"
     assert kb is not None
     assert kb.active_vector_generation_id == old_id
+    await manager.close_all()
+
+
+@pytest.mark.asyncio
+async def test_query_application_service_rewrites_history_before_runtime(multi_instance_state) -> None:
+    from industrial_rag.services.query_application_service import QueryApplicationService
+
+    factory, kb_id, _old_id, new_id, tmp_path = multi_instance_state
+    manager = KnowledgeBaseRuntimeManager(service_factory=_GenerationRuntime)
+    async with factory() as session:
+        service = QueryApplicationService(
+            session,
+            base_settings=_base_settings(tmp_path),
+            runtime_manager=manager,
+        )
+        result = await service.query_generation(
+            kb_id,
+            new_id,
+            "它多久维护一次？",
+            history=[
+                {"role": "user", "content": "什么是机械密封？"},
+                {"role": "assistant", "content": "维护事实不能作为证据。"},
+            ],
+        )
+
+    assert result.result.answer == "机械密封多久维护一次？:g-new"
+    runtime = next(iter(manager._runtimes.values()))  # type: ignore[attr-defined]
+    assert runtime.questions == ["机械密封多久维护一次？"]
+    await manager.close_all()
+
+
+@pytest.mark.asyncio
+async def test_ambiguous_history_never_calls_runtime(multi_instance_state) -> None:
+    from industrial_rag.errors import AppError
+    from industrial_rag.services.query_application_service import QueryApplicationService
+
+    factory, kb_id, _old_id, new_id, tmp_path = multi_instance_state
+    manager = KnowledgeBaseRuntimeManager(service_factory=_GenerationRuntime)
+    async with factory() as session:
+        service = QueryApplicationService(
+            session,
+            base_settings=_base_settings(tmp_path),
+            runtime_manager=manager,
+        )
+        with pytest.raises(AppError) as error:
+            await service.query_generation(
+                kb_id,
+                new_id,
+                "它多久维护一次？",
+                history=[{"role": "user", "content": "A 泵和 B 泵有什么区别？"}],
+            )
+
+    assert error.value.code == "QUERY_REWRITE_AMBIGUOUS"
+    assert manager.is_cached(kb_id) is False
     await manager.close_all()
 
 
@@ -309,13 +365,16 @@ async def test_admin_candidate_query_route_returns_actual_generation_without_swi
     ) as client:
         response = await client.post(
             f"/v1/knowledge-bases/{kb_id}/generations/{candidate_id}/query",
-            json={"query": "candidate"},
+            json={
+                "query": "它多久维护一次？",
+                "history": [{"role": "user", "content": "什么是机械密封？"}],
+            },
             headers={"Authorization": "Bearer admin-test-key"},
         )
 
     assert response.status_code == 200
     assert response.json()["generation_id"] == candidate_id
-    assert response.json()["answer"] == "candidate:g-candidate"
+    assert response.json()["answer"] == "机械密封多久维护一次？:g-candidate"
     assert response.json()["citations"][0]["document_id"] == "1" * 32
     assert response.json()["citations"][0]["generation_id"] == candidate_id
     async with factory() as session:

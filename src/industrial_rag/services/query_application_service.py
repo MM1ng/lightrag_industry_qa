@@ -8,6 +8,7 @@ from pathlib import Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from industrial_rag.config import Settings
+from industrial_rag.conversation.query_rewriter import QueryRewriter
 from industrial_rag.db.models import KBStatus, VectorIndexGenerationStatus
 from industrial_rag.errors import AppError, AppErrorCode
 from industrial_rag.kb_runtime_settings import settings_for_knowledge_base
@@ -51,11 +52,17 @@ class QueryApplicationService:
         self._document_repository = DocumentRepository(session)
         self._job_repository = UpdateJobRepository(session)
 
-    async def query_active(self, kb_id: str, question: str) -> GenerationQueryResult:
+    async def query_active(
+        self,
+        kb_id: str,
+        question: str,
+        *,
+        history: list[dict[str, str]] | None = None,
+    ) -> GenerationQueryResult:
         kb = await self._require_kb(kb_id)
         if kb.active_vector_generation_id is None:
             raise AppError(AppErrorCode.index_not_ready, "知识库没有 Active Generation")
-        return await self._query(kb, kb.active_vector_generation_id, question)
+        return await self._query(kb, kb.active_vector_generation_id, question, history=history)
 
     async def query_generation(
         self,
@@ -63,6 +70,7 @@ class QueryApplicationService:
         generation_id: str,
         question: str,
         *,
+        history: list[dict[str, str]] | None = None,
         disable_llm_cache: bool = False,
     ) -> GenerationQueryResult:
         kb = await self._require_kb(kb_id)
@@ -70,6 +78,7 @@ class QueryApplicationService:
             kb,
             generation_id,
             question,
+            history=history,
             disable_llm_cache=disable_llm_cache,
         )
 
@@ -79,6 +88,7 @@ class QueryApplicationService:
         generation_id: str,
         question: str,
         *,
+        history: list[dict[str, str]] | None = None,
         disable_llm_cache: bool = False,
     ) -> GenerationQueryResult:
         generation = await self._generation_repository.get(generation_id)
@@ -98,6 +108,20 @@ class QueryApplicationService:
                 "Generation 当前不可查询。",
                 status_code=409,
             )
+        rewrite = await QueryRewriter().rewrite(question, history)
+        if rewrite.status == "ambiguous":
+            raise AppError(
+                AppErrorCode.query_rewrite_ambiguous,
+                "当前问题存在多个可能的指代对象，请明确设备或对象后重试。",
+                status_code=422,
+            )
+        retrieval_question = rewrite.standalone_query or question
+        if rewrite.status == "failed" and rewrite.history_dependent:
+            raise AppError(
+                AppErrorCode.query_rewrite_failed,
+                "当前问题依赖会话上下文，但无法安全改写，请补充明确的设备或对象。",
+                status_code=422,
+            )
         settings = settings_for_knowledge_base(
             self._base_settings,
             kb,
@@ -111,7 +135,7 @@ class QueryApplicationService:
         operational_metrics.set(f"active_generation.{kb.id}", generation.id)
         try:
             result = await runtime.query(
-                question,
+                retrieval_question,
                 mode=self._base_settings.phase10b_query_mode,  # type: ignore[arg-type]
                 top_k=self._base_settings.phase10b_top_k,
                 chunk_top_k=self._base_settings.phase10b_chunk_top_k,
@@ -120,14 +144,18 @@ class QueryApplicationService:
             if "unexpected keyword argument" not in str(error):
                 raise
             result = await runtime.query(
-                question,
+                retrieval_question,
                 mode=self._base_settings.phase10b_query_mode,  # type: ignore[arg-type]
             )
         document_ids = await self._citation_document_ids(kb.id, generation)
         if result.retrieval_trace is not None:
+            trace = result.retrieval_trace.with_query_rewrite(
+                rewrite,
+                retrieval_query=retrieval_question,
+            )
             result = replace(
                 result,
-                retrieval_trace=result.retrieval_trace.with_document_ids(document_ids),
+                retrieval_trace=trace.with_document_ids(document_ids),
             )
         return GenerationQueryResult(
             generation_id=generation.id,

@@ -6,8 +6,13 @@ from pathlib import Path
 import pytest
 from industrial_rag.citation_formatter import Citation, encode_source_ref
 from industrial_rag.config import Settings
+from industrial_rag.conversation.query_rewriter import QueryRewriteResult
 from industrial_rag.lightrag_service import LightRAGService
-from industrial_rag.retrieval_trace import TRACE_VERSION, SelectedEvidenceTrace
+from industrial_rag.retrieval_trace import (
+    TRACE_VERSION,
+    RetrievalExecutionTrace,
+    SelectedEvidenceTrace,
+)
 
 
 class TraceBackend:
@@ -144,3 +149,42 @@ async def test_trace_enrichment_uses_trusted_document_mapping(tmp_path: Path) ->
     assert {item.document_id for item in enriched.final_selected_chunks} == {
         "trusted-document-id"
     }
+
+
+def test_trace_query_rewrite_metadata_is_bounded_and_history_free() -> None:
+    trace = RetrievalExecutionTrace(
+        trace_version=TRACE_VERSION,
+        original_query="它多久维护一次？",
+        normalized_query="机械密封多久维护一次?",
+        retrieval_config=(),
+        initial_results=(),
+        rerank_applied=False,
+        reranked_results=(),
+        final_selected_chunks=(),
+        selected_chunk_ids=(),
+        normalization_ms=0,
+        retrieval_ms=0,
+        rerank_ms=0,
+        evidence_selection_ms=0,
+    )
+    result = QueryRewriteResult(
+        original_query="它多久维护一次？",
+        history_dependent=True,
+        status="rewritten",
+        rewrite_reason="pronoun_resolution",
+        standalone_query="机械密封多久维护一次？",
+        history_available=True,
+        history_message_count=2,
+        history_used=True,
+    )
+
+    payload = trace.with_query_rewrite(
+        result, retrieval_query="机械密封多久维护一次？"
+    ).to_payload()
+
+    assert payload["original_query"] == "它多久维护一次？"
+    assert payload["rewritten_query"] == "机械密封多久维护一次？"
+    assert payload["retrieval_query"] == "机械密封多久维护一次？"
+    assert payload["rewrite_status"] == "rewritten"
+    assert payload["history_message_count"] == 2
+    assert "history" not in payload

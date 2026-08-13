@@ -34,6 +34,8 @@ class AppErrorCode:
     empty_file = "empty_file"
     retrieval_trace_not_found = "RETRIEVAL_TRACE_NOT_FOUND"
     feedback_not_found = "FEEDBACK_NOT_FOUND"
+    query_rewrite_ambiguous = "QUERY_REWRITE_AMBIGUOUS"
+    query_rewrite_failed = "QUERY_REWRITE_FAILED"
 
 
 HTTP_STATUS_MAP: dict[str, int] = {
@@ -64,6 +66,8 @@ HTTP_STATUS_MAP: dict[str, int] = {
     AppErrorCode.index_not_ready: 503,
     AppErrorCode.path_traversal_rejected: 400,
     AppErrorCode.retrieval_trace_not_found: 404,
+    AppErrorCode.query_rewrite_ambiguous: 422,
+    AppErrorCode.query_rewrite_failed: 422,
 }
 
 
