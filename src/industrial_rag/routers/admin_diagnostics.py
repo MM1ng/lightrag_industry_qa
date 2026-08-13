@@ -59,6 +59,7 @@ class RetrievalTraceResponse(BaseModel):
     rewrite_required: bool = False
     rewrite_status: str = "unchanged"
     rewrite_reason: str = "none"
+    rewrite_failure_reason: str | None = None
     rewrite_version: str | None = None
     detected_model: str | None = None
     detected_component: str | None = None

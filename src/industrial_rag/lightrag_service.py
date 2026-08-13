@@ -505,6 +505,7 @@ def _build_retrieval_trace(
         ),
         original_query=original_query,
         normalized_query=normalized_query,
+        retrieval_query=normalized_query,
         retrieval_config=(
             ("mode", options.mode),
             ("top_k", options.top_k),

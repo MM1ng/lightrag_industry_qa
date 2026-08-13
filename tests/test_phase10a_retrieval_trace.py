@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -18,6 +19,7 @@ from industrial_rag.retrieval_trace import (
 class TraceBackend:
     def __init__(self) -> None:
         self.query_calls = 0
+        self.last_query = ""
 
     async def initialize_storages(self) -> None:
         return None
@@ -33,6 +35,7 @@ class TraceBackend:
 
     async def aquery_data(self, query: str, param: object) -> dict[str, object]:
         self.query_calls += 1
+        self.last_query = query
         first = encode_source_ref(Citation("pump.pdf", 7, "pump-p7-c1"))
         second = encode_source_ref(Citation("pump.pdf", 8, "pump-p8-c1"))
         return {
@@ -84,6 +87,7 @@ async def test_query_captures_ordered_trace_from_the_single_real_retrieval_call(
     assert trace.trace_version == TRACE_VERSION
     assert trace.original_query == " 轴承温度过高怎么办？ "
     assert trace.normalized_query == "轴承温度过高怎么办？"
+    assert trace.retrieval_query == trace.normalized_query
     assert [item.initial_rank for item in trace.initial_results] == [1, 2]
     assert trace.initial_results[0].initial_score == 0.0
     assert trace.initial_results[1].initial_score == 0.42
@@ -103,6 +107,13 @@ async def test_query_captures_ordered_trace_from_the_single_real_retrieval_call(
     assert all(item.used_for_answer for item in trace.final_selected_chunks)
     assert all(item.cited_in_answer for item in trace.final_selected_chunks)
     assert trace.selected_chunk_ids == ("pump-p7-c1", "pump-p8-c1")
+    assert trace.original_query_sha256 == hashlib.sha256(
+        " 轴承温度过高怎么办？ ".encode()
+    ).hexdigest()
+    assert trace.normalized_query_sha256 == hashlib.sha256(
+        "轴承温度过高怎么办？".encode()
+    ).hexdigest()
+    assert backend.last_query == trace.normalized_query
     assert trace.normalization_ms >= 0
     assert trace.retrieval_ms >= 0
     assert trace.rerank_ms == 0
@@ -155,7 +166,7 @@ def test_trace_query_rewrite_metadata_is_bounded_and_history_free() -> None:
     trace = RetrievalExecutionTrace(
         trace_version=TRACE_VERSION,
         original_query="它多久维护一次？",
-        normalized_query="机械密封多久维护一次?",
+        normalized_query="机械密封多久维护一次？",
         retrieval_config=(),
         initial_results=(),
         rerank_applied=False,
@@ -185,6 +196,12 @@ def test_trace_query_rewrite_metadata_is_bounded_and_history_free() -> None:
     assert payload["original_query"] == "它多久维护一次？"
     assert payload["rewritten_query"] == "机械密封多久维护一次？"
     assert payload["retrieval_query"] == "机械密封多久维护一次？"
+    assert payload["original_query_sha256"] == hashlib.sha256(
+        "它多久维护一次？".encode()
+    ).hexdigest()
+    assert payload["normalized_query_sha256"] == hashlib.sha256(
+        "机械密封多久维护一次？".encode()
+    ).hexdigest()
     assert payload["rewrite_status"] == "rewritten"
     assert payload["history_message_count"] == 2
     assert "history" not in payload

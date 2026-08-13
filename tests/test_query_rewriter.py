@@ -33,6 +33,20 @@ async def test_resolves_pronoun_from_user_history() -> None:
 
 
 @pytest.mark.asyncio
+async def test_assistant_technical_facts_are_not_copied_into_rewritten_query() -> None:
+    result = await QueryRewriter().rewrite(
+        "它的压力是多少？",
+        _history(
+            ("user", "什么是机械密封？"),
+            ("assistant", "历史回答声称压力是 5 MPa，但它不是检索证据。"),
+        ),
+    )
+
+    assert result.standalone_query == "机械密封的压力是多少？"
+    assert "5 MPa" not in (result.standalone_query or "")
+    assert "历史回答" not in result.to_trace()["rewritten_query"]
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("pronoun", ["这个", "那个", "其"])
 async def test_resolves_multicharacter_and_formal_pronouns(pronoun: str) -> None:
     result = await QueryRewriter().rewrite(

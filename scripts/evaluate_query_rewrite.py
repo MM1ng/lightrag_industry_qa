@@ -13,6 +13,49 @@ sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 from industrial_rag.conversation.query_rewriter import QueryRewriter
 
 DATASET = Path(__file__).parents[1] / "data" / "evaluation" / "query_rewrite_development.jsonl"
+RETRIEVAL_TOP_K = 12
+RETRIEVAL_CHUNK_TOP_K = 20
+
+
+def _retrieval_evaluation(rows: list[dict[str, object]]) -> dict[str, object]:
+    """Describe whether a real before/after retrieval comparison is possible.
+
+    Query rewrite golds intentionally contain semantic expectations only.  A
+    retrieval comparison requires explicit chunk IDs for every case; missing
+    IDs must block the metric instead of treating a citation or page as a
+    fabricated chunk-level gold.
+    """
+
+    missing = [
+        str(row.get("query", ""))
+        for row in rows
+        if not isinstance(row.get("gold_chunk_ids"), list)
+        or not row.get("gold_chunk_ids")
+    ]
+    if missing:
+        return {
+            "status": "BLOCKED",
+            "reason_code": "missing_gold_chunk_ids",
+            "reason": "Development rewrite golds do not map each case to explicit retrieval chunk IDs.",
+            "missing_gold_case_count": len(missing),
+            "before": None,
+            "after": None,
+            "regression_cases": [],
+            "config": {
+                "top_k": RETRIEVAL_TOP_K,
+                "chunk_top_k": RETRIEVAL_CHUNK_TOP_K,
+                "same_kb_generation_and_runtime_config": True,
+            },
+        }
+    return {
+        "status": "READY",
+        "reason_code": "gold_chunk_ids_available",
+        "config": {
+            "top_k": RETRIEVAL_TOP_K,
+            "chunk_top_k": RETRIEVAL_CHUNK_TOP_K,
+            "same_kb_generation_and_runtime_config": True,
+        },
+    }
 
 
 async def evaluate() -> dict[str, object]:
@@ -39,6 +82,7 @@ async def evaluate() -> dict[str, object]:
         "unnecessary_rewrite_rate": unnecessary_rewrite_rate,
         "ambiguous_detection_accuracy": ambiguous_detection_accuracy,
         "categories": dict(Counter(row["category"] for row in rows)),
+        "retrieval_evaluation": _retrieval_evaluation(rows),
     }
 
 

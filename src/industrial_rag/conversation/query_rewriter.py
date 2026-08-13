@@ -50,6 +50,7 @@ class QueryRewriteResult:
             "rewrite_status": self.status,
             "rewrite_reason": self.rewrite_reason,
             "rewritten_query": self.standalone_query if self.status == "rewritten" else None,
+            "failure_reason": self.failure_reason,
             "rewrite_version": REWRITE_VERSION,
         }
 
@@ -140,13 +141,15 @@ class QueryRewriter:
             subject = candidates[0]
             pronoun = re.match(r"(它|这个|那个|该设备|此设备|其)", query)
             suffix = query[pronoun.end() :] if pronoun else query
-            return _rewritten(base, f"{subject}{suffix}", "pronoun_resolution")
+            return _rewritten(base, _combine_subject_and_suffix(subject, suffix), "pronoun_resolution")
         if _is_constraint_ellipsis(query):
             if len(candidates) > 1:
                 return _ambiguous(base, "ambiguous_context")
             if not candidates:
                 return _failed(base, "missing_context")
             subject = candidates[0]
+            if "这种情况下" in query or "该情况下" in query:
+                return _failed(base, "ambiguous_constraint")
             if "正常工作压力" in latest:
                 return _rewritten(
                     base,
@@ -160,11 +163,15 @@ class QueryRewriter:
             if not candidates:
                 return _failed(base, "missing_context")
             subject = candidates[0]
-            property_name = query.rstrip("？?。 ")
-            previous_property = _property_from_question(latest)
-            if property_name == "停止条件呢" and previous_property == "启动条件":
-                return _rewritten(base, f"{subject}的停止条件是什么？", "ellipsis_resolution")
-            return _failed(base, "unsupported_ellipsis")
+            property_name = query.rstrip("？?。 ").removesuffix("呢").strip()
+            question_suffix = _property_question_suffix(property_name)
+            if question_suffix is None:
+                return _failed(base, "unsupported_ellipsis")
+            return _rewritten(
+                base,
+                f"{subject}的{property_name}{question_suffix}",
+                "ellipsis_resolution",
+            )
         return _failed(base, "unsupported_dependency")
 
     @staticmethod
@@ -259,19 +266,86 @@ def _extract_subjects(question: str) -> list[str]:
     pair = re.search(r"(.+?)和(.+?)(?:有什么区别|有何不同|的压力有何不同)", question)
     if pair:
         return [pair.group(1).strip(" ，,：:") , pair.group(2).strip(" ，,：:")]
+    property_match = re.search(
+        r"(.+?)(?:的)?(?:入口|出口|正常工作|工作|额定|润滑|最高|最低)?"
+        r"(?:压力|温度|流量|转速|频率|周期|条件|步骤|要求|标准|状态|方式|原因|方法)"
+        r"(?:是多少|是什么|如何|怎么|呢)?[？?。！!]?$",
+        question,
+    )
+    if property_match:
+        candidate = _clean_subject(property_match.group(1))
+        if candidate:
+            return [candidate]
     match = re.search(r"(.+?)(?:的)?(?:启动|正常工作|工作|额定|维护|是什么|有什么区别)", question)
     if match:
         candidate = match.group(1).strip(" ，,：:？?。")
         if candidate:
             return [candidate]
+    generic = re.search(r"(.+?)(?:如何|怎么|多久|多少|是什么|是否|有何|有什么)", question)
+    if generic:
+        candidate = _clean_subject(generic.group(1))
+        if candidate:
+            return [candidate]
     return []
 
 
-def _property_from_question(question: str) -> str:
-    for value in ("启动条件", "正常工作压力", "工作压力"):
-        if value in question:
-            return value
-    return ""
+def _clean_subject(value: str) -> str:
+    value = value.rstrip("的 ").strip(" ，,：:？?。")
+    return re.sub(
+        r"的(?:启动|停止|正常工作|工作|额定|维护|入口|出口|润滑)(?:条件|压力|温度|流量|转速|频率|周期)?$",
+        "",
+        value,
+    ).rstrip("的 ")
+
+
+def _property_question_suffix(property_name: str) -> str | None:
+    """Return a safe question ending for an explicit property ellipsis.
+
+    The property must be named in the current turn.  This deliberately does
+    not infer a missing property from the previous answer.
+    """
+
+    if not property_name or any(char in property_name for char in "，,；;。！？?!"):
+        return None
+    if not re.fullmatch(r"[\u4e00-\u9fffA-Za-z0-9\-（）() /]+", property_name):
+        return None
+    if not any(
+        marker in property_name
+        for marker in (
+            "压力",
+            "温度",
+            "流量",
+            "转速",
+            "频率",
+            "周期",
+            "步骤",
+            "条件",
+            "要求",
+            "标准",
+            "原因",
+            "方法",
+            "状态",
+            "方式",
+        )
+    ):
+        return None
+    if any(marker in property_name for marker in ("步骤", "条件", "要求", "标准", "原因", "方法", "状态", "方式")):
+        return "是什么？"
+    return "是多少？"
+
+
+def _combine_subject_and_suffix(subject: str, suffix: str) -> str:
+    """Join a resolved subject without duplicating a shared word boundary."""
+
+    if not suffix:
+        return subject
+    for size in range(min(len(subject), len(suffix)), 0, -1):
+        if subject[-size:] == suffix[:size] and all(
+            "\u4e00" <= char <= "\u9fff" for char in subject[-size:]
+        ):
+            suffix = suffix[size:]
+            break
+    return f"{subject}{suffix}"
 
 
 def _rewritten(base: QueryRewriteResult, query: str, reason: RewriteReason) -> QueryRewriteResult:

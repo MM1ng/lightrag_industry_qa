@@ -102,7 +102,7 @@ $body = @{ query = 'E102 如何处理？' } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/v1/query' -Headers $headers -ContentType 'application/json' -Body $body
 ```
 
-`history` 可选，格式为最多 10 条 `user` 或 `assistant` 消息，每条内容最多 2000 个字符。它会被校验以保证请求边界，但当前版本不会将历史传给运行时、保存，或在后续请求中复用。
+`history` 可选，格式为最多 10 条 `user` 或 `assistant` 消息，每条内容最多 2000 个字符。知识库查询接口会将其限制为最近的有界上下文，仅用于解析当前问题中的安全指代、省略和明确条件继承，再把独立问题交给检索；历史内容不会作为答案证据，也不会写入检索 trace。若无法安全改写，接口会返回 `QUERY_REWRITE_AMBIGUOUS` 或 `QUERY_REWRITE_FAILED`，不会执行检索。旧版 `/v1/query` 仍保持兼容路径：它会校验请求格式，但当前代码不会使用 `history` 做会话改写，也不会把历史传给 legacy runtime。
 
 ## Vue 知识问答工作台
 

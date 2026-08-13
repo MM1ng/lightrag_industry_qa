@@ -237,6 +237,43 @@ async def test_diagnostic_route_auth_matrix_and_no_second_retrieval(
 
 
 @pytest.mark.asyncio
+async def test_rewrite_failure_logs_bounded_diagnostic_with_request_and_trace_ids(
+    diagnostic_client: AsyncClient,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    caplog.set_level(logging.INFO, logger="industrial_rag.api")
+
+    response = await diagnostic_client.post(
+        f"/v1/knowledge-bases/{KB_ID}/query",
+        json={
+            "query": "它多久维护一次？",
+            "history": [
+                {"role": "user", "content": "A 泵和 B 泵有什么区别？"},
+                {"role": "assistant", "content": "历史技术事实不应进入诊断。"},
+            ],
+        },
+        headers={**_auth(SERVICE_KEY), "x-trace-id": "trace-from-test"},
+    )
+
+    assert response.status_code == 422
+    body = response.json()
+    records = [
+        record
+        for record in caplog.records
+        if record.message == "Query rewrite diagnostic"
+    ]
+    assert len(records) == 1
+    diagnostic = records[0].query_rewrite_diagnostic
+    assert diagnostic["request_id"] == body["request_id"]
+    assert diagnostic["trace_id"] == "trace-from-test"
+    assert diagnostic["rewrite_status"] == "ambiguous"
+    assert diagnostic["failure_reason"] == "ambiguous_context"
+    assert "历史技术事实" not in str(diagnostic)
+    assert "history" not in diagnostic
+    assert DiagnosticRuntime.query_calls == 0
+
+
+@pytest.mark.asyncio
 async def test_trace_write_failure_preserves_ordinary_response_and_is_sanitized(
     diagnostic_client: AsyncClient,
     monkeypatch: pytest.MonkeyPatch,

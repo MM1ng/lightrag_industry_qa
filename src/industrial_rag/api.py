@@ -160,6 +160,33 @@ _ERRORS: dict[str, tuple[int, str, bool]] = {
 }
 
 
+def _log_query_rewrite_diagnostic(
+    *, request_id: str, trace_id: str, knowledge_base_id: str, details: Mapping[str, Any]
+) -> None:
+    """Record bounded rewrite diagnostics without persisting conversation text."""
+
+    allowed = {
+        "original_query",
+        "history_available",
+        "history_message_count",
+        "history_used",
+        "rewrite_required",
+        "rewrite_status",
+        "rewrite_reason",
+        "rewritten_query",
+        "rewrite_failure_reason",
+        "failure_reason",
+        "rewrite_version",
+    }
+    diagnostic = {
+        "request_id": request_id,
+        "trace_id": trace_id,
+        "knowledge_base_id": knowledge_base_id,
+        **{key: details[key] for key in allowed if key in details},
+    }
+    logger.info("Query rewrite diagnostic", extra={"query_rewrite_diagnostic": diagnostic})
+
+
 def _request_id() -> str:
     return uuid4().hex
 
@@ -1045,6 +1072,13 @@ def create_app(
             if error.code == "index_not_ready":
                 return _error_response(
                     "INDEX_NOT_READY", request_id=request_id, trace_id=trace_id
+                )
+            if error.code in {"QUERY_REWRITE_AMBIGUOUS", "QUERY_REWRITE_FAILED"}:
+                _log_query_rewrite_diagnostic(
+                    request_id=request_id,
+                    trace_id=trace_id,
+                    knowledge_base_id=kb_id,
+                    details=error.details,
                 )
             raise
         except TimeoutError:

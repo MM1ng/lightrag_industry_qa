@@ -22,3 +22,5 @@ def test_development_evaluation_is_reproducible() -> None:
     assert metrics["rewrite_accuracy"] >= 0.8
     assert metrics["ambiguous_detection_accuracy"] == 1.0
     assert metrics["unnecessary_rewrite_rate"] <= 0.1
+    assert metrics["retrieval_evaluation"]["status"] == "BLOCKED"
+    assert metrics["retrieval_evaluation"]["reason_code"] == "missing_gold_chunk_ids"

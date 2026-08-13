@@ -22,6 +22,7 @@ from industrial_rag.repositories.update_job_repository import UpdateJobRepositor
 from industrial_rag.repositories.vector_index_generation_repository import (
     VectorIndexGenerationRepository,
 )
+from industrial_rag.safety_policy import evaluate_input
 from industrial_rag.vector_collections import VectorBackend
 
 
@@ -43,10 +44,12 @@ class QueryApplicationService:
         *,
         base_settings: Settings,
         runtime_manager,
+        query_rewriter: QueryRewriter | None = None,
     ) -> None:
         self._session = session
         self._base_settings = base_settings
         self._runtime_manager = runtime_manager
+        self._query_rewriter = query_rewriter or QueryRewriter()
         self._kb_repository = KnowledgeBaseRepository(session)
         self._generation_repository = VectorIndexGenerationRepository(session)
         self._document_repository = DocumentRepository(session)
@@ -108,12 +111,14 @@ class QueryApplicationService:
                 "Generation 当前不可查询。",
                 status_code=409,
             )
-        rewrite = await QueryRewriter().rewrite(question, history)
+        rewrite = await self._query_rewriter.rewrite(question, history)
+        rewrite_details = rewrite.to_trace()
         if rewrite.status == "ambiguous":
             raise AppError(
                 AppErrorCode.query_rewrite_ambiguous,
                 "当前问题存在多个可能的指代对象，请明确设备或对象后重试。",
                 status_code=422,
+                details=rewrite_details,
             )
         retrieval_question = rewrite.standalone_query or question
         if rewrite.status == "failed" and rewrite.history_dependent:
@@ -121,6 +126,19 @@ class QueryApplicationService:
                 AppErrorCode.query_rewrite_failed,
                 "当前问题依赖会话上下文，但无法安全改写，请补充明确的设备或对象。",
                 status_code=422,
+                details=rewrite_details,
+            )
+        safety = evaluate_input(retrieval_question)
+        if not safety.allowed:
+            raise AppError(
+                "SAFETY_POLICY_BLOCKED",
+                "改写后的查询未通过安全策略。",
+                status_code=403,
+                details={
+                    **rewrite_details,
+                    "safety_policy_id": safety.policy_id,
+                    "safety_matched_rule": safety.matched_rule,
+                },
             )
         settings = settings_for_knowledge_base(
             self._base_settings,
@@ -149,9 +167,10 @@ class QueryApplicationService:
             )
         document_ids = await self._citation_document_ids(kb.id, generation)
         if result.retrieval_trace is not None:
+            normalized_retrieval_query = result.retrieval_trace.normalized_query
             trace = result.retrieval_trace.with_query_rewrite(
                 rewrite,
-                retrieval_query=retrieval_question,
+                retrieval_query=normalized_retrieval_query,
             )
             result = replace(
                 result,

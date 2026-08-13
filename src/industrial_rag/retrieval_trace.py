@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from typing import Any
@@ -194,14 +195,26 @@ class RetrievalExecutionTrace:
     rewrite_required: bool = False
     rewrite_status: str = "unchanged"
     rewrite_reason: str = "none"
+    rewrite_failure_reason: str | None = None
     rewrite_version: str | None = None
 
     def with_query_rewrite(
-        self, result: QueryRewriteResult, *, retrieval_query: str
+        self, result: QueryRewriteResult, *, retrieval_query: str | None = None
     ) -> RetrievalExecutionTrace:
+        retrieval_query = retrieval_query or self.normalized_query
+        if retrieval_query != self.normalized_query:
+            raise ValueError(
+                "retrieval_query must equal the normalized query sent to the backend"
+            )
         return replace(
             self,
             original_query=result.original_query,
+            original_query_sha256=hashlib.sha256(
+                result.original_query.encode("utf-8")
+            ).hexdigest(),
+            normalized_query_sha256=hashlib.sha256(
+                self.normalized_query.encode("utf-8")
+            ).hexdigest(),
             rewritten_query=result.standalone_query if result.status == "rewritten" else None,
             retrieval_query=retrieval_query,
             history_available=result.history_available,
@@ -210,6 +223,7 @@ class RetrievalExecutionTrace:
             rewrite_required=result.history_dependent,
             rewrite_status=result.status,
             rewrite_reason=result.rewrite_reason,
+            rewrite_failure_reason=result.failure_reason,
             rewrite_version=result.to_trace()["rewrite_version"],
         )
 
@@ -243,6 +257,7 @@ class RetrievalExecutionTrace:
             "rewrite_required": self.rewrite_required,
             "rewrite_status": self.rewrite_status,
             "rewrite_reason": self.rewrite_reason,
+            "rewrite_failure_reason": self.rewrite_failure_reason,
             "rewrite_version": self.rewrite_version,
             "retrieval_config": dict(self.retrieval_config),
             "initial_results": [item.to_payload() for item in self.initial_results],

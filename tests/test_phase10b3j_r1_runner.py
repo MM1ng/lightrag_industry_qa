@@ -69,6 +69,39 @@ def test_admin_trace_contract_preserves_runtime_lineage_fields() -> None:
     assert trace.coverage_after_parent_adjacent == ["req-1"]
 
 
+def test_legacy_trace_payload_accepts_additive_conversation_fields() -> None:
+    from industrial_rag.routers.admin_diagnostics import RetrievalTraceResponse
+
+    payload = {
+        "request_id": "r",
+        "trace_id": "t",
+        "trace_version": "phase10a-retrieval-trace-v1",
+        "knowledge_base_id": "kb",
+        "generation_id": "g",
+        "generation_epoch": 0,
+        "original_query": "q",
+        "normalized_query": "q",
+        "retrieval_config": {},
+        "initial_results": [],
+        "rerank_applied": False,
+        "reranked_results": [],
+        "final_selected_chunks": [],
+        "normalization_ms": 0,
+        "retrieval_ms": 0,
+        "rerank_ms": 0,
+        "evidence_selection_ms": 0,
+        "end_to_end_ms": 0,
+        "created_at": "now",
+        "expires_at": "later",
+    }
+
+    trace = RetrievalTraceResponse.model_validate(payload)
+
+    assert trace.rewrite_status == "unchanged"
+    assert trace.retrieval_query is None
+    assert trace.rewrite_failure_reason is None
+
+
 def test_admin_trace_exposes_structured_citation_audit_fields() -> None:
     """The admin-only projection must preserve J1S audit fields already in Trace."""
 
