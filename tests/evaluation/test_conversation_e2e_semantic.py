@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 from evaluation.phase10.conversation_e2e_contracts import JudgeConfig
 from evaluation.phase10.conversation_e2e_semantic import (
     build_openai_compatible_metrics,
+    run_semantic_preflight,
     score_semantic_rows,
 )
 
@@ -94,3 +97,65 @@ def test_openai_compatible_metric_builder_freezes_model_temperature_and_base_url
     assert calls["embedding"] == {"model": "embed", "api_key": "key", "base_url": "https://example.invalid/v1", "timeout": 60, "max_retries": 2}
     assert faithfulness.llm == "llm"
     assert relevancy.embeddings == "embedding"
+
+
+class ProviderError(RuntimeError):
+    def __init__(self, status_code: int, request_id: str) -> None:
+        super().__init__(f"HTTP {status_code}")
+        self.status_code = status_code
+        self.request_id = request_id
+
+
+class FakeCreate:
+    def __init__(self, *, error: Exception | None = None) -> None:
+        self.error = error
+        self.calls: list[dict] = []
+
+    async def create(self, **kwargs):
+        self.calls.append(kwargs)
+        if self.error:
+            raise self.error
+        return SimpleNamespace(_request_id="ready-request")
+
+
+@pytest.mark.asyncio
+async def test_semantic_preflight_attributes_chat_5xx_and_retries_only_the_failing_layer() -> None:
+    chat = FakeCreate(error=ProviderError(500, "chat-500"))
+    embedding = FakeCreate()
+    client = SimpleNamespace(chat=SimpleNamespace(completions=chat), embeddings=embedding)
+
+    result = await run_semantic_preflight(
+        config=_config(),
+        client=client,
+        faithfulness=FakeMetric("faithfulness"),
+        relevancy=FakeMetric("relevancy"),
+    )
+
+    assert result["status"] == "BLOCKED"
+    assert result["chat"]["reason_code"] == "chat_provider_error"
+    assert len(result["chat"]["attempts"]) == 2
+    assert {attempt["request_id"] for attempt in result["chat"]["attempts"]} == {"chat-500"}
+    assert result["embedding"]["status"] == "READY"
+    assert result["faithfulness"]["status"] == "READY"
+    assert result["response_relevancy"]["status"] == "READY"
+
+
+@pytest.mark.asyncio
+async def test_semantic_preflight_keeps_faithfulness_and_relevancy_errors_separate() -> None:
+    client = SimpleNamespace(
+        chat=SimpleNamespace(completions=FakeCreate()),
+        embeddings=FakeCreate(),
+    )
+
+    result = await run_semantic_preflight(
+        config=_config(),
+        client=client,
+        faithfulness=FakeMetric("faithfulness", error=ProviderError(500, "faithfulness-500")),
+        relevancy=FakeMetric("relevancy", error=ProviderError(500, "relevancy-500")),
+    )
+
+    assert result["status"] == "BLOCKED"
+    assert result["faithfulness"]["reason_code"] == "faithfulness_metric_error"
+    assert result["response_relevancy"]["reason_code"] == "response_relevancy_metric_error"
+    assert len(result["faithfulness"]["attempts"]) == 2
+    assert len(result["response_relevancy"]["attempts"]) == 2

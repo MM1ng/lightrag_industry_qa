@@ -48,36 +48,57 @@ def test_aggregate_and_paired_counts_preserve_all_cases() -> None:
 
 
 def test_gate_returns_pass_only_when_guardrails_hold() -> None:
+    def available(value: float) -> dict:
+        return {"status": "available", "value": value, "denominator": 18}
+
+    unavailable = {"status": "metric_unavailable", "value": None, "reason": "missing frozen gold"}
     summary = {
         "baseline": {
-            "supporting_recall": 0.0,
-            "false_rejection_rate": 0.5,
-            "question_level_citation_accuracy": 0.5,
-            "unsupported_answer_rate": 0.5,
-            "expected_answer_coverage": 0.0,
-            "faithfulness": {"mean": 0.7},
-            "response_relevancy": {"mean": 0.7},
+            "supporting_recall": unavailable,
+            "false_rejection_rate": available(0.5),
+            "question_level_citation_accuracy": unavailable,
+            "unsupported_answer_rate": available(0.5),
+            "expected_answer_coverage": unavailable,
         },
         "candidate": {
-            "supporting_recall": 1.0,
-            "false_rejection_rate": 0.5,
-            "question_level_citation_accuracy": 0.5,
-            "unsupported_answer_rate": 0.5,
-            "expected_answer_coverage": 1.0,
-            "faithfulness": {"mean": 0.7},
-            "response_relevancy": {"mean": 0.7},
+            "supporting_recall": unavailable,
+            "false_rejection_rate": available(0.5),
+            "question_level_citation_accuracy": unavailable,
+            "unsupported_answer_rate": available(0.5),
+            "expected_answer_coverage": unavailable,
         },
+        "semantic": {"faithfulness": {"baseline_mean": 0.7, "candidate_mean": 0.7}, "response_relevancy": {"baseline_mean": 0.7, "candidate_mean": 0.7}},
+        "semantic_execution": {"status": "READY"},
         "severe_regressions": [],
         "judge_errors": 0,
     }
-    assert evaluate_gate(summary)["status"] == "R3_PASS"
+    gate = evaluate_gate(summary)
+    assert gate["status"] == "R3_MIXED"
+    assert "supporting_recall_unavailable" in gate["reasons"]
 
 
 def test_gate_does_not_pass_with_semantic_or_guardrail_regression() -> None:
+    def available(value: float) -> dict:
+        return {"status": "available", "value": value, "denominator": 18}
+
+    unavailable = {"status": "metric_unavailable", "value": None, "reason": "missing frozen gold"}
     summary = {
-        "baseline": {"supporting_recall": 0.0, "false_rejection_rate": 0.0, "question_level_citation_accuracy": 1.0, "unsupported_answer_rate": 0.0, "expected_answer_coverage": 0.0, "faithfulness": {"mean": 0.8}, "response_relevancy": {"mean": 0.8}},
-        "candidate": {"supporting_recall": 1.0, "false_rejection_rate": 0.0, "question_level_citation_accuracy": 1.0, "unsupported_answer_rate": 0.0, "expected_answer_coverage": 1.0, "faithfulness": {"mean": 0.5}, "response_relevancy": {"mean": 0.8}},
+        "baseline": {"supporting_recall": unavailable, "false_rejection_rate": available(0.0), "question_level_citation_accuracy": unavailable, "unsupported_answer_rate": available(0.0), "expected_answer_coverage": unavailable},
+        "candidate": {"supporting_recall": unavailable, "false_rejection_rate": available(0.0), "question_level_citation_accuracy": unavailable, "unsupported_answer_rate": available(0.0), "expected_answer_coverage": unavailable},
+        "semantic": {"faithfulness": {"baseline_mean": 0.8, "candidate_mean": 0.5}, "response_relevancy": {"baseline_mean": 0.8, "candidate_mean": 0.8}},
+        "semantic_execution": {"status": "READY"},
         "severe_regressions": [],
         "judge_errors": 0,
     }
-    assert evaluate_gate(summary)["status"] == "R3_MIXED"
+    assert evaluate_gate(summary)["status"] == "R3_FAIL"
+
+
+def test_gate_blocks_semantic_execution_failure() -> None:
+    summary = {
+        "baseline": {},
+        "candidate": {},
+        "semantic": {},
+        "semantic_execution": {"status": "BLOCKED", "reason": "provider unavailable"},
+    }
+
+    assert evaluate_gate(summary)["status"] == "BLOCKED"

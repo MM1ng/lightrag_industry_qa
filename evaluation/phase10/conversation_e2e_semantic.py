@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from typing import Any
 
 from ragas.dataset_schema import SingleTurnSample
@@ -63,6 +64,127 @@ def build_openai_compatible_metrics(
     llm = llm_wrapper_factory(chat_model)
     embeddings = embedding_wrapper_factory(embedding_model)
     return build_default_metrics(llm=llm, embeddings=embeddings, max_retries=config.retry)
+
+
+def _provider_error_details(error: Exception, attempt: int) -> dict[str, Any]:
+    status = getattr(error, "status_code", None)
+    return {
+        "attempt": attempt,
+        "error_type": type(error).__name__,
+        "http_status": status,
+        "request_id": getattr(error, "request_id", None),
+        "timestamp": datetime.now(UTC).isoformat(),
+        "message": str(error),
+    }
+
+
+async def _run_provider_preflight(reason_code: str, operation: Any, retry: int) -> dict[str, Any]:
+    """Call one direct provider boundary with a bounded 5xx-only retry policy."""
+
+    attempts: list[dict[str, Any]] = []
+    for attempt in range(1, max(1, retry) + 1):
+        try:
+            response = await operation()
+        except Exception as error:
+            detail = _provider_error_details(error, attempt)
+            attempts.append(detail)
+            if not (isinstance(detail["http_status"], int) and 500 <= detail["http_status"] < 600 and attempt < max(1, retry)):
+                return {
+                    "status": "BLOCKED",
+                    "reason_code": reason_code,
+                    "reason": f"{detail['error_type']}: {detail['message']}",
+                    "attempts": attempts,
+                }
+        else:
+            return {
+                "status": "READY",
+                "request_id": getattr(response, "_request_id", None),
+                "attempts": [*attempts, {
+                    "attempt": attempt,
+                    "http_status": None,
+                    "request_id": getattr(response, "_request_id", None),
+                    "timestamp": datetime.now(UTC).isoformat(),
+                }],
+            }
+    return {
+        "status": "BLOCKED",
+        "reason_code": reason_code,
+        "reason": "provider retry budget exhausted",
+        "attempts": attempts,
+    }
+
+
+async def _run_metric_preflight(reason_code: str, metric: Any, sample: SingleTurnSample, retry: int) -> dict[str, Any]:
+    """Score one metric with the same finite 5xx retry budget as direct calls."""
+
+    attempts: list[dict[str, Any]] = []
+    for attempt in range(1, max(1, retry) + 1):
+        try:
+            value = await metric.single_turn_ascore(sample)
+        except Exception as error:
+            detail = _provider_error_details(error, attempt)
+            attempts.append(detail)
+            if isinstance(detail["http_status"], int) and 500 <= detail["http_status"] < 600 and attempt < max(1, retry):
+                continue
+            return {
+                "status": "BLOCKED",
+                "reason_code": reason_code,
+                "reason": f"{detail['error_type']}: {detail['message']}",
+                "attempts": attempts,
+            }
+        else:
+            return {"status": "READY", "value": float(value), "attempts": attempts}
+    return {
+        "status": "BLOCKED",
+        "reason_code": reason_code,
+        "reason": "provider retry budget exhausted",
+        "attempts": attempts,
+    }
+
+
+async def run_semantic_preflight(
+    *,
+    config: JudgeConfig,
+    client: Any,
+    faithfulness: Any,
+    relevancy: Any,
+) -> dict[str, Any]:
+    """Diagnose direct providers and each Ragas metric independently."""
+
+    chat = await _run_provider_preflight(
+        "chat_provider_error",
+        lambda: client.chat.completions.create(
+            model=config.judge_model,
+            messages=[{"role": "user", "content": "Respond with OK."}],
+            temperature=config.temperature,
+        ),
+        config.retry,
+    )
+    embedding = await _run_provider_preflight(
+        "embedding_provider_error",
+        lambda: client.embeddings.create(model=config.embedding_model, input="semantic preflight"),
+        config.retry,
+    )
+    sample = SingleTurnSample(
+        user_input="泵的启动步骤是什么？",
+        response="按照手册执行启动步骤。",
+        retrieved_contexts=["手册规定了启动步骤。"],
+    )
+    faithfulness_result = await _run_metric_preflight("faithfulness_metric_error", faithfulness, sample, config.retry)
+    relevancy_result = await _run_metric_preflight("response_relevancy_metric_error", relevancy, sample, config.retry)
+    components = {
+        "chat": chat,
+        "embedding": embedding,
+        "faithfulness": faithfulness_result,
+        "response_relevancy": relevancy_result,
+    }
+    blocked = [result for result in components.values() if result["status"] == "BLOCKED"]
+    return {
+        "status": "BLOCKED" if blocked else "READY",
+        "components": components,
+        **components,
+        "judge_config": config.to_dict(),
+    }
 
 
 async def semantic_smoke_test(*, faithfulness: Any, relevancy: Any, config: JudgeConfig) -> dict[str, Any]:

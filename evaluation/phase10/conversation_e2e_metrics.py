@@ -93,28 +93,58 @@ def classify_failure_layer(case: dict[str, Any]) -> str | None:
 
 
 def evaluate_gate(summary: dict[str, Any]) -> dict[str, Any]:
+    """Evaluate the single aggregate schema emitted by ``aggregate_arm``.
+
+    This Development dataset deliberately lacks three gold-label families.  A
+    successful semantic judge is therefore evidence, not enough for R3_PASS.
+    """
+
     baseline = summary["baseline"]
     candidate = summary["candidate"]
-    if summary.get("blocked"):
-        return {"status": "BLOCKED", "reasons": list(summary.get("blocked_reasons", ())) }
+    semantic_execution = summary.get("semantic_execution", {})
+    if summary.get("blocked") or semantic_execution.get("status") == "BLOCKED" or summary.get("judge_errors", 0):
+        reasons = list(summary.get("blocked_reasons", ()))
+        if semantic_execution.get("status") == "BLOCKED":
+            reasons.append(str(semantic_execution.get("reason") or "semantic_execution_blocked"))
+        if summary.get("judge_errors", 0):
+            reasons.append("judge_errors_present")
+        return {"status": "BLOCKED", "reasons": list(dict.fromkeys(reasons))}
+
+    def optional_value(arm: dict[str, Any], name: str) -> float | None:
+        metric = arm.get(name)
+        if not isinstance(metric, dict) or metric.get("status") != "available":
+            return None
+        value = metric.get("value")
+        return float(value) if isinstance(value, (int, float)) else None
+
     reasons: list[str] = []
-    if candidate["supporting_recall"] <= baseline["supporting_recall"]:
-        reasons.append("supporting_recall_not_improved")
-    if candidate["false_rejection_rate"] > baseline["false_rejection_rate"]:
-        reasons.append("false_rejection_rate_regressed")
-    if candidate["question_level_citation_accuracy"] < baseline["question_level_citation_accuracy"]:
-        reasons.append("citation_accuracy_regressed")
-    if candidate["unsupported_answer_rate"] > baseline["unsupported_answer_rate"]:
-        reasons.append("unsupported_answer_rate_regressed")
-    if candidate["expected_answer_coverage"] <= baseline["expected_answer_coverage"]:
-        reasons.append("expected_coverage_not_improved")
-    for metric in ("faithfulness", "response_relevancy"):
-        if candidate[metric]["mean"] < baseline[metric]["mean"] - 0.05:
-            reasons.append(f"{metric}_substantially_regressed")
-    if summary.get("severe_regressions"):
-        reasons.append("severe_regression")
-    if summary.get("severe_regressions"):
-        return {"status": "R3_FAIL", "reasons": reasons}
+    severe_reasons = list(summary.get("severe_regressions", ()))
+    for name in ("supporting_recall", "question_level_citation_accuracy", "expected_answer_coverage"):
+        before, after = optional_value(baseline, name), optional_value(candidate, name)
+        if before is None or after is None:
+            reasons.append(f"{name}_unavailable")
+        elif (name == "supporting_recall" and after <= before) or (name != "supporting_recall" and after < before):
+            reasons.append(f"{name}_not_improved")
+    for name in ("false_rejection_rate", "unsupported_answer_rate"):
+        before, after = optional_value(baseline, name), optional_value(candidate, name)
+        if before is None or after is None:
+            reasons.append(f"{name}_unavailable")
+        elif after > before:
+            reasons.append(f"{name}_regressed")
+            if after - before >= 0.05:
+                severe_reasons.append(f"{name}_substantially_regressed")
+    semantic = summary.get("semantic", {})
+    for name in ("faithfulness", "response_relevancy"):
+        values = semantic.get(name, {})
+        before, after = values.get("baseline_mean"), values.get("candidate_mean")
+        if not isinstance(before, (int, float)) or not isinstance(after, (int, float)):
+            return {"status": "BLOCKED", "reasons": [f"{name}_unavailable"]}
+        if after < before - 0.05:
+            severe_reasons.append(f"{name}_substantially_regressed")
+        elif after < before:
+            reasons.append(f"{name}_regressed")
+    if severe_reasons:
+        return {"status": "R3_FAIL", "reasons": list(dict.fromkeys([*reasons, *severe_reasons]))}
     if reasons:
-        return {"status": "R3_MIXED", "reasons": reasons}
+        return {"status": "R3_MIXED", "reasons": list(dict.fromkeys(reasons))}
     return {"status": "R3_PASS", "reasons": []}

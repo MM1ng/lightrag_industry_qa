@@ -18,6 +18,10 @@ if str(PROJECT_ROOT / "src") not in sys.path:
 DATASET = PROJECT_ROOT / "data/evaluation/conversation_retrieval_development.jsonl"
 REPORT_JSON = PROJECT_ROOT / "evaluation/phase10/conversation_e2e_ragas_development_report.json"
 REPORT_MD = PROJECT_ROOT / "docs/phase-10-conversation-e2e-ragas-development-report.md"
+RUNTIME_SNAPSHOT = PROJECT_ROOT / "evaluation/phase10/conversation_e2e_runtime_snapshot_development.jsonl"
+PREVIOUS_BLOCKED_COMMIT = "dbaf649e6fd59f710def1e99aa46a93cc514484f"
+JUDGE_MODEL = "qwen-plus-2025-07-28"
+EMBEDDING_MODEL = "text-embedding-v4"
 
 
 def console_summary(report: dict[str, object]) -> str:
@@ -32,6 +36,19 @@ def console_summary(report: dict[str, object]) -> str:
         },
         ensure_ascii=True,
     )
+
+
+def semantic_preflight_block_reason(preflight: dict[str, object]) -> str:
+    """Keep all independently diagnosed preflight failures in the BLOCKED report."""
+
+    components = preflight.get("components", {})
+    if not isinstance(components, dict):
+        return "semantic preflight returned no component diagnostics"
+    reasons = []
+    for component in components.values():
+        if isinstance(component, dict) and component.get("status") == "BLOCKED":
+            reasons.append(f"{component.get('reason_code', 'semantic_preflight_error')}: {component.get('reason', '')}")
+    return "; ".join(reasons) or "semantic preflight blocked"
 
 
 def _load_environment() -> None:
@@ -52,13 +69,19 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
         runtime_config_fingerprint,
     )
     from evaluation.phase10.conversation_e2e_runner import (
+        SnapshotValidationError,
         build_blocked_report,
+        build_runtime_snapshot,
+        build_runtime_snapshot_from_report,
+        load_runtime_snapshot,
+        resolve_runtime_cases,
         run_development_experiment,
         write_artifacts,
+        write_runtime_snapshot,
     )
     from evaluation.phase10.conversation_e2e_semantic import (
         build_openai_compatible_metrics,
-        semantic_smoke_test,
+        run_semantic_preflight,
     )
     from industrial_rag.config import Settings
     from industrial_rag.lightrag_service import LightRAGService, QueryOptions
@@ -91,30 +114,108 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
         faithfulness_metric="Faithfulness",
         response_relevancy_metric="ResponseRelevancy",
         judge_provider="openai-compatible-dashscope",
-        judge_model=settings.llm_model,
+        judge_model=JUDGE_MODEL,
         embedding_provider="openai-compatible-dashscope",
-        embedding_model=settings.embedding_model,
+        embedding_model=EMBEDDING_MODEL,
         temperature=0.0,
         seed=None,
         timeout_seconds=60,
         retry=2,
         max_concurrency=1,
     )
-    service = LightRAGService(settings)
+    if settings.embedding_model != EMBEDDING_MODEL:
+        report = build_blocked_report(
+            fingerprint,
+            "embedding_model_contract_mismatch",
+            f"Development runtime embedding model must remain {EMBEDDING_MODEL}",
+            runtime_fingerprint=runtime_fp,
+            judge_config=judge_config,
+        )
+        write_artifacts(report, output_json, output_md)
+        return 2
+
+    snapshot_manifest: dict[str, object] | None = None
+    runtime_cases: list[dict[str, object]] | None = None
+    if RUNTIME_SNAPSHOT.exists():
+        try:
+            runtime_cases, snapshot_manifest = load_runtime_snapshot(RUNTIME_SNAPSHOT, fingerprint, runtime_fp)
+        except SnapshotValidationError as error:
+            report = build_blocked_report(
+                fingerprint,
+                error.reason_code,
+                str(error),
+                runtime_fingerprint=runtime_fp,
+                judge_config=judge_config,
+            )
+            write_artifacts(report, output_json, output_md)
+            return 2
+    elif REPORT_JSON.exists():
+        try:
+            previous_report = json.loads(REPORT_JSON.read_text(encoding="utf-8"))
+            snapshot = build_runtime_snapshot_from_report(previous_report, fingerprint, runtime_fp)
+            write_runtime_snapshot(snapshot, RUNTIME_SNAPSHOT)
+            runtime_cases, snapshot_manifest = load_runtime_snapshot(RUNTIME_SNAPSHOT, fingerprint, runtime_fp)
+        except (OSError, json.JSONDecodeError, SnapshotValidationError) as error:
+            reason_code = error.reason_code if isinstance(error, SnapshotValidationError) else "legacy_report_unusable"
+            report = build_blocked_report(
+                fingerprint,
+                reason_code,
+                f"cannot create a trusted runtime snapshot: {type(error).__name__}: {error}",
+                runtime_fingerprint=runtime_fp,
+                judge_config=judge_config,
+            )
+            write_artifacts(report, output_json, output_md)
+            return 2
+    else:
+        service = LightRAGService(settings)
+        try:
+            await service.initialize()
+            runtime_cases = await resolve_runtime_cases(
+                service,
+                cases,
+                mode=query_options.mode,
+                top_k=query_options.top_k,
+                chunk_top_k=query_options.chunk_top_k,
+            )
+            snapshot = build_runtime_snapshot(runtime_cases, fingerprint, runtime_fp)
+            write_runtime_snapshot(snapshot, RUNTIME_SNAPSHOT)
+            runtime_cases, snapshot_manifest = load_runtime_snapshot(RUNTIME_SNAPSHOT, fingerprint, runtime_fp)
+        except Exception as error:
+            report = build_blocked_report(
+                fingerprint,
+                "e2e_runtime_unavailable",
+                f"{type(error).__name__}: {error}",
+                runtime_fingerprint=runtime_fp,
+                judge_config=judge_config,
+            )
+            write_artifacts(report, output_json, output_md)
+            return 2
+        finally:
+            await service.close()
+
+    assert runtime_cases is not None and snapshot_manifest is not None
+    from openai import AsyncOpenAI
+
+    client = AsyncOpenAI(
+        api_key=settings.api_key,
+        base_url=settings.llm_base_url,
+        timeout=judge_config.timeout_seconds,
+        max_retries=0,
+    )
     try:
-        await service.initialize()
         faithfulness, relevancy = build_openai_compatible_metrics(
             judge_config,
             base_url=settings.llm_base_url,
             api_key=settings.api_key,
         )
-        smoke = await semantic_smoke_test(
+        preflight = await run_semantic_preflight(
+            config=judge_config,
+            client=client,
             faithfulness=faithfulness,
             relevancy=relevancy,
-            config=judge_config,
         )
         report = await run_development_experiment(
-            service=service,
+            service=None,
             cases=cases,
             mode=query_options.mode,
             top_k=query_options.top_k,
@@ -124,12 +225,30 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
             judge_config=judge_config,
             faithfulness=faithfulness,
             relevancy=relevancy,
-            semantic_blocked_reason=smoke.get("judge_error") if smoke["status"] == "BLOCKED" else None,
+            semantic_blocked_reason=semantic_preflight_block_reason(preflight) if preflight["status"] == "BLOCKED" else None,
+            frozen_cases=runtime_cases,
         )
     except Exception as error:
-        report = build_blocked_report(fingerprint, "e2e_runtime_unavailable", f"{type(error).__name__}: {error}")
+        report = build_blocked_report(
+            fingerprint,
+            "semantic_execution_unavailable",
+            f"{type(error).__name__}: {error}",
+            runtime_fingerprint=runtime_fp,
+            judge_config=judge_config,
+            case_count=len(runtime_cases),
+        )
     finally:
-        await service.close()
+        await client.close()
+    report["previous_blocked_commit"] = PREVIOUS_BLOCKED_COMMIT
+    report["runtime_snapshot"] = {
+        "artifact": str(RUNTIME_SNAPSHOT.relative_to(PROJECT_ROOT)),
+        "snapshot_sha256": snapshot_manifest["snapshot_sha256"],
+        "case_count": snapshot_manifest["case_count"],
+        "ordered_case_ids": snapshot_manifest["ordered_case_ids"],
+        "dataset_fingerprint_parity": snapshot_manifest["dataset_fingerprint"] == fingerprint.to_dict(),
+        "runtime_config_fingerprint_parity": snapshot_manifest["runtime_config_fingerprint"] == runtime_fp,
+    }
+    report["semantic_preflight"] = preflight if "preflight" in locals() else {"status": "BLOCKED", "reason": report.get("reason")}
     write_artifacts(report, output_json, output_md)
     print(console_summary(report))
     return 0 if report.get("status") in {"R3_PASS", "R3_MIXED"} else 2
