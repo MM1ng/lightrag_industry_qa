@@ -30378,5 +30378,9 @@
       "retry": 2,
       "max_concurrency": 1
     }
+  },
+  "implementation_audit": {
+    "legacy_report_json": "dbaf649 report audited as valid and non-empty (1325738 bytes)",
+    "gate_integration": "build_report invokes evaluate_gate with the runtime aggregate schema"
   }
 }

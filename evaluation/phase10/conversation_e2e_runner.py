@@ -312,6 +312,7 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         "## Recovery provenance",
         "",
         f"- Previous blocked commit: `{report.get('previous_blocked_commit')}`",
+        f"- Implementation audit: `{report.get('implementation_audit', {})}`",
         f"- Runtime snapshot: `{report.get('runtime_snapshot', {})}`",
         f"- Semantic preflight: `{report.get('semantic_preflight', {})}`",
         "",

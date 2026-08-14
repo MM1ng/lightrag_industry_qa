@@ -217,6 +217,7 @@ def test_markdown_records_snapshot_preflight_and_prior_blocked_provenance() -> N
         "previous_blocked_commit": "dbaf649e6fd59f710def1e99aa46a93cc514484f",
         "runtime_snapshot": {"snapshot_sha256": "snapshot"},
         "semantic_preflight": {"status": "BLOCKED", "components": {"chat": {"status": "BLOCKED"}}},
+        "implementation_audit": {"legacy_report_json": "valid and non-empty", "gate_integration": "build_report calls evaluate_gate"},
     }
 
     markdown = render_markdown_report(report)
@@ -224,6 +225,7 @@ def test_markdown_records_snapshot_preflight_and_prior_blocked_provenance() -> N
     assert "Previous blocked commit" in markdown
     assert "Runtime snapshot" in markdown
     assert "Semantic preflight" in markdown
+    assert "Implementation audit" in markdown
 
 
 def test_report_marks_semantic_smoke_block_without_fabricating_case_scores() -> None:
