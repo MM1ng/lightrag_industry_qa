@@ -19,6 +19,8 @@ DATASET = PROJECT_ROOT / "data/evaluation/conversation_retrieval_development.jso
 REPORT_JSON = PROJECT_ROOT / "evaluation/phase10/conversation_e2e_ragas_development_report.json"
 REPORT_MD = PROJECT_ROOT / "docs/phase-10-conversation-e2e-ragas-development-report.md"
 RUNTIME_SNAPSHOT = PROJECT_ROOT / "evaluation/phase10/conversation_e2e_runtime_snapshot_development.jsonl"
+SEMANTIC_SCORES = PROJECT_ROOT / "evaluation/phase10/conversation_e2e_semantic_scores_development.jsonl"
+EXPECTED_SNAPSHOT_SHA256 = "8d551a2f02e4141cf0d355c6271a17883617a0519a7b1f80534496784cec0cde"
 PREVIOUS_BLOCKED_COMMIT = "dbaf649e6fd59f710def1e99aa46a93cc514484f"
 JUDGE_MODEL = "qwen-plus-2025-07-28"
 EMBEDDING_MODEL = "text-embedding-v4"
@@ -51,6 +53,74 @@ def semantic_preflight_block_reason(preflight: dict[str, object]) -> str:
     return "; ".join(reasons) or "semantic preflight blocked"
 
 
+def _semantic_input(runtime_cases: list[dict[str, object]]) -> list[dict[str, object]]:
+    return [
+        {
+            "case_id": row["case_id"],
+            "standalone_query": row["standalone_query"],
+            "baseline": row["baseline"],
+            "candidate": row["candidate"],
+        }
+        for row in runtime_cases
+    ]
+
+
+def _merge_metric_rows(
+    faithfulness_rows: list[dict[str, object]],
+    relevancy_rows: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    relevancy_by_case = {str(row["case_id"]): row for row in relevancy_rows}
+    merged: list[dict[str, object]] = []
+    for faith_row in faithfulness_rows:
+        relevancy_row = relevancy_by_case.get(str(faith_row["case_id"]), {})
+        result = {"case_id": faith_row["case_id"], "judge_config": faith_row.get("judge_config")}
+        for arm_name in ("baseline", "candidate"):
+            faith_arm = dict(faith_row[arm_name])
+            relevancy_arm = relevancy_row.get(arm_name, {})
+            faith_arm.update({
+                "response_relevancy": relevancy_arm.get("response_relevancy"),
+                "response_relevancy_status": relevancy_arm.get("response_relevancy_status", "not_run"),
+            })
+            errors = [*faith_arm.get("judge_errors", []), *relevancy_arm.get("judge_errors", [])]
+            faith_arm["judge_errors"] = errors
+            faith_arm["judge_error"] = "; ".join(
+                f"{item.get('error_type')}: {item.get('message', '')}" for item in errors
+            ) or None
+            result[arm_name] = faith_arm
+        merged.append(result)
+    return merged
+
+
+def _mark_relevancy_blocked(
+    rows: list[dict[str, object]],
+    preflight: dict[str, object],
+) -> list[dict[str, object]]:
+    attempts = list(preflight.get("attempts", []))
+    reason = str(preflight.get("reason", "ResponseRelevancy preflight blocked"))
+    output: list[dict[str, object]] = []
+    for row in rows:
+        current = {"case_id": row["case_id"], "judge_config": row.get("judge_config")}
+        for arm_name in ("baseline", "candidate"):
+            arm = dict(row[arm_name])
+            errors = [*arm.get("judge_errors", []), {
+                "metric": "response_relevancy",
+                "error_type": "ResponseRelevancyPreflightError",
+                "http_status": attempts[-1].get("http_status") if attempts else None,
+                "request_id": attempts[-1].get("request_id") if attempts else None,
+                "attempt": attempts[-1].get("attempt") if attempts else 0,
+                "message": reason,
+            }]
+            arm.update({
+                "response_relevancy": None,
+                "response_relevancy_status": "blocked",
+                "judge_errors": errors,
+                "judge_error": reason,
+            })
+            current[arm_name] = arm
+        output.append(current)
+    return output
+
+
 def _load_environment() -> None:
     path = PROJECT_ROOT / ".env.local_staging"
     if not path.exists():
@@ -71,25 +141,24 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
     from evaluation.phase10.conversation_e2e_runner import (
         SnapshotValidationError,
         build_blocked_report,
-        build_runtime_snapshot,
-        build_runtime_snapshot_from_report,
+        build_report,
         load_runtime_snapshot,
-        resolve_runtime_cases,
+        load_semantic_scores,
         run_development_experiment,
         write_artifacts,
-        write_runtime_snapshot,
+        write_semantic_scores,
     )
     from evaluation.phase10.conversation_e2e_semantic import (
         build_openai_compatible_metrics,
+        run_metric_smoke,
         run_semantic_preflight,
+        score_semantic_rows,
     )
     from industrial_rag.config import Settings
-    from industrial_rag.lightrag_service import LightRAGService, QueryOptions
+    from industrial_rag.lightrag_service import QueryOptions
     from industrial_rag.vector_collections import VectorBackend
-    from scripts.evaluate_conversation_retrieval_development import load_conversation_cases
 
     fingerprint = fingerprint_dataset(DATASET)
-    cases = load_conversation_cases(DATASET)
     required = ("QDRANT_URL", "QDRANT_KB_ID", "QDRANT_GENERATION", "LIGHTRAG_WORKING_DIR", "DASHSCOPE_API_KEY")
     missing = [key for key in required if not os.environ.get(key)]
     if missing:
@@ -136,62 +205,46 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
 
     snapshot_manifest: dict[str, object] | None = None
     runtime_cases: list[dict[str, object]] | None = None
-    if RUNTIME_SNAPSHOT.exists():
-        try:
-            runtime_cases, snapshot_manifest = load_runtime_snapshot(RUNTIME_SNAPSHOT, fingerprint, runtime_fp)
-        except SnapshotValidationError as error:
-            report = build_blocked_report(
-                fingerprint,
-                error.reason_code,
-                str(error),
-                runtime_fingerprint=runtime_fp,
-                judge_config=judge_config,
-            )
-            write_artifacts(report, output_json, output_md)
-            return 2
-    elif REPORT_JSON.exists():
-        try:
-            previous_report = json.loads(REPORT_JSON.read_text(encoding="utf-8"))
-            snapshot = build_runtime_snapshot_from_report(previous_report, fingerprint, runtime_fp)
-            write_runtime_snapshot(snapshot, RUNTIME_SNAPSHOT)
-            runtime_cases, snapshot_manifest = load_runtime_snapshot(RUNTIME_SNAPSHOT, fingerprint, runtime_fp)
-        except (OSError, json.JSONDecodeError, SnapshotValidationError) as error:
-            reason_code = error.reason_code if isinstance(error, SnapshotValidationError) else "legacy_report_unusable"
-            report = build_blocked_report(
-                fingerprint,
-                reason_code,
-                f"cannot create a trusted runtime snapshot: {type(error).__name__}: {error}",
-                runtime_fingerprint=runtime_fp,
-                judge_config=judge_config,
-            )
-            write_artifacts(report, output_json, output_md)
-            return 2
-    else:
-        service = LightRAGService(settings)
-        try:
-            await service.initialize()
-            runtime_cases = await resolve_runtime_cases(
-                service,
-                cases,
-                mode=query_options.mode,
-                top_k=query_options.top_k,
-                chunk_top_k=query_options.chunk_top_k,
-            )
-            snapshot = build_runtime_snapshot(runtime_cases, fingerprint, runtime_fp)
-            write_runtime_snapshot(snapshot, RUNTIME_SNAPSHOT)
-            runtime_cases, snapshot_manifest = load_runtime_snapshot(RUNTIME_SNAPSHOT, fingerprint, runtime_fp)
-        except Exception as error:
-            report = build_blocked_report(
-                fingerprint,
-                "e2e_runtime_unavailable",
-                f"{type(error).__name__}: {error}",
-                runtime_fingerprint=runtime_fp,
-                judge_config=judge_config,
-            )
-            write_artifacts(report, output_json, output_md)
-            return 2
-        finally:
-            await service.close()
+    if not RUNTIME_SNAPSHOT.exists():
+        report = build_blocked_report(
+            fingerprint,
+            "snapshot_missing",
+            "R3-S is snapshot-only; the frozen runtime snapshot is required and RAG fallback is forbidden",
+            runtime_fingerprint=runtime_fp,
+            judge_config=judge_config,
+        )
+        write_artifacts(report, output_json, output_md)
+        return 2
+    try:
+        runtime_cases, snapshot_manifest = load_runtime_snapshot(
+            RUNTIME_SNAPSHOT,
+            fingerprint,
+            runtime_fp,
+            expected_snapshot_sha256=EXPECTED_SNAPSHOT_SHA256,
+        )
+    except SnapshotValidationError as error:
+        report = build_blocked_report(
+            fingerprint,
+            error.reason_code,
+            str(error),
+            runtime_fingerprint=runtime_fp,
+            judge_config=judge_config,
+        )
+        write_artifacts(report, output_json, output_md)
+        return 2
+    try:
+        existing_semantic_rows = load_semantic_scores(SEMANTIC_SCORES)
+    except SnapshotValidationError as error:
+        report = build_blocked_report(
+            fingerprint,
+            error.reason_code,
+            str(error),
+            runtime_fingerprint=runtime_fp,
+            judge_config=judge_config,
+            case_count=len(runtime_cases),
+        )
+        write_artifacts(report, output_json, output_md)
+        return 2
 
     assert runtime_cases is not None and snapshot_manifest is not None
     from openai import AsyncOpenAI
@@ -202,32 +255,130 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
         timeout=judge_config.timeout_seconds,
         max_retries=0,
     )
+    faith_preflight: dict[str, object] = {"status": "BLOCKED", "reason": "Faithfulness preflight not executed"}
+    relevancy_preflight: dict[str, object] = {"status": "BLOCKED", "reason": "ResponseRelevancy preflight not executed"}
+    diagnostics: dict[str, object] = {}
+    semantic_rows: list[dict[str, object]] = []
     try:
         faithfulness, relevancy = build_openai_compatible_metrics(
             judge_config,
             base_url=settings.llm_base_url,
             api_key=settings.api_key,
         )
-        preflight = await run_semantic_preflight(
+        faith_preflight = await run_semantic_preflight(
             config=judge_config,
             client=client,
             faithfulness=faithfulness,
             relevancy=relevancy,
+            enabled_metrics=("faithfulness",),
         )
-        report = await run_development_experiment(
-            service=None,
-            cases=cases,
-            mode=query_options.mode,
-            top_k=query_options.top_k,
-            chunk_top_k=query_options.chunk_top_k,
-            runtime_fingerprint=runtime_fp,
-            dataset_fingerprint=fingerprint,
-            judge_config=judge_config,
+        runtime_case_ids = [str(row["case_id"]) for row in runtime_cases]
+        faith_by_case = {
+            str(row["case_id"]): row
+            for row in existing_semantic_rows
+            if all(
+                row.get(arm, {}).get("faithfulness_status") in {"available", "blocked"}
+                for arm in ("baseline", "candidate")
+            )
+        }
+        pending_cases = [row for row in runtime_cases if str(row["case_id"]) not in faith_by_case]
+        faith_checkpoint: list[dict[str, object]] = [faith_by_case[case_id] for case_id in runtime_case_ids if case_id in faith_by_case]
+
+        async def checkpoint_faithfulness(row: dict[str, object]) -> None:
+            faith_by_case[str(row["case_id"])] = row
+            faith_checkpoint[:] = [faith_by_case[case_id] for case_id in runtime_case_ids if case_id in faith_by_case]
+            write_semantic_scores(faith_checkpoint, SEMANTIC_SCORES)
+
+        if faith_preflight["status"] == "READY" and pending_cases:
+            faith_report = await run_development_experiment(
+                service=None,
+                cases=pending_cases,
+                mode=query_options.mode,
+                top_k=query_options.top_k,
+                chunk_top_k=query_options.chunk_top_k,
+                runtime_fingerprint=runtime_fp,
+                dataset_fingerprint=fingerprint,
+                judge_config=judge_config,
+                faithfulness=faithfulness,
+                relevancy=relevancy,
+                frozen_cases=pending_cases,
+                enabled_metrics=("faithfulness",),
+                semantic_row_callback=checkpoint_faithfulness,
+            )
+            faith_rows = faith_checkpoint
+        else:
+            faith_rows = faith_checkpoint
+            faith_report = {
+                "experiment_artifact": "evaluation/ragas/experiments/resumed-semantic-scores.jsonl",
+                "experiment_row_count": 0,
+                "validation_holdout_accessed": False,
+                "deterministic_case_metrics": [],
+            }
+        write_semantic_scores(faith_rows, SEMANTIC_SCORES)
+
+        relevancy_preflight = await run_semantic_preflight(
+            config=judge_config,
+            client=client,
             faithfulness=faithfulness,
             relevancy=relevancy,
-            semantic_blocked_reason=semantic_preflight_block_reason(preflight) if preflight["status"] == "BLOCKED" else None,
-            frozen_cases=runtime_cases,
+            enabled_metrics=("response_relevancy",),
         )
+        if relevancy_preflight["status"] == "BLOCKED":
+            semantic_rows = _mark_relevancy_blocked(
+                faith_rows,
+                relevancy_preflight["response_relevancy"],
+            )
+            semantic_blocked_reason = semantic_preflight_block_reason(faith_preflight)
+            response_reason = semantic_preflight_block_reason(relevancy_preflight)
+            semantic_blocked_reason = "; ".join(reason for reason in (semantic_blocked_reason, response_reason) if reason != "semantic preflight blocked")
+            _, diagnostic_relevancy = build_openai_compatible_metrics(
+                judge_config,
+                base_url=settings.llm_base_url,
+                api_key=settings.api_key,
+                response_relevancy_strictness=1,
+            )
+            diagnostic_result = await run_metric_smoke(
+                diagnostic_relevancy,
+                metric_name="response_relevancy_strictness_1_diagnostic",
+                config=judge_config,
+            )
+            diagnostics["response_relevancy_strictness_1"] = {
+                "status": diagnostic_result["status"],
+                "reason_code": diagnostic_result.get("reason_code"),
+                "reason": diagnostic_result.get("reason"),
+                "attempts": diagnostic_result.get("attempts", []),
+                "formal_metric": False,
+                "gate_input": False,
+            }
+        else:
+            relevancy_rows = await score_semantic_rows(
+                _semantic_input(runtime_cases),
+                judge_config,
+                faithfulness=faithfulness,
+                relevancy=relevancy,
+                enabled_metrics=("response_relevancy",),
+            )
+            if faith_rows:
+                semantic_rows = _merge_metric_rows(faith_rows, relevancy_rows)
+            else:
+                semantic_rows = relevancy_rows
+                for row in semantic_rows:
+                    for arm_name in ("baseline", "candidate"):
+                        row[arm_name]["faithfulness"] = None
+                        row[arm_name]["faithfulness_status"] = "not_run"
+            semantic_blocked_reason = semantic_preflight_block_reason(faith_preflight) if faith_preflight["status"] == "BLOCKED" else None
+        write_semantic_scores(semantic_rows, SEMANTIC_SCORES)
+        report = build_report(
+            cases=runtime_cases,
+            fingerprint=fingerprint,
+            runtime_fingerprint=runtime_fp,
+            judge_config=judge_config,
+            semantic_rows=semantic_rows,
+            experiment_artifact=faith_report["experiment_artifact"],
+            semantic_blocked_reason=semantic_blocked_reason,
+        )
+        for field in ("experiment_row_count", "validation_holdout_accessed", "deterministic_case_metrics"):
+            report[field] = faith_report.get(field)
     except Exception as error:
         report = build_blocked_report(
             fingerprint,
@@ -252,7 +403,28 @@ async def run(output_json: Path = REPORT_JSON, output_md: Path = REPORT_MD) -> i
         "dataset_fingerprint_parity": snapshot_manifest["dataset_fingerprint"] == fingerprint.to_dict(),
         "runtime_config_fingerprint_parity": snapshot_manifest["runtime_config_fingerprint"] == runtime_fp,
     }
-    report["semantic_preflight"] = preflight if "preflight" in locals() else {"status": "BLOCKED", "reason": report.get("reason")}
+    report["light_rag_service_call_count"] = 0
+    report["semantic_preflight"] = {
+        "status": "BLOCKED" if faith_preflight.get("status") == "BLOCKED" or relevancy_preflight.get("status") == "BLOCKED" else "READY",
+        "faithfulness": faith_preflight,
+        "response_relevancy": relevancy_preflight,
+    }
+    faith_summary = report.get("semantic", {}).get("faithfulness", {})
+    relevancy_summary = report.get("semantic", {}).get("response_relevancy", {})
+    report["semantic_metrics"] = {
+        "faithfulness": {
+            "preflight": faith_preflight.get("status"),
+            "formal": "READY" if faith_summary.get("status") == "available" else "BLOCKED" if faith_preflight.get("status") == "BLOCKED" else "NOT_RUN",
+            **faith_summary,
+        },
+        "response_relevancy": {
+            "preflight": relevancy_preflight.get("status"),
+            "formal": "READY" if relevancy_summary.get("status") == "available" else "NOT_RUN",
+            **relevancy_summary,
+        },
+    }
+    report["diagnostics"] = diagnostics
+    report["semantic_scores_artifact"] = str(SEMANTIC_SCORES.relative_to(PROJECT_ROOT))
     write_artifacts(report, output_json, output_md)
     print(console_summary(report))
     return 0 if report.get("status") in {"R3_PASS", "R3_MIXED"} else 2

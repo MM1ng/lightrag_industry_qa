@@ -17,6 +17,7 @@ from evaluation.phase10.conversation_e2e_runner import (
     resolve_runtime_cases,
     write_artifacts,
     write_runtime_snapshot,
+    write_semantic_scores,
 )
 
 
@@ -85,6 +86,7 @@ def _snapshot_case(case_id: str = "conv-s001") -> dict:
         "provider_context_ids": ["g1"],
         "provider_context_hash": "hash",
         "provider_contexts": ["actual provider context"],
+        "evaluation_user_input": "equipment procedure?",
         "answer": "answer",
         "answer_status": "success",
         "citations": [],
@@ -133,6 +135,31 @@ def test_runtime_snapshot_rejects_missing_context_or_fingerprint_mismatch(tmp_pa
         assert error.reason_code == "snapshot_missing_provider_contexts"
     else:
         raise AssertionError("expected snapshot validation to block")
+
+
+def test_runtime_snapshot_rejects_unexpected_canonical_sha(tmp_path: Path) -> None:
+    fingerprint = fingerprint_dataset(Path("data/evaluation/conversation_retrieval_development.jsonl"))
+    cases = [_snapshot_case(case_id) for case_id in fingerprint.case_ids]
+    path = tmp_path / "runtime.jsonl"
+    write_runtime_snapshot(build_runtime_snapshot(cases, fingerprint, {"sha256": "runtime"}), path)
+
+    try:
+        load_runtime_snapshot(path, fingerprint, {"sha256": "runtime"}, expected_snapshot_sha256="wrong")
+    except SnapshotValidationError as error:
+        assert error.reason_code == "snapshot_checksum_mismatch"
+    else:
+        raise AssertionError("expected canonical snapshot SHA validation to block")
+
+
+def test_semantic_scores_write_one_atomic_jsonl_record_per_case(tmp_path: Path) -> None:
+    path = tmp_path / "semantic.jsonl"
+    write_semantic_scores([{"case_id": "conv-s001", "baseline": {"faithfulness": 0.8}, "candidate": {"faithfulness": 0.9}}], path)
+
+    assert json.loads(path.read_text(encoding="utf-8")) == {
+        "case_id": "conv-s001",
+        "baseline": {"faithfulness": 0.8},
+        "candidate": {"faithfulness": 0.9},
+    }
 
 
 @pytest.mark.asyncio

@@ -96,7 +96,7 @@ def _validate_snapshot_case(case: dict[str, Any]) -> None:
     required_arm_fields = (
         "runtime_query", "retrieved_chunk_ids", "retrieved_ranks", "selected_evidence_ids",
         "provider_evidence_ids", "provider_context_ids", "provider_context_hash", "provider_contexts",
-        "answer", "answer_status", "citations", "answer_points", "grounding_removed_points",
+        "evaluation_user_input", "answer", "answer_status", "citations", "answer_points", "grounding_removed_points",
         "grounding_failure_categories", "latency_ms", "metric_error",
     )
     for arm_name in ("baseline", "candidate"):
@@ -118,6 +118,8 @@ def load_runtime_snapshot(
     path: Path,
     fingerprint: DatasetFingerprint,
     runtime_fingerprint: dict[str, Any],
+    *,
+    expected_snapshot_sha256: str | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Read and validate a snapshot without touching LightRAGService."""
 
@@ -145,6 +147,8 @@ def load_runtime_snapshot(
     actual_sha256 = hashlib.sha256(_canonical_json_bytes(cases)).hexdigest()
     if manifest.get("snapshot_sha256") != actual_sha256:
         raise SnapshotValidationError("snapshot_checksum_mismatch", "runtime snapshot checksum does not match its case payload")
+    if expected_snapshot_sha256 is not None and actual_sha256 != expected_snapshot_sha256:
+        raise SnapshotValidationError("snapshot_checksum_mismatch", "runtime snapshot SHA does not match the frozen canonical SHA")
     for case in cases:
         _validate_snapshot_case(case)
     return cases, manifest
@@ -213,8 +217,8 @@ def _semantic_summary(rows: list[dict[str, Any]], name: str) -> dict[str, Any]:
         "delta": delta,
         "interpretation": "NO_CLEAR_SEMANTIC_CHANGE" if delta is not None and abs(delta) < 0.01 else None,
         "case_level_delta": case_level_delta,
-        "largest_improvements": sorted(case_level_delta, key=lambda row: row["delta"], reverse=True)[:3],
-        "largest_regressions": sorted(case_level_delta, key=lambda row: row["delta"])[:3],
+        "largest_improvements": sorted(case_level_delta, key=lambda row: row["delta"], reverse=True)[:5],
+        "largest_regressions": sorted(case_level_delta, key=lambda row: row["delta"])[:5],
     }
 
 
@@ -243,7 +247,7 @@ def build_report(
     semantic_execution = {
         "status": "BLOCKED" if judge_errors or semantic_blocked_reason else "READY",
         "reason": semantic_blocked_reason,
-        "formal_case_scoring_executed": not bool(judge_errors or semantic_blocked_reason),
+        "formal_case_scoring_executed": bool(semantic_rows),
     }
     gate = evaluate_gate({
         "baseline": baseline,
@@ -306,6 +310,10 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         f"- Improved / unchanged / regressed: `{report.get('paired_case_counts', {})}`",
         f"- Judge errors: `{report.get('judge_errors', 0)}`",
         f"- Failure layers: `{report.get('failure_layer_distribution', {})}`",
+        f"- LightRAGService query calls: `{report.get('light_rag_service_call_count')}`",
+        f"- Semantic metrics: `{report.get('semantic_metrics', {})}`",
+        f"- Diagnostics: `{report.get('diagnostics', {})}`",
+        f"- Semantic scores artifact: `{report.get('semantic_scores_artifact')}`",
         f"- Gate: `{report.get('gate', {})}`",
         "- Unsupported Answer Rate is question-level: a case is unsupported when any answer point has `support_status == unsupported`.",
         "",
@@ -342,6 +350,28 @@ def atomic_write_text(path: Path, text: str) -> None:
 def write_artifacts(report: dict[str, Any], json_path: Path, markdown_path: Path) -> None:
     atomic_write_text(json_path, json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     atomic_write_text(markdown_path, render_markdown_report(report))
+
+
+def write_semantic_scores(rows: list[dict[str, Any]], path: Path) -> None:
+    """Atomically persist one semantic result record per frozen case."""
+
+    atomic_write_text(path, "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n")
+
+
+def load_semantic_scores(path: Path) -> list[dict[str, Any]]:
+    """Load a completed semantic checkpoint without contacting any provider."""
+
+    if not path.exists():
+        return []
+    try:
+        rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    except (OSError, json.JSONDecodeError) as error:
+        raise SnapshotValidationError("semantic_scores_unreadable", f"could not read semantic score checkpoint: {error}") from error
+    if not all(isinstance(row, dict) and row.get("case_id") for row in rows):
+        raise SnapshotValidationError("semantic_scores_invalid", "semantic score checkpoint contains an invalid row")
+    if len({str(row["case_id"]) for row in rows}) != len(rows):
+        raise SnapshotValidationError("semantic_scores_duplicate_case", "semantic score checkpoint contains duplicate case ids")
+    return rows
 
 
 class _ExperimentRow(BaseModel):
@@ -398,6 +428,8 @@ async def run_development_experiment(
     relevancy: Any | None = None,
     semantic_blocked_reason: str | None = None,
     frozen_cases: list[dict[str, Any]] | None = None,
+    enabled_metrics: tuple[str, ...] = ("faithfulness", "response_relevancy"),
+    semantic_row_callback: Any | None = None,
 ) -> dict[str, Any]:
     resolved_cases = await resolve_runtime_cases(
         service,
@@ -417,16 +449,14 @@ async def run_development_experiment(
         }
         for row in (runtime_rows[case["case_id"]] for case in cases)
     ]
-    semantic_rows = (
-        []
-        if semantic_blocked_reason
-        else await score_semantic_rows(
-            semantic_input,
-            judge_config,
-            faithfulness=faithfulness,
-            relevancy=relevancy,
-        )
-    )
+    semantic_rows = await score_semantic_rows(
+        semantic_input,
+        judge_config,
+        faithfulness=faithfulness,
+        relevancy=relevancy,
+        enabled_metrics=enabled_metrics,
+        on_row=semantic_row_callback,
+    ) if enabled_metrics else []
     experiment_name = "conversation-e2e-development-" + datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     experiment_path = EXPERIMENT_ROOT / "experiments" / f"industrial-energy-{experiment_name}.jsonl"
     experiment_path.parent.mkdir(parents=True, exist_ok=True)

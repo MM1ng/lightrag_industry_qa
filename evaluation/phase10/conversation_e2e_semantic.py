@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from datetime import UTC, datetime
 from typing import Any
 
@@ -11,10 +12,16 @@ from ragas.metrics import Faithfulness, ResponseRelevancy
 from .conversation_e2e_contracts import JudgeConfig
 
 
-def build_default_metrics(*, llm: Any = None, embeddings: Any = None, max_retries: int = 2) -> tuple[Any, Any]:
+def build_default_metrics(
+    *,
+    llm: Any = None,
+    embeddings: Any = None,
+    max_retries: int = 2,
+    response_relevancy_strictness: int = 3,
+) -> tuple[Any, Any]:
     return (
         Faithfulness(llm=llm, max_retries=max_retries),
-        ResponseRelevancy(llm=llm, embeddings=embeddings, strictness=3),
+        ResponseRelevancy(llm=llm, embeddings=embeddings, strictness=response_relevancy_strictness),
     )
 
 
@@ -27,6 +34,7 @@ def build_openai_compatible_metrics(
     embedding_model_factory: Any = None,
     llm_wrapper_factory: Any = None,
     embedding_wrapper_factory: Any = None,
+    response_relevancy_strictness: int = 3,
 ) -> tuple[Any, Any]:
     """Build fixed Ragas 0.3.9 metrics for a DashScope OpenAI-compatible API."""
 
@@ -63,7 +71,12 @@ def build_openai_compatible_metrics(
     )
     llm = llm_wrapper_factory(chat_model)
     embeddings = embedding_wrapper_factory(embedding_model)
-    return build_default_metrics(llm=llm, embeddings=embeddings, max_retries=config.retry)
+    return build_default_metrics(
+        llm=llm,
+        embeddings=embeddings,
+        max_retries=config.retry,
+        response_relevancy_strictness=response_relevancy_strictness,
+    )
 
 
 def _provider_error_details(error: Exception, attempt: int) -> dict[str, Any]:
@@ -114,13 +127,19 @@ async def _run_provider_preflight(reason_code: str, operation: Any, retry: int) 
     }
 
 
-async def _run_metric_preflight(reason_code: str, metric: Any, sample: SingleTurnSample, retry: int) -> dict[str, Any]:
+async def _run_metric_preflight(
+    reason_code: str,
+    metric: Any,
+    sample: SingleTurnSample,
+    retry: int,
+    timeout_seconds: int = 60,
+) -> dict[str, Any]:
     """Score one metric with the same finite 5xx retry budget as direct calls."""
 
     attempts: list[dict[str, Any]] = []
     for attempt in range(1, max(1, retry) + 1):
         try:
-            value = await metric.single_turn_ascore(sample)
+            value = await asyncio.wait_for(metric.single_turn_ascore(sample), timeout=timeout_seconds)
         except Exception as error:
             detail = _provider_error_details(error, attempt)
             attempts.append(detail)
@@ -148,6 +167,7 @@ async def run_semantic_preflight(
     client: Any,
     faithfulness: Any,
     relevancy: Any,
+    enabled_metrics: tuple[str, ...] = ("faithfulness", "response_relevancy"),
 ) -> dict[str, Any]:
     """Diagnose direct providers and each Ragas metric independently."""
 
@@ -170,21 +190,44 @@ async def run_semantic_preflight(
         response="按照手册执行启动步骤。",
         retrieved_contexts=["手册规定了启动步骤。"],
     )
-    faithfulness_result = await _run_metric_preflight("faithfulness_metric_error", faithfulness, sample, config.retry)
-    relevancy_result = await _run_metric_preflight("response_relevancy_metric_error", relevancy, sample, config.retry)
+    faithfulness_result = (
+        await _run_metric_preflight("faithfulness_metric_error", faithfulness, sample, config.retry, config.timeout_seconds)
+        if "faithfulness" in enabled_metrics
+        else {"status": "NOT_RUN", "reason_code": "metric_not_requested", "attempts": []}
+    )
+    relevancy_result = (
+        await _run_metric_preflight("response_relevancy_metric_error", relevancy, sample, config.retry, config.timeout_seconds)
+        if "response_relevancy" in enabled_metrics
+        else {"status": "NOT_RUN", "reason_code": "metric_not_requested", "attempts": []}
+    )
     components = {
         "chat": chat,
         "embedding": embedding,
         "faithfulness": faithfulness_result,
         "response_relevancy": relevancy_result,
     }
-    blocked = [result for result in components.values() if result["status"] == "BLOCKED"]
+    blocked = [
+        result
+        for name, result in components.items()
+        if name in {"chat", "embedding", *enabled_metrics} and result["status"] == "BLOCKED"
+    ]
     return {
         "status": "BLOCKED" if blocked else "READY",
         "components": components,
         **components,
         "judge_config": config.to_dict(),
     }
+
+
+async def run_metric_smoke(metric: Any, *, metric_name: str, config: JudgeConfig) -> dict[str, Any]:
+    """Run one metric smoke sample for diagnostics without producing formal scores."""
+
+    sample = SingleTurnSample(
+        user_input="泵的启动步骤是什么？",
+        response="按照手册执行启动步骤。",
+        retrieved_contexts=["手册规定了启动步骤。"],
+    )
+    return await _run_metric_preflight(f"{metric_name}_metric_error", metric, sample, config.retry, config.timeout_seconds)
 
 
 async def semantic_smoke_test(*, faithfulness: Any, relevancy: Any, config: JudgeConfig) -> dict[str, Any]:
@@ -219,6 +262,8 @@ async def score_semantic_rows(
     *,
     faithfulness: Any | None = None,
     relevancy: Any | None = None,
+    enabled_metrics: tuple[str, ...] = ("faithfulness", "response_relevancy"),
+    on_row: Any | None = None,
 ) -> list[dict[str, Any]]:
     if faithfulness is None or relevancy is None:
         faithfulness, relevancy = build_default_metrics()
@@ -228,25 +273,60 @@ async def score_semantic_rows(
         for arm_name in ("baseline", "candidate"):
             arm = row[arm_name]
             contexts = list(arm.get("provider_contexts", ()))
-            if not contexts:
-                error = "actual provider context text unavailable; IDs/hashes are not valid semantic contexts"
-                scored[arm_name] = {"faithfulness": None, "response_relevancy": None, "judge_error": error}
-                continue
-            sample = SingleTurnSample(
-                user_input=str(row["standalone_query"]),
-                response=str(arm.get("answer", "")),
-                retrieved_contexts=contexts,
-            )
-            faithfulness_score, faithfulness_error = await _score_metric(faithfulness, sample)
-            relevancy_score, relevancy_error = await _score_metric(relevancy, sample)
-            errors = "; ".join(error for error in (faithfulness_error, relevancy_error) if error) or None
-            scored[arm_name] = {
-                "faithfulness": faithfulness_score,
-                "response_relevancy": relevancy_score,
-                "judge_error": errors,
+            arm_result: dict[str, Any] = {
+                "faithfulness": None,
+                "response_relevancy": None,
+                "faithfulness_status": "not_run" if "faithfulness" not in enabled_metrics else "blocked",
+                "response_relevancy_status": "not_run" if "response_relevancy" not in enabled_metrics else "blocked",
+                "judge_error": None,
+                "judge_errors": [],
                 "provider_context_ids": list(arm.get("provider_context_ids", ())),
                 "provider_context_hash": arm.get("provider_context_hash"),
                 "evaluation_user_input": row["standalone_query"],
             }
+            if not contexts:
+                error = {
+                    "error_type": "MissingProviderContextError",
+                    "http_status": None,
+                    "request_id": None,
+                    "attempt": 0,
+                    "message": "actual provider context text unavailable; IDs/hashes are not valid semantic contexts",
+                }
+                for metric_name in enabled_metrics:
+                    arm_result[f"{metric_name}_status"] = "blocked"
+                    arm_result["judge_errors"].append({"metric": metric_name, **error})
+            else:
+                sample = SingleTurnSample(
+                    user_input=str(row["standalone_query"]),
+                    response=str(arm.get("answer", "")),
+                    retrieved_contexts=contexts,
+                )
+                for metric_name, metric in (("faithfulness", faithfulness), ("response_relevancy", relevancy)):
+                    if metric_name not in enabled_metrics:
+                        continue
+                    result = await _run_metric_preflight(
+                        f"{metric_name}_metric_error",
+                        metric,
+                        sample,
+                        config.retry,
+                        config.timeout_seconds,
+                    )
+                    if result["status"] == "READY":
+                        arm_result[metric_name] = result["value"]
+                        arm_result[f"{metric_name}_status"] = "available"
+                    else:
+                        arm_result[f"{metric_name}_status"] = "blocked"
+                        arm_result["judge_errors"].extend(
+                            {"metric": metric_name, **attempt}
+                            for attempt in result.get("attempts", [])
+                        )
+            arm_result["judge_error"] = "; ".join(
+                f"{item['error_type']}: {item['message']}" for item in arm_result["judge_errors"]
+            ) or None
+            scored[arm_name] = arm_result
         output.append(scored)
+        if on_row is not None:
+            callback_result = on_row(scored)
+            if hasattr(callback_result, "__await__"):
+                await callback_result
     return output

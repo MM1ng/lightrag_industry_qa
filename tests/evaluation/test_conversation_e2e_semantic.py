@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import asyncio
 from types import SimpleNamespace
 
 import pytest
 from evaluation.phase10.conversation_e2e_contracts import JudgeConfig
 from evaluation.phase10.conversation_e2e_semantic import (
+    build_default_metrics,
     build_openai_compatible_metrics,
     run_semantic_preflight,
     score_semantic_rows,
@@ -62,6 +64,84 @@ async def test_judge_error_keeps_case_and_records_error() -> None:
     assert len(result) == 1
     assert result[0]["baseline"]["faithfulness"] is None
     assert "judge offline" in result[0]["baseline"]["judge_error"]
+
+
+@pytest.mark.asyncio
+async def test_faithfulness_formal_scoring_survives_relevancy_failure() -> None:
+    faithfulness = FakeMetric("faithfulness", 0.8)
+    relevancy = FakeMetric("answer_relevancy", error=ProviderError(500, "relevancy-500"))
+
+    result = await score_semantic_rows(
+        _rows(),
+        _config(),
+        faithfulness=faithfulness,
+        relevancy=relevancy,
+        enabled_metrics=("faithfulness",),
+    )
+
+    assert result[0]["baseline"]["faithfulness"] == 0.8
+    assert result[0]["candidate"]["faithfulness"] == 0.8
+    assert result[0]["baseline"]["response_relevancy_status"] == "not_run"
+    assert result[0]["candidate"]["response_relevancy_status"] == "not_run"
+
+
+@pytest.mark.asyncio
+async def test_failed_relevancy_does_not_clear_successful_faithfulness_score() -> None:
+    result = await score_semantic_rows(
+        _rows(),
+        _config(),
+        faithfulness=FakeMetric("faithfulness", 0.8),
+        relevancy=FakeMetric("answer_relevancy", error=ProviderError(500, "relevancy-500")),
+        enabled_metrics=("faithfulness", "response_relevancy"),
+    )
+
+    assert result[0]["baseline"]["faithfulness"] == 0.8
+    assert result[0]["baseline"]["response_relevancy"] is None
+    assert result[0]["baseline"]["response_relevancy_status"] == "blocked"
+    assert result[0]["baseline"]["judge_errors"][0]["request_id"] == "relevancy-500"
+
+
+@pytest.mark.asyncio
+async def test_formal_metric_timeout_is_retained_as_arm_error() -> None:
+    class SlowMetric:
+        async def single_turn_ascore(self, _sample):
+            await asyncio.sleep(0.05)
+            return 0.8
+
+    result = await score_semantic_rows(
+        _rows(),
+        JudgeConfig("0.3.9", "Faithfulness", "ResponseRelevancy", "fake", "judge", "fake", "embed", 0.0, None, 0, 2, 1),
+        faithfulness=SlowMetric(),
+        relevancy=FakeMetric("relevancy"),
+        enabled_metrics=("faithfulness",),
+    )
+
+    assert result[0]["baseline"]["faithfulness"] is None
+    assert result[0]["baseline"]["faithfulness_status"] == "blocked"
+    assert result[0]["baseline"]["judge_errors"][0]["error_type"] == "TimeoutError"
+
+
+@pytest.mark.asyncio
+async def test_formal_metric_emits_checkpoint_callback_for_each_case() -> None:
+    checkpoints: list[dict] = []
+    await score_semantic_rows(
+        _rows(),
+        _config(),
+        faithfulness=FakeMetric("faithfulness"),
+        relevancy=FakeMetric("relevancy"),
+        enabled_metrics=("faithfulness",),
+        on_row=checkpoints.append,
+    )
+
+    assert [row["case_id"] for row in checkpoints] == ["c1"]
+
+
+def test_response_relevancy_diagnostic_can_use_strictness_one_without_changing_formal_default() -> None:
+    formal = build_default_metrics(llm="llm", embeddings="embedding", max_retries=2)
+    diagnostic = build_default_metrics(llm="llm", embeddings="embedding", max_retries=2, response_relevancy_strictness=1)
+
+    assert formal[1].strictness == 3
+    assert diagnostic[1].strictness == 1
 
 
 def test_openai_compatible_metric_builder_freezes_model_temperature_and_base_url() -> None:
