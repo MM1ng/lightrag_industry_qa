@@ -8,7 +8,11 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Literal
 
-from industrial_rag.citation_formatter import Citation
+from industrial_rag.citation_formatter import (
+    Citation,
+    is_provenance_only_fragment,
+    strip_provenance_metadata,
+)
 from industrial_rag.evidence_policy import EvidenceCandidate, _tokens
 from industrial_rag.query_normalization import _replace_aliases
 
@@ -192,19 +196,37 @@ def build_answer_plan(
     candidates = tuple(selected)
     evidence_ids = {candidate.citation.chunk_id: f"E{index}" for index, candidate in enumerate(candidates, 1)}
     citation_by_chunk = {citation.chunk_id: citation for citation in citations}
-    fragments = [fragment.strip(" -•\t") for fragment in _SPLIT.split(answer) if fragment.strip(" -•\t")]
+    raw_fragments = [
+        fragment.strip(" -•\t")
+        for fragment in _SPLIT.split(answer)
+        if fragment.strip(" -•\t")
+    ]
+    fragments: list[tuple[int, str]] = []
+    metadata_decisions: list[dict[str, Any]] = []
+    for index, raw_fragment in enumerate(raw_fragments, 1):
+        if is_provenance_only_fragment(raw_fragment):
+            metadata_decisions.append(
+                {
+                    "fragment_id": f"F{index}",
+                    "text": raw_fragment,
+                    "fragment_type": "provenance_metadata",
+                    "excluded_from_answer_points": True,
+                }
+            )
+            continue
+        fragments.append((index, strip_provenance_metadata(raw_fragment).strip(" -•\t")))
     captured, digest, truncated, redacted, capture_reason = _capture_answer(answer)
     input_fragments = tuple(
-        {"fragment_id": f"F{index}", "text": fragment, "fragment_order": index, "split_reason": "newline_or_sentence"}
-        for index, fragment in enumerate(fragments, 1)
+        {"fragment_id": f"F{index}", "text": raw_fragment, "fragment_order": index, "split_reason": "newline_or_sentence"}
+        for index, raw_fragment in enumerate(raw_fragments, 1)
     )
     points: list[AnswerPoint] = []
-    point_decisions: list[dict[str, Any]] = []
+    point_decisions: list[dict[str, Any]] = metadata_decisions.copy()
     removed_points: list[dict[str, Any]] = []
     retained_points: list[dict[str, Any]] = []
     supported_citations: list[Citation] = []
     unsupported_categories: list[str] = []
-    for index, fragment in enumerate(fragments, 1):
+    for index, (fragment_index, fragment) in enumerate(fragments, 1):
         supporting = tuple(
             evidence_ids[candidate.citation.chunk_id]
             for candidate in candidates
@@ -214,7 +236,7 @@ def build_answer_plan(
         points.append(AnswerPoint(f"P{index}", fragment, supporting, status))
         decision = {
             "point_id": f"P{index}",
-            "fragment_id": f"F{index}",
+            "fragment_id": f"F{fragment_index}",
             "support_status": status,
             "evidence_ids": list(supporting),
             "candidate_chunk_ids": [candidate.citation.chunk_id for candidate in candidates],
@@ -282,7 +304,14 @@ def build_answer_plan(
         replay_eligible=not (truncated or redacted), replay_ineligible_reason=capture_reason,
         input_fragments=input_fragments, point_decisions=tuple(point_decisions),
         removed_answer_points=(), retained_answer_points=tuple(retained_points),
-        grounding_output_answer=answer, grounding_output_status="success",
+        grounding_output_answer="\n".join(point.content for point in supported_points), grounding_output_status="success",
         grounding_failure_categories=(),
     )
-    return GroundedAnswer(answer, tuple(supported_citations), tuple(points), "success", (), audit)
+    return GroundedAnswer(
+        "\n".join(point.content for point in supported_points),
+        tuple(supported_citations),
+        tuple(points),
+        "success",
+        (),
+        audit,
+    )

@@ -177,3 +177,28 @@ def test_repeated_source_reuses_its_public_citation_number() -> None:
     )
 
     assert numbers == ((1,), (1,))
+
+
+def test_provenance_only_structured_point_is_not_semantic_answer_point() -> None:
+    decision = validate_structured_citation_output(
+        '{"answer_points":[{"text":"[[INDUSTRIAL_RAG_SOURCE file=manual.pdf page=9 chunk=c1]]",'
+        '"source_ids":["S1"]}],"unresolved_requirement_ids":[]}',
+        _registry(),
+        _requirements(),
+        "g1",
+    )
+
+    assert decision.answer_points == ()
+    assert decision.status == "insufficient_evidence"
+
+
+def test_structured_factual_point_keeps_fact_and_strips_internal_marker() -> None:
+    decision = validate_structured_citation_output(
+        '{"answer_points":[{"text":"泵轴每周旋转一次。[[INDUSTRIAL_RAG_SOURCE file=manual.pdf page=9 chunk=c1]]",'
+        '"source_ids":["S1"]}],"unresolved_requirement_ids":[]}',
+        _registry(),
+        _requirements(),
+        "g1",
+    )
+
+    assert decision.answer_points[0].text == "泵轴每周旋转一次。"

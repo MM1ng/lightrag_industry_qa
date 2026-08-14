@@ -13,6 +13,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError
 
+from industrial_rag.citation_formatter import (
+    is_provenance_only_fragment,
+    strip_provenance_metadata,
+)
 from industrial_rag.evidence_answer_schema import EvidenceRef
 
 StructuredStatus = Literal["success", "partial_answer", "insufficient_evidence"]
@@ -206,8 +210,9 @@ def validate_structured_citation_output(
     except ValidationError as error:
         return _safe_failure(payload, f"core_schema_invalid:{error.errors()[0]['type']}")
     points = tuple(
-        StructuredCitationPoint(point.text, tuple(point.source_ids))
+        StructuredCitationPoint(strip_provenance_metadata(point.text), tuple(point.source_ids))
         for point in parsed.answer_points
+        if not is_provenance_only_fragment(point.text)
     )
     unresolved = tuple(parsed.unresolved_requirement_ids)
     parsed_sha = _sha256(parsed.model_dump(mode="json"))

@@ -1,0 +1,106 @@
+{"case_id": "conv-s001", "point_id": "P1", "content": "根据手册内容，Summit 2196 系列泵长期存放时的要求如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s001", "point_id": "P2", "content": "存放环境：应将泵存放在清洁、干燥的地方，并且不要取下管路接头盖。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s001", "point_id": "P3", "content": "泵轴转动频率：至少每周用手旋转泵轴一次，以保持轴承上覆有保护油膜或油脂。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s001", "point_id": "P4", "content": "如需长期存放，可向 Summit Pump, Inc. 购买专用护理产品。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P1", "content": "根据手册内容，SUMMIT 2196 系列泵的入口管路选择和布置应遵循以下要求：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P2", "content": "1. **单独支撑与对正**：所有管路必须单独支撑，并与泵的入口法兰准确对正。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P3", "content": "不得通过外力强行将管路与泵法兰对正。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P4", "content": "2. **使用软短管或波纹式短管**：建议在与泵法兰直接相连的接头处安装一小段软短管或波纹式短管，以减少应力传递。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P5", "content": "3. **防止空气渗入**：应确保入口管路密封良好，避免空气渗入。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P6", "content": "若出现空气渗入问题，需更换垫片。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P7", "content": "4. **灌注要求**：启动泵前，必须打开入口隔离阀，使液体充满入口管路和泵体，完成泵的灌注。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P8", "content": "以上信息均来自《安装、操作及维护手册》中关于 SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型的内容。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s002", "point_id": "P9", "content": "手册中未提及入口管路的材质、直径计算或坡度等具体选型参数，无法提供进一步说明。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s003", "point_id": "P1", "content": "根据手册内容，SUMMIT 2196 系列泵的出口管路中止回阀、隔离阀和异径接头的布置方式如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s003", "point_id": "P2", "content": "出口管路应包含**隔离阀**和**止回阀**。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s003", "point_id": "P3", "content": "**止回阀**应置于**泵和隔离阀之间**，以防止泵反向旋转。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s003", "point_id": "P4", "content": "如果使用**管路异径接头**，应将其置于**泵与止回阀之间**。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s004", "point_id": "P1", "content": "根据手册内容，SUMMIT 2196 系列泵的联轴器平行和角度对正误差应控制在 **0.005 英寸内**。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s004", "point_id": "P2", "content": "对于高温工况，需要在工作温度下进行对正检查。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s004", "point_id": "P5", "content": "“在连接两个半联轴器之前，检查并调整平行和角度对正，使误差保持在 0.005 英寸内。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s004", "point_id": "P6", "content": "在高温下工作的泵需要在工作温度下进行对正检查。", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-s004", "point_id": "P7", "content": "”", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-s005", "point_id": "P1", "content": "手册中未检索到充分依据，无法可靠回答该问题。", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-s006", "point_id": "P1", "content": "根据手册内容，Summit 2196 系列泵的润滑油更换周期为每工作 2000 小时或每三个月更换一次，以先到者为准。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s006", "point_id": "P2", "content": "如果泵处于极端恶劣的大气环境中，则应更频繁地更换润滑油。", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-s006", "point_id": "P5", "content": "“更换润滑油：每三个月工作 2000 小时后更换润滑油。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s006", "point_id": "P6", "content": "如果泵处于极端恶劣的大气环境中，则应更频繁地更换润滑油。", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-s006", "point_id": "P7", "content": "”", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-s007", "point_id": "P1", "content": "根据手册内容，Summit 手册中关于润滑脂的适用温度如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s007", "point_id": "P2", "content": "对于泵送物质温度为 -60° F 至 350° F 的情况，建议使用 NLGI 2 号稠度的润滑脂对轴承进行重新润滑。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s007", "point_id": "P3", "content": "对于温度超过 350° F 的情况，不建议使用润滑脂。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s007", "point_id": "P4", "content": "该信息来源于《安装、操作及维护手册》第16页的“润滑脂润滑”部分。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s007", "point_id": "P5", "content": "因此，Summit 手册推荐的润滑脂适用温度范围是 -60° F 至 350° F。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P1", "content": "Summit 离心泵的标准启动步骤如下（依据《安装、操作及维护手册》第17页内容）：", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P2", "content": "1. 用手旋转泵，确保旋转部件能够自由转动。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P3", "content": "2. 确保入口阀打开。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P4", "content": "3. 将出口阀半关闭。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P5", "content": "4. 解除对泵驱动器电源的锁定。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P6", "content": "5. 电机一旦达到工作速度，就慢慢打开出口阀。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s008", "point_id": "P7", "content": "6. 检查填料函的滴漏情况，必要时进行调整，达到每分钟滴漏 40-65 滴的速度。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s009", "point_id": "P1", "content": "根据手册内容，Summit 2196 系列泵的停机步骤如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s009", "point_id": "P2", "content": "1. 逐渐关上出口阀并关闭电机电源。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s009", "point_id": "P3", "content": "2. 切断泵驱动器的电源。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P1", "content": "根据手册内容，维修Summit离心泵前必须完成以下安全步骤：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P2", "content": "1. 执行停机程序。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P3", "content": "2. 切断电源。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P4", "content": "3. 使泵冷却。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P5", "content": "4. 关闭入口阀和出口阀。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P6", "content": "5. 排空泵。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s010", "point_id": "P7", "content": "以上步骤来源于《安装、操作及维护手册》（文件：2196-ANSI-Manual-Chinese.pdf，页码：23）。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P1", "content": "根据手册内容，Summit填料密封泵的填料环、水封环布置如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P2", "content": "1. **填料安装位置**：对于填料密封泵，应在填料函盖（184）中安装适当的填料（106），并根据所泵送的液体选择合适的填料（见第29页）。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P3", "content": "2. **填料环布置顺序**：首先在填料函底部放入两个填料环（见第29页第a点）。", "evidence_ids": ["E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P4", "content": "3. **水封环安装**：水封环（105）应与填料（106）一同安装，具体是在拆卸时明确提到“取出填料 (106) 和水封环 (105)”，表明其位于填料函内，通常布置在填料中间或靠近密封腔的位置以实现润滑和冷却功能。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P5", "content": "4. **接头布置**：手册中未提及填料环或水封环的接头布置方式，如切口错位等细节，因此无法提供具体接头布置要求。", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P6", "content": "综上，手册中仅说明了先在填料函底部放置两个填料环，并将填料与水封环装入填料函盖中，但未详细说明各环之间的具体排列顺序及接头错开角度。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-s011", "point_id": "P8", "content": "结论：手册中未检索到充分依据，无法可靠回答该问题关于“接头应怎样布置”的部分。", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-d001", "point_id": "P1", "content": "DESMI DNS系列泵适用于以下行业：水处理、工艺流程、制药行业、石油化工、食品工业、造纸工业、冶金工业、一般工业和污水处理。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d001", "point_id": "P2", "content": "其基本结构为：卧式离心泵，配备不锈钢泵轴、机械轴封和闭式叶轮。", "evidence_ids": ["E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d001", "point_id": "P3", "content": "泵轴通过柔性联轴器与电机轴联接。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-d001", "point_id": "P4", "content": "泵的吸入口和排出口采用铸造法兰，符合欧盟法兰标准。", "evidence_ids": ["E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P1", "content": "根据提供的手册内容，关于DESMI离心泵对干运行、最小流量、最大流量和吸入侧节流的限制如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P2", "content": "1. **干运行限制**：", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P3", "content": "决不允许在没有待处理液体的状态下运行水泵。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P4", "content": "水泵不允许在阀门关闭的条件下运行，因为这会导致泵内温度上升/形成蒸汽，从而损坏水泵（除非有特殊设计并通过旁路确保最小流量）。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P5", "content": "自动排气和注液系统用于防止液位低于水泵进水口时发生干运行。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P6", "content": "2. **最小流量限制**：", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P7", "content": "必须遵守产品资料中规定的最小流量要求，以防止过热和轴承损坏等。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P8", "content": "如果允许在阀门关闭条件下运行，需通过旁路或出水管排放确保泵内最小液体流量，且最低流速必须至少达到短期运行最大流速的30%。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P9", "content": "3. **最大流量限制**：", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P10", "content": "必须遵守产品资料中规定的最大流量要求，以防止过热、机械密封损坏、气蚀损坏和轴承损坏等。", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P11", "content": "切勿将排出侧截断装置开启至超出允许范围，否则会超过技术产品资料中规定的最大流量，并存在气蚀损坏的风险。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P12", "content": "4. **吸入侧节流限制**：", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-d002", "point_id": "P13", "content": "不允许限制水泵吸入侧的流量，以防止气蚀损坏。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d003", "point_id": "P1", "content": "根据手册内容，DESMI DNS泵在霜冻期停用时应采取以下防冻措施：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d003", "point_id": "P2", "content": "在霜冻期不运行的水泵必须进行排水，以避免霜冻造成损坏。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d003", "point_id": "P3", "content": "具体操作为拆卸底部管塞（3），排空水泵。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d003", "point_id": "P4", "content": "或者也可以在正常水泵配置中使用防冻液。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P1", "content": "根据手册内容，DESMI泵组的存放环境和泵轴手动转动频率的要求如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P2", "content": "1. 存放环境要求：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P3", "content": "应将水泵（泵组）存放在干燥、受保护的室内环境中。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P4", "content": "空气湿度应尽量稳定。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P5", "content": "存放地点应保持干净，无虫害。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P6", "content": "如果是室外存放，必须用防水材料覆盖包装或无包装的水泵（泵组）和配件。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P7", "content": "水泵的开口和接口应清理并封盖，以防潮湿、污染或损坏。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P8", "content": "2. 泵轴手动转动频率：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d004", "point_id": "P9", "content": "每个月手动转动一次泵轴。", "evidence_ids": ["E1", "E3"], "support_status": "supported"}
+{"case_id": "conv-d005", "point_id": "P1", "content": "根据 DESMI 手册中的技术规格，最小进水压力的计算公式如下：", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d005", "point_id": "P2", "content": "**最小进水压力 = NPSHreq + 吸入管工作摩擦力 + 液体蒸汽压力 – 液体表面压力 + 0.5 m**", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d005", "point_id": "P3", "content": "该值是在特定水泵运行条件和特定泵送介质条件下，为防止水泵发生气蚀所需的最小压力。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d005", "point_id": "P4", "content": "其中：", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-d005", "point_id": "P5", "content": "**NPSHreq**（必需汽蚀余量）参见合同技术文件；", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-d005", "point_id": "P6", "content": "公式中各参数需根据实际工况确定。", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-d006", "point_id": "P1", "content": "根据手册内容，DESMI 泵建议泵前吸入直管段长度“X”大约是管道直径的3至5倍。", "evidence_ids": ["E1", "E2", "E3"], "support_status": "supported"}
+{"case_id": "conv-d006", "point_id": "P2", "content": "对于一台DN100泵，对应的直管段长度为：", "evidence_ids": ["E1", "E2"], "support_status": "supported"}
+{"case_id": "conv-d006", "point_id": "P3", "content": "3倍管径：3 × 100 mm = 300 mm", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-d006", "point_id": "P4", "content": "5倍管径：5 × 100 mm = 500 mm", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-d006", "point_id": "P5", "content": "因此，DN100泵对应的吸入直管段长度建议为300 mm至500 mm。", "evidence_ids": [], "support_status": "unsupported"}
+{"case_id": "conv-d006", "point_id": "P7", "content": "：“代斯米建议，水泵前的吸入管长度‘X’大约是管道直径的3至5倍。", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-d006", "point_id": "P8", "content": "对于一台DN100水泵，相当于”", "evidence_ids": ["E2"], "support_status": "supported"}
+{"case_id": "conv-d007", "point_id": "P1", "content": "根据手册内容，DESMI泵和电机联轴器的对中偏差最大为0.1 mm。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d007", "point_id": "P2", "content": "测量时应在圆周方向每隔90°测一次。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d007", "point_id": "P4", "content": "“调整电机轴与泵轴的对中，用塞尺检查高低偏差值，偏差值≤0.1 mm。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d007", "point_id": "P5", "content": "检测时应在圆周方向每隔90°测一次。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d007", "point_id": "P7", "content": "“再次确认水平和垂直方向的对中偏差，如超过 0.1 mm 需重新对中。", "evidence_ids": ["E1"], "support_status": "supported"}
+{"case_id": "conv-d007", "point_id": "P8", "content": "检测时应在圆周方向每隔90° 测一次。", "evidence_ids": ["E1"], "support_status": "supported"}

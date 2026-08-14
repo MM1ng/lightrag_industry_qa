@@ -14,6 +14,21 @@ _HEADER_PATTERN = re.compile(
     r"\[\[INDUSTRIAL_RAG_SOURCE file=(?P<file>\S+) "
     r"page=(?P<page>\d+) chunk=(?P<chunk>\S+)\]\]"
 )
+_PROVENANCE_PAREN_PATTERN = re.compile(
+    r"[（(]\s*(?:证据来源|依据来源|来源)\s*[:：]\s*[^\n）)]*[）)]"
+)
+_PROVENANCE_LABEL_PATTERN = re.compile(r"^\s*(?:证据来源|依据来源|来源)\s*[:：]\s*")
+_PROVENANCE_TRAILING_LABEL_PATTERN = re.compile(r"(?:证据来源|依据来源|来源)\s*[:：]\s*$")
+_SOURCE_MARKER_PATTERN = _HEADER_PATTERN
+_SOURCE_METADATA_HINT_PATTERN = re.compile(
+    r"(?i)(?:\.pdf\b|\.docx?\b|\.txt\b|file\s*=|document\s*=|page\s*=|chunk\s*=|generation\s*=|第\s*\d+\s*页|\d+\s*页)"
+)
+_FACTUAL_VERB_PATTERN = re.compile(
+    r"(?:规定|应|必须|可以|要求|建议|旋转|控制|安装|检查|保持|为|是|包括|需要)"
+)
+_PROVENANCE_SENTENCE_PATTERN = re.compile(
+    r"(?:以上(?:步骤|信息|内容)|答案|结论)?\s*(?:依据|证据)?(?:来源|来自|依据)"
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -75,6 +90,39 @@ def decode_source_ref(value: str) -> Citation:
 
 def format_citation(citation: Citation) -> str:
     return f"[{citation.source_file}，第{citation.page_number}页]"
+
+
+def strip_provenance_metadata(value: str) -> str:
+    """Remove internal source metadata while preserving factual answer text."""
+
+    cleaned = _SOURCE_MARKER_PATTERN.sub("", value)
+    cleaned = _PROVENANCE_PAREN_PATTERN.sub("", cleaned)
+    cleaned = _PROVENANCE_TRAILING_LABEL_PATTERN.sub("", cleaned)
+    return cleaned.strip()
+
+
+def is_provenance_only_fragment(value: str) -> bool:
+    """Return whether a fragment only describes evidence provenance.
+
+    A source label or source coordinates are metadata.  A sentence that also
+    contains a factual predicate remains a semantic answer point.
+    """
+
+    cleaned = strip_provenance_metadata(value)
+    if not cleaned:
+        return True
+    labelled = _PROVENANCE_LABEL_PATTERN.sub("", cleaned).strip(" \t-•:：,，;；()（）[]【】")
+    if labelled != cleaned:
+        cleaned = labelled
+    if not cleaned:
+        return True
+    if _PROVENANCE_SENTENCE_PATTERN.search(cleaned) and _SOURCE_METADATA_HINT_PATTERN.search(cleaned):
+        return not bool(_FACTUAL_VERB_PATTERN.search(cleaned))
+    if _FACTUAL_VERB_PATTERN.search(cleaned):
+        return False
+    return bool(_SOURCE_METADATA_HINT_PATTERN.search(cleaned)) and not bool(
+        re.search(r"[。！？!?]", cleaned)
+    )
 
 
 def collect_citations(payload: object) -> tuple[Citation, ...]:

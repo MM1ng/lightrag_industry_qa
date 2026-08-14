@@ -61,3 +61,26 @@ def test_wrong_generation_is_not_injected_by_grounding_plan():
 def test_secret_like_text_is_not_added_to_plan_metadata():
     result = build_answer_plan("密钥 abc123 不应出现。", [_candidate("c1", "设备密钥字段不属于手册证据。")], [Citation("pump.pdf", 1, "c1")])
     assert "Authorization" not in str(result)
+
+
+def test_provenance_only_fragment_does_not_become_answer_point():
+    result = build_answer_plan(
+        "泵轴至少每周旋转一次。\n（证据来源：manual.pdf，第9页）",
+        [_candidate("c1", "泵轴至少每周旋转一次。")],
+        [Citation("manual.pdf", 9, "c1")],
+    )
+
+    assert [point.content for point in result.answer_points] == ["泵轴至少每周旋转一次。"]
+    assert result.answer == "泵轴至少每周旋转一次。"
+    assert all(point.support_status == "supported" for point in result.answer_points)
+
+
+def test_provenance_heading_does_not_create_unsupported_point():
+    result = build_answer_plan(
+        "压力为10 bar。\n证据来源：",
+        [_candidate("c1", "压力为10 bar。")],
+        [Citation("manual.pdf", 9, "c1")],
+    )
+
+    assert len(result.answer_points) == 1
+    assert result.answer_points[0].evidence_ids == ("E1",)
