@@ -152,6 +152,10 @@ class RetrievalExecutionTrace:
     provider_completed_evidence_ids: tuple[str, ...] = ()
     provider_supplemental_evidence_ids: tuple[str, ...] = ()
     provider_context_order: tuple[str, ...] = ()
+    # In-memory-only provider context text for evaluation adapters.  It is
+    # intentionally excluded from to_payload() to keep persisted diagnostics
+    # bounded and preserve the existing admin payload contract.
+    provider_contexts: tuple[str, ...] = ()
     provider_context_sha256: str | None = None
     provider_evidence_count: int = 0
     provider_context_truncated: bool = False
