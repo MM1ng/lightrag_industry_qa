@@ -1,0 +1,372 @@
+{
+  "status": "DIAGNOSIS_COMPLETE",
+  "phase": "R4A",
+  "light_rag_service_calls": 0,
+  "validation_holdout_accessed": false,
+  "snapshot_verification": {
+    "path": "evaluation\\phase10\\conversation_e2e_runtime_snapshot_development.jsonl",
+    "sha256": "8d551a2f02e4141cf0d355c6271a17883617a0519a7b1f80534496784cec0cde",
+    "sha256_verified": true,
+    "case_count": 18,
+    "ordered_case_ids_verified": true,
+    "dataset_fingerprint_parity": true,
+    "runtime_fingerprint_parity": true,
+    "contract_verified": true
+  },
+  "gold_audit": {
+    "existing_gold_found_cases": [
+      "D001",
+      "D004",
+      "D006",
+      "D008",
+      "D010",
+      "D011",
+      "D016",
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S007",
+      "S008",
+      "S009",
+      "S011",
+      "S012",
+      "S017",
+      "S020"
+    ],
+    "gold_without_answer_points": [],
+    "gold_with_answer_points": [
+      "D001",
+      "D004",
+      "D006",
+      "D008",
+      "D010",
+      "D011",
+      "D016",
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S007",
+      "S008",
+      "S009",
+      "S011",
+      "S012",
+      "S017",
+      "S020"
+    ],
+    "gold_with_citation_labels": [
+      "D001",
+      "D004",
+      "D006",
+      "D008",
+      "D010",
+      "D011",
+      "D016",
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S007",
+      "S008",
+      "S009",
+      "S011",
+      "S012",
+      "S017",
+      "S020"
+    ],
+    "gold_conflicts": []
+  },
+  "candidate": {
+    "unsupported_cases": 14,
+    "unsupported_case_denominator": 18,
+    "unsupported_answer_point_count": 26
+  },
+  "baseline": {
+    "unsupported_cases": 15,
+    "unsupported_case_denominator": 18,
+    "unsupported_answer_point_count": 35
+  },
+  "case_transitions": {
+    "unsupported -> supported": 3,
+    "supported -> unsupported": 2,
+    "unsupported -> unsupported": 12,
+    "supported -> supported": 1
+  },
+  "root_cause_distribution": {
+    "answer_point_level": {
+      "Citation Binding Error": 18,
+      "Grounding False Negative": 7,
+      "Grounding False Positive": 1
+    },
+    "case_level": {
+      "Retrieval Miss": 0,
+      "Ranking / Truncation Loss": 0,
+      "Evidence Selection Miss": 0,
+      "Evidence Completion Miss": 0,
+      "Generation Overreach": 0,
+      "Grounding False Negative": 5,
+      "Grounding False Positive": 1,
+      "Citation Binding Error": 13,
+      "Evaluation Artifact": 0,
+      "Insufficient Evidence to Classify": 0
+    }
+  },
+  "top_root_causes": [
+    {
+      "root_cause": "Citation Binding Error",
+      "answer_point_count": 18,
+      "case_count": 13
+    },
+    {
+      "root_cause": "Grounding False Negative",
+      "answer_point_count": 7,
+      "case_count": 5
+    },
+    {
+      "root_cause": "Grounding False Positive",
+      "answer_point_count": 1,
+      "case_count": 1
+    }
+  ],
+  "top_1_root_cause": {
+    "root_cause": "Citation Binding Error",
+    "answer_point_count": 18,
+    "case_count": 13
+  },
+  "faithfulness_regression_cases": {
+    "conv-s006": {
+      "retrieval_improved": false,
+      "baseline_gold_retrieved": 1,
+      "candidate_gold_retrieved": 1,
+      "baseline_provider_context_count": 3,
+      "candidate_provider_context_count": 3,
+      "candidate_answer_length": 146,
+      "baseline_claim_count": 4,
+      "candidate_claim_count": 7,
+      "candidate_unsupported_points": [
+        "P3",
+        "P4",
+        "P7"
+      ],
+      "faithfulness": {
+        "baseline": 1.0,
+        "candidate": 0.75,
+        "delta": -0.25
+      },
+      "rewrite_to_answer_regression": {
+        "rewrite_status": "rewritten",
+        "rewritten_query": null,
+        "conclusion": "not established; retrieval/provider lineage is present and the failure is downstream"
+      },
+      "diagnosis": "retrieval and provider lineage were compared; unsupported points are classified in the point audit"
+    },
+    "conv-d005": {
+      "retrieval_improved": false,
+      "baseline_gold_retrieved": 1,
+      "candidate_gold_retrieved": 1,
+      "baseline_provider_context_count": 3,
+      "candidate_provider_context_count": 3,
+      "candidate_answer_length": 164,
+      "baseline_claim_count": 5,
+      "candidate_claim_count": 7,
+      "candidate_unsupported_points": [
+        "P6",
+        "P7"
+      ],
+      "faithfulness": {
+        "baseline": 1.0,
+        "candidate": 0.8,
+        "delta": -0.19999999999999996
+      },
+      "rewrite_to_answer_regression": {
+        "rewrite_status": "rewritten",
+        "rewritten_query": null,
+        "conclusion": "not established; retrieval/provider lineage is present and the failure is downstream"
+      },
+      "diagnosis": "retrieval and provider lineage were compared; unsupported points are classified in the point audit"
+    },
+    "conv-s011": {
+      "retrieval_improved": true,
+      "baseline_gold_retrieved": 0,
+      "candidate_gold_retrieved": 1,
+      "baseline_provider_context_count": 3,
+      "candidate_provider_context_count": 3,
+      "candidate_answer_length": 380,
+      "baseline_claim_count": 5,
+      "candidate_claim_count": 8,
+      "candidate_unsupported_points": [
+        "P7",
+        "P8"
+      ],
+      "faithfulness": {
+        "baseline": 1.0,
+        "candidate": 0.8235294117647058,
+        "delta": -0.17647058823529416
+      },
+      "rewrite_to_answer_regression": {
+        "rewrite_status": "rewritten",
+        "rewritten_query": null,
+        "conclusion": "not established; retrieval/provider lineage is present and the failure is downstream"
+      },
+      "diagnosis": "retrieval and provider lineage were compared; unsupported points are classified in the point audit"
+    },
+    "conv-s004": {
+      "retrieval_improved": false,
+      "baseline_gold_retrieved": 1,
+      "candidate_gold_retrieved": 1,
+      "baseline_provider_context_count": 3,
+      "candidate_provider_context_count": 3,
+      "candidate_answer_length": 145,
+      "baseline_claim_count": 4,
+      "candidate_claim_count": 7,
+      "candidate_unsupported_points": [
+        "P3",
+        "P4",
+        "P7"
+      ],
+      "faithfulness": {
+        "baseline": 1.0,
+        "candidate": 0.8333333333333334,
+        "delta": -0.16666666666666663
+      },
+      "rewrite_to_answer_regression": {
+        "rewrite_status": "rewritten",
+        "rewritten_query": null,
+        "conclusion": "not established; retrieval/provider lineage is present and the failure is downstream"
+      },
+      "diagnosis": "retrieval and provider lineage were compared; unsupported points are classified in the point audit"
+    },
+    "conv-d004": {
+      "retrieval_improved": false,
+      "baseline_gold_retrieved": 1,
+      "candidate_gold_retrieved": 1,
+      "baseline_provider_context_count": 2,
+      "candidate_provider_context_count": 3,
+      "candidate_answer_length": 184,
+      "baseline_claim_count": 14,
+      "candidate_claim_count": 10,
+      "candidate_unsupported_points": [
+        "P10"
+      ],
+      "faithfulness": {
+        "baseline": 1.0,
+        "candidate": 0.8333333333333334,
+        "delta": -0.16666666666666663
+      },
+      "rewrite_to_answer_regression": {
+        "rewrite_status": "rewritten",
+        "rewritten_query": null,
+        "conclusion": "not established; retrieval/provider lineage is present and the failure is downstream"
+      },
+      "diagnosis": "retrieval and provider lineage were compared; unsupported points are classified in the point audit"
+    }
+  },
+  "faithfulness_reporting": {
+    "formal_successes": 36,
+    "formal_errors": 0,
+    "response_relevancy_preflight_errors": 2,
+    "response_relevancy_formal_status": "NOT_RUN",
+    "diagnostic_errors": 1,
+    "interpretation": "small mean decrease; median unchanged at 1.0; several case-level regressions"
+  },
+  "query_rewrite_real_answer_regression": "not established by frozen trace; regressions require generation/grounding diagnosis, not automatic attribution to rewrite",
+  "next_phase_recommendation": {
+    "single_production_variable": "Citation Binding Correction",
+    "reason": "recommend exactly one production variable from the Pareto leader; no production change is made in R4A"
+  },
+  "audit_point_count_classified": 26,
+  "audit_point_classification_coverage": 1.0,
+  "artifacts": {
+    "point_audit_jsonl": "evaluation\\phase10\\conversation_unsupported_answer_point_audit.jsonl",
+    "markdown": "docs\\phase-10-conversation-answer-reliability-audit.md"
+  },
+  "snapshot_manifest": {
+    "record_type": "manifest",
+    "schema_version": 1,
+    "snapshot_sha256": "8d551a2f02e4141cf0d355c6271a17883617a0519a7b1f80534496784cec0cde",
+    "dataset_fingerprint": {
+      "source_path": "data\\evaluation\\conversation_retrieval_development.jsonl",
+      "raw_sha256": "d326aff3a96a025c79a36a6566e37015419c3c7ab9763a783b7da2963bde4094",
+      "semantic_sha256": "59dc0e2658a9445cca7901a8e9688f631649e1c5cb93f1cae1cdb5125e5a3579",
+      "case_count": 18,
+      "case_ids": [
+        "conv-s001",
+        "conv-s002",
+        "conv-s003",
+        "conv-s004",
+        "conv-s005",
+        "conv-s006",
+        "conv-s007",
+        "conv-s008",
+        "conv-s009",
+        "conv-s010",
+        "conv-s011",
+        "conv-d001",
+        "conv-d002",
+        "conv-d003",
+        "conv-d004",
+        "conv-d005",
+        "conv-d006",
+        "conv-d007"
+      ]
+    },
+    "runtime_config_fingerprint": {
+      "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+      "generation_id": "g5162e7fb4208635103ff4ebb",
+      "workspace": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\g5162e7fb4208635103ff4ebb\\workspace",
+      "vector_backend": "qdrant",
+      "embedding_model": "text-embedding-v4",
+      "embedding_dim": 1024,
+      "query_options": {
+        "mode": "naive",
+        "top_k": 12,
+        "chunk_top_k": 20,
+        "enable_rerank": false
+      },
+      "settings": {
+        "query_normalization_enabled": true,
+        "answer_grounding_enabled": true,
+        "grounding_audit_enabled": false,
+        "evidence_selection_diversity_enabled": false,
+        "evidence_completion_enabled": false,
+        "evidence_completion_max": 2,
+        "supplemental_retrieval_enabled": false,
+        "structured_citation_output_enabled": false,
+        "llm_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "llm_model": "qwen-plus-2025-07-28",
+        "llm_fallback_models": [
+          "kimi-k2.6",
+          "qwen3.6-plus",
+          "qwen3.6-flash",
+          "qwen-plus",
+          "qwen3.5-flash-2026-02-23"
+        ]
+      },
+      "sha256": "1b3fd1e67fbe0a373c51dcd133d988153854c02931bd075869f772c93ac700fa"
+    },
+    "case_count": 18,
+    "ordered_case_ids": [
+      "conv-s001",
+      "conv-s002",
+      "conv-s003",
+      "conv-s004",
+      "conv-s005",
+      "conv-s006",
+      "conv-s007",
+      "conv-s008",
+      "conv-s009",
+      "conv-s010",
+      "conv-s011",
+      "conv-d001",
+      "conv-d002",
+      "conv-d003",
+      "conv-d004",
+      "conv-d005",
+      "conv-d006",
+      "conv-d007"
+    ],
+    "created_at": "2026-08-14T04:08:11.245869+00:00",
+    "backfilled_from_existing_report": true
+  }
+}
