@@ -1,0 +1,16 @@
+{
+  "definition_version": "phase10b3d-metric-policy-v1",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "j0": "completed",
+  "lifecycle_contract": "completed",
+  "machine_review": "completed_machine_not_human",
+  "j1": "completed_rejected_and_rolled_back",
+  "j2_j4": "not_run_after_j1_citation_precision_blocker",
+  "validation": "not_run",
+  "final_52": "not_run",
+  "activation": "not_run",
+  "development_results": "J1 only; complete 36-question run; not an accepted baseline",
+  "validation_results_jsonl": "not_created; Validation was not run",
+  "final_52_results_jsonl": "not_created; final evaluation was not run"
+}

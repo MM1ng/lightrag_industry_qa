@@ -1,0 +1,10 @@
+{
+  "experiment_id": "phase10b3d-recompute-001",
+  "code_commit": "2c25e41",
+  "config_unchanged": true,
+  "development_used_for_implementation": false,
+  "validation_used_for_selection": false,
+  "holdout_used": false,
+  "quality_gate_passed": false,
+  "reason": "Metric integrity and diagnosis only; no runtime variable changed."
+}

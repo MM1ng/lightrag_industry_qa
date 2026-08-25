@@ -1,0 +1,1333 @@
+{
+  "phase": "Phase 9-LS",
+  "started_at": "2026-08-02T22:38:44+0800",
+  "steps": [
+    {
+      "step": "create_test_kb",
+      "started_at": "2026-08-02T22:38:44+0800",
+      "status": "passed",
+      "result": {
+        "id": "a2ecbd02df7d441fb16047fc246392dd",
+        "name": "Phase9-Staging-Incremental-Test",
+        "description": null,
+        "status": "ready",
+        "parser_name": "PyMuPDF",
+        "parser_version": null,
+        "chunking_strategy": "fixed_character",
+        "chunking_version": "1",
+        "chunking_config": null,
+        "embedding_model": "text-embedding-v4",
+        "embedding_dimension": 1024,
+        "vector_backend": "nano",
+        "active_vector_generation": null,
+        "document_count": 0,
+        "active_document_count": 0,
+        "chunk_count": 0,
+        "entity_count": null,
+        "relation_count": null,
+        "created_at": "2026-08-02T14:38:44.346640+00:00",
+        "updated_at": "2026-08-02T14:38:44.350278+00:00",
+        "deleted_at": null,
+        "last_error": null,
+        "_http": 201
+      },
+      "finished_at": "2026-08-02T22:38:44+0800",
+      "duration_seconds": 0.32
+    },
+    {
+      "step": "set_kb_backend_qdrant",
+      "started_at": "2026-08-02T22:38:44+0800",
+      "status": "passed",
+      "result": {
+        "vector_backend": "qdrant",
+        "kb_id": "a2ecbd02df7d441fb16047fc246392dd"
+      },
+      "finished_at": "2026-08-02T22:38:44+0800",
+      "duration_seconds": 0.02
+    },
+    {
+      "step": "add_document_v1",
+      "started_at": "2026-08-02T22:38:44+0800",
+      "status": "passed",
+      "result": {
+        "status": "candidate_built",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "document_id": "2135fa5020c349728139657db30cedf9",
+        "operation": "add",
+        "job_id": "4e3f158af3ce46ce885b033cb8b98567",
+        "candidate_generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "candidate_generation": "g39d065242f537f29e339e375",
+        "metrics": {
+          "replaced_document_id": null,
+          "latencies": {
+            "parse_seconds": 0.031,
+            "embedding_seconds": 4.872,
+            "graph_seconds": 0.0,
+            "validation_seconds": 0.0,
+            "total_seconds": 6.261
+          },
+          "chunk_stats": {
+            "added_chunks": 1,
+            "reused_chunks": 0,
+            "invalidated_chunks": 0
+          },
+          "entity_relation_delta": {
+            "active": {
+              "chunks": 0,
+              "entities": 0,
+              "relationships": 0
+            },
+            "candidate": {
+              "chunks": 1,
+              "entities": 2,
+              "relationships": 1
+            },
+            "delta": {
+              "chunks": 1,
+              "entities": 2,
+              "relationships": 1
+            }
+          }
+        },
+        "reason": null,
+        "_http": 202
+      },
+      "finished_at": "2026-08-02T22:38:50+0800",
+      "duration_seconds": 6.49
+    },
+    {
+      "step": "active_query_before_promote_v1",
+      "started_at": "2026-08-02T22:38:50+0800",
+      "status": "passed",
+      "result": {
+        "http": 503,
+        "status": null,
+        "answer_has_marker": false
+      },
+      "finished_at": "2026-08-02T22:38:50+0800",
+      "duration_seconds": 0.03
+    },
+    {
+      "step": "validate_v1",
+      "started_at": "2026-08-02T22:38:50+0800",
+      "status": "passed",
+      "result": {
+        "generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "passed": true,
+        "gates": {
+          "db_integrity": {
+            "passed": true,
+            "detail": "ok"
+          },
+          "document_registration_consistency": {
+            "passed": true,
+            "detail": {
+              "processed_docs_in_workspace": 1,
+              "expected_active_documents": 1,
+              "expected_document_ids": [
+                "2135fa5020c349728139657db30cedf9"
+              ],
+              "manifest_entries": [
+                {
+                  "document_id": "2135fa5020c349728139657db30cedf9",
+                  "logical_name": "phase9_test_doc_v1.pdf",
+                  "version": 1,
+                  "content_sha256": "442774afdd5180c2e530d8e914925bdc07c7983276f2eeb3c65c5deaf9817898",
+                  "is_active": true
+                }
+              ]
+            }
+          },
+          "counts": {
+            "passed": true,
+            "detail": {
+              "actual_counts": {
+                "chunks": 1,
+                "entities": 2,
+                "relationships": 1
+              },
+              "expected_chunks": 1,
+              "chunk_stats": {
+                "added_chunks": 1,
+                "reused_chunks": 0,
+                "invalidated_chunks": 0
+              }
+            }
+          },
+          "payload_completeness": {
+            "passed": true,
+            "detail": {
+              "sampled": 50,
+              "problems": [],
+              "problem_count": 0
+            }
+          },
+          "generation_mixing": {
+            "passed": true,
+            "detail": {
+              "sampled": 50,
+              "problems": [],
+              "problem_count": 0
+            }
+          },
+          "citation_traceability": true,
+          "golden_subset_regression": true,
+          "add_specific": true,
+          "replace_specific": true,
+          "delete_specific": true,
+          "http_success_1_0": true,
+          "trace_complete_1_0": true,
+          "negative_unsupported_0": true,
+          "no_5xx": true,
+          "no_fabricated_citation": true,
+          "no_secret_leak": true,
+          "no_old_document_reference": true
+        },
+        "report": {
+          "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+          "generation": "g39d065242f537f29e339e375",
+          "approved_by": null,
+          "gates": {
+            "db_integrity": {
+              "passed": true,
+              "detail": "ok"
+            },
+            "document_registration_consistency": {
+              "passed": true,
+              "detail": {
+                "processed_docs_in_workspace": 1,
+                "expected_active_documents": 1,
+                "expected_document_ids": [
+                  "2135fa5020c349728139657db30cedf9"
+                ],
+                "manifest_entries": [
+                  {
+                    "document_id": "2135fa5020c349728139657db30cedf9",
+                    "logical_name": "phase9_test_doc_v1.pdf",
+                    "version": 1,
+                    "content_sha256": "442774afdd5180c2e530d8e914925bdc07c7983276f2eeb3c65c5deaf9817898",
+                    "is_active": true
+                  }
+                ]
+              }
+            },
+            "counts": {
+              "passed": true,
+              "detail": {
+                "actual_counts": {
+                  "chunks": 1,
+                  "entities": 2,
+                  "relationships": 1
+                },
+                "expected_chunks": 1,
+                "chunk_stats": {
+                  "added_chunks": 1,
+                  "reused_chunks": 0,
+                  "invalidated_chunks": 0
+                }
+              }
+            },
+            "payload_completeness": {
+              "passed": true,
+              "detail": {
+                "sampled": 50,
+                "problems": [],
+                "problem_count": 0
+              }
+            },
+            "generation_mixing": {
+              "passed": true,
+              "detail": {
+                "sampled": 50,
+                "problems": [],
+                "problem_count": 0
+              }
+            },
+            "citation_traceability": true,
+            "golden_subset_regression": true,
+            "add_specific": true,
+            "replace_specific": true,
+            "delete_specific": true,
+            "http_success_1_0": true,
+            "trace_complete_1_0": true,
+            "negative_unsupported_0": true,
+            "no_5xx": true,
+            "no_fabricated_citation": true,
+            "no_secret_leak": true,
+            "no_old_document_reference": true
+          },
+          "run": {
+            "probe_answered": false,
+            "citation_traceability": true,
+            "golden_subset_regression": true,
+            "add_specific": true,
+            "replace_specific": true,
+            "delete_specific": true,
+            "http_success_rate": 1.0,
+            "trace_complete_rate": 1.0,
+            "negative_unsupported_answer_rate": 0.0,
+            "no_5xx": true,
+            "fabricated_citation": 0,
+            "secret_leak": 0,
+            "old_document_references": 0
+          },
+          "passed": true,
+          "duration_seconds": 1.544
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:38:52+0800",
+      "duration_seconds": 1.59
+    },
+    {
+      "step": "promote_v1",
+      "started_at": "2026-08-02T22:38:52+0800",
+      "status": "passed",
+      "result": {
+        "status": "promoted",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "idempotent": false,
+        "active_generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "previous_generation_id": null,
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:38:52+0800",
+      "duration_seconds": 0.05
+    },
+    {
+      "step": "active_query_v1",
+      "started_at": "2026-08-02T22:38:52+0800",
+      "status": "passed",
+      "result": {
+        "request_id": "9c1d54c695d5473d89663b0247ac21ab",
+        "trace_id": "28835a24ab1543a8a3fefbf6b026bcac",
+        "status": "success",
+        "answer": "P9-100 泵的最高工作温度为 99 摄氏度。",
+        "citations": [
+          {
+            "citation_id": "cite_1",
+            "document_name": "phase9_test_doc_v1.pdf",
+            "page": 1,
+            "chunk_id": "cchunk-pymupdf-v1-99_-3fd1474d2962-000-3fd1474d2962"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim_1",
+            "text": "P9-100 泵的最高工作温度为 99 摄氏度。",
+            "citation_ids": [
+              "cite_1"
+            ]
+          }
+        ],
+        "latency_ms": 0,
+        "retrieved_chunk_ids": [
+          "cchunk-pymupdf-v1-99_-3fd1474d2962-000-3fd1474d2962"
+        ],
+        "shadow_audit": {
+          "request_id": "9c1d54c695d5473d89663b0247ac21ab",
+          "question_id": null,
+          "kb_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation": "g39d065242f537f29e339e375",
+          "structural_valid": true,
+          "invalid_chunk_count": 0,
+          "invalid_page_count": 0,
+          "invalid_document_count": 0,
+          "duplicate_citation_count": 0,
+          "emitted_citation_count": 1,
+          "answer_without_citation": 0,
+          "citation_traceability": 1,
+          "cross_kb_reference": 0,
+          "empty_citation_count": 0,
+          "audit_status": "ok",
+          "audit_mode": "shadow_non_blocking",
+          "llm_called": false,
+          "gold_used": false,
+          "timestamp": "2026-08-02T22:38:54+0800"
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:38:54+0800",
+      "duration_seconds": 1.91
+    },
+    {
+      "step": "replace_document_v2",
+      "started_at": "2026-08-02T22:38:54+0800",
+      "status": "passed",
+      "result": {
+        "status": "candidate_built",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "document_id": "d50aab78f8e24ca3a7f506c8d12e0689",
+        "operation": "replace",
+        "job_id": "898344b3202044aea145552ba6c9aa04",
+        "candidate_generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+        "candidate_generation": "ge57223eac408f8eee965726b",
+        "metrics": {
+          "replaced_document_id": "2135fa5020c349728139657db30cedf9",
+          "latencies": {
+            "parse_seconds": 0.006,
+            "embedding_seconds": 3.901,
+            "graph_seconds": 0.184,
+            "validation_seconds": 0.0,
+            "total_seconds": 5.387
+          },
+          "chunk_stats": {
+            "added_chunks": 1,
+            "reused_chunks": 1,
+            "invalidated_chunks": 1
+          },
+          "entity_relation_delta": {
+            "active": {
+              "chunks": 1,
+              "entities": 2,
+              "relationships": 1
+            },
+            "candidate": {
+              "chunks": 1,
+              "entities": 2,
+              "relationships": 1
+            },
+            "delta": {
+              "chunks": 0,
+              "entities": 0,
+              "relationships": 0
+            }
+          }
+        },
+        "reason": null,
+        "_http": 202
+      },
+      "finished_at": "2026-08-02T22:38:59+0800",
+      "duration_seconds": 5.45
+    },
+    {
+      "step": "active_query_before_promote_v2",
+      "started_at": "2026-08-02T22:38:59+0800",
+      "status": "passed",
+      "result": {
+        "request_id": "749c5aaa33bc4981974245e586c81339",
+        "trace_id": "125db683e98848989010393657e64aa3",
+        "status": "success",
+        "answer": "P9-100 泵的最高工作温度为 99 摄氏度。",
+        "citations": [
+          {
+            "citation_id": "cite_1",
+            "document_name": "phase9_test_doc_v1.pdf",
+            "page": 1,
+            "chunk_id": "cchunk-pymupdf-v1-99_-3fd1474d2962-000-3fd1474d2962"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim_1",
+            "text": "P9-100 泵的最高工作温度为 99 摄氏度。",
+            "citation_ids": [
+              "cite_1"
+            ]
+          }
+        ],
+        "latency_ms": 0,
+        "retrieved_chunk_ids": [
+          "cchunk-pymupdf-v1-99_-3fd1474d2962-000-3fd1474d2962"
+        ],
+        "shadow_audit": {
+          "request_id": "749c5aaa33bc4981974245e586c81339",
+          "question_id": null,
+          "kb_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation": "g39d065242f537f29e339e375",
+          "structural_valid": true,
+          "invalid_chunk_count": 0,
+          "invalid_page_count": 0,
+          "invalid_document_count": 0,
+          "duplicate_citation_count": 0,
+          "emitted_citation_count": 1,
+          "answer_without_citation": 0,
+          "citation_traceability": 1,
+          "cross_kb_reference": 0,
+          "empty_citation_count": 0,
+          "audit_status": "ok",
+          "audit_mode": "shadow_non_blocking",
+          "llm_called": false,
+          "gold_used": false,
+          "timestamp": "2026-08-02T22:39:00+0800"
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:00+0800",
+      "duration_seconds": 0.98
+    },
+    {
+      "step": "validate_v2",
+      "started_at": "2026-08-02T22:39:00+0800",
+      "status": "passed",
+      "result": {
+        "generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "passed": true,
+        "gates": {
+          "db_integrity": {
+            "passed": true,
+            "detail": "ok"
+          },
+          "document_registration_consistency": {
+            "passed": true,
+            "detail": {
+              "processed_docs_in_workspace": 1,
+              "expected_active_documents": 1,
+              "expected_document_ids": [
+                "d50aab78f8e24ca3a7f506c8d12e0689"
+              ],
+              "manifest_entries": [
+                {
+                  "document_id": "d50aab78f8e24ca3a7f506c8d12e0689",
+                  "logical_name": "phase9_test_doc_v1.pdf",
+                  "version": 2,
+                  "content_sha256": "3cffb01fd903d7f603c14e380707c10ab59abed38d9c3f2a599d632960cbe217",
+                  "is_active": true
+                }
+              ]
+            }
+          },
+          "counts": {
+            "passed": true,
+            "detail": {
+              "actual_counts": {
+                "chunks": 1,
+                "entities": 2,
+                "relationships": 1
+              },
+              "expected_chunks": 1,
+              "chunk_stats": {
+                "added_chunks": 1,
+                "reused_chunks": 1,
+                "invalidated_chunks": 1
+              }
+            }
+          },
+          "payload_completeness": {
+            "passed": true,
+            "detail": {
+              "sampled": 50,
+              "problems": [],
+              "problem_count": 0
+            }
+          },
+          "generation_mixing": {
+            "passed": true,
+            "detail": {
+              "sampled": 50,
+              "problems": [],
+              "problem_count": 0
+            }
+          },
+          "citation_traceability": true,
+          "golden_subset_regression": true,
+          "add_specific": true,
+          "replace_specific": true,
+          "delete_specific": true,
+          "http_success_1_0": true,
+          "trace_complete_1_0": true,
+          "negative_unsupported_0": true,
+          "no_5xx": true,
+          "no_fabricated_citation": true,
+          "no_secret_leak": true,
+          "no_old_document_reference": true
+        },
+        "report": {
+          "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+          "generation": "ge57223eac408f8eee965726b",
+          "approved_by": null,
+          "gates": {
+            "db_integrity": {
+              "passed": true,
+              "detail": "ok"
+            },
+            "document_registration_consistency": {
+              "passed": true,
+              "detail": {
+                "processed_docs_in_workspace": 1,
+                "expected_active_documents": 1,
+                "expected_document_ids": [
+                  "d50aab78f8e24ca3a7f506c8d12e0689"
+                ],
+                "manifest_entries": [
+                  {
+                    "document_id": "d50aab78f8e24ca3a7f506c8d12e0689",
+                    "logical_name": "phase9_test_doc_v1.pdf",
+                    "version": 2,
+                    "content_sha256": "3cffb01fd903d7f603c14e380707c10ab59abed38d9c3f2a599d632960cbe217",
+                    "is_active": true
+                  }
+                ]
+              }
+            },
+            "counts": {
+              "passed": true,
+              "detail": {
+                "actual_counts": {
+                  "chunks": 1,
+                  "entities": 2,
+                  "relationships": 1
+                },
+                "expected_chunks": 1,
+                "chunk_stats": {
+                  "added_chunks": 1,
+                  "reused_chunks": 1,
+                  "invalidated_chunks": 1
+                }
+              }
+            },
+            "payload_completeness": {
+              "passed": true,
+              "detail": {
+                "sampled": 50,
+                "problems": [],
+                "problem_count": 0
+              }
+            },
+            "generation_mixing": {
+              "passed": true,
+              "detail": {
+                "sampled": 50,
+                "problems": [],
+                "problem_count": 0
+              }
+            },
+            "citation_traceability": true,
+            "golden_subset_regression": true,
+            "add_specific": true,
+            "replace_specific": true,
+            "delete_specific": true,
+            "http_success_1_0": true,
+            "trace_complete_1_0": true,
+            "negative_unsupported_0": true,
+            "no_5xx": true,
+            "no_fabricated_citation": true,
+            "no_secret_leak": true,
+            "no_old_document_reference": true
+          },
+          "run": {
+            "probe_answered": false,
+            "citation_traceability": true,
+            "golden_subset_regression": true,
+            "add_specific": true,
+            "replace_specific": true,
+            "delete_specific": true,
+            "http_success_rate": 1.0,
+            "trace_complete_rate": 1.0,
+            "negative_unsupported_answer_rate": 0.0,
+            "no_5xx": true,
+            "fabricated_citation": 0,
+            "secret_leak": 0,
+            "old_document_references": 0
+          },
+          "passed": true,
+          "duration_seconds": 0.56
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:01+0800",
+      "duration_seconds": 0.59
+    },
+    {
+      "step": "promote_v2",
+      "started_at": "2026-08-02T22:39:01+0800",
+      "status": "passed",
+      "result": {
+        "status": "promoted",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+        "idempotent": false,
+        "active_generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+        "previous_generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:01+0800",
+      "duration_seconds": 0.05
+    },
+    {
+      "step": "active_query_v2_warmup",
+      "started_at": "2026-08-02T22:39:01+0800",
+      "status": "passed",
+      "result": {
+        "request_id": "29124ef61a55435dbec3ba423e4dc52e",
+        "trace_id": "bcfcbba6b6e147beb9b96f990c90878c",
+        "status": "success",
+        "answer": "P9-100 泵的最高工作温度为 120 摄氏度。",
+        "citations": [
+          {
+            "citation_id": "cite_1",
+            "document_name": "phase9_test_doc_v2.pdf",
+            "page": 1,
+            "chunk_id": "cchunk-pymupdf-v1-120-0fc868fa4aff-000-0fc868fa4aff"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim_1",
+            "text": "P9-100 泵的最高工作温度为 120 摄氏度。",
+            "citation_ids": [
+              "cite_1"
+            ]
+          }
+        ],
+        "latency_ms": 0,
+        "retrieved_chunk_ids": [
+          "cchunk-pymupdf-v1-120-0fc868fa4aff-000-0fc868fa4aff"
+        ],
+        "shadow_audit": {
+          "request_id": "29124ef61a55435dbec3ba423e4dc52e",
+          "question_id": null,
+          "kb_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation": "ge57223eac408f8eee965726b",
+          "structural_valid": true,
+          "invalid_chunk_count": 0,
+          "invalid_page_count": 0,
+          "invalid_document_count": 0,
+          "duplicate_citation_count": 0,
+          "emitted_citation_count": 1,
+          "answer_without_citation": 0,
+          "citation_traceability": 1,
+          "cross_kb_reference": 0,
+          "empty_citation_count": 0,
+          "audit_status": "ok",
+          "audit_mode": "shadow_non_blocking",
+          "llm_called": false,
+          "gold_used": false,
+          "timestamp": "2026-08-02T22:39:02+0800"
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:02+0800",
+      "duration_seconds": 1.2
+    },
+    {
+      "step": "active_query_v2",
+      "started_at": "2026-08-02T22:39:02+0800",
+      "status": "passed",
+      "result": {
+        "request_id": "0392073709504b10a21f5a70dc6252c9",
+        "trace_id": "7cab3789dfcc44cf85d0ae40bef02b64",
+        "status": "success",
+        "answer": "P9-100 泵的最高工作温度为 120 摄氏度。",
+        "citations": [
+          {
+            "citation_id": "cite_1",
+            "document_name": "phase9_test_doc_v2.pdf",
+            "page": 1,
+            "chunk_id": "cchunk-pymupdf-v1-120-0fc868fa4aff-000-0fc868fa4aff"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim_1",
+            "text": "P9-100 泵的最高工作温度为 120 摄氏度。",
+            "citation_ids": [
+              "cite_1"
+            ]
+          }
+        ],
+        "latency_ms": 0,
+        "retrieved_chunk_ids": [
+          "cchunk-pymupdf-v1-120-0fc868fa4aff-000-0fc868fa4aff"
+        ],
+        "shadow_audit": {
+          "request_id": "0392073709504b10a21f5a70dc6252c9",
+          "question_id": null,
+          "kb_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation": "ge57223eac408f8eee965726b",
+          "structural_valid": true,
+          "invalid_chunk_count": 0,
+          "invalid_page_count": 0,
+          "invalid_document_count": 0,
+          "duplicate_citation_count": 0,
+          "emitted_citation_count": 1,
+          "answer_without_citation": 0,
+          "citation_traceability": 1,
+          "cross_kb_reference": 0,
+          "empty_citation_count": 0,
+          "audit_status": "ok",
+          "audit_mode": "shadow_non_blocking",
+          "llm_called": false,
+          "gold_used": false,
+          "timestamp": "2026-08-02T22:39:03+0800"
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:03+0800",
+      "duration_seconds": 0.94
+    },
+    {
+      "step": "delete_document",
+      "started_at": "2026-08-02T22:39:03+0800",
+      "status": "passed",
+      "result": {
+        "status": "candidate_built",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "document_id": "d50aab78f8e24ca3a7f506c8d12e0689",
+        "operation": "delete",
+        "job_id": "e4839c481faf48cf935a26e325bdf2cf",
+        "candidate_generation_id": "32d053af8c9146b0a2f0587ee023942b",
+        "candidate_generation": "g827499e3e302a4df691ac6c1",
+        "metrics": {
+          "replaced_document_id": null,
+          "latencies": {
+            "parse_seconds": 0.0,
+            "embedding_seconds": 0.0,
+            "graph_seconds": 0.348,
+            "validation_seconds": 0.0,
+            "total_seconds": 1.657
+          },
+          "chunk_stats": {
+            "added_chunks": 0,
+            "reused_chunks": 1,
+            "invalidated_chunks": 1
+          },
+          "entity_relation_delta": {
+            "active": {
+              "chunks": 1,
+              "entities": 2,
+              "relationships": 1
+            },
+            "candidate": {
+              "chunks": 0,
+              "entities": 0,
+              "relationships": 0
+            },
+            "delta": {
+              "chunks": -1,
+              "entities": -2,
+              "relationships": -1
+            }
+          }
+        },
+        "reason": null,
+        "_http": 202
+      },
+      "finished_at": "2026-08-02T22:39:05+0800",
+      "duration_seconds": 1.71
+    },
+    {
+      "step": "validate_v3",
+      "started_at": "2026-08-02T22:39:05+0800",
+      "status": "passed",
+      "result": {
+        "generation_id": "32d053af8c9146b0a2f0587ee023942b",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "passed": true,
+        "gates": {
+          "db_integrity": {
+            "passed": true,
+            "detail": "ok"
+          },
+          "document_registration_consistency": {
+            "passed": true,
+            "detail": {
+              "processed_docs_in_workspace": 0,
+              "expected_active_documents": 0,
+              "expected_document_ids": [],
+              "manifest_entries": []
+            }
+          },
+          "counts": {
+            "passed": true,
+            "detail": {
+              "actual_counts": {
+                "chunks": 0,
+                "entities": 0,
+                "relationships": 0
+              },
+              "expected_chunks": 0,
+              "chunk_stats": {
+                "added_chunks": 0,
+                "reused_chunks": 1,
+                "invalidated_chunks": 1
+              }
+            }
+          },
+          "payload_completeness": {
+            "passed": true,
+            "detail": {
+              "sampled": 50,
+              "problems": [],
+              "problem_count": 0
+            }
+          },
+          "generation_mixing": {
+            "passed": true,
+            "detail": {
+              "sampled": 50,
+              "problems": [],
+              "problem_count": 0
+            }
+          },
+          "citation_traceability": true,
+          "golden_subset_regression": true,
+          "add_specific": true,
+          "replace_specific": true,
+          "delete_specific": true,
+          "http_success_1_0": true,
+          "trace_complete_1_0": true,
+          "negative_unsupported_0": true,
+          "no_5xx": true,
+          "no_fabricated_citation": true,
+          "no_secret_leak": true,
+          "no_old_document_reference": true
+        },
+        "report": {
+          "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation_id": "32d053af8c9146b0a2f0587ee023942b",
+          "generation": "g827499e3e302a4df691ac6c1",
+          "approved_by": null,
+          "gates": {
+            "db_integrity": {
+              "passed": true,
+              "detail": "ok"
+            },
+            "document_registration_consistency": {
+              "passed": true,
+              "detail": {
+                "processed_docs_in_workspace": 0,
+                "expected_active_documents": 0,
+                "expected_document_ids": [],
+                "manifest_entries": []
+              }
+            },
+            "counts": {
+              "passed": true,
+              "detail": {
+                "actual_counts": {
+                  "chunks": 0,
+                  "entities": 0,
+                  "relationships": 0
+                },
+                "expected_chunks": 0,
+                "chunk_stats": {
+                  "added_chunks": 0,
+                  "reused_chunks": 1,
+                  "invalidated_chunks": 1
+                }
+              }
+            },
+            "payload_completeness": {
+              "passed": true,
+              "detail": {
+                "sampled": 50,
+                "problems": [],
+                "problem_count": 0
+              }
+            },
+            "generation_mixing": {
+              "passed": true,
+              "detail": {
+                "sampled": 50,
+                "problems": [],
+                "problem_count": 0
+              }
+            },
+            "citation_traceability": true,
+            "golden_subset_regression": true,
+            "add_specific": true,
+            "replace_specific": true,
+            "delete_specific": true,
+            "http_success_1_0": true,
+            "trace_complete_1_0": true,
+            "negative_unsupported_0": true,
+            "no_5xx": true,
+            "no_fabricated_citation": true,
+            "no_secret_leak": true,
+            "no_old_document_reference": true
+          },
+          "run": {
+            "probe_answered": false,
+            "citation_traceability": true,
+            "golden_subset_regression": true,
+            "add_specific": true,
+            "replace_specific": true,
+            "delete_specific": true,
+            "http_success_rate": 1.0,
+            "trace_complete_rate": 1.0,
+            "negative_unsupported_answer_rate": 0.0,
+            "no_5xx": true,
+            "fabricated_citation": 0,
+            "secret_leak": 0,
+            "old_document_references": 0
+          },
+          "passed": true,
+          "duration_seconds": 0.663
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:06+0800",
+      "duration_seconds": 0.7
+    },
+    {
+      "step": "promote_v3",
+      "started_at": "2026-08-02T22:39:06+0800",
+      "status": "passed",
+      "result": {
+        "status": "promoted",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "generation_id": "32d053af8c9146b0a2f0587ee023942b",
+        "idempotent": false,
+        "active_generation_id": "32d053af8c9146b0a2f0587ee023942b",
+        "previous_generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:06+0800",
+      "duration_seconds": 0.09
+    },
+    {
+      "step": "active_query_after_delete",
+      "started_at": "2026-08-02T22:39:06+0800",
+      "status": "passed",
+      "result": {
+        "request_id": "e84150df6357402ca659f65389036f81",
+        "trace_id": "638e3da6f577458caf38b39b8724774c",
+        "status": "insufficient_evidence",
+        "answer": "手册中未检索到充分依据，无法可靠回答该问题。",
+        "citations": [],
+        "claims": [],
+        "latency_ms": 0,
+        "retrieved_chunk_ids": [],
+        "shadow_audit": {
+          "request_id": "e84150df6357402ca659f65389036f81",
+          "question_id": null,
+          "kb_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation": "g827499e3e302a4df691ac6c1",
+          "structural_valid": true,
+          "invalid_chunk_count": 0,
+          "invalid_page_count": 0,
+          "invalid_document_count": 0,
+          "duplicate_citation_count": 0,
+          "emitted_citation_count": 0,
+          "answer_without_citation": 1,
+          "citation_traceability": 0,
+          "cross_kb_reference": 0,
+          "empty_citation_count": 0,
+          "audit_status": "warning",
+          "audit_mode": "shadow_non_blocking",
+          "llm_called": false,
+          "gold_used": false,
+          "timestamp": "2026-08-02T22:39:06+0800"
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:06+0800",
+      "duration_seconds": 0.48
+    },
+    {
+      "step": "rollback_to_v1",
+      "started_at": "2026-08-02T22:39:06+0800",
+      "status": "passed",
+      "result": {
+        "status": "rolled_back",
+        "knowledge_base_id": "a2ecbd02df7d441fb16047fc246392dd",
+        "generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "idempotent": false,
+        "active_generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+        "previous_generation_id": "32d053af8c9146b0a2f0587ee023942b",
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:06+0800",
+      "duration_seconds": 0.05
+    },
+    {
+      "step": "active_query_after_rollback",
+      "started_at": "2026-08-02T22:39:06+0800",
+      "status": "passed",
+      "result": {
+        "request_id": "2dd5baeb77344f51a44353127a7b9012",
+        "trace_id": "94472380739640fdb0e6c8d9ba837552",
+        "status": "success",
+        "answer": "P9-100 泵的最高工作温度为 99 摄氏度。",
+        "citations": [
+          {
+            "citation_id": "cite_1",
+            "document_name": "phase9_test_doc_v1.pdf",
+            "page": 1,
+            "chunk_id": "cchunk-pymupdf-v1-99_-3fd1474d2962-000-3fd1474d2962"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim_1",
+            "text": "P9-100 泵的最高工作温度为 99 摄氏度。",
+            "citation_ids": [
+              "cite_1"
+            ]
+          }
+        ],
+        "latency_ms": 0,
+        "retrieved_chunk_ids": [
+          "cchunk-pymupdf-v1-99_-3fd1474d2962-000-3fd1474d2962"
+        ],
+        "shadow_audit": {
+          "request_id": "2dd5baeb77344f51a44353127a7b9012",
+          "question_id": null,
+          "kb_id": "a2ecbd02df7d441fb16047fc246392dd",
+          "generation": "g39d065242f537f29e339e375",
+          "structural_valid": true,
+          "invalid_chunk_count": 0,
+          "invalid_page_count": 0,
+          "invalid_document_count": 0,
+          "duplicate_citation_count": 0,
+          "emitted_citation_count": 1,
+          "answer_without_citation": 0,
+          "citation_traceability": 1,
+          "cross_kb_reference": 0,
+          "empty_citation_count": 0,
+          "audit_status": "ok",
+          "audit_mode": "shadow_non_blocking",
+          "llm_called": false,
+          "gold_used": false,
+          "timestamp": "2026-08-02T22:39:07+0800"
+        },
+        "_http": 200
+      },
+      "finished_at": "2026-08-02T22:39:07+0800",
+      "duration_seconds": 1.1
+    }
+  ],
+  "qdrant_snapshots": {
+    "before": {
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_chunks": 453,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_entities": 1012,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_relationships": 1061
+    },
+    "after_v1_promote": {
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_chunks": 453,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_entities": 1012,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_entities": 2,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_relationships": 1061
+    },
+    "after_v2_promote": {
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_chunks": 453,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_entities": 1012,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_entities": 2,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_relationships": 1061,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_entities": 2
+    },
+    "after_delete_promote": {
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g827499e3e302a4df691ac6c1_relationships": 0,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_chunks": 453,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_entities": 1012,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_entities": 2,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_relationships": 1061,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_entities": 2,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g827499e3e302a4df691ac6c1_chunks": 0,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g827499e3e302a4df691ac6c1_entities": 0
+    },
+    "after_rollback": {
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g827499e3e302a4df691ac6c1_relationships": 0,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_chunks": 453,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_entities": 1012,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_relationships": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_chunks": 1,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g39d065242f537f29e339e375_entities": 2,
+      "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g5162e7fb4208635103ff4ebb_relationships": 1061,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_ge57223eac408f8eee965726b_entities": 2,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g827499e3e302a4df691ac6c1_chunks": 0,
+      "ira_p3ar_4ac7a596_kb_a2ecbd02df7d441fb16047fc246392dd_g827499e3e302a4df691ac6c1_entities": 0
+    }
+  },
+  "document_v1_id": "2135fa5020c349728139657db30cedf9",
+  "generation_v1_id": "be4521cd65a34ae6ab54647bf52b70ed",
+  "add_v1_status": "candidate_built",
+  "validation_v1_passed": true,
+  "kb_state_after_promote_v1": {
+    "workspace_path": "D:\\industrial_energy_agent_staging\\kb_data\\a2ecbd02df7d441fb16047fc246392dd\\qdrant\\generations\\g39d065242f537f29e339e375\\workspace",
+    "active_generation_id": "be4521cd65a34ae6ab54647bf52b70ed"
+  },
+  "active_query_v1_has_marker": true,
+  "generation_v2_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+  "replace_v2_status": "candidate_built",
+  "active_before_v2_promote_has_old": true,
+  "active_before_v2_promote_has_new": false,
+  "validation_v2_passed": true,
+  "kb_state_after_promote_v2": {
+    "workspace_path": "D:\\industrial_energy_agent_staging\\kb_data\\a2ecbd02df7d441fb16047fc246392dd\\qdrant\\generations\\ge57223eac408f8eee965726b\\workspace",
+    "active_generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6"
+  },
+  "query_v2_retrieved": [
+    "cchunk-pymupdf-v1-120-0fc868fa4aff-000-0fc868fa4aff"
+  ],
+  "query_v2_citations": [
+    {
+      "citation_id": "cite_1",
+      "document_name": "phase9_test_doc_v2.pdf",
+      "page": 1,
+      "chunk_id": "cchunk-pymupdf-v1-120-0fc868fa4aff-000-0fc868fa4aff"
+    }
+  ],
+  "active_query_v2_has_new": true,
+  "active_query_v2_has_old": false,
+  "generation_v3_id": "32d053af8c9146b0a2f0587ee023942b",
+  "delete_status": "candidate_built",
+  "validation_v3_passed": true,
+  "kb_state_after_promote_v3": {
+    "workspace_path": "D:\\industrial_energy_agent_staging\\kb_data\\a2ecbd02df7d441fb16047fc246392dd\\qdrant\\generations\\g827499e3e302a4df691ac6c1\\workspace",
+    "active_generation_id": "32d053af8c9146b0a2f0587ee023942b"
+  },
+  "after_delete_refused": true,
+  "kb_state_after_rollback_v1": {
+    "workspace_path": "D:\\industrial_energy_agent_staging\\kb_data\\a2ecbd02df7d441fb16047fc246392dd\\qdrant\\generations\\g39d065242f537f29e339e375\\workspace",
+    "active_generation_id": "be4521cd65a34ae6ab54647bf52b70ed"
+  },
+  "after_rollback_has_v1": true,
+  "after_rollback_has_v2": false,
+  "db_integrity": "ok",
+  "generations": [
+    {
+      "id": "32d053af8c9146b0a2f0587ee023942b",
+      "generation": "g827499e3e302a4df691ac6c1",
+      "status": "archived"
+    },
+    {
+      "id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+      "generation": "ge57223eac408f8eee965726b",
+      "status": "archived"
+    },
+    {
+      "id": "be4521cd65a34ae6ab54647bf52b70ed",
+      "generation": "g39d065242f537f29e339e375",
+      "status": "active"
+    }
+  ],
+  "update_jobs": [
+    {
+      "job_id": "e4839c481faf48cf935a26e325bdf2cf",
+      "operation": "delete",
+      "status": "promoted",
+      "candidate_generation_id": "32d053af8c9146b0a2f0587ee023942b",
+      "metrics": {
+        "replaced_document_id": null,
+        "latencies": {
+          "parse_seconds": 0.0,
+          "embedding_seconds": 0.0,
+          "graph_seconds": 0.348,
+          "validation_seconds": 0.0,
+          "total_seconds": 1.657
+        },
+        "chunk_stats": {
+          "added_chunks": 0,
+          "reused_chunks": 1,
+          "invalidated_chunks": 1
+        },
+        "entity_relation_delta": {
+          "active": {
+            "chunks": 1,
+            "entities": 2,
+            "relationships": 1
+          },
+          "candidate": {
+            "chunks": 0,
+            "entities": 0,
+            "relationships": 0
+          },
+          "delta": {
+            "chunks": -1,
+            "entities": -2,
+            "relationships": -1
+          }
+        }
+      },
+      "error_code": null
+    },
+    {
+      "job_id": "898344b3202044aea145552ba6c9aa04",
+      "operation": "replace",
+      "status": "promoted",
+      "candidate_generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+      "metrics": {
+        "replaced_document_id": "2135fa5020c349728139657db30cedf9",
+        "latencies": {
+          "parse_seconds": 0.006,
+          "embedding_seconds": 3.901,
+          "graph_seconds": 0.184,
+          "validation_seconds": 0.0,
+          "total_seconds": 5.387
+        },
+        "chunk_stats": {
+          "added_chunks": 1,
+          "reused_chunks": 1,
+          "invalidated_chunks": 1
+        },
+        "entity_relation_delta": {
+          "active": {
+            "chunks": 1,
+            "entities": 2,
+            "relationships": 1
+          },
+          "candidate": {
+            "chunks": 1,
+            "entities": 2,
+            "relationships": 1
+          },
+          "delta": {
+            "chunks": 0,
+            "entities": 0,
+            "relationships": 0
+          }
+        }
+      },
+      "error_code": null
+    },
+    {
+      "job_id": "4e3f158af3ce46ce885b033cb8b98567",
+      "operation": "add",
+      "status": "rolled_back",
+      "candidate_generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+      "metrics": {
+        "replaced_document_id": null,
+        "latencies": {
+          "parse_seconds": 0.031,
+          "embedding_seconds": 4.872,
+          "graph_seconds": 0.0,
+          "validation_seconds": 0.0,
+          "total_seconds": 6.261
+        },
+        "chunk_stats": {
+          "added_chunks": 1,
+          "reused_chunks": 0,
+          "invalidated_chunks": 0
+        },
+        "entity_relation_delta": {
+          "active": {
+            "chunks": 0,
+            "entities": 0,
+            "relationships": 0
+          },
+          "candidate": {
+            "chunks": 1,
+            "entities": 2,
+            "relationships": 1
+          },
+          "delta": {
+            "chunks": 1,
+            "entities": 2,
+            "relationships": 1
+          }
+        }
+      },
+      "error_code": null
+    }
+  ],
+  "finished_at": "2026-08-02T22:39:08+0800"
+}

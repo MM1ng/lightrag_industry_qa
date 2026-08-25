@@ -1,0 +1,83 @@
+{
+  "phase": "Phase 9",
+  "phase_name": "Knowledge Base Incremental Update & Generation Lifecycle",
+  "created_at": "2026-08-02T22:41:00+08:00",
+  "git_commit": "cfafe26775fde9707dd367009c8d4ecac8f37ea0",
+  "rc_version": "0.1.0-rc.1",
+  "incremental_update_approved": true,
+  "production_deployment_performed": false,
+  "next_phase_allowed": true,
+  "final_decision": {
+    "incremental_update_approved": true,
+    "staging_rehearsal_passed": true,
+    "production_deployment_performed": false,
+    "next_phase_allowed": true
+  },
+  "test_results": {
+    "initial_collected": 546,
+    "initial_passed": 534,
+    "initial_skipped": 12,
+    "initial_failed": 0,
+    "initial_duration_seconds": 18.3,
+    "final_collected": 564,
+    "final_passed": 552,
+    "final_skipped": 12,
+    "final_failed": 0,
+    "final_duration_seconds": 29.11,
+    "ruff": "All checks passed!",
+    "skip_classification": {
+      "real_mineru_opt_in": 1,
+      "real_qdrant_e2e_opt_in": 2,
+      "real_qdrant_integration_opt_in": 9
+    }
+  },
+  "staging_rehearsal_summary": {
+    "scenario": "add -> validate -> promote -> query -> replace -> validate -> promote -> query -> delete -> validate -> promote -> query -> rollback -> query",
+    "test_kb": "Phase9-Staging-Incremental-Test (independent staging KB)",
+    "add_v1_validation_passed": true,
+    "active_query_v1_has_marker": true,
+    "replace_v2_validation_passed": true,
+    "active_query_v2_has_new": true,
+    "active_query_v2_has_old": false,
+    "delete_v3_validation_passed": true,
+    "after_delete_refused": true,
+    "after_rollback_has_v1": true,
+    "after_rollback_has_v2": false,
+    "db_integrity": "ok",
+    "frozen_kb_collections_unchanged": true
+  },
+  "quality_gates": {
+    "db_integrity": "ok",
+    "document_registration_consistency": true,
+    "chunk_entity_relation_counts": true,
+    "payload_completeness": true,
+    "generation_mixing": true,
+    "citation_traceability": true,
+    "add_specific": true,
+    "replace_specific": true,
+    "delete_specific": true,
+    "no_old_document_reference": true,
+    "no_fabricated_citation": true,
+    "no_secret_leak": true,
+    "promote_atomic_and_idempotent": true,
+    "rollback_no_reparse": true,
+    "active_unchanged_on_failure": true
+  },
+  "artifacts": {
+    "staging/rehearsal_live.json": "40e3c95f08446735e03d7f3ebe961a668aec715c07ff951b94f1b9d3132aa355",
+    "staging/golden_incremental_results.jsonl": "6c2f65e2d6d449f69d6de540b8649186149e32954a93096db39b05b3bcf36d13",
+    "staging/generation_diff_report.json": "0a37dcbf6ed6c79a25745c0f4a839e8f638fadb1cf1cdabca2fef5a6af0b9eb2",
+    "security/log_secret_scan.json": "646530ee2d935b75f075d6c13d6a2d79586f4fa3d25dbae16a8b3948909d5685",
+    "scripts/start_staging.py": "03b765a2bd79b09b19ae4502cba543cfc3342d7fd4e980b9e3fb02ee22a6773b",
+    "scripts/stop_staging.py": "a9d4ab89a3ac01718f9c40234d38e0f4bb038f9a51568d8fa907243a25b2afe2",
+    "scripts/rehearse_staging.py": "0b4da87881974ca549117ccd00f8ca0a682a93ef4c3d3c2c7200abf11a692b19",
+    "migrations/versions/a7f3c9e2b1d4_phase9_incremental_kb_update.py": "d8deb8456cf0314d501ce52f1a1a9e46b1af2c378b022a9910e958a8bb5e3562",
+    "src/industrial_rag/services/incremental_update_service.py": "b49ecc12103a75d532a12b725b56cae41dc64c1e9e61c066048e390dfb77760a",
+    "src/industrial_rag/services/generation_validation_service.py": "803aeed6a82af414e7b6a6e850997665f122d91a8f4ad737e58d705d0b3d4541",
+    "src/industrial_rag/repositories/update_job_repository.py": "9c9c2bab7a0a80e1ea7b849dc0837e4c42782f1aa01bce4a69d0dcf8feed71d5",
+    "src/industrial_rag/routers/generations.py": "69017008735f00f7a668161531338fa447fc84166f962d38871835e54b81c369",
+    "src/industrial_rag/routers/update_jobs.py": "f5958acaa4347686d0c3cfc6844deecb9d1f7754322a1d4fc311de3414a6b298",
+    "tests/test_phase9.py": "da26057072a86ffba1f621211a09bcf798a78d7a00568997ecad1f0c258c754c",
+    "docs/phase-9-incremental-kb-update-report.md": "2bfce025773eb1566bb1c3499b48db28a9e6eccdc43e14009edd7be5f0929538"
+  }
+}

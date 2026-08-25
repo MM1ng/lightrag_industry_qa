@@ -1,0 +1,47 @@
+{
+  "phase": "10B-3J-Goal",
+  "fixture": {
+    "database": "temporary SQLite",
+    "candidate_database_opened": false
+  },
+  "contracts": {
+    "normal_query": {
+      "http_status": 200,
+      "generation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "ready": {
+      "http_status": 200,
+      "generation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "building": {
+      "http_status": 409,
+      "code": "generation_invalid_state"
+    },
+    "failed": {
+      "http_status": 409,
+      "code": "generation_invalid_state"
+    },
+    "deleting": {
+      "http_status": 409,
+      "code": "generation_invalid_state",
+      "persisted_generation_status": "deleted"
+    },
+    "missing_generation": {
+      "http_status": 404,
+      "code": "generation_not_found"
+    },
+    "wrong_kb": {
+      "http_status": 404,
+      "code": "knowledge_base_not_found"
+    }
+  },
+  "active_pointer_before": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "active_pointer_after": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "active_pointer_unchanged": true,
+  "normal_queries_keep_active": true,
+  "runtime_query_calls": 1,
+  "validation_run": false,
+  "holdout_run": false,
+  "candidate_activation_performed": false,
+  "passed": true
+}

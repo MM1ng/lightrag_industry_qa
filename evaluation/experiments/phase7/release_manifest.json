@@ -1,0 +1,91 @@
+{
+  "rc_version": "0.1.0-rc.1",
+  "release_channel": "rc",
+  "git_commit": "7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60",
+  "source_commit": "7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60",
+  "head_commit_at_closeout": "5051647ee2e377e3ea94f70eca1c0eded832e42b",
+  "build_time": "2026-08-02T18:45:25+0800",
+  "closeout_created_at": "2026-08-02T20:22:52+08:00",
+  "frozen_strategy_sha256": "f468b7afed2c5f3a68c6365ef564392b8aa0dd567faf604f9a61609ea6e610de",
+  "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
+  "canonical_metric_definition_version": "phase6b-v1",
+  "canonical_metric_definition_reference": {
+    "path": "evaluation/experiments/phase6b/metric_audit/citation_metric_definitions.json",
+    "sha256": "24c92e01e2851b660e6b395884d60f99ddab77945e1ce585ac7c0e51eb294101"
+  },
+  "package": {
+    "path": "dist/industrial-energy-agent-0.1.0-rc.1.zip",
+    "sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+    "size": 187429
+  },
+  "package_type": {
+    "artifact_type": "application_release_candidate",
+    "self_contained": false,
+    "external_state_required": true,
+    "database_included": false,
+    "qdrant_index_included": false,
+    "llm_cache_included": false,
+    "user_documents_included": false,
+    "installation_mode": "local_conda_application_with_docker_qdrant"
+  },
+  "canonical_metrics": {
+    "answerable_question_count": 18,
+    "negative_question_count": 2,
+    "answer_citation_accuracy": {
+      "numerator": 14,
+      "denominator": 18,
+      "decimal": 0.7778
+    },
+    "false_rejection_rate": {
+      "numerator": 4,
+      "denominator": 18,
+      "decimal": 0.2222
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0
+    }
+  },
+  "final_test_results": {
+    "collected": 546,
+    "passed": 534,
+    "skipped": 12,
+    "failed": 0,
+    "duration_seconds": 20.61,
+    "skip_classification": {
+      "real_mineru_opt_in": 1,
+      "real_qdrant_e2e_opt_in": 2,
+      "real_qdrant_integration_opt_in": 9
+    },
+    "ruff": "All checks passed!"
+  },
+  "closeout": {
+    "acceptance_metric_correction": "evaluation/experiments/phase7/closeout/acceptance_metric_correction.json",
+    "package_type_declaration": "evaluation/experiments/phase7/closeout/package_type.json",
+    "closeout_decision": "evaluation/experiments/phase7/closeout/closeout_decision.json",
+    "release_gates_repassed": true,
+    "release_package_approved": true
+  },
+  "deployment_performed": false,
+  "tag_created": false,
+  "tag_pushed": false,
+  "tag": {
+    "name": "v0.1.0-rc.1",
+    "created": false,
+    "pushed": false,
+    "reason": "IRA_PHASE8_CREATE_TAG=1 not set; no tag authorization",
+    "exists_in_repo": false
+  },
+  "phase8": {
+    "status": "blocked",
+    "blocked_reason": "IRA_PHASE8_TARGET_ENV is not configured",
+    "staging_deployment_approved": false,
+    "production_deployment_performed": false
+  }
+}

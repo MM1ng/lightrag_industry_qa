@@ -1,0 +1,17 @@
+{
+  "code_under_test_commit": "fb77693",
+  "evaluation_run_id": "phase10b3i-i0-i1-development",
+  "config_sha256": "27d86a040d7724b71703212c9671cb681e6ed2f9bfa048aa9446a4dc205e232e",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "candidate_generation_name": "g10b3c20260803",
+  "old_active_generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "flags": {
+    "QA_SUPPORT_VALIDATOR_V2_ENABLED": false,
+    "QA_STRUCTURED_GENERATION_ENABLED": false,
+    "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": false
+  },
+  "holdout_used": false,
+  "validation_run": false,
+  "candidate_activated": false
+}

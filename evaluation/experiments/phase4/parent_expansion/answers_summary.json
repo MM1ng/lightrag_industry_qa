@@ -1,0 +1,14 @@
+{
+  "best_parent_expansion": "top_1_parent",
+  "llm_summary": {
+    "call_count": 98,
+    "input_tokens": 106205,
+    "output_tokens": 8583,
+    "total_tokens": 114788,
+    "retry_count": 0,
+    "cache_hits": 0,
+    "cache_misses": 98,
+    "model_mismatches": 0,
+    "errors": 0
+  }
+}

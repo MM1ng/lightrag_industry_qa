@@ -1,0 +1,17 @@
+{
+  "case_count": 3,
+  "question_ids": [
+    "S006",
+    "S020",
+    "A001"
+  ],
+  "classification_counts": {
+    "mapping_correct_support_wrong": 3,
+    "page_or_chunk_mismatch": 3,
+    "numeric_mismatch": 2,
+    "condition_mismatch": 2,
+    "object_mismatch": 1,
+    "lexical_false_positive": 1
+  },
+  "review_scope": "S006,S020,A001 only; no Holdout"
+}

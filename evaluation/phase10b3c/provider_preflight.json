@@ -1,0 +1,44 @@
+{
+  "checked_at": "2026-08-03T11:14:51.927595+00:00",
+  "base_url_configured": true,
+  "results": [
+    {
+      "model_name": "kimi-k2.6",
+      "http_status": 403,
+      "provider_error_code": "AllocationQuota.FreeTierOnly",
+      "completion_available": false,
+      "latency_ms": 414
+    },
+    {
+      "model_name": "qwen3.6-plus",
+      "http_status": 403,
+      "provider_error_code": "AllocationQuota.FreeTierOnly",
+      "completion_available": false,
+      "latency_ms": 145
+    },
+    {
+      "model_name": "qwen3.6-flash",
+      "http_status": 403,
+      "provider_error_code": "AllocationQuota.FreeTierOnly",
+      "completion_available": false,
+      "latency_ms": 163
+    },
+    {
+      "model_name": "qwen-plus-2025-07-28",
+      "http_status": 200,
+      "provider_error_code": null,
+      "completion_available": true,
+      "latency_ms": 812
+    },
+    {
+      "model_name": "text-embedding-v4",
+      "http_status": 200,
+      "provider_error_code": null,
+      "completion_available": true,
+      "latency_ms": 249
+    }
+  ],
+  "fixed_model": "qwen-plus-2025-07-28",
+  "external_dependency_blocked": false,
+  "secret_values_written": false
+}

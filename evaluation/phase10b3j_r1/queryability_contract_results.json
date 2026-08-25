@@ -1,0 +1,24 @@
+{
+  "active_query": {
+    "http_status": 200,
+    "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+  },
+  "explicit_candidate_query": {
+    "http_status": 200,
+    "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+    "wrong_generation": 0
+  },
+  "invalid_states": {
+    "building": "not_run_fixture",
+    "failed": "409 observed in original wrong-runtime run",
+    "deleting": "not_run_fixture"
+  },
+  "fixture_contract_complete": false,
+  "wrong_kb": "not_run_fixture",
+  "active_pointer_before": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_pointer_after": "a2d1c77ce08b414495e9d845cc42f799",
+  "active_pointer_changed": false,
+  "candidate_status": "ready",
+  "candidate_queryable": true,
+  "candidate_query_evidence": "J0 smoke and Development"
+}

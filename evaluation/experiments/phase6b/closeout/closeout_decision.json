@@ -1,0 +1,18 @@
+{
+  "phase": "Phase 6B-Closeout",
+  "created_at": "2026-08-02T17:45:34+0800",
+  "head_commit": "7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60",
+  "all_original_hard_gates_accounted_for": true,
+  "omitted_phase6_gates": [],
+  "canonical_baseline_layered": true,
+  "historical_08333_preserved": true,
+  "canonical_harness_v1": 0.6458,
+  "official_fastapi_v1": 0.7708,
+  "gate_difference_direction_defined": true,
+  "official_fastapi_authoritative": true,
+  "c007_tech_debt_registered": true,
+  "actual_model_fields_remediated": true,
+  "release_candidate_approved": true,
+  "deployment_performed": false,
+  "phase7_allowed": true
+}

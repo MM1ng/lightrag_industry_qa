@@ -1,0 +1,231 @@
+{
+  "manifest_name": "phase3a_frozen_artifacts_manifest",
+  "created_at": "2026-08-01T13:49:31+0800",
+  "entries": [
+    {
+      "path": "D:\\industrial_energy_agent\\data\\manuals\\2196-ANSI-Manual-Chinese.pdf",
+      "sha256": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700",
+      "size": 1561387,
+      "role": "pdf_source",
+      "generated_by": "external",
+      "parser_pipeline": "input",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\data\\manuals\\t1739cn.pdf",
+      "sha256": "77fd7ebf86ef6c574de11eac446dc321de04fd0773cd7d844287da7fa4d6c4ae",
+      "size": 4532306,
+      "role": "pdf_source",
+      "generated_by": "external",
+      "parser_pipeline": "input",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\data\\evaluation\\industrial_pump_golden_set_50.jsonl",
+      "sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf",
+      "size": 15776,
+      "role": "golden_set",
+      "generated_by": "phase2",
+      "parser_pipeline": "common",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P0\\2196-ANSI-Manual-Chinese.pdf\\blocks.jsonl",
+      "sha256": "fea116315439bf34ea5f5b65dc230279b9fddaa45809d6fe77f1d60846c3356e",
+      "size": 408329,
+      "role": "p0_blocks",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "pymupdf_standard_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P0\\2196-ANSI-Manual-Chinese.pdf\\parent_chunks.jsonl",
+      "sha256": "f39387a6fca4e5d5a1025f2c7699cbde8c645d1b9cf1e5db295807ee50cf9799",
+      "size": 230422,
+      "role": "p0_parents",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "pymupdf_standard_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P0\\2196-ANSI-Manual-Chinese.pdf\\child_chunks.jsonl",
+      "sha256": "1c13df50995743f53ab0be41e66c5f6e2756b515f6a2aa7dd09ed2b491d3d8e0",
+      "size": 327266,
+      "role": "p0_children",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "pymupdf_standard_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P0\\t1739cn.pdf\\blocks.jsonl",
+      "sha256": "0e5a950299c1b731465bbe2ff78079fe6ff1ad61e37bfd65342874ec9f07d93a",
+      "size": 561038,
+      "role": "p0_blocks",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "pymupdf_standard_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P0\\t1739cn.pdf\\parent_chunks.jsonl",
+      "sha256": "7891e2d4a6f825d15ba9c47d7a8895d341fe81d0bb8a2c3380a39d3790362a15",
+      "size": 163247,
+      "role": "p0_parents",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "pymupdf_standard_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P0\\t1739cn.pdf\\child_chunks.jsonl",
+      "sha256": "be38970c1538dc884e190f760de5058bf77657a7cdad38fded7cb5685433c620",
+      "size": 257584,
+      "role": "p0_children",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "pymupdf_standard_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\2196-ANSI-Manual-Chinese.pdf\\blocks.jsonl",
+      "sha256": "87570f9e2417920798b5b7960103253b99f3e7dc1e5fdab65ed945cad58da64d",
+      "size": 345029,
+      "role": "p1_clean_blocks",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\2196-ANSI-Manual-Chinese.pdf\\parent_chunks.jsonl",
+      "sha256": "feba9dfc1cb11036fe772e651646f07d182709eefddab057b2af9c92c7e4ac27",
+      "size": 90737,
+      "role": "p1_clean_parents",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\2196-ANSI-Manual-Chinese.pdf\\child_chunks.jsonl",
+      "sha256": "98d79d93d53ac4441801ff90d6480d0bb1568b65f834614f274b2b7b2441fc05",
+      "size": 174275,
+      "role": "p1_clean_children",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\2196-ANSI-Manual-Chinese.pdf\\cleanup_manifest.json",
+      "sha256": "1fdc6e442bfa738ae0ea48d0f87814c566baafa9329e25fcc2b90d721cd9949d",
+      "size": 39339,
+      "role": "cleanup_manifest",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\2196-ANSI-Manual-Chinese.pdf\\tables_clean.json",
+      "sha256": "e95d2d106980bc6e6c967832296ce457ee79fb53b66848e0be0cf0bfef347173",
+      "size": 88966,
+      "role": "tables_clean",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P1\\2196-ANSI-Manual-Chinese.pdf\\mineru_raw\\result.zip",
+      "sha256": "cc71e3b638072f80d943fbf64f5c76779c993de25a4826b9df48782e51a7b538",
+      "size": 5390193,
+      "role": "mineru_raw_zip",
+      "generated_by": "phase3a",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P1\\2196-ANSI-Manual-Chinese.pdf\\mineru_raw\\content_list.json",
+      "sha256": "93e7509fe1901a956dbffc2594fe6cdf021185bb65bbc1f867155a412cb82927",
+      "size": 210729,
+      "role": "mineru_content_list",
+      "generated_by": "phase3a",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\t1739cn.pdf\\blocks.jsonl",
+      "sha256": "930ddc4eb636ec557c1a0e8469b973662bf6cd0071cbd36d0c810304deef8e7d",
+      "size": 393946,
+      "role": "p1_clean_blocks",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\t1739cn.pdf\\parent_chunks.jsonl",
+      "sha256": "ac5e61aac658b3bac539cab672736389adfc4cbeb80fe5052b1ff55d4a617ecb",
+      "size": 99678,
+      "role": "p1_clean_parents",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\t1739cn.pdf\\child_chunks.jsonl",
+      "sha256": "33c6e1a65cfac430d0b4b7b801ead6403e91195e7fac052d3ad8760540a5b6ae",
+      "size": 165848,
+      "role": "p1_clean_children",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\t1739cn.pdf\\cleanup_manifest.json",
+      "sha256": "181a0e2d97bfe907ca402c58ca4feae508cae15d8b3d70139cdab0d32dc22672",
+      "size": 98410,
+      "role": "cleanup_manifest",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\t1739cn.pdf\\tables_clean.json",
+      "sha256": "c351f791e2fa14198dafef4f62f7c37c61377c3bb4b72c047e36ce47213442f5",
+      "size": 40294,
+      "role": "tables_clean",
+      "generated_by": "phase3a-p",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P1\\t1739cn.pdf\\mineru_raw\\result.zip",
+      "sha256": "52577d60c4d66c341a28c13e639f4e080900dc31a9bb20b33e4502809c46344b",
+      "size": 10007889,
+      "role": "mineru_raw_zip",
+      "generated_by": "phase3a",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\P1\\t1739cn.pdf\\mineru_raw\\content_list.json",
+      "sha256": "c66996fc4c5381b5ee9423c01613e5cff2ac8115018d6b988ca6f3474cd6ecfd",
+      "size": 293541,
+      "role": "mineru_content_list",
+      "generated_by": "phase3a",
+      "parser_pipeline": "mineru_online_clean_adapter",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\config.json",
+      "sha256": "8e7dd52c8335c2543292d52fa72483ebb3ba7aa977b2a47682d6a6619ff56910",
+      "size": 1335,
+      "role": "frozen_config",
+      "generated_by": "phase3a-d",
+      "parser_pipeline": "common",
+      "immutable": true
+    },
+    {
+      "path": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\prompt_bundle.json",
+      "sha256": "49dc71741343c208ca6fceafeef789bc5fbdd5cd921a29ebb1a6cf54aae69c3e",
+      "size": 589,
+      "role": "prompt_bundle",
+      "generated_by": "phase3a-d",
+      "parser_pipeline": "common",
+      "immutable": true
+    }
+  ]
+}

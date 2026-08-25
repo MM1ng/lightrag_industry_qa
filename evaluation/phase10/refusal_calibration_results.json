@@ -1,0 +1,28 @@
+{
+  "thresholds_modified": false,
+  "splits": {
+    "development": {
+      "state_counts": {
+        "success": 31,
+        "insufficient_evidence": 3,
+        "partial_answer": 2
+      },
+      "false_rejection_numerator": 3,
+      "false_rejection_denominator": 36,
+      "negative_rejection_numerator": 0,
+      "negative_rejection_denominator": 0
+    },
+    "validation": {
+      "state_counts": {
+        "success": 4,
+        "partial_answer": 5,
+        "insufficient_evidence": 7
+      },
+      "false_rejection_numerator": 5,
+      "false_rejection_denominator": 14,
+      "negative_rejection_numerator": 2,
+      "negative_rejection_denominator": 2
+    }
+  },
+  "holdout_used_for_tuning": false
+}

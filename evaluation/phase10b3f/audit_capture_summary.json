@@ -1,0 +1,26 @@
+{
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "record_count": 52,
+  "development_count": 36,
+  "validation_count": 16,
+  "completed_count": 52,
+  "trace_completeness": {
+    "numerator": 52,
+    "denominator": 52,
+    "value": 1.0
+  },
+  "new_trace_version_completeness": {
+    "numerator": 52,
+    "denominator": 52,
+    "value": 1.0
+  },
+  "generation_invoked_missing_pre_grounding_answer_count": 0,
+  "grounding_rejection_missing_input_fragments_count": 0,
+  "unresolved_evidence_identity_count": 0,
+  "wrong_generation_count": 0,
+  "context_registry_sha_mismatch_count": 0,
+  "raw_answer_public_exposure_count": 0,
+  "holdout_used": false,
+  "secret_scan_confirmed_secret_count": 0,
+  "audit_capture_gate_passed": true
+}

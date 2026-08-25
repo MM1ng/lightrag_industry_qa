@@ -1,0 +1,34 @@
+{
+  "evaluation_run_id": "phase10b3h-final-52",
+  "code_commit": "4e6db77",
+  "experiments": {
+    "H0": {
+      "accepted": true,
+      "source": "phase10b3g-final-52"
+    },
+    "H1": {
+      "accepted": false,
+      "reason": "Support calibration worsened citation and unsupported-answer gates"
+    },
+    "H2": {
+      "accepted": false,
+      "reason": "Structured validator did not improve coverage gates"
+    },
+    "H3": {
+      "accepted": false,
+      "reason": "No eligible supplemental gap remained in this run"
+    },
+    "H4": {
+      "accepted": false,
+      "reason": "Final gates failed"
+    }
+  },
+  "supplemental_trigger_rate": {
+    "numerator": 0,
+    "denominator": 52,
+    "value": 0.0
+  },
+  "holdout_used": false,
+  "candidate_activated": false,
+  "phase10b3h_approved": false
+}

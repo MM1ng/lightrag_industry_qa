@@ -1,0 +1,21 @@
+{
+  "config_id": "phase10b-final-001",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "normalization_enabled": true,
+  "query_mode": "naive",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "rerank_enabled": false,
+  "evidence_selection": "frozen_phase10a",
+  "refusal_strategy": "frozen_phase10a",
+  "citation_binding": "deterministic_phase10b",
+  "chunking": "frozen_phase10a_pymupdf_standard_adapter",
+  "candidate_chunking_run": false,
+  "candidate_chunking_decision": "not_justified: dominant development/validation failures are cross-page evidence mapping and refusal/evidence selection, not broad Top20 retrieval miss",
+  "holdout_run_count": 1,
+  "source_git_commit": "a7ff23b7ac3f3ca01a675adde03378148e00ae4d",
+  "frozen_before_holdout": true,
+  "holdout_completed": true
+}

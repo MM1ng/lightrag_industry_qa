@@ -1,0 +1,21 @@
+{
+  "experiments": [
+    {
+      "experiment_id": "phase10b2-prompt-baseline",
+      "grounding_prompt_enabled": false,
+      "retrieval_config_unchanged": true
+    },
+    {
+      "experiment_id": "phase10b2-prompt-grounding-001",
+      "grounding_prompt_enabled": true,
+      "retrieval_config_unchanged": true,
+      "prompt_scope": [
+        "bind answer points to evidence",
+        "state uncovered content",
+        "no inference"
+      ]
+    }
+  ],
+  "selected": "phase10b2-prompt-grounding-001",
+  "holdout_rerun": false
+}

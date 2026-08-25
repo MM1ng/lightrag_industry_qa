@@ -1,0 +1,33 @@
+{
+  "request_count": 50,
+  "structural_valid_rate": {
+    "numerator": 50,
+    "denominator": 50
+  },
+  "invalid_chunk_reference_rate": {
+    "numerator": 0,
+    "denominator": 143
+  },
+  "invalid_page_rate": {
+    "numerator": 0,
+    "denominator": 143
+  },
+  "invalid_document_rate": {
+    "numerator": 0,
+    "denominator": 143
+  },
+  "duplicate_citation_rate": {
+    "numerator": 0,
+    "denominator": 143
+  },
+  "answer_without_citation_rate": {
+    "numerator": 1,
+    "denominator": 50
+  },
+  "citation_traceability": {
+    "numerator": 49,
+    "denominator": 50
+  },
+  "llm_called": 0,
+  "gold_used": false
+}

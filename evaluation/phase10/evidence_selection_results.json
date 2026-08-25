@@ -1,0 +1,1056 @@
+{
+  "splits": [
+    "development",
+    "validation"
+  ],
+  "cases": [
+    {
+      "question_id": "S001",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S002",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S003",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S004",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S005",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S006",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S007",
+      "split": "development",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "S008",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S009",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S010",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S011",
+      "split": "development",
+      "state": "partial_answer",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S012",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S013",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S014",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S015",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S016",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S017",
+      "split": "development",
+      "state": "partial_answer",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S018",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S019",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "S020",
+      "split": "development",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 0,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "D001",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D002",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D003",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D004",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D005",
+      "split": "development",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "D006",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D007",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D008",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D009",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D010",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D011",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D012",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D013",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D014",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D015",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 2,
+      "cited_expected_count": 2,
+      "answerable": true
+    },
+    {
+      "question_id": "D016",
+      "split": "development",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D017",
+      "split": "validation",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 2,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D018",
+      "split": "validation",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D019",
+      "split": "validation",
+      "state": "partial_answer",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "D020",
+      "split": "validation",
+      "state": "partial_answer",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "C001",
+      "split": "validation",
+      "state": "partial_answer",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "C002",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "C003",
+      "split": "validation",
+      "state": "partial_answer",
+      "expected_evidence_count": 3,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    },
+    {
+      "question_id": "C004",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 4,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "C005",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 3,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "C006",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 4,
+      "selected_evidence_count": 1,
+      "selected_expected_count": 1,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "C007",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 5,
+      "selected_evidence_count": 2,
+      "selected_expected_count": 0,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "C008",
+      "split": "validation",
+      "state": "success",
+      "expected_evidence_count": 2,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 2,
+      "cited_expected_count": 2,
+      "answerable": true
+    },
+    {
+      "question_id": "N001",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 0,
+      "selected_evidence_count": 0,
+      "selected_expected_count": 0,
+      "cited_expected_count": 0,
+      "answerable": false
+    },
+    {
+      "question_id": "N002",
+      "split": "validation",
+      "state": "insufficient_evidence",
+      "expected_evidence_count": 0,
+      "selected_evidence_count": 1,
+      "selected_expected_count": 0,
+      "cited_expected_count": 0,
+      "answerable": false
+    },
+    {
+      "question_id": "A001",
+      "split": "validation",
+      "state": "partial_answer",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 0,
+      "cited_expected_count": 0,
+      "answerable": true
+    },
+    {
+      "question_id": "A002",
+      "split": "validation",
+      "state": "success",
+      "expected_evidence_count": 1,
+      "selected_evidence_count": 3,
+      "selected_expected_count": 1,
+      "cited_expected_count": 1,
+      "answerable": true
+    }
+  ],
+  "grouped_by_state": {
+    "success": [
+      {
+        "question_id": "S001",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S002",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S003",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S004",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S005",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S006",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S008",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S009",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S010",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S012",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S013",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S014",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S015",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S016",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S018",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S019",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D001",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D002",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D003",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D004",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D006",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D007",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D008",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D009",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D010",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D011",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D012",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D013",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D014",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D015",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 2,
+        "cited_expected_count": 2,
+        "answerable": true
+      },
+      {
+        "question_id": "D016",
+        "split": "development",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D017",
+        "split": "validation",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 2,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D018",
+        "split": "validation",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "C008",
+        "split": "validation",
+        "state": "success",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 2,
+        "cited_expected_count": 2,
+        "answerable": true
+      },
+      {
+        "question_id": "A002",
+        "split": "validation",
+        "state": "success",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      }
+    ],
+    "insufficient_evidence": [
+      {
+        "question_id": "S007",
+        "split": "development",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "S020",
+        "split": "development",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 0,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "D005",
+        "split": "development",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "C002",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "C004",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 4,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "C005",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 3,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "C006",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 4,
+        "selected_evidence_count": 1,
+        "selected_expected_count": 1,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "C007",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 5,
+        "selected_evidence_count": 2,
+        "selected_expected_count": 0,
+        "cited_expected_count": 0,
+        "answerable": true
+      },
+      {
+        "question_id": "N001",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 0,
+        "selected_evidence_count": 0,
+        "selected_expected_count": 0,
+        "cited_expected_count": 0,
+        "answerable": false
+      },
+      {
+        "question_id": "N002",
+        "split": "validation",
+        "state": "insufficient_evidence",
+        "expected_evidence_count": 0,
+        "selected_evidence_count": 1,
+        "selected_expected_count": 0,
+        "cited_expected_count": 0,
+        "answerable": false
+      }
+    ],
+    "partial_answer": [
+      {
+        "question_id": "S011",
+        "split": "development",
+        "state": "partial_answer",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "S017",
+        "split": "development",
+        "state": "partial_answer",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D019",
+        "split": "validation",
+        "state": "partial_answer",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "D020",
+        "split": "validation",
+        "state": "partial_answer",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "C001",
+        "split": "validation",
+        "state": "partial_answer",
+        "expected_evidence_count": 2,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "C003",
+        "split": "validation",
+        "state": "partial_answer",
+        "expected_evidence_count": 3,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 1,
+        "cited_expected_count": 1,
+        "answerable": true
+      },
+      {
+        "question_id": "A001",
+        "split": "validation",
+        "state": "partial_answer",
+        "expected_evidence_count": 1,
+        "selected_evidence_count": 3,
+        "selected_expected_count": 0,
+        "cited_expected_count": 0,
+        "answerable": true
+      }
+    ]
+  }
+}

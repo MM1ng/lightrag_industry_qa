@@ -1,0 +1,44 @@
+{
+  "question_id": "D014",
+  "json_parseable": true,
+  "answer_point_text_present": true,
+  "unknown_requirement_id": null,
+  "unknown_requirement_id_retained_in_trace": false,
+  "fallback_mode": "fallback_to_j0_postprocessing",
+  "fallback_reason": "unknown_requirement_id",
+  "final_user_response": {
+    "status": "success",
+    "answer": "出口侧流速应小于6 m/s。\n水泵不允许在阀门关闭的条件下运行，因为这会导致泵内温度上升/形成蒸汽，从而损坏水泵。如果水泵有特殊设计，可以在阀门关闭的条件下运行，应通过连接旁路或向出水管排放的方式，确保泵内的最小液体流量。最低流速必须至少达到短期运行最大流速的30%。",
+    "citations": [
+      {
+        "citation_id": "cite_1",
+        "document_name": "t1739cn.pdf",
+        "page": 24,
+        "chunk_id": "cchunk-pymupdf-v1-fc16e77b6450e35c-000",
+        "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+        "evidence_id": "E1"
+      },
+      {
+        "citation_id": "cite_2",
+        "document_name": "t1739cn.pdf",
+        "page": 44,
+        "chunk_id": "cchunk-pymupdf-v1-92120ce2e7ee0096-000",
+        "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+        "evidence_id": "E2"
+      },
+      {
+        "citation_id": "cite_3",
+        "document_name": "t1739cn.pdf",
+        "page": 33,
+        "chunk_id": "cchunk-pymupdf-v1-08ad51d60ec4d01b-000",
+        "generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+        "evidence_id": "E3"
+      }
+    ]
+  },
+  "backend_generate_call_count": 1,
+  "backend_second_query_called": false,
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "included_in_final_metric_denominator": true,
+  "historical_trace_mutated": false
+}

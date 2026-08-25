@@ -1,0 +1,18 @@
+{
+  "point_count": 39,
+  "stage_counts": {
+    "covered_exact_citation": 1,
+    "covered_with_overcitation": 20,
+    "emitted_without_supporting_citation": 1,
+    "generation_omitted": 6,
+    "generation_refusal": 3,
+    "grounding_false_negative": 5,
+    "recalled_not_selected": 3
+  },
+  "coverage_numerator": 21,
+  "coverage_denominator": 39,
+  "coverage_value": 0.5384615384615384,
+  "unknown_count": 0,
+  "holdout_used": false,
+  "validation_used": false
+}

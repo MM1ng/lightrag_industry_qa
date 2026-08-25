@@ -1,0 +1,150 @@
+{
+  "group": "0",
+  "retrieval": {
+    "evidence_case_count": 48,
+    "recall_at_1": 0.5625,
+    "recall_at_3": 0.6875,
+    "recall_at_5": 0.7917,
+    "mrr": 0.6306,
+    "gold_document_recall": 1.0,
+    "gold_page_recall": 0.8542,
+    "gold_evidence_recall": 0.8958,
+    "evidence_precision_at_5": 0.2083,
+    "no_result_rate": 0.0,
+    "wrong_document_recall_rate": 0.0,
+    "top1_document_accuracy": 1.0,
+    "top5_page_coverage": 0.8542
+  },
+  "citations": {
+    "citation_accuracy": 0.9375,
+    "citation_precision": 0.3854,
+    "citation_recall": 0.8201,
+    "citation_traceability": 1.0,
+    "unsupported_citation_rate": 0.0,
+    "insufficient_evidence_rejection_rate": 0.5
+  },
+  "categories": {
+    "参数查询": {
+      "question_count": 20,
+      "gold_page_recall": 0.9,
+      "gold_evidence_recall": 0.8,
+      "no_result_count": 0,
+      "case_ids": [
+        "S001",
+        "S002",
+        "S003",
+        "S004",
+        "S005",
+        "S006",
+        "S008",
+        "S010",
+        "S013",
+        "S018",
+        "S019",
+        "D004",
+        "D008",
+        "D009",
+        "D010",
+        "D011",
+        "D012",
+        "D013",
+        "D014",
+        "D015"
+      ]
+    },
+    "表格查询": {
+      "question_count": 3,
+      "gold_page_recall": 1.0,
+      "gold_evidence_recall": 1.0,
+      "no_result_count": 0,
+      "case_ids": [
+        "S007",
+        "S009",
+        "D017"
+      ]
+    },
+    "操作步骤": {
+      "question_count": 9,
+      "gold_page_recall": 0.7778,
+      "gold_evidence_recall": 0.6667,
+      "no_result_count": 0,
+      "case_ids": [
+        "S011",
+        "S012",
+        "S014",
+        "S020",
+        "D006",
+        "D016",
+        "D018",
+        "D019",
+        "D020"
+      ]
+    },
+    "故障诊断": {
+      "question_count": 3,
+      "gold_page_recall": 1.0,
+      "gold_evidence_recall": 1.0,
+      "no_result_count": 0,
+      "case_ids": [
+        "S015",
+        "S016",
+        "C008"
+      ]
+    },
+    "安全警告": {
+      "question_count": 5,
+      "gold_page_recall": 1.0,
+      "gold_evidence_recall": 1.0,
+      "no_result_count": 0,
+      "case_ids": [
+        "S017",
+        "D003",
+        "D005",
+        "D007",
+        "C007"
+      ]
+    },
+    "普通事实": {
+      "question_count": 2,
+      "gold_page_recall": 0.5,
+      "gold_evidence_recall": 0.5,
+      "no_result_count": 0,
+      "case_ids": [
+        "D001",
+        "D002"
+      ]
+    },
+    "跨页问题": {
+      "question_count": 6,
+      "gold_page_recall": 0.6667,
+      "gold_evidence_recall": 0.6667,
+      "no_result_count": 0,
+      "case_ids": [
+        "C001",
+        "C002",
+        "C003",
+        "C004",
+        "C005",
+        "C006"
+      ]
+    },
+    "证据不足": {
+      "question_count": 2,
+      "gold_page_recall": 0.0,
+      "gold_evidence_recall": 0.0,
+      "no_result_count": 0,
+      "case_ids": [
+        "N001",
+        "N002"
+      ]
+    }
+  },
+  "perf": {
+    "llm_calls": 100,
+    "embedding_calls": 50,
+    "total_query_seconds": 3511.062,
+    "avg_query_ms": 70211.2,
+    "latency_p50_ms": 70641.0,
+    "latency_p95_ms": 108000.0
+  }
+}

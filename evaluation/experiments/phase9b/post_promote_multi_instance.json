@@ -1,0 +1,27 @@
+{
+  "queries": [
+    {
+      "port": 8111,
+      "role": "service",
+      "status": "success",
+      "generation_id": "a55adad410e644ceb82de96022321633",
+      "citation_count": 0,
+      "trace_complete": true
+    },
+    {
+      "port": 8112,
+      "role": "admin",
+      "status": "success",
+      "generation_id": "a55adad410e644ceb82de96022321633",
+      "citation_count": 0,
+      "trace_complete": true
+    }
+  ],
+  "expected_admin_actor": "admin:0a794bbf4880",
+  "job_actor": {
+    "created_by": "admin:0a794bbf4880",
+    "approved_by": "admin:0a794bbf4880",
+    "approved_by_matches": true,
+    "forged_actor_absent": true
+  }
+}

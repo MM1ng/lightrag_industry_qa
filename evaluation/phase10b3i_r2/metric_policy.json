@@ -1,0 +1,17 @@
+{
+  "definition_version": "phase10b3d-metric-policy-v1",
+  "substantive_statuses": [
+    "success",
+    "partial_answer"
+  ],
+  "refusal_statuses": [
+    "insufficient_evidence",
+    "safety_blocked"
+  ],
+  "failed_status": "failed",
+  "positive_count": 50,
+  "negative_count": 2,
+  "source_path": "evaluation/phase10b3d/metric_policy.json",
+  "source_sha256": "8850674f37430afece9088b53e9f1eaa874b831d341db04bc42e648b55bcd03d",
+  "restored_definition_version": "phase10b3d-metric-policy-v1"
+}

@@ -1,0 +1,17 @@
+{
+  "experiment_id": "H0",
+  "source_run_id": "phase10b3g-final-52",
+  "code_commit": "3f7ede0",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "runtime_config_sha256": "49fe065d88ee95e8dfe6457b1dd505d9b99ffcb8feda68ac1f9647a718dfcd22",
+  "holdout_used": false,
+  "reproduced": true,
+  "metrics": {
+    "false_rejection": {"numerator": 10, "denominator": 50, "value": 0.2},
+    "unsupported_answer": {"numerator": 3, "denominator": 40, "value": 0.075},
+    "citation_accuracy": {"numerator": 37, "denominator": 40, "value": 0.925},
+    "expected_answer_point_coverage": {"numerator": 41, "denominator": 72, "value": 0.5694444444444444},
+    "completion_contribution": {"numerator": 10, "denominator": 10, "value": 1.0}
+  }
+}

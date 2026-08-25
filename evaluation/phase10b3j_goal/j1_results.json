@@ -1,0 +1,52 @@
+{
+  "experiment_id": "J1",
+  "run_id": "phase10b3j-goal-j1-development-001",
+  "split": "development",
+  "run_valid": true,
+  "invalid_preflight_runs": [
+    {
+      "reason": "The first request run emitted the wrong trace version because QA_GROUNDING_AUDIT_ENABLED was absent. Its results were discarded and not combined with this run."
+    }
+  ],
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "code_commit": "3c4a73f37db48ba60df9947b5e522d65a023b6ca",
+  "rollback_commit": "6a11bdb8980f379bec579e125b789ea2a28bbfa0",
+  "config_sha": "2e3f9a0e08b7ebedf2eae4076bd53958b7fdb98522212e3d954829e8d9d4e7f7",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "enabled_flags": {
+    "QA_CLAIM_CITATION_PRUNING_ENABLED": true,
+    "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": false,
+    "QA_COVERAGE_AWARE_SELECTION_ENABLED": false,
+    "QA_PARTIAL_GENERATION_ENABLED": false,
+    "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": false
+  },
+  "result_file": "evaluation/phase10b3j_goal/development_results.jsonl",
+  "result_file_sha256": "9f47856aaae9e5f14ff9fb62758e36463393f15fd51ff3b3c7c4358eebac0c0b",
+  "question_count": 36,
+  "completed": 36,
+  "status_counts": {
+    "success": 0,
+    "partial_answer": 26,
+    "insufficient_evidence": 10,
+    "unexpected_5xx": 0
+  },
+  "metrics": {
+    "claim_evidence_identity_resolution_rate": {"numerator": 83, "denominator": 83, "value": 1.0},
+    "supporting_citation_recall": {"numerator": 4, "denominator": 9, "value": 0.4444444444},
+    "citation_precision": {"numerator": 3.5, "denominator": 9, "value": 0.3888888889},
+    "overcitation_rate": {"numerator": 1, "denominator": 9, "value": 0.1111111111},
+    "claim_semantic_support": {"numerator": 9, "denominator": 9, "value": 1.0},
+    "false_rejection_rate": {"numerator": 10, "denominator": 36, "value": 0.2777777778},
+    "question_level_unsupported_answer_rate": {"numerator": 18, "denominator": 26, "value": 0.6923076923},
+    "question_level_citation_accuracy": {"numerator": 3, "denominator": 26, "value": 0.1153846154},
+    "expected_answer_point_coverage": {"numerator": 4, "denominator": 39, "value": 0.1025641026},
+    "trace_completeness": {"numerator": 36, "denominator": 36, "value": 1.0}
+  },
+  "safety": {"wrong_generation": 0, "fabricated_citation": 0, "unexpected_5xx": 0},
+  "accepted": false,
+  "rejection_reason": [
+    "Citation Precision is 38.89%, below the required 80.00%.",
+    "Supporting Citation Recall, Expected Coverage, Question Citation Accuracy, False Rejection, and Unsupported Answer gates also fail."
+  ],
+  "next_action": "J1 rollback completed; the J1 rule requires terminal B when Citation Precision remains the primary blocker."
+}

@@ -1,0 +1,33 @@
+:root {
+  --color-canvas: #f3f5f7;
+  --color-surface: #ffffff;
+  --color-ink: #17212b;
+  --color-muted: #63707d;
+  --color-line: #d9e0e6;
+  --color-cobalt: #155eef;
+  --color-cobalt-soft: #eaf1ff;
+  --color-amber: #c77800;
+  --color-amber-soft: #fff3d6;
+  --color-success: #147d64;
+  --color-danger: #b42318;
+  --radius-panel: 14px;
+  --radius-control: 10px;
+  --shadow-panel: 0 8px 28px rgba(23, 33, 43, .07);
+  font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: var(--color-canvas); }
+button, input, select, textarea { font: inherit; }
+button, input, select, textarea { min-height: 44px; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid rgba(21, 94, 239, .32); outline-offset: 2px; }
+.mono { font-family: Bahnschrift, 'Cascadia Mono', monospace; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

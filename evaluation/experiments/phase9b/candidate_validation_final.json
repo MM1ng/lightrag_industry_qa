@@ -1,0 +1,932 @@
+{
+  "generation_id": "a55adad410e644ceb82de96022321633",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "passed": true,
+  "gates": {
+    "db_integrity": {
+      "passed": true,
+      "detail": "ok"
+    },
+    "document_registration_consistency": {
+      "passed": true,
+      "detail": {
+        "processed_docs_in_workspace": 3,
+        "expected_active_documents": 3,
+        "expected_document_ids": [
+          "194d9c60ddee4c3cafb91e4645175973",
+          "937090246b8b81a2ad911613a304badd",
+          "c67736aa7264e07dc5869d1f24b87b19"
+        ],
+        "manifest_entries": [
+          {
+            "document_id": "194d9c60ddee4c3cafb91e4645175973",
+            "logical_name": "phase9b-release-gate-supplement.pdf",
+            "version": 1,
+            "content_sha256": "28043bf2b086bebea34bc4e7cdfb31a192dab08e3501873fd6b9eca586e4bd82",
+            "is_active": true
+          },
+          {
+            "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+            "logical_name": "2196-ANSI-Manual-Chinese.pdf",
+            "version": 1,
+            "content_sha256": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700",
+            "is_active": true
+          },
+          {
+            "document_id": "937090246b8b81a2ad911613a304badd",
+            "logical_name": "t1739cn.pdf",
+            "version": 1,
+            "content_sha256": "77fd7ebf86ef6c574de11eac446dc321de04fd0773cd7d844287da7fa4d6c4ae",
+            "is_active": true
+          }
+        ]
+      }
+    },
+    "counts": {
+      "passed": true,
+      "detail": {
+        "actual_counts": {
+          "chunks": 454,
+          "entities": 1019,
+          "relationships": 1065
+        },
+        "expected_chunks": 454,
+        "chunk_stats": {
+          "added_chunks": 1,
+          "reused_chunks": 453,
+          "invalidated_chunks": 0
+        }
+      }
+    },
+    "payload_completeness": {
+      "passed": true,
+      "detail": {
+        "sampled": 50,
+        "problems": [],
+        "problem_count": 0
+      }
+    },
+    "generation_mixing": {
+      "passed": true,
+      "detail": {
+        "sampled": 50,
+        "problems": [],
+        "problem_count": 0
+      }
+    },
+    "canonical_question_count": true,
+    "citation_traceability": true,
+    "golden_subset_regression": true,
+    "add_specific": true,
+    "replace_specific": true,
+    "delete_specific": true,
+    "http_success_1_0": true,
+    "trace_complete_1_0": true,
+    "negative_unsupported_0": true,
+    "no_5xx": true,
+    "no_fabricated_citation": true,
+    "no_secret_leak": true,
+    "no_old_document_reference": true
+  },
+  "report": {
+    "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation_id": "a55adad410e644ceb82de96022321633",
+    "generation": "g815822417ea479423aa15112",
+    "approved_by": "admin:0a794bbf4880",
+    "gates": {
+      "db_integrity": {
+        "passed": true,
+        "detail": "ok"
+      },
+      "document_registration_consistency": {
+        "passed": true,
+        "detail": {
+          "processed_docs_in_workspace": 3,
+          "expected_active_documents": 3,
+          "expected_document_ids": [
+            "194d9c60ddee4c3cafb91e4645175973",
+            "937090246b8b81a2ad911613a304badd",
+            "c67736aa7264e07dc5869d1f24b87b19"
+          ],
+          "manifest_entries": [
+            {
+              "document_id": "194d9c60ddee4c3cafb91e4645175973",
+              "logical_name": "phase9b-release-gate-supplement.pdf",
+              "version": 1,
+              "content_sha256": "28043bf2b086bebea34bc4e7cdfb31a192dab08e3501873fd6b9eca586e4bd82",
+              "is_active": true
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "logical_name": "2196-ANSI-Manual-Chinese.pdf",
+              "version": 1,
+              "content_sha256": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700",
+              "is_active": true
+            },
+            {
+              "document_id": "937090246b8b81a2ad911613a304badd",
+              "logical_name": "t1739cn.pdf",
+              "version": 1,
+              "content_sha256": "77fd7ebf86ef6c574de11eac446dc321de04fd0773cd7d844287da7fa4d6c4ae",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      "counts": {
+        "passed": true,
+        "detail": {
+          "actual_counts": {
+            "chunks": 454,
+            "entities": 1019,
+            "relationships": 1065
+          },
+          "expected_chunks": 454,
+          "chunk_stats": {
+            "added_chunks": 1,
+            "reused_chunks": 453,
+            "invalidated_chunks": 0
+          }
+        }
+      },
+      "payload_completeness": {
+        "passed": true,
+        "detail": {
+          "sampled": 50,
+          "problems": [],
+          "problem_count": 0
+        }
+      },
+      "generation_mixing": {
+        "passed": true,
+        "detail": {
+          "sampled": 50,
+          "problems": [],
+          "problem_count": 0
+        }
+      },
+      "canonical_question_count": true,
+      "citation_traceability": true,
+      "golden_subset_regression": true,
+      "add_specific": true,
+      "replace_specific": true,
+      "delete_specific": true,
+      "http_success_1_0": true,
+      "trace_complete_1_0": true,
+      "negative_unsupported_0": true,
+      "no_5xx": true,
+      "no_fabricated_citation": true,
+      "no_secret_leak": true,
+      "no_old_document_reference": true
+    },
+    "run": {
+      "runner_configured": true,
+      "question_count": 20,
+      "question_ids": [
+        "S001",
+        "S002",
+        "S003",
+        "S004",
+        "S005",
+        "S007",
+        "S009",
+        "S011",
+        "S012",
+        "S014",
+        "S015",
+        "S016",
+        "S017",
+        "D003",
+        "D005",
+        "C001",
+        "C002",
+        "C003",
+        "N001",
+        "N002"
+      ],
+      "results": [
+        {
+          "id": "S001",
+          "request_id": "b749c4fd32d94e94a6c71635d6fe09b8",
+          "trace_id": "b3f557d83ded4213af42e0f9a53c4da6",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 17664,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "be6f40da36a900e8d078c11eef72fa14c6cc435cb58ff928f88f631e1ef427f1",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 9
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-847dedb676cd-000-847dedb676cd",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 12
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S002",
+          "request_id": "f13747ee0f1348e1a4a991d95e9bb00d",
+          "trace_id": "ee22755dd8e2411581f909370dc76da6",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 8769,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "14c901ec97a29ae0dc40a01eb91ec2e15f8c597f350d2a9bf923420e0f4af542",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 10
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 23
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S003",
+          "request_id": "19b3b2e485e642b8802432ba6b74c923",
+          "trace_id": "92410c28f8d94519879e34afa4904395",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 4981,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "1bda82ddb78585ff025c6b748eef2d183d65cee7047e7013d70807bf5cf125ad",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 10
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 23
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S004",
+          "request_id": "76aa34a22ffc4132b57e2105bcda295a",
+          "trace_id": "09baac709bcc4600a0e96479f0c4d701",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 5175,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "86e32fbaacb3d2fa520a114343fa0d09910043ef16fdcc96ca7cf4ee84aa432d",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 11
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 24
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-9336ae989edd-000-9336ae989edd",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 30
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S005",
+          "request_id": "4b9bc62b84bd419aa021d8d04cfea1c5",
+          "trace_id": "d8d9d14e1596463d8e588681d91f8cb7",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 4755,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "60d29e0eea3beb5be78fa3fb530b75bd3e7138748ed28a7831c087599fb4c934",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 11
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 23
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S007",
+          "request_id": "70c1b14ba52b4079b2969b3055ca3ab5",
+          "trace_id": "84d17fc7043c4ae29a5102a79b46175b",
+          "status_code": 200,
+          "answer_status": "insufficient_evidence",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 3223,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "f7f56536dd4ad5a25d0243871ece10580118dce09a3ba4e51a139528edd8d06a",
+          "citation_trace": [],
+          "trace_complete": false,
+          "citation_match": false,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S009",
+          "request_id": "aa62b8fe61dd4296929b1480500c6897",
+          "trace_id": "acf061d8e70e460484c801cd2c16c776",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 4404,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "5913b49757f447974f801822e6f8c24c990c7f7e592752aab565145ce4ec2349",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 16
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 14
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-38cc6dafdf6c-000-38cc6dafdf6c",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 15
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S011",
+          "request_id": "3f0e4d3451774f9e82a254f7a8323af9",
+          "trace_id": "b54f53f5eb4247b6b46f75f124bdc5df",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 4056,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "0bbda40ec814fee3ff2868f52b0af286cd789b237c3aecb09258093d1a873373",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 11
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-70af961007ec-000-70af961007ec",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 49
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S012",
+          "request_id": "514e0317c1d14ee38709f2de3e61f986",
+          "trace_id": "58537f89dfec4074adff43875279f05c",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 5726,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "3caea6f9b5d13b1c9cb2f777c089775ea1b1e3e08fbb9ddd4204cb82d2ee7263",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 16
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 11
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 18
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S014",
+          "request_id": "56883f5b889e4beea299c523f91de781",
+          "trace_id": "e2bd0473c5ec4da1be8537ce344406bf",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 7605,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "6400a9f549c1a3f4a0fb0b422783f108227a4a156b8d835a462648096c646558",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-902ad3be0171-000-902ad3be0171",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 20
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-ef0141aa033d-001-eaf26ba98522",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 19
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-27aa8c4f9db8-000-27aa8c4f9db8",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 5
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S015",
+          "request_id": "ab1c95115828450c8712c023ade07624",
+          "trace_id": "74141ff496fb4ee2a1f527cebb12989e",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 4369,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "ca55f0947e92c0a6f41cab10d404cdb51b5d4f4a196816346d5f1f30d90e1d20",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 11
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 23
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 24
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S016",
+          "request_id": "c62c71e47c1f498182deea8182fce896",
+          "trace_id": "6b8ed147c3c241899a82fbbf97deea07",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 4193,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "fd806f0127b7bdc9b060e945270d2f48870ce3a22c4a0c3ad5833bcb6f74fa31",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-f14509fdd142-000-f14509fdd142",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 24
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-ac65104a0a87-000-ac65104a0a87",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 27
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 14
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "S017",
+          "request_id": "cceef290b3f3469f853a1253ffb5c869",
+          "trace_id": "2abb8992117f4592a6d55cafee2066ca",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 3575,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "a53c7654d54aaae226e918dc6eb714a71c4296ef38bc277266359a1d03569d01",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 23
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-5d8e22b0294d-000-5d8e22b0294d",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 7
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "D003",
+          "request_id": "3f0f60384f8144839c27ae5f6084791f",
+          "trace_id": "c764d544b1c7435a83427853ea9f9726",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 3146,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "6b91e3ff0bcf8a6030ce0e1f0354b3070436a982d316f70521f6d133dceda286",
+          "citation_trace": [
+            {
+              "document_id": "937090246b8b81a2ad911613a304badd",
+              "chunk_id": "cchunk-pymupdf-v1--安全-1cfb2c984ef7-000-1cfb2c984ef7",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "t1739cn.pdf",
+              "page": 7
+            },
+            {
+              "document_id": "937090246b8b81a2ad911613a304badd",
+              "chunk_id": "cchunk-pymupdf-v1-和关闭-98af0d342570-000-98af0d342570",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "t1739cn.pdf",
+              "page": 33
+            },
+            {
+              "document_id": "937090246b8b81a2ad911613a304badd",
+              "chunk_id": "cchunk-pymupdf-v1-和关闭-2a44c976502c-000-2a44c976502c",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "t1739cn.pdf",
+              "page": 28
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "D005",
+          "request_id": "b3f0361a24b84af99e671f938ecdc64d",
+          "trace_id": "3e3eea9905b34ebdafe915f8c61e548c",
+          "status_code": 200,
+          "answer_status": "insufficient_evidence",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 2314,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "f7f56536dd4ad5a25d0243871ece10580118dce09a3ba4e51a139528edd8d06a",
+          "citation_trace": [],
+          "trace_complete": false,
+          "citation_match": false,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "C001",
+          "request_id": "ba87ad09a3b4472dbbe506016672dc60",
+          "trace_id": "0dd58f66743544df8e1734cf59397120",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 5232,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "acacaf1bc44aa9a4463439a762b1c9590d68beb8232aa57b18b27ddd7f1aebda",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-bca0ebfcb2c7-000-bca0ebfcb2c7",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 54
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 9
+            },
+            {
+              "document_id": "937090246b8b81a2ad911613a304badd",
+              "chunk_id": "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "t1739cn.pdf",
+              "page": 5
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "C002",
+          "request_id": "eb95c6569df240dd8055c1afa35ed1d6",
+          "trace_id": "544f38f796ff42e48c519e840564147a",
+          "status_code": 200,
+          "answer_status": "insufficient_evidence",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 2981,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "f7f56536dd4ad5a25d0243871ece10580118dce09a3ba4e51a139528edd8d06a",
+          "citation_trace": [],
+          "trace_complete": false,
+          "citation_match": false,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "C003",
+          "request_id": "b3631b9b0f43433fbaf22de5fb3be434",
+          "trace_id": "e3c4af09d1ca4efd93bb7b18371a0e82",
+          "status_code": 200,
+          "answer_status": "success",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 6675,
+          "error_code": null,
+          "expects_evidence": true,
+          "answer_sha256": "51e63c93fffa6adb7d991d5da30ff2ab9172ec4b96b9401a47d59ae830cf7bb5",
+          "citation_trace": [
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 17
+            },
+            {
+              "document_id": "937090246b8b81a2ad911613a304badd",
+              "chunk_id": "cchunk-pymupdf-v1-和关闭-2020c244c35a-000-2020c244c35a",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "t1739cn.pdf",
+              "page": 30
+            },
+            {
+              "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+              "chunk_id": "cchunk-pymupdf-v1-护手册-e05e769c5e5d-000-e05e769c5e5d",
+              "generation_id": "a55adad410e644ceb82de96022321633",
+              "document_name": "2196-ANSI-Manual-Chinese.pdf",
+              "page": 24
+            }
+          ],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "N001",
+          "request_id": "ee6b66f748f742cf9c688470a7a5200e",
+          "trace_id": "d84922264c9a43ac9785e977b58c86a9",
+          "status_code": 200,
+          "answer_status": "insufficient_evidence",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 2058,
+          "error_code": null,
+          "expects_evidence": false,
+          "answer_sha256": "f7f56536dd4ad5a25d0243871ece10580118dce09a3ba4e51a139528edd8d06a",
+          "citation_trace": [],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        },
+        {
+          "id": "N002",
+          "request_id": "191ea3af60f840539f7575f38631b557",
+          "trace_id": "b857c04294b64ee68eab31ed210e9adb",
+          "status_code": 200,
+          "answer_status": "insufficient_evidence",
+          "safety_result": "allowed",
+          "failure_reason": null,
+          "latency_ms": 2368,
+          "error_code": null,
+          "expects_evidence": false,
+          "answer_sha256": "f7f56536dd4ad5a25d0243871ece10580118dce09a3ba4e51a139528edd8d06a",
+          "citation_trace": [],
+          "trace_complete": true,
+          "citation_match": true,
+          "negative_case_passed": true,
+          "actual_generation_id": "a55adad410e644ceb82de96022321633"
+        }
+      ],
+      "citation_traceability": true,
+      "golden_subset_regression": true,
+      "add_specific": true,
+      "replace_specific": true,
+      "delete_specific": true,
+      "http_success_rate": 1.0,
+      "trace_complete_rate": 1.0,
+      "negative_unsupported_answer_rate": 0.0,
+      "positive_citation_match_rate": 0.8333333333333334,
+      "positive_match_count": 15,
+      "positive_question_count": 18,
+      "false_rejection_rate": 0.16666666666666666,
+      "no_5xx": true,
+      "fabricated_citation": 0,
+      "secret_leak": 0,
+      "old_document_references": 0
+    },
+    "passed": true,
+    "duration_seconds": 107.805,
+    "validation_run_id": "79e2ca04a7da4a969e64c568e9fa92f7",
+    "golden_set_version": "phase9b-canonical-20-v1",
+    "golden_set_sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf",
+    "runner_version": "phase9b-fastapi-candidate-v1",
+    "fingerprints": {
+      "app_git_commit": "7c56f39ce2f7be52978b6a94a2296a832cc59aa3",
+      "strategy": "55b8aa06821b2ada2242e6b0579b61fc60dedc8f461a8f7a44229951d0c556c9",
+      "generation_manifest": "b0d6384e1189c45666bdc68caf1c5345a5392a60d98e88c38f0853191898bdea",
+      "qdrant_content": "4deaab7bff3a547edcb6db7be07bdfdd53eb9602f83d8316684bd7751e9d6ca1",
+      "document_registry": "965b3e02289ec27f367facccc3495a5d82cbb8abf13f956d4b24b039ec6e9631",
+      "generation_content_epoch": 0,
+      "qdrant_point_count": 2538
+    }
+  }
+}

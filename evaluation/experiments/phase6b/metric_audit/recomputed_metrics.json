@@ -1,0 +1,345 @@
+{
+  "harness_retrieval_at_12": {
+    "universe": "frozen_pool_top12_rows",
+    "recall_at_1": {
+      "numerator": 27,
+      "denominator": 48,
+      "decimal": 0.5625,
+      "percentage": 56.25
+    },
+    "recall_at_3": {
+      "numerator": 33,
+      "denominator": 48,
+      "decimal": 0.6875,
+      "percentage": 68.75
+    },
+    "recall_at_5": {
+      "numerator": 36,
+      "denominator": 48,
+      "decimal": 0.75,
+      "percentage": 75.0
+    },
+    "recall_at_12": {
+      "numerator": 38,
+      "denominator": 48,
+      "decimal": 0.7917,
+      "percentage": 79.17
+    },
+    "mrr_at_5": {
+      "numerator": 29.7667,
+      "denominator": 48,
+      "decimal": 0.6201,
+      "percentage": 62.01
+    },
+    "gold_document_recall_at_12": {
+      "numerator": 48,
+      "denominator": 48,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "gold_page_recall_at_12": {
+      "numerator": 41,
+      "denominator": 48,
+      "decimal": 0.8542,
+      "percentage": 85.42
+    },
+    "gold_evidence_recall_at_12": {
+      "numerator": 38,
+      "denominator": 48,
+      "decimal": 0.7917,
+      "percentage": 79.17
+    },
+    "evidence_precision_at_5": {
+      "numerator": 9.6,
+      "denominator": 48,
+      "decimal": 0.2,
+      "percentage": 20.0
+    },
+    "evidence_precision_at_12": {
+      "numerator": 4.9167,
+      "denominator": 48,
+      "decimal": 0.1024,
+      "percentage": 10.24
+    },
+    "answerable_questions": 48
+  },
+  "fastapi_retrieval_at_12": {
+    "universe": "fastapi_retrieved_top12_ids",
+    "recall_at_1": {
+      "numerator": 27,
+      "denominator": 48,
+      "decimal": 0.5625,
+      "percentage": 56.25
+    },
+    "recall_at_3": {
+      "numerator": 33,
+      "denominator": 48,
+      "decimal": 0.6875,
+      "percentage": 68.75
+    },
+    "recall_at_5": {
+      "numerator": 36,
+      "denominator": 48,
+      "decimal": 0.75,
+      "percentage": 75.0
+    },
+    "recall_at_12": {
+      "numerator": 38,
+      "denominator": 48,
+      "decimal": 0.7917,
+      "percentage": 79.17
+    },
+    "mrr_at_5": {
+      "numerator": 29.7667,
+      "denominator": 48,
+      "decimal": 0.6201,
+      "percentage": 62.01
+    },
+    "gold_document_recall_at_12": {
+      "numerator": 48,
+      "denominator": 48,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "gold_page_recall_at_12": {
+      "numerator": 41,
+      "denominator": 48,
+      "decimal": 0.8542,
+      "percentage": 85.42
+    },
+    "gold_evidence_recall_at_12": {
+      "numerator": 38,
+      "denominator": 48,
+      "decimal": 0.7917,
+      "percentage": 79.17
+    },
+    "evidence_precision_at_5": {
+      "numerator": 9.6,
+      "denominator": 48,
+      "decimal": 0.2,
+      "percentage": 20.0
+    },
+    "evidence_precision_at_12": {
+      "numerator": 4.9167,
+      "denominator": 48,
+      "decimal": 0.1024,
+      "percentage": 10.24
+    },
+    "answerable_questions": 48
+  },
+  "harness_citation_legacy_convention": {
+    "refusal_clears_citations": false,
+    "answer_citation_accuracy": {
+      "numerator": 40,
+      "denominator": 48,
+      "decimal": 0.8333,
+      "percentage": 83.33
+    },
+    "answer_citation_precision": {
+      "numerator": 15.8333,
+      "denominator": 48,
+      "decimal": 0.3299,
+      "percentage": 32.99
+    },
+    "answer_citation_recall": {
+      "numerator": 34.6167,
+      "denominator": 48,
+      "decimal": 0.7212,
+      "percentage": 72.12
+    },
+    "citation_traceability": {
+      "numerator": 48,
+      "denominator": 48,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "citation_traceability_emitted": {
+      "numerator": 48,
+      "denominator": 48,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "gold_citation_reference_rate": {
+      "numerator": 43,
+      "denominator": 136,
+      "decimal": 0.3162,
+      "percentage": 31.62
+    },
+    "non_gold_citation_reference_rate": {
+      "numerator": 93,
+      "denominator": 136,
+      "decimal": 0.6838,
+      "percentage": 68.38
+    },
+    "false_rejection_rate": {
+      "numerator": 15,
+      "denominator": 48,
+      "decimal": 0.3125,
+      "percentage": 31.25
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "answered_without_evidence_rate": {
+      "numerator": 0,
+      "denominator": 48,
+      "decimal": 0.0,
+      "percentage": 0.0
+    }
+  },
+  "harness_citation_canonical_convention": {
+    "refusal_clears_citations": true,
+    "answer_citation_accuracy": {
+      "numerator": 31,
+      "denominator": 48,
+      "decimal": 0.6458,
+      "percentage": 64.58
+    },
+    "answer_citation_precision": {
+      "numerator": 11.6667,
+      "denominator": 48,
+      "decimal": 0.2431,
+      "percentage": 24.31
+    },
+    "answer_citation_recall": {
+      "numerator": 28.7,
+      "denominator": 48,
+      "decimal": 0.5979,
+      "percentage": 59.79
+    },
+    "citation_traceability": {
+      "numerator": 33,
+      "denominator": 48,
+      "decimal": 0.6875,
+      "percentage": 68.75
+    },
+    "citation_traceability_emitted": {
+      "numerator": 33,
+      "denominator": 33,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "gold_citation_reference_rate": {
+      "numerator": 33,
+      "denominator": 95,
+      "decimal": 0.3474,
+      "percentage": 34.74
+    },
+    "non_gold_citation_reference_rate": {
+      "numerator": 62,
+      "denominator": 95,
+      "decimal": 0.6526,
+      "percentage": 65.26
+    },
+    "false_rejection_rate": {
+      "numerator": 15,
+      "denominator": 48,
+      "decimal": 0.3125,
+      "percentage": 31.25
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "answered_without_evidence_rate": {
+      "numerator": 0,
+      "denominator": 48,
+      "decimal": 0.0,
+      "percentage": 0.0
+    }
+  },
+  "fastapi_citation_canonical_convention": {
+    "refusal_clears_citations": true,
+    "answer_citation_accuracy": {
+      "numerator": 37,
+      "denominator": 48,
+      "decimal": 0.7708,
+      "percentage": 77.08
+    },
+    "answer_citation_precision": {
+      "numerator": 13.5,
+      "denominator": 48,
+      "decimal": 0.2812,
+      "percentage": 28.12
+    },
+    "answer_citation_recall": {
+      "numerator": 33.8333,
+      "denominator": 48,
+      "decimal": 0.7049,
+      "percentage": 70.49
+    },
+    "citation_traceability": {
+      "numerator": 38,
+      "denominator": 48,
+      "decimal": 0.7917,
+      "percentage": 79.17
+    },
+    "citation_traceability_emitted": {
+      "numerator": 38,
+      "denominator": 38,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "gold_citation_reference_rate": {
+      "numerator": 40,
+      "denominator": 113,
+      "decimal": 0.354,
+      "percentage": 35.4
+    },
+    "non_gold_citation_reference_rate": {
+      "numerator": 73,
+      "denominator": 113,
+      "decimal": 0.646,
+      "percentage": 64.6
+    },
+    "false_rejection_rate": {
+      "numerator": 10,
+      "denominator": 48,
+      "decimal": 0.2083,
+      "percentage": 20.83
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "answered_without_evidence_rate": {
+      "numerator": 0,
+      "denominator": 48,
+      "decimal": 0.0,
+      "percentage": 0.0
+    }
+  },
+  "gate": {
+    "threshold_drop_leq_002": true,
+    "baseline_accuracy_canonical": 0.6458,
+    "fastapi_accuracy_canonical": 0.7708,
+    "drop": -0.125,
+    "historical_baseline_legacy": 0.8333,
+    "historical_fastapi_legacy_note": "Phase 6 official path always clears citations on refusal; 37/48 is the same under both conventions"
+  }
+}

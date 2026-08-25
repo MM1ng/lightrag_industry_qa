@@ -1,0 +1,11 @@
+{
+  "schema_version": "phase10b2-answer-plan-v1",
+  "answer_points": {
+    "type": "array",
+    "items": {
+      "required": ["point_id", "content", "evidence_ids", "support_status"],
+      "support_status": ["supported", "unsupported"]
+    }
+  },
+  "evidence_id_rules": ["must map to selected real chunk", "must map to document/page/chunk/generation", "unknown ids rejected"]
+}

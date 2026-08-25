@@ -1,0 +1,62 @@
+{
+  "phase": "Phase 8-LS",
+  "created_at": "2026-08-02T21:13:57+08:00",
+  "git_commit": "42ee27abe4d20355b99417b8d29e119d7d724afd",
+  "rc_version": "0.1.0-rc.1",
+  "scenario": "warm_restart",
+  "pre_state": {
+    "api_pid": 10392,
+    "ui_pid": 22540
+  },
+  "steps": [
+    {
+      "step": "stop_streamlit",
+      "status": "passed",
+      "detail": "ui pid file cleaned; 8511 listener removed"
+    },
+    {
+      "step": "stop_fastapi",
+      "status": "passed",
+      "detail": "api pid file cleaned; 8110 listener removed"
+    },
+    {
+      "step": "qdrant_stays_running",
+      "status": "passed",
+      "detail": "3 collections available after stop"
+    },
+    {
+      "step": "restart_fastapi",
+      "status": "passed",
+      "detail": "new pid 30256; /health ok; /ready ready; /version app_version=0.1.0-rc.1 git_commit=7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60"
+    },
+    {
+      "step": "restart_streamlit",
+      "status": "passed",
+      "detail": "new pid 29300; http 200 on 8511"
+    },
+    {
+      "step": "warm_queries",
+      "status": "passed",
+      "detail": "2 queries via official API, both 200, request_id/trace_id present"
+    },
+    {
+      "step": "no_duplicate_processes",
+      "status": "passed",
+      "detail": "1 listener on 8110 and 1 on 8511"
+    },
+    {
+      "step": "db_connection_recovered",
+      "status": "passed",
+      "detail": "/healthz status=ok db=available"
+    },
+    {
+      "step": "runtime_cache_rebuilt",
+      "status": "passed",
+      "detail": "llm response cache exists in staging workspace (size 17433 bytes)"
+    }
+  ],
+  "warm_query_latencies": [5.198, 0.616],
+  "db": "available",
+  "qdrant_collection_count": 3,
+  "passed": true
+}

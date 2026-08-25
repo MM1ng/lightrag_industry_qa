@@ -1,0 +1,14 @@
+{
+  "inline_citation_prompt": {
+    "file": "prompts/inline_citation_prompt.txt",
+    "sha256": "308fd5bb31ad14bc7986e9e2f9dbac34d4b989b66afd53b90661069bab2990fa"
+  },
+  "citation_repair_prompt": {
+    "file": "prompts/citation_repair_prompt.txt",
+    "sha256": "c90c60b544db954d1eb6a3c511c5ceee0cd4b74d000f0236ae9840106f0ab3a9"
+  },
+  "frozen_common_config": {
+    "file": "config/frozen_common.json",
+    "sha256": "d34527995ec88df49cdcd60227be146b2ee65dd5b98876c8e264232de4d24b69"
+  }
+}

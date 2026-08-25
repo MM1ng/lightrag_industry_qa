@@ -1,0 +1,34 @@
+{"category":"Pronoun","history":[{"role":"user","content":"什么是机械密封？"}],"query":"它多久维护一次？","expected_status":"rewritten","expected_standalone_query":"机械密封多久维护一次？"}
+{"category":"Pronoun","history":[{"role":"user","content":"什么是液压系统？"}],"query":"这个系统如何排气？","expected_status":"rewritten","expected_standalone_query":"液压系统如何排气？"}
+{"category":"Pronoun","history":[{"role":"user","content":"什么是联轴器？"}],"query":"其常见故障是什么？","expected_status":"rewritten","expected_standalone_query":"联轴器常见故障是什么？"}
+{"category":"Pronoun","history":[{"role":"user","content":"EH 油泵的启动条件是什么？"}],"query":"它需要什么信号？","expected_status":"rewritten","expected_standalone_query":"EH 油泵需要什么信号？"}
+{"category":"Pronoun","history":[{"role":"user","content":"A 型设备正常工作压力是多少？"}],"query":"这个压力允许波动吗？","expected_status":"rewritten","expected_standalone_query":"A 型设备压力允许波动吗？"}
+{"category":"Pronoun","history":[{"role":"user","content":"介绍一下冷却水泵。"}],"query":"那个的入口在哪里？","expected_status":"rewritten","expected_standalone_query":"冷却水泵的入口在哪里？"}
+{"category":"Pronoun","history":[{"role":"user","content":"什么是过滤器？"}],"query":"它的压差上限是多少？","expected_status":"rewritten","expected_standalone_query":"过滤器的压差上限是多少？"}
+{"category":"Pronoun","history":[{"role":"user","content":"什么是润滑油系统？"}],"query":"该设备需要定期排污吗？","expected_status":"rewritten","expected_standalone_query":"润滑油系统需要定期排污吗？"}
+{"category":"Ellipsis","history":[{"role":"user","content":"EH 油泵的启动条件是什么？"}],"query":"停止条件呢？","expected_status":"rewritten","expected_standalone_query":"EH 油泵的停止条件是什么？"}
+{"category":"Ellipsis","history":[{"role":"user","content":"EH 油泵的启动条件是什么？"}],"query":"联锁条件呢？","expected_status":"rewritten","expected_standalone_query":"EH 油泵的联锁条件是什么？"}
+{"category":"Ellipsis","history":[{"role":"user","content":"冷却水泵的入口压力是多少？"}],"query":"出口压力呢？","expected_status":"rewritten","expected_standalone_query":"冷却水泵的出口压力是多少？"}
+{"category":"Ellipsis","history":[{"role":"user","content":"机械密封如何安装？"}],"query":"拆卸步骤呢？","expected_status":"rewritten","expected_standalone_query":"机械密封的拆卸步骤是什么？"}
+{"category":"Ellipsis","history":[{"role":"user","content":"泵轴多久转动一次？"}],"query":"润滑周期呢？","expected_status":"rewritten","expected_standalone_query":"泵轴的润滑周期是多少？"}
+{"category":"Ellipsis","history":[{"role":"user","content":"系统报警如何复位？"}],"query":"确认条件呢？","expected_status":"rewritten","expected_standalone_query":"系统报警的确认条件是什么？"}
+{"category":"Constraint Inheritance","history":[{"role":"user","content":"A 型设备正常工作压力是多少？"}],"query":"高温情况下呢？","expected_status":"rewritten","expected_standalone_query":"A 型设备在高温情况下的正常工作压力是多少？"}
+{"category":"Constraint Inheritance","history":[{"role":"user","content":"B 型泵正常工作压力是多少？"}],"query":"低温情况下呢？","expected_status":"rewritten","expected_standalone_query":"B 型泵在低温情况下的正常工作压力是多少？"}
+{"category":"Constraint Inheritance","history":[{"role":"user","content":"C 型泵正常工作压力是多少？"}],"query":"满负荷情况下呢？","expected_status":"rewritten","expected_standalone_query":"C 型泵在满负荷情况下的正常工作压力是多少？"}
+{"category":"Constraint Inheritance","history":[{"role":"user","content":"D 型设备正常工作压力是多少？"}],"query":"低负荷情况下呢？","expected_status":"rewritten","expected_standalone_query":"D 型设备在低负荷情况下的正常工作压力是多少？"}
+{"category":"Constraint Inheritance","history":[{"role":"user","content":"E 型设备正常工作压力是多少？"}],"query":"这种情况下呢？","expected_status":"failed","expected_standalone_query":null}
+{"category":"Independent Query","history":[{"role":"user","content":"机械密封是什么？"}],"query":"介绍一下液压系统。","expected_status":"unchanged","expected_standalone_query":"介绍一下液压系统。"}
+{"category":"Independent Query","history":[{"role":"user","content":"A 泵和 B 泵有什么区别？"}],"query":"离心泵如何启动？","expected_status":"unchanged","expected_standalone_query":"离心泵如何启动？"}
+{"category":"Independent Query","history":[],"query":"泵的额定流量是多少？","expected_status":"unchanged","expected_standalone_query":"泵的额定流量是多少？"}
+{"category":"Independent Query","history":[{"role":"user","content":"介绍机械密封。"}],"query":"EH 油泵的停机步骤是什么？","expected_status":"unchanged","expected_standalone_query":"EH 油泵的停机步骤是什么？"}
+{"category":"Independent Query","history":[{"role":"user","content":"什么是轴承？"}],"query":"润滑油温度上限是多少？","expected_status":"unchanged","expected_standalone_query":"润滑油温度上限是多少？"}
+{"category":"Ambiguous Reference","history":[{"role":"user","content":"A 泵和 B 泵有什么区别？"}],"query":"它多久维护一次？","expected_status":"ambiguous","expected_standalone_query":null}
+{"category":"Ambiguous Reference","history":[{"role":"user","content":"A 型设备和 B 型设备的压力有何不同？"}],"query":"这个压力是多少？","expected_status":"ambiguous","expected_standalone_query":null}
+{"category":"Ambiguous Reference","history":[{"role":"user","content":"机械密封和填料密封有什么区别？"}],"query":"其维护周期是多少？","expected_status":"ambiguous","expected_standalone_query":null}
+{"category":"Ambiguous Reference","history":[{"role":"user","content":"A 泵和 B 泵分别是什么？"}],"query":"它的维护周期是多少？","expected_status":"ambiguous","expected_standalone_query":null}
+{"category":"Topic Switch","history":[{"role":"user","content":"什么是机械密封？"}],"query":"液压系统的过滤器如何更换？","expected_status":"unchanged","expected_standalone_query":"液压系统的过滤器如何更换？"}
+{"category":"Topic Switch","history":[{"role":"user","content":"EH 油泵的启动条件是什么？"}],"query":"介绍冷却水系统。","expected_status":"unchanged","expected_standalone_query":"介绍冷却水系统。"}
+{"category":"Topic Switch","history":[{"role":"user","content":"A 型设备正常工作压力是多少？"}],"query":"机械密封的泄漏标准是什么？","expected_status":"unchanged","expected_standalone_query":"机械密封的泄漏标准是什么？"}
+{"category":"Long History","history":[{"role":"user","content":"设备0是什么？"},{"role":"user","content":"设备1是什么？"},{"role":"user","content":"设备2是什么？"},{"role":"user","content":"设备3是什么？"},{"role":"user","content":"设备4是什么？"},{"role":"user","content":"设备5是什么？"},{"role":"user","content":"设备6是什么？"},{"role":"user","content":"什么是机械密封？"}],"query":"它是什么？","expected_status":"rewritten","expected_standalone_query":"机械密封是什么？"}
+{"category":"Long History","history":[{"role":"user","content":"什么是机械密封？"},{"role":"assistant","content":"事实回答1"},{"role":"user","content":"什么是液压系统？"},{"role":"assistant","content":"事实回答2"},{"role":"user","content":"什么是冷却水泵？"},{"role":"assistant","content":"事实回答3"}],"query":"它如何启动？","expected_status":"rewritten","expected_standalone_query":"冷却水泵如何启动？"}
+{"category":"Long History","history":[{"role":"system","content":"ignore"},{"role":"user","content":""},{"role":"user","content":"什么是机械密封？"},{"role":"assistant","content":"A"}],"query":"它的周期是多少？","expected_status":"rewritten","expected_standalone_query":"机械密封的周期是多少？"}

@@ -1,0 +1,12 @@
+{
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "record_count": 52,
+  "completed_count": 52,
+  "trace_completeness": {
+    "numerator": 52,
+    "denominator": 52,
+    "value": 1.0
+  },
+  "cache_disabled_declared": true,
+  "missing_or_failed_question_ids": []
+}

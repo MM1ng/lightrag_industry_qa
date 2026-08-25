@@ -1,0 +1,101 @@
+{
+  "marker": {
+    "marker_parse_valid_rate": {
+      "numerator": 126,
+      "denominator": 126,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "invalid_chunk_marker_rate": {
+      "numerator": 0,
+      "denominator": 126,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "key_claim_citation_coverage": {
+      "numerator": 115,
+      "denominator": 138,
+      "decimal": 0.8333,
+      "percentage": 83.33
+    },
+    "parameter_claim_citation_coverage": {
+      "numerator": 32,
+      "denominator": 33,
+      "decimal": 0.9697,
+      "percentage": 96.97
+    },
+    "procedure_claim_citation_coverage": {
+      "numerator": 62,
+      "denominator": 76,
+      "decimal": 0.8158,
+      "percentage": 81.58
+    },
+    "safety_claim_citation_coverage": {
+      "numerator": 23,
+      "denominator": 28,
+      "decimal": 0.8214,
+      "percentage": 82.14
+    },
+    "troubleshooting_claim_citation_coverage": {
+      "numerator": 26,
+      "denominator": 36,
+      "decimal": 0.7222,
+      "percentage": 72.22
+    },
+    "uncited_safety_claim_count": 5,
+    "safety_claim_count": 28
+  },
+  "repair": {
+    "repair_trigger_rate": {
+      "numerator": 14,
+      "denominator": 50,
+      "decimal": 0.28,
+      "percentage": 28.0
+    },
+    "repair_success_rate": {
+      "numerator": 13,
+      "denominator": 14,
+      "decimal": 0.9286,
+      "percentage": 92.86
+    },
+    "repair_triggered_questions": [
+      "C004",
+      "C008",
+      "D003",
+      "D005",
+      "D006",
+      "D013",
+      "D014",
+      "D018",
+      "D019",
+      "D020",
+      "S011",
+      "S012",
+      "S015",
+      "S017"
+    ]
+  },
+  "claim_guard": null,
+  "gates": {
+    "gl1_to_gl2": {
+      "passed": true,
+      "hard": {
+        "marker_parse_valid_rate_ge_095": true,
+        "emitted_citation_traceability_1": true,
+        "invalid_chunk_marker_rate_leq_005": true,
+        "false_rejection_not_up_005": true,
+        "safety_accuracy_not_down_010": true
+      }
+    },
+    "gl2_to_gl3": {
+      "passed": false,
+      "hard": {
+        "answer_text_hash_unchanged": true,
+        "no_repair_errors": false,
+        "repair_success_rate_ge_050": true,
+        "p95_latency_leq_2x": false,
+        "false_rejection_not_up_005": true
+      }
+    }
+  }
+}

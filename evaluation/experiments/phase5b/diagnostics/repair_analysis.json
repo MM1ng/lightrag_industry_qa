@@ -1,0 +1,162 @@
+{
+  "S003": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2442,
+    "repair_latency": 6.25
+  },
+  "S011": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 3562,
+    "repair_latency": 15.281
+  },
+  "S012": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2334,
+    "repair_latency": 5.375
+  },
+  "S015": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2962,
+    "repair_latency": 11.937
+  },
+  "S017": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 3046,
+    "repair_latency": 10.5
+  },
+  "D002": {
+    "repair_attempted": true,
+    "repair_valid": true,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "提供的证据中未包含关于运输、安装、操作、维护和检查人员的资格与培训的具体要求。虽然提到了维修人员需熟悉泵送液体类型及安全措施（chunk_id：cchunk-pymupdf-v1-修计划-06f08fda97cc-000-06f08fda97cc），但未说明人员资格和培训的详细要求。",
+    "repair_tokens": 2015,
+    "repair_latency": 2.0
+  },
+  "D003": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 3176,
+    "repair_latency": 7.14
+  },
+  "D004": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 3062,
+    "repair_latency": 8.921
+  },
+  "D005": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2688,
+    "repair_latency": 9.922
+  },
+  "D006": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2499,
+    "repair_latency": 6.641
+  },
+  "D009": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2481,
+    "repair_latency": 5.734
+  },
+  "D011": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2108,
+    "repair_latency": 4.891
+  },
+  "D012": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2325,
+    "repair_latency": 5.032
+  },
+  "D013": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2768,
+    "repair_latency": 9.969
+  },
+  "D015": {
+    "repair_attempted": true,
+    "repair_valid": true,
+    "final_status": "answered",
+    "final_refusal_reason": null,
+    "repair_tokens": 2401,
+    "repair_latency": 5.469
+  },
+  "D017": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 1569,
+    "repair_latency": 2.875
+  },
+  "D018": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 5157,
+    "repair_latency": 19.094
+  },
+  "D020": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 3903,
+    "repair_latency": 11.594
+  },
+  "C005": {
+    "repair_attempted": true,
+    "repair_valid": true,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "提供的证据中仅包含DESMI手册关于长期关机期间的部分要求（如关闭吸入管路截断装置、排空水泵等），但缺乏SUMMIT手册的正常停机步骤和长期停机要求，也缺少DESMI手册的正常停机步骤。因此无法进行系统性对比。",
+    "repair_tokens": 2016,
+    "repair_latency": 2.25
+  },
+  "C008": {
+    "repair_attempted": true,
+    "repair_valid": false,
+    "final_status": "insufficient_evidence",
+    "final_refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_tokens": 2762,
+    "repair_latency": 10.625
+  }
+}

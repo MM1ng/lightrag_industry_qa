@@ -1,0 +1,41 @@
+{
+  "scenario": "graceful_shutdown",
+  "steps": [
+    {
+      "step": "start_before_shutdown",
+      "status": "passed",
+      "detail": "pid=28788",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:46:11+0800"
+    },
+    {
+      "step": "stop_local_script",
+      "status": "passed",
+      "detail": "ui: no pid file\napi: stopped pid=28788\nstop_local done (Qdrant data untouched)\n",
+      "exit_code": 0,
+      "timestamp": "2026-08-02T18:46:12+0800"
+    },
+    {
+      "step": "process_stopped",
+      "status": "passed",
+      "detail": "pid=28788 poll=4294967295",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:46:16+0800"
+    },
+    {
+      "step": "qdrant_collections_untouched",
+      "status": "passed",
+      "detail": "3->3",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:46:16+0800"
+    },
+    {
+      "step": "restart_after_shutdown",
+      "status": "passed",
+      "detail": "pid=24092",
+      "exit_code": null,
+      "timestamp": "2026-08-02T18:46:21+0800"
+    }
+  ],
+  "passed": true
+}

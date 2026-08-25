@@ -1,0 +1,23 @@
+{
+  "completion_count": 104,
+  "drop_reason_counts": {
+    "generation_id_mismatch": 104,
+    "not_referenced_by_answer_point": 104,
+    "not_referenced_by_claim_or_citation": 104,
+    "not_referenced_by_grounding": 104,
+    "used_for_answer_false": 104
+  },
+  "holdout_used": false,
+  "not_proven_to_propagate_count": 104,
+  "stage_counts": {
+    "answer_point:not_linked": 104,
+    "claim_citation:not_linked": 104,
+    "generation_context:metadata_only": 104,
+    "grounding:not_linked": 104,
+    "policy:present": 104,
+    "provider:unverifiable": 104,
+    "registry:unverifiable": 104
+  },
+  "unverifiable_provider_count": 104,
+  "unverifiable_registry_count": 104
+}

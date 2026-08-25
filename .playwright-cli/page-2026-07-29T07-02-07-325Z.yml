@@ -1,0 +1,84 @@
+- generic [ref=e3]:
+  - banner [ref=e6]:
+    - generic [ref=e9]:
+      - generic [ref=e164]:
+        - img "Running..." [ref=e165]
+        - button "Stop" [ref=e170] [cursor=pointer]
+      - button "Deploy" [ref=e20] [cursor=pointer]
+      - button "Main menu" [ref=e24] [cursor=pointer]
+  - generic [ref=e28]:
+    - paragraph [ref=e35]: "🔧 工业离心泵知识库 ｜ 模型: qwen3.7-plus ｜ 索引已就绪 ｜ 节点: 365 ｜ 边: 418"
+    - generic [ref=e37]:
+      - tablist [ref=e38]:
+        - tab [selected] [ref=e39] [cursor=pointer]:
+          - paragraph [ref=e41]: 智能问答
+        - tab [ref=e43] [cursor=pointer]:
+          - paragraph [ref=e45]: 知识图谱
+      - tabpanel "智能问答" [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e49]:
+            - generic [ref=e53]:
+              - generic [ref=e57]:
+                - paragraph [ref=e61]: 查询模式
+                - group [ref=e63]:
+                  - combobox "查询模式" [ref=e64]: mix
+                  - button "Open" [ref=e65] [cursor=pointer]
+              - button [ref=e73] [cursor=pointer]:
+                - paragraph [ref=e77]: 清空会话
+            - generic [ref=e172]:
+              - generic [ref=e173]: face
+              - generic "Chat message from user" [ref=e176]:
+                - paragraph [ref=e182]: 离心泵启动前需要检查什么？
+            - generic [ref=e184]:
+              - generic [ref=e185]: smart_toy
+              - generic "Chat message from assistant" [ref=e188]:
+                - generic [ref=e189]:
+                  - generic [ref=e193]:
+                    - paragraph [ref=e194]: 根据手册内容，离心泵（泵组）启动前需要检查和确认以下事项：
+                    - paragraph [ref=e195]:
+                      - strong [ref=e196]: 1. 电气与安全保护
+                    - list [ref=e197]:
+                      - listitem [ref=e198]: 泵组已正确连接到电源，并且配备了所有保护装置。
+                    - paragraph [ref=e199]:
+                      - strong [ref=e200]: 2. 液体充注与排气
+                    - list [ref=e201]:
+                      - listitem [ref=e202]: 水泵、吸入管路和进水箱（如有配置）都已进行排气并充注待泵送液体（泵壳和吸入管路已充满液体）。
+                      - listitem [ref=e203]: 注液和排气管路都已关闭。
+                      - listitem [ref=e204]: 严禁在未注液的情况下运行泵组，且不允许关闭吸入管路和/或供水管路上的截断装置。
+                    - paragraph [ref=e205]:
+                      - strong [ref=e206]: 3. 机械与管路状态
+                    - list [ref=e207]:
+                      - listitem [ref=e208]: 泵轴可自由转动，且没有刺耳噪声。
+                      - listitem [ref=e209]: 系统管道已经清洗。
+                      - listitem [ref=e210]: 所有必要的辅助接口都已完成连接并处于正常工作状态。
+                    - paragraph [ref=e211]:
+                      - strong [ref=e212]: 4. 旋转方向
+                    - list [ref=e213]:
+                      - listitem [ref=e214]: 已检查旋转方向（可短时间启动水泵查看转动方向是否与箭头方向一致）。
+                    - paragraph [ref=e215]:
+                      - strong [ref=e216]: 5. 润滑检查
+                    - list [ref=e217]:
+                      - listitem [ref=e218]:
+                        - strong [ref=e219]: 电机轴承
+                        - text: ：首次启动前，应查看电机手册确认是否需要为电机轴承加注润滑脂；如果可以重新润滑，需在启动前按电机手册进行润滑。
+                      - listitem [ref=e220]:
+                        - strong [ref=e221]: 水泵轴承
+                        - text: ：所有水泵轴承已在工厂内完全润滑，在达到规定的计划运行时数前，不需要重新润滑。
+                    - paragraph [ref=e222]:
+                      - strong [ref=e223]: 6. 停机恢复
+                    - list [ref=e224]:
+                      - listitem [ref=e225]: 如果水泵（泵组）长时间停机后，必须开展恢复运行所需的相关工作。
+                  - paragraph [ref=e230]: "模式: mix ｜ ⏱ 6.57s ｜ 📎 8条引用 ｜ ✓ 成功"
+                  - group [ref=e233]:
+                    - generic "keyboard_arrow_right 📎 引用来源（8 条）" [ref=e234] [cursor=pointer]:
+                      - generic [ref=e235]:
+                        - generic [ref=e236]: keyboard_arrow_right
+                        - paragraph [ref=e240]: 📎 引用来源（8 条）
+          - generic [ref=e129]:
+            - textbox "请输入离心泵运维问题，例如：离心泵启动前需要检查什么？" [active] [ref=e131]
+            - button "Send message" [disabled] [ref=e133]
+          - generic [ref=e242]:
+            - generic [ref=e243]: face
+            - generic "Chat message from user" [ref=e246]:
+              - paragraph [ref=e252]: 离心泵启动前需要检查什么？
+          - paragraph [ref=e260]: 正在检索离心泵手册……

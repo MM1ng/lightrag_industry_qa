@@ -1,0 +1,132 @@
+{
+  "manifest_name": "phase4_baseline_manifest",
+  "source_phase": "Phase 3A-R-Paid",
+  "default_parser_pipeline": "pymupdf_standard_adapter",
+  "comparison_parser_pipeline": "mineru_online_clean_adapter",
+  "default_reason": "正式固定模型对比中 PyMuPDF 在 Recall@1/5、MRR、Gold Page Recall、Citation Accuracy 等核心指标领先；MinerU-clean 的成本（Token -51%）与部分类别优势未转化为整体检索/引用优势，且存在 OCR 与页级 provenance 元数据问题（MINERU-PROVENANCE-001）。",
+  "model": "qwen-plus-2025-07-28",
+  "model_fallback_enabled": false,
+  "enable_thinking": false,
+  "embedding_model": "text-embedding-v4",
+  "embedding_dimension": 1024,
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "rerank": false,
+  "qdrant_distance": "COSINE",
+  "golden_set": "D:\\industrial_energy_agent\\data\\evaluation\\industrial_pump_golden_set_50.jsonl",
+  "golden_set_sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf",
+  "p0_metrics": {
+    "retrieval": {
+      "evidence_case_count": 48,
+      "recall_at_1": 0.5625,
+      "recall_at_3": 0.6875,
+      "recall_at_5": 0.75,
+      "mrr": 0.6167,
+      "gold_document_recall": 1.0,
+      "gold_page_recall": 0.7917,
+      "gold_evidence_recall": 0.9167,
+      "evidence_precision_at_5": 0.1958,
+      "no_result_rate": 0.0,
+      "wrong_document_recall_rate": 0.0,
+      "top1_document_accuracy": 1.0,
+      "top5_page_coverage": 0.7917
+    },
+    "citations": {
+      "citation_accuracy": 0.8958,
+      "citation_precision": 0.3507,
+      "citation_recall": 0.7785,
+      "citation_traceability": 1.0,
+      "unsupported_citation_rate": 0.0,
+      "insufficient_evidence_rejection_rate": 0.5
+    },
+    "rejection": {
+      "insufficient_evidence_rejection_rate": 1.0,
+      "false_rejection_rate": 0.2917,
+      "unsupported_answer_rate": 0.0
+    },
+    "latency_ms": {
+      "avg_ms": 3781.2,
+      "p50_ms": 3750.0,
+      "p95_ms": 5656.0
+    },
+    "llm": {
+      "call_count": 594,
+      "input_tokens": 1053531,
+      "output_tokens": 175852,
+      "total_tokens": 1229383,
+      "cache_hits": 0,
+      "cache_misses": 594,
+      "retry_count": 0,
+      "errors": 0,
+      "model_mismatches": 0
+    },
+    "index_points": {
+      "chunks": 453,
+      "entities": 1024,
+      "relationships": 1082
+    }
+  },
+  "p1_metrics": {
+    "retrieval": {
+      "evidence_case_count": 48,
+      "recall_at_1": 0.5208,
+      "recall_at_3": 0.6875,
+      "recall_at_5": 0.7292,
+      "mrr": 0.6111,
+      "gold_document_recall": 1.0,
+      "gold_page_recall": 0.6667,
+      "gold_evidence_recall": 0.9375,
+      "evidence_precision_at_5": 0.1833,
+      "no_result_rate": 0.0,
+      "wrong_document_recall_rate": 0.0,
+      "top1_document_accuracy": 0.9792,
+      "top5_page_coverage": 0.6667
+    },
+    "citations": {
+      "citation_accuracy": 0.7917,
+      "citation_precision": 0.309,
+      "citation_recall": 0.6941,
+      "citation_traceability": 1.0,
+      "unsupported_citation_rate": 0.0,
+      "insufficient_evidence_rejection_rate": 1.0
+    },
+    "rejection": {
+      "insufficient_evidence_rejection_rate": 1.0,
+      "false_rejection_rate": 0.3333,
+      "unsupported_answer_rate": 0.0
+    },
+    "latency_ms": {
+      "avg_ms": 3696.9,
+      "p50_ms": 3438.0,
+      "p95_ms": 6093.0
+    },
+    "llm": {
+      "call_count": 296,
+      "input_tokens": 499956,
+      "output_tokens": 102220,
+      "total_tokens": 602176,
+      "cache_hits": 0,
+      "cache_misses": 296,
+      "retry_count": 0,
+      "errors": 0,
+      "model_mismatches": 0
+    },
+    "index_points": {
+      "chunks": 184,
+      "entities": 774,
+      "relationships": 661
+    }
+  },
+  "p0_results": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P0_pymupdf\\results.jsonl",
+  "p0_results_sha256": "0d132296219b205d77a02f38e580cd51cbfce0ec3922f2c07fd6666c226b48ff",
+  "p1_results": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\P1_mineru\\results.jsonl",
+  "p1_results_sha256": "2dbb203d4484703b3363c5fcaa4264a8e753d606341ea8723221065d650e8777",
+  "prompt_bundle": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\prompt_bundle.json",
+  "prompt_bundle_sha256": "49dc71741343c208ca6fceafeef789bc5fbdd5cd921a29ebb1a6cf54aae69c3e",
+  "evidence_mapping_p0": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\comparison\\evidence_mapping_p0.json",
+  "evidence_mapping_p1": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\fixed_model\\comparison\\evidence_mapping_p1.json",
+  "experiment_commit": "8a53d3b5b6987bcce4d408442bd1169790400756",
+  "created_at": "2026-08-01T15:52:12+0800",
+  "phase4_scope_note": "Phase 4 不再比较解析器；唯一实验变量为检索策略（混合检索 / Parent 扩展 / Rerank）。"
+}

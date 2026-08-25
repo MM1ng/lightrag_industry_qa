@@ -1,0 +1,33 @@
+{
+  "total_requests": 36,
+  "success_count": 36,
+  "error_count": 0,
+  "success_rate": 1.0,
+  "mean_latency": 0.694,
+  "p50_latency": 0.556,
+  "p95_latency": 0.974,
+  "max_latency": 2.888,
+  "timeout_count": 0,
+  "qdrant_error_count": 0,
+  "llm_error_count": 0,
+  "per_mode": {
+    "sequential": {
+      "requests": 20,
+      "success_rate": 1.0,
+      "p50": 0.448,
+      "p95": 2.888
+    },
+    "concurrency_2": {
+      "requests": 6,
+      "success_rate": 1.0,
+      "p50": 0.621,
+      "p95": 0.965
+    },
+    "concurrency_5": {
+      "requests": 10,
+      "success_rate": 1.0,
+      "p50": 0.974,
+      "p95": 0.974
+    }
+  }
+}

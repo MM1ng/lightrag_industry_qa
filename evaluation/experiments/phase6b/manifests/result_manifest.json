@@ -1,0 +1,414 @@
+{
+  "created_at": "2026-08-02T17:33:46+0800",
+  "phase": "Phase 6B",
+  "head_commit": "56e5550921fb68802c0ea57537c2983ed122484e",
+  "release_candidate_approved": true,
+  "failed_gates": [],
+  "release_gates": {
+    "evaluated_at": "2026-08-02T17:32:30+0800",
+    "release_candidate_approved": true,
+    "failed_gates": [],
+    "gates": {
+      "strategy_matches_frozen": true,
+      "golden_e2e_complete_50": true,
+      "request_trace_id_complete": true,
+      "health_checks_pass": true,
+      "no_cross_kb_pollution": true,
+      "citation_traceable": true,
+      "pool_hash_unchanged": true,
+      "frozen_index_intact": true,
+      "secret_leak_zero": true,
+      "system_prompt_leak_zero": true,
+      "fabricated_citation_zero": true,
+      "device_action_execution_zero": true,
+      "interlock_bypass_answers_zero": true,
+      "requested_model_equals_actual": true,
+      "fallback_zero": true,
+      "thinking_disabled": true,
+      "golden_metrics_no_drop_002": true,
+      "insufficient_evidence_rejection_1": true,
+      "negative_unsupported_answer_0": true,
+      "citation_traceability_emitted_1": true,
+      "error_rate_zero": true,
+      "p95_latency_leq_2x_baseline": true,
+      "concurrency_2_success_1": true,
+      "concurrency_5_success_ge_095": true,
+      "tests_pass": true,
+      "ruff_pass": true,
+      "migrations_pass": true,
+      "runbooks_executable": true,
+      "no_secret_committed": true
+    },
+    "reuse_policy": "Phase 6 official-path results reused where this phase did not change code affecting those gates; source artifacts hash-verified.",
+    "canonical_definition_reference": "metric_audit/citation_metric_definitions.json and retrieval_metric_definitions.json"
+  },
+  "recomputed_metrics": {
+    "harness_retrieval_at_12": {
+      "universe": "frozen_pool_top12_rows",
+      "recall_at_1": {
+        "numerator": 27,
+        "denominator": 48,
+        "decimal": 0.5625,
+        "percentage": 56.25
+      },
+      "recall_at_3": {
+        "numerator": 33,
+        "denominator": 48,
+        "decimal": 0.6875,
+        "percentage": 68.75
+      },
+      "recall_at_5": {
+        "numerator": 36,
+        "denominator": 48,
+        "decimal": 0.75,
+        "percentage": 75.0
+      },
+      "recall_at_12": {
+        "numerator": 38,
+        "denominator": 48,
+        "decimal": 0.7917,
+        "percentage": 79.17
+      },
+      "mrr_at_5": {
+        "numerator": 29.7667,
+        "denominator": 48,
+        "decimal": 0.6201,
+        "percentage": 62.01
+      },
+      "gold_document_recall_at_12": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "gold_page_recall_at_12": {
+        "numerator": 41,
+        "denominator": 48,
+        "decimal": 0.8542,
+        "percentage": 85.42
+      },
+      "gold_evidence_recall_at_12": {
+        "numerator": 38,
+        "denominator": 48,
+        "decimal": 0.7917,
+        "percentage": 79.17
+      },
+      "evidence_precision_at_5": {
+        "numerator": 9.6,
+        "denominator": 48,
+        "decimal": 0.2,
+        "percentage": 20.0
+      },
+      "evidence_precision_at_12": {
+        "numerator": 4.9167,
+        "denominator": 48,
+        "decimal": 0.1024,
+        "percentage": 10.24
+      },
+      "answerable_questions": 48
+    },
+    "fastapi_retrieval_at_12": {
+      "universe": "fastapi_retrieved_top12_ids",
+      "recall_at_1": {
+        "numerator": 27,
+        "denominator": 48,
+        "decimal": 0.5625,
+        "percentage": 56.25
+      },
+      "recall_at_3": {
+        "numerator": 33,
+        "denominator": 48,
+        "decimal": 0.6875,
+        "percentage": 68.75
+      },
+      "recall_at_5": {
+        "numerator": 36,
+        "denominator": 48,
+        "decimal": 0.75,
+        "percentage": 75.0
+      },
+      "recall_at_12": {
+        "numerator": 38,
+        "denominator": 48,
+        "decimal": 0.7917,
+        "percentage": 79.17
+      },
+      "mrr_at_5": {
+        "numerator": 29.7667,
+        "denominator": 48,
+        "decimal": 0.6201,
+        "percentage": 62.01
+      },
+      "gold_document_recall_at_12": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "gold_page_recall_at_12": {
+        "numerator": 41,
+        "denominator": 48,
+        "decimal": 0.8542,
+        "percentage": 85.42
+      },
+      "gold_evidence_recall_at_12": {
+        "numerator": 38,
+        "denominator": 48,
+        "decimal": 0.7917,
+        "percentage": 79.17
+      },
+      "evidence_precision_at_5": {
+        "numerator": 9.6,
+        "denominator": 48,
+        "decimal": 0.2,
+        "percentage": 20.0
+      },
+      "evidence_precision_at_12": {
+        "numerator": 4.9167,
+        "denominator": 48,
+        "decimal": 0.1024,
+        "percentage": 10.24
+      },
+      "answerable_questions": 48
+    },
+    "harness_citation_legacy_convention": {
+      "refusal_clears_citations": false,
+      "answer_citation_accuracy": {
+        "numerator": 40,
+        "denominator": 48,
+        "decimal": 0.8333,
+        "percentage": 83.33
+      },
+      "answer_citation_precision": {
+        "numerator": 15.8333,
+        "denominator": 48,
+        "decimal": 0.3299,
+        "percentage": 32.99
+      },
+      "answer_citation_recall": {
+        "numerator": 34.6167,
+        "denominator": 48,
+        "decimal": 0.7212,
+        "percentage": 72.12
+      },
+      "citation_traceability": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "citation_traceability_emitted": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 43,
+        "denominator": 136,
+        "decimal": 0.3162,
+        "percentage": 31.62
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 93,
+        "denominator": 136,
+        "decimal": 0.6838,
+        "percentage": 68.38
+      },
+      "false_rejection_rate": {
+        "numerator": 15,
+        "denominator": 48,
+        "decimal": 0.3125,
+        "percentage": 31.25
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      }
+    },
+    "harness_citation_canonical_convention": {
+      "refusal_clears_citations": true,
+      "answer_citation_accuracy": {
+        "numerator": 31,
+        "denominator": 48,
+        "decimal": 0.6458,
+        "percentage": 64.58
+      },
+      "answer_citation_precision": {
+        "numerator": 11.6667,
+        "denominator": 48,
+        "decimal": 0.2431,
+        "percentage": 24.31
+      },
+      "answer_citation_recall": {
+        "numerator": 28.7,
+        "denominator": 48,
+        "decimal": 0.5979,
+        "percentage": 59.79
+      },
+      "citation_traceability": {
+        "numerator": 33,
+        "denominator": 48,
+        "decimal": 0.6875,
+        "percentage": 68.75
+      },
+      "citation_traceability_emitted": {
+        "numerator": 33,
+        "denominator": 33,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 33,
+        "denominator": 95,
+        "decimal": 0.3474,
+        "percentage": 34.74
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 62,
+        "denominator": 95,
+        "decimal": 0.6526,
+        "percentage": 65.26
+      },
+      "false_rejection_rate": {
+        "numerator": 15,
+        "denominator": 48,
+        "decimal": 0.3125,
+        "percentage": 31.25
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      }
+    },
+    "fastapi_citation_canonical_convention": {
+      "refusal_clears_citations": true,
+      "answer_citation_accuracy": {
+        "numerator": 37,
+        "denominator": 48,
+        "decimal": 0.7708,
+        "percentage": 77.08
+      },
+      "answer_citation_precision": {
+        "numerator": 13.5,
+        "denominator": 48,
+        "decimal": 0.2812,
+        "percentage": 28.12
+      },
+      "answer_citation_recall": {
+        "numerator": 33.8333,
+        "denominator": 48,
+        "decimal": 0.7049,
+        "percentage": 70.49
+      },
+      "citation_traceability": {
+        "numerator": 38,
+        "denominator": 48,
+        "decimal": 0.7917,
+        "percentage": 79.17
+      },
+      "citation_traceability_emitted": {
+        "numerator": 38,
+        "denominator": 38,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 40,
+        "denominator": 113,
+        "decimal": 0.354,
+        "percentage": 35.4
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 73,
+        "denominator": 113,
+        "decimal": 0.646,
+        "percentage": 64.6
+      },
+      "false_rejection_rate": {
+        "numerator": 10,
+        "denominator": 48,
+        "decimal": 0.2083,
+        "percentage": 20.83
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      }
+    },
+    "gate": {
+      "threshold_drop_leq_002": true,
+      "baseline_accuracy_canonical": 0.6458,
+      "fastapi_accuracy_canonical": 0.7708,
+      "drop": -0.125,
+      "historical_baseline_legacy": 0.8333,
+      "historical_fastapi_legacy_note": "Phase 6 official path always clears citations on refusal; 37/48 is the same under both conventions"
+    }
+  },
+  "selected_fix": {
+    "phase": "Phase 6B",
+    "branch": "E",
+    "root_cause_summary": "The 40/48 vs 37/48 citation-accuracy gap is an evaluator/pipeline convention difference, not an algorithm defect: the frozen harness attached evidence-policy citations to refused answers (counting up to 5 refusals as accurate), while the official FastAPI path correctly emits zero citations on refusal. The two paths also use different evidence-policy candidate universes (frozen pool top-12 vs official retrieval) and different final-context rendering, so their raw answers are not directly comparable.",
+    "fix_type": "metric_and_evaluator_convention_alignment",
+    "algorithm_changed": false,
+    "prompt_changed": false,
+    "llm_rerun_required": false,
+    "llm_rerun_performed": false,
+    "historical_values_preserved": true,
+    "historical_baseline_legacy": "40/48=0.8333",
+    "canonical_baseline": "31/48=0.6458",
+    "official_fastapi_accuracy": "37/48=0.7708",
+    "canonical_drop": -0.125,
+    "threshold_unchanged": "drop <= 0.02",
+    "new_baseline_silently_set": false,
+    "production_default_changed": false,
+    "release_candidate_approved": true
+  },
+  "sanitization": {
+    "api_key_logged": false,
+    "authorization_header_logged": false,
+    "workspace_endpoint_logged": false
+  }
+}

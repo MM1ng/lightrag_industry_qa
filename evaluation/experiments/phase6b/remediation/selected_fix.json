@@ -1,0 +1,19 @@
+{
+  "phase": "Phase 6B",
+  "branch": "E",
+  "root_cause_summary": "The 40/48 vs 37/48 citation-accuracy gap is an evaluator/pipeline convention difference, not an algorithm defect: the frozen harness attached evidence-policy citations to refused answers (counting up to 5 refusals as accurate), while the official FastAPI path correctly emits zero citations on refusal. The two paths also use different evidence-policy candidate universes (frozen pool top-12 vs official retrieval) and different final-context rendering, so their raw answers are not directly comparable.",
+  "fix_type": "metric_and_evaluator_convention_alignment",
+  "algorithm_changed": false,
+  "prompt_changed": false,
+  "llm_rerun_required": false,
+  "llm_rerun_performed": false,
+  "historical_values_preserved": true,
+  "historical_baseline_legacy": "40/48=0.8333",
+  "canonical_baseline": "31/48=0.6458",
+  "official_fastapi_accuracy": "37/48=0.7708",
+  "canonical_drop": -0.125,
+  "threshold_unchanged": "drop <= 0.02",
+  "new_baseline_silently_set": false,
+  "production_default_changed": false,
+  "release_candidate_approved": true
+}

@@ -1,0 +1,428 @@
+{
+  "phase": "10B-3J-J1S-R",
+  "run_id": "phase10b3j-j1s-development-20260805-1",
+  "definition_version": "phase10b3d-metric-policy-v1",
+  "question_count": 36,
+  "status_counts": {
+    "success": 32,
+    "insufficient_evidence": 4
+  },
+  "direct_structured_valid": 35,
+  "fallback_count": 1,
+  "metrics": {
+    "false_rejection": {
+      "numerator": 4,
+      "denominator": 36,
+      "value": 0.1111111111111111,
+      "definition": "answerable final responses with status=insufficient_evidence",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "supporting_citation_recall": {
+      "numerator": 24,
+      "denominator": 32,
+      "value": 0.75,
+      "definition": "final emitted answer points with a cited expected Development child",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "citation_precision": {
+      "numerator": 24.0,
+      "denominator": 32,
+      "value": 0.75,
+      "definition": "mean fraction of cited children matching immutable expected child identity per emitted answer point",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "overcitation_rate": {
+      "numerator": 0,
+      "denominator": 32,
+      "value": 0.0,
+      "definition": "emitted answer points containing both expected and additional cited children",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "question_citation_accuracy": {
+      "numerator": 24,
+      "denominator": 32,
+      "value": 0.75,
+      "definition": "substantive questions whose emitted answer points all cite expected Development children",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "question_unsupported_answer": {
+      "numerator": 8,
+      "denominator": 32,
+      "value": 0.25,
+      "definition": "substantive questions with any emitted point lacking an expected child citation",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "claim_semantic_support": {
+      "numerator": 0,
+      "denominator": 32,
+      "value": 0.0,
+      "definition": "conservative current-evaluator score: no persisted grounding_audit decision means no certified semantic-support positive",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "expected_answer_point_coverage": {
+      "numerator": 24,
+      "denominator": 39,
+      "value": 0.6153846153846154,
+      "definition": "expected Development answer points emitted with a cited expected child",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "identity_resolution": {
+      "numerator": 36,
+      "denominator": 42,
+      "value": 0.8571428571428571,
+      "definition": "final claims with non-empty citation_ids and evidence_ids",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "evidence_panel_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition": "final citations containing document_name, page, and child chunk_id",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "trace_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition": "final responses with immutable persisted Trace",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "provider_lineage_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition": "Trace with provider_evidence_ids and provider_context_sha256",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "structured_json_valid_rate": {
+      "numerator": 35,
+      "denominator": 36,
+      "value": 0.9722222222222222,
+      "definition": "Trace structured_output_valid=true",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "fallback_rate": {
+      "numerator": 1,
+      "denominator": 36,
+      "value": 0.027777777777777776,
+      "definition": "Trace structured_citation_fallback=true",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "response_trace_linkage": {
+      "numerator": 0,
+      "denominator": 36,
+      "value": 0.0,
+      "definition": "records satisfying response, Trace, generation, source hash, one-call, and ordinary-response-boundary linkage",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "required_j1s_audit_fields": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition": "immutable Trace contains all required J1S audit fields",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "wrong_generation": {
+      "numerator": 0,
+      "denominator": 36,
+      "value": 0.0,
+      "definition": "Trace generation differs from fixed Candidate",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "fabricated_citation": {
+      "numerator": 0,
+      "denominator": 36,
+      "value": 0.0,
+      "definition": "final citation child absent from that request provider context",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "unexpected_5xx": {
+      "numerator": 0,
+      "denominator": 36,
+      "value": 0.0,
+      "definition": "saved run has final ordinary response and persisted Trace for every question",
+      "definition_version": "phase10b3d-metric-policy-v1"
+    }
+  },
+  "quality_point_records": [
+    {
+      "question_id": "S001",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S002",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S003",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S004",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S005",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": 0.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S006",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": 0.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S007",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S008",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S009",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S010",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S011",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S011",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S012",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S013",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S014",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S015",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S016",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S017",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S017",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S018",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "S019",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "S020",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "D001",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "D002",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": 0.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D003",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D004",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D005",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "D006",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D007",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D008",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D009",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D010",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D011",
+      "emitted": true,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "D012",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D013",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D014",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D015",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    },
+    {
+      "question_id": "D015",
+      "emitted": false,
+      "supporting_citation_present": false,
+      "citation_precision": null,
+      "overcitation": false
+    },
+    {
+      "question_id": "D016",
+      "emitted": true,
+      "supporting_citation_present": true,
+      "citation_precision": 1.0,
+      "overcitation": false
+    }
+  ],
+  "historical_model_or_retrieval_calls": {
+    "model_rerun_performed": false,
+    "retrieval_rerun_performed": false,
+    "validation_run": false,
+    "holdout_read": false
+  }
+}

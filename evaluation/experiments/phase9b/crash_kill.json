@@ -1,0 +1,12 @@
+{
+  "job_id": "3ee91e90b5f64003b71d8c5714089d5a",
+  "candidate_generation_id": "deeaa52495914104bb185a9e93ac5b14",
+  "status_before_kill": "building",
+  "worker_before_kill": "sync:admin:0a794bbf4880",
+  "stage_before_kill": "building_candidate",
+  "checkpoint_before_kill": null,
+  "api_a_pid": "11968",
+  "api_a_stopped": true,
+  "status_after_kill": "building",
+  "stage_after_kill": "building_candidate"
+}

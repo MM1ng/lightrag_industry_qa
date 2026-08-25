@@ -1,0 +1,45 @@
+{
+  "experiment_name": "phase3a_fixed_model_parser_comparison",
+  "only_independent_variable": "parser_pipeline",
+  "p0_parser_pipeline": "pymupdf_standard_adapter",
+  "p1_parser_pipeline": "mineru_online_clean_adapter",
+  "llm_model": "qwen-plus-2025-07-28",
+  "index_llm_model": "qwen-plus-2025-07-28",
+  "query_llm_model": "qwen-plus-2025-07-28",
+  "model_fallback_enabled": false,
+  "enable_thinking": false,
+  "embedding_model": "text-embedding-v4",
+  "embedding_dimension": 1024,
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "evidence_limit": 3,
+  "enable_rerank": false,
+  "qdrant_distance": "COSINE",
+  "golden_set": "industrial_pump_golden_set_50.jsonl",
+  "chunk_token_size": 2000,
+  "chunker": {
+    "strategy": "pymupdf-v1",
+    "parent_target_tokens": 1500,
+    "parent_max_tokens": 2200,
+    "child_target_tokens": 450,
+    "child_min_tokens": 120,
+    "child_max_tokens": 700,
+    "child_overlap_tokens": 80,
+    "merge_small_children": true
+  },
+  "lightrag": {
+    "version": "1.5.4",
+    "max_parallel_insert": 1,
+    "entity_extract_max_gleaning": 0,
+    "entity_extract_max_records": 12,
+    "entity_extract_max_entities": 12
+  },
+  "qdrant": {
+    "url": "http://127.0.0.1:16333",
+    "server_version": "1.13.6",
+    "distance": "COSINE",
+    "dimension": 1024,
+    "embedding_batch_num": 10
+  }
+}

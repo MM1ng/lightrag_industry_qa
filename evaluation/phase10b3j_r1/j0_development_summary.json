@@ -1,0 +1,20 @@
+{
+  "phase": "10B-3J-R1",
+  "experiment": "J0",
+  "attempted": 36,
+  "completed": 36,
+  "http_200": 36,
+  "trace_http_200": 36,
+  "generation_invalid_state": 0,
+  "trace_present": 36,
+  "runtime_lineage_trace_version": 36,
+  "provider_lineage_complete": 36,
+  "coverage_trace_complete": 36,
+  "grounding_removal_trace_complete": 36,
+  "candidate_generation_correct": 36,
+  "wrong_generation": 0,
+  "backend_second_query_called": 0,
+  "active_pointer_changed": false,
+  "validation_run": false,
+  "holdout_run": false
+}

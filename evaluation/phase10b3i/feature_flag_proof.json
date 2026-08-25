@@ -1,0 +1,25 @@
+{
+  "proof_version": "phase10b3i-feature-flag-proof-v1",
+  "flags": {
+    "QA_SUPPORT_VALIDATOR_V2_ENABLED": {"settings_field": "support_validator_v2_enabled", "default": false, "wired_in_this_commit": false},
+    "QA_STRUCTURED_GENERATION_ENABLED": {"settings_field": "structured_generation_enabled", "default": false, "wired_in_this_commit": false},
+    "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": {"settings_field": "supplemental_retrieval_enabled", "default": false, "wired_in_this_commit": false}
+  },
+  "safety": {
+    "missing_env_defaults_false": true,
+    "secret_values_not_serialized": true,
+    "public_answer_contract_changed": false,
+    "active_generation_changed": false,
+    "query_mainline_changed": false
+  },
+  "trace": {
+    "trace_fragment_helper": "feature_flag_retrieval_config",
+    "trace_version": "phase10b3i-feature-flags-v1",
+    "config_sha256": "settings.phase10b3i_config_sha256",
+    "injection_owner": "future query wiring; intentionally not this commit"
+  },
+  "verification": {
+    "tests": "tests/test_phase10b3i_feature_flags.py",
+    "holdout_used": false
+  }
+}

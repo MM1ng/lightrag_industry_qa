@@ -1,0 +1,30 @@
+{
+  "existing_interface": true,
+  "provider": "DashScopeQwen3Reranker",
+  "configured_model": "qwen3-rerank",
+  "exact_model_name": "qwen3-rerank",
+  "endpoint": "dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank (standard public; workspace endpoint template available when DASHSCOPE_WORKSPACE_ID is set)",
+  "supports_batch": true,
+  "max_documents": null,
+  "score_range": null,
+  "deterministic_parameters": {
+    "model": "qwen3-rerank",
+    "top_n": 20,
+    "return_documents": false
+  },
+  "fallback_behavior": "disabled (RERANK_FALLBACK_ENABLED=false)",
+  "secret_source": "DASHSCOPE_API_KEY (never logged)",
+  "readiness": true,
+  "blocked_reason": null,
+  "notes": [
+    "Production default remains RERANK_ENABLED=false",
+    "RerankerProvider interface implemented in reranker.py (provider-neutral)",
+    "Exact model name required; latest/auto aliases rejected",
+    "Official request schema verified against the live API: {model, input:{query,documents}, parameters:{top_n,return_documents}}",
+    "Preflight passed on 2026-08-01 (20/20 results, request_id, usage).",
+    "Phase 4D-R2: variable-size candidate contract accepted; C007=19 rows (one pre-existing duplicate chunk_id row at original ranks 2/5), N001=20, N002=19 are all valid frozen inputs; qwen3-rerank preserved every input row",
+    "Historical contract-blocked run (fixed 20-candidate contract) superseded by Phase 4D-R2 variable-size candidate contract",
+    "Provider Request Cache keyed by request_payload_hash (exact request semantics); evaluation-rule/commit changes do not invalidate identical requests",
+    "Legacy cache entries (old key with commit/config hash) remain readable"
+  ]
+}

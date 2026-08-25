@@ -1,0 +1,7 @@
+{
+  "group": "gl1",
+  "label": "inline_citation",
+  "inline_citation_prompt": true,
+  "citation_only_repair": false,
+  "claim_level_guard": false
+}

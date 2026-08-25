@@ -1,0 +1,396 @@
+{
+  "scope": "Phase 5 GA0 vs GA1 regressed questions (23)",
+  "failure_type_catalog": [
+    "json_schema_failure",
+    "malformed_output",
+    "claim_without_citation",
+    "invalid_chunk_id",
+    "invalid_page",
+    "invalid_document",
+    "safety_rule_overblocking",
+    "partial_evidence_but_full_refusal",
+    "repair_changed_answer",
+    "repair_failed_structure",
+    "repair_failed_citation",
+    "context_insufficient",
+    "model_overcautious_refusal",
+    "other"
+  ],
+  "primary_type_counts": {
+    "model_overcautious_refusal": 5,
+    "other": 2,
+    "repair_failed_structure": 16
+  },
+  "regressed_question_count": 23,
+  "entries": [
+    {
+      "question_id": "C005",
+      "category": "跨页问题",
+      "ga0_status": "refused",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "success",
+      "final_refusal_reason": "提供的证据中仅包含DESMI手册关于长期关机期间的部分要求（如关闭吸入管路截断装置、排空水泵等），但缺乏SUMMIT手册的正常停机步骤和长期停机要求，也缺少DESMI手册的正常停机步骤。因此无法进行系统性对比。",
+      "primary_failure_type": "model_overcautious_refusal",
+      "secondary_failure_types": [
+        "repair_succeeded_but_still_refused",
+        "repair_succeeded_but_answer_still_missed_gold"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "C006",
+      "category": "跨页问题",
+      "ga0_status": "refused",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": false,
+      "repair_result": "not_attempted",
+      "final_refusal_reason": "提供的证据仅包含一份手册（t1739cn.pdf）中关于吸入管路布置的部分内容，提到了流态改变元件和最小直管段长度X，但未给出具体数值和结构要求的详细信息，且未提供第二份手册的内容作为对比。因此无法回答两份手册的分别要求。",
+      "primary_failure_type": "model_overcautious_refusal",
+      "secondary_failure_types": [
+        "partial_evidence_but_full_refusal"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "C007",
+      "category": "安全警告",
+      "ga0_status": "answered",
+      "ga1_status": "answered",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": false,
+      "repair_result": "not_attempted",
+      "final_refusal_reason": null,
+      "primary_failure_type": "other",
+      "secondary_failure_types": [
+        "structurally_valid_but_gold_citation_miss"
+      ],
+      "evidence_available": true,
+      "notes": "GA1 final output structurally valid but gold citation miss"
+    },
+    {
+      "question_id": "C008",
+      "category": "故障诊断",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D003",
+      "category": "安全警告",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D004",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D005",
+      "category": "安全警告",
+      "ga0_status": "refused",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D006",
+      "category": "操作步骤",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D009",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D011",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D012",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D013",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D017",
+      "category": "表格查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "D020",
+      "category": "操作步骤",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S003",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S005",
+      "category": "参数查询",
+      "ga0_status": "answered",
+      "ga1_status": "answered",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": false,
+      "repair_result": "not_attempted",
+      "final_refusal_reason": null,
+      "primary_failure_type": "other",
+      "secondary_failure_types": [
+        "structurally_valid_but_gold_citation_miss"
+      ],
+      "evidence_available": true,
+      "notes": "GA1 final output structurally valid but gold citation miss"
+    },
+    {
+      "question_id": "S007",
+      "category": "表格查询",
+      "ga0_status": "refused",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": false,
+      "repair_result": "not_attempted",
+      "final_refusal_reason": "证据中未提供轴承温度与ISO润滑油等级之间的对应关系表，缺少选择ISO等级的具体依据。",
+      "primary_failure_type": "model_overcautious_refusal",
+      "secondary_failure_types": [
+        "partial_evidence_but_full_refusal"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S011",
+      "category": "操作步骤",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S012",
+      "category": "操作步骤",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S015",
+      "category": "故障诊断",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S017",
+      "category": "安全警告",
+      "ga0_status": "answered",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": true,
+      "repair_result": "failed",
+      "final_refusal_reason": "grounded_answer_invalid_after_repair",
+      "primary_failure_type": "repair_failed_structure",
+      "secondary_failure_types": [
+        "repair_failed_citation"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S019",
+      "category": "参数查询",
+      "ga0_status": "refused",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": false,
+      "repair_result": "not_attempted",
+      "final_refusal_reason": "提供的证据中未提及SUMMIT LTO泵架的外轴承布置方式，也未明确说明LTO型号在安装时除通用润滑要求外是否有特定的润滑相关要求。证据中仅提到LTO型号在安装轴承盖和螺栓时的步骤（chunk_id：cchunk-pymupdf-v1-护手册-e112e31e2351-000-e112e31e2351），以及润滑脂润滑的一般程序（chunk_id：cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f），但未描述轴承布置方式或LTO特有的润滑安装要求。",
+      "primary_failure_type": "model_overcautious_refusal",
+      "secondary_failure_types": [
+        "partial_evidence_but_full_refusal"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    },
+    {
+      "question_id": "S020",
+      "category": "操作步骤",
+      "ga0_status": "refused",
+      "ga1_status": "refused",
+      "initial_error": "not_persisted_in_phase5_rows",
+      "repair_attempted": false,
+      "repair_result": "not_attempted",
+      "final_refusal_reason": "提供的证据中未包含关于填料环、水封环及接头在装填时的具体布置方式或安装顺序的说明。",
+      "primary_failure_type": "model_overcautious_refusal",
+      "secondary_failure_types": [
+        "partial_evidence_but_full_refusal"
+      ],
+      "evidence_available": true,
+      "notes": "classified from saved final_validation/refusal_reason/repair fields"
+    }
+  ]
+}

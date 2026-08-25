@@ -1,0 +1,37 @@
+{
+  "api_start_command": "python -m uvicorn industrial_rag.api:app --host 127.0.0.1 --port 8011",
+  "api_version": {
+    "app_version": "0.1.0-rc.1",
+    "git_commit": "d999d93e9197159d2eee157cd7bf9dfa99a5ac35",
+    "query_mode": "mix",
+    "answer_model": "qwen-plus-2025-07-28",
+    "embedding_model": "text-embedding-v4",
+    "flags": {
+      "QA_CLAIM_CITATION_PRUNING_ENABLED": false,
+      "QA_COVERAGE_AWARE_SELECTION_ENABLED": false,
+      "QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": false,
+      "QA_PARTIAL_GENERATION_ENABLED": false,
+      "QA_SUPPORT_VALIDATOR_V2_ENABLED": false,
+      "QA_STRUCTURED_GENERATION_ENABLED": false,
+      "QA_SUPPLEMENTAL_RETRIEVAL_ENABLED": false,
+      "QA_GROUNDING_AUDIT_ENABLED": true,
+      "ENABLE_LLM_CACHE": false
+    }
+  },
+  "health_status": "ok",
+  "database_type": "sqlite",
+  "database_dsn_sha256": "864afbfbb9d98a2089a896b1046a3419202e2a0f935ebb664a7c0b0d39e7112d",
+  "qdrant_url_sha256": "95c06a1c84afe3f8f581e491f48055b993c1675e80da98ad77acbffa3723a4a7",
+  "qdrant_collections_endpoint_observed": true,
+  "qdrant_version_observed": "1.13.6",
+  "collection_backend": "qdrant",
+  "working_directory": "D:\\industrial_energy_agent",
+  "configuration_file_sha256": "63abee219cc49120e9d7d7fd3c76c7e8e4b98626d081267b795d66c3eff0708c",
+  "environment_variable_configuration_sha256": "63abee219cc49120e9d7d7fd3c76c7e8e4b98626d081267b795d66c3eff0708c",
+  "candidate_database_path_sha256": "86c6559a925b872049b343f123d672fdc073c47c097792ec256d87316da30d52",
+  "startup_observation": "2026-08-04T16:17+08:00",
+  "active_service_port": 8011,
+  "old_port_8000_used": false,
+  "fallback": false,
+  "cache": false
+}

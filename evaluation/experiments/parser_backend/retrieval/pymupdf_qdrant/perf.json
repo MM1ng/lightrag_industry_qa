@@ -1,0 +1,8 @@
+{
+  "llm_calls": 100,
+  "embedding_calls": 50,
+  "total_query_seconds": 3511.062,
+  "avg_query_ms": 70211.2,
+  "latency_p50_ms": 70641.0,
+  "latency_p95_ms": 108000.0
+}

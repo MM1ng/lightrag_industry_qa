@@ -1,0 +1,80 @@
+{
+  "manifest_version": "phase10a-golden-manifest-v1",
+  "annotation_policy_version": "phase10a-multi-evidence-v1",
+  "dataset_path": "evaluation/phase10/expanded_golden_set.jsonl",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "record_count": 64,
+  "positive_count": 60,
+  "negative_count": 4,
+  "split_distribution": {
+    "development": 36,
+    "validation": 16,
+    "holdout": 12
+  },
+  "question_type_distribution": {
+    "component_description": 2,
+    "condition_limit": 7,
+    "confusing_device": 2,
+    "cross_page": 6,
+    "maintenance_interval": 6,
+    "multi_evidence": 8,
+    "negative": 2,
+    "parameter": 5,
+    "procedure": 11,
+    "safety_warning": 5,
+    "table": 4,
+    "terminology": 2,
+    "troubleshooting": 2,
+    "unit_expression": 2
+  },
+  "source_pdfs": [
+    {
+      "path": "data/manuals/2196-ANSI-Manual-Chinese.pdf",
+      "sha256": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700"
+    },
+    {
+      "path": "data/manuals/t1739cn.pdf",
+      "sha256": "77fd7ebf86ef6c574de11eac446dc321de04fd0773cd7d844287da7fa4d6c4ae"
+    }
+  ],
+  "child_chunk_artifacts": [
+    {
+      "path": "evaluation/experiments/parser_backend/P0/2196-ANSI-Manual-Chinese.pdf/child_chunks.jsonl",
+      "sha256": "1c13df50995743f53ab0be41e66c5f6e2756b515f6a2aa7dd09ed2b491d3d8e0"
+    },
+    {
+      "path": "evaluation/experiments/parser_backend/P0/t1739cn.pdf/child_chunks.jsonl",
+      "sha256": "be38970c1538dc884e190f760de5058bf77657a7cdad38fded7cb5685433c620"
+    }
+  ],
+  "creation_commit": "98173cc436dd189cc0274cdca9d682e525d3b583",
+  "holdout_not_used_for_tuning": true,
+  "metric_policy": {
+    "metrics": [
+      "chunk_recall_at_k",
+      "any_evidence_recall_at_k",
+      "complete_evidence_recall_at_k",
+      "document_recall_at_k",
+      "page_recall_at_k",
+      "mrr",
+      "graded_ndcg_at_10",
+      "false_rejection_rate",
+      "negative_rejection_rate",
+      "unsupported_answer_rate",
+      "question_level_citation_accuracy"
+    ],
+    "retrieval_denominator": "answerable_positive_questions_only",
+    "negative_questions_in_retrieval_denominator": false,
+    "rate_shape": [
+      "numerator",
+      "denominator",
+      "value"
+    ],
+    "empty_denominator_value": null,
+    "claim_level_citation_accuracy": {
+      "available": false,
+      "value": null,
+      "reason": "claim_to_evidence_ground_truth_not_annotated"
+    }
+  }
+}

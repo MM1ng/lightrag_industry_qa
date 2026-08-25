@@ -1,0 +1,14 @@
+{
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "candidate_generation_name": "g10b3c20260803",
+  "status": "completed",
+  "query_count": 7,
+  "successful_http_requests": 7,
+  "trace_completeness": {"numerator": 7, "denominator": 7, "value": 1.0},
+  "wrong_generation_citation_count": 0,
+  "table_supported": false,
+  "table_note": "No reliable table metadata in candidate artifacts.",
+  "provider_preflight": "passed:qwen-plus-2025-07-28",
+  "holdout_executed": false,
+  "details_path": "evaluation/phase10b3c/candidate_smoke_results.jsonl"
+}

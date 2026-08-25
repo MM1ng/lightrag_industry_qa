@@ -1,0 +1,146 @@
+{
+  "phase": "10B-3I-R2",
+  "split": "development",
+  "definition_version": "phase10b3d-metric-policy-v1",
+  "question_count": 36,
+  "positive_count": 36,
+  "negative_count": 0,
+  "expected_answer_point_count": 39,
+  "metrics": {
+    "claim_evidence_identity_resolution_rate": {
+      "numerator": 198,
+      "denominator": 198,
+      "value": 1.0,
+      "included_statuses": [
+        "claims with resolvable evidence identity"
+      ],
+      "excluded_statuses": [
+        "no claims"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "supporting_citation_recall": {
+      "numerator": 21,
+      "denominator": 23,
+      "value": 0.9130434782608695,
+      "included_statuses": [
+        "final emitted points"
+      ],
+      "excluded_statuses": [
+        "not final emitted"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "citation_precision": {
+      "numerator": 8.166666666666664,
+      "denominator": 23,
+      "value": 0.35507246376811585,
+      "included_statuses": [
+        "final emitted points"
+      ],
+      "excluded_statuses": [
+        "not final emitted"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "overcitation_rate": {
+      "numerator": 20,
+      "denominator": 23,
+      "value": 0.8695652173913043,
+      "included_statuses": [
+        "final emitted points"
+      ],
+      "excluded_statuses": [
+        "not final emitted"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "claim_semantic_support": {
+      "numerator": 21,
+      "denominator": 23,
+      "value": 0.9130434782608695,
+      "included_statuses": [
+        "final emitted points"
+      ],
+      "excluded_statuses": [
+        "not final emitted"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "false_rejection_rate": {
+      "numerator": 3,
+      "denominator": 36,
+      "value": 0.08333333333333333,
+      "included_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "excluded_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "question_level_unsupported_answer_rate": {
+      "numerator": 12,
+      "denominator": 33,
+      "value": 0.36363636363636365,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "question_level_citation_accuracy": {
+      "numerator": 31,
+      "denominator": 33,
+      "value": 0.9393939393939394,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    },
+    "expected_answer_point_coverage": {
+      "numerator": 21,
+      "denominator": 39,
+      "value": 0.5384615384615384,
+      "included_statuses": [
+        "covered_exact_citation",
+        "covered_with_overcitation"
+      ],
+      "excluded_statuses": [
+        "all other funnel stages"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1",
+      "split": "development"
+    }
+  },
+  "citation_trace_completeness": {
+    "numerator": 36,
+    "denominator": 36,
+    "value": 1.0,
+    "included_statuses": [
+      "all development rows"
+    ],
+    "excluded_statuses": [],
+    "definition_version": "phase10b3d-metric-policy-v1",
+    "split": "development"
+  }
+}

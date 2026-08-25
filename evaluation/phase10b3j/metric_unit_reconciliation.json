@@ -1,0 +1,66 @@
+{
+  "phase": "10B-3J",
+  "artifact_version": "phase10b3j-metric-unit-reconciliation-v1",
+  "source_split": "development",
+  "source_artifact": "evaluation/phase10b3i_r2/coverage_funnel_summary.json",
+  "source_metrics": "evaluation/phase10b3i_r2/i0_development_metrics.json",
+  "units": {
+    "question": {
+      "count": 36,
+      "positive": 36,
+      "negative": 0,
+      "status_counts": {
+        "success": 3,
+        "partial_answer": 30,
+        "insufficient_evidence": 3
+      }
+    },
+    "expected_answer_point": {
+      "count": 39,
+      "coverage_numerator": 21,
+      "coverage_denominator": 39
+    },
+    "emitted_answer_point": {
+      "supporting_citation_recall_numerator": 21,
+      "supporting_citation_recall_denominator": 23,
+      "citation_precision_numerator": 8.166667,
+      "citation_precision_denominator": 23
+    },
+    "claim": {
+      "identity_resolution_numerator": 198,
+      "identity_resolution_denominator": 198
+    }
+  },
+  "funnel_stage_counts": {
+    "covered_exact_citation": 1,
+    "covered_with_overcitation": 20,
+    "emitted_without_supporting_citation": 1,
+    "generation_omitted": 6,
+    "generation_refusal": 3,
+    "grounding_false_negative": 5,
+    "recalled_not_selected": 3
+  },
+  "reconciliation": {
+    "expected_point_count": 39,
+    "covered_count": 21,
+    "noncovered_disjoint_stage_sum": 18,
+    "disjoint_partition_equation": "39 = 21 + 1 + 6 + 3 + 5 + 3",
+    "disjoint_partition_value": 39,
+    "unknown_count": 0,
+    "unique_points": true,
+    "requested_equation": "39 = 21 + 1 + 6 + 3 + 5 + 3 - 3",
+    "requested_equation_value": 36,
+    "requested_equation_valid": false,
+    "requested_equation_note": "The recalled_not_selected count is a diagnostic stage in the frozen funnel and cannot be subtracted from the seven disjoint stage counts without changing the denominator. The supplied expression evaluates to 36, not 39. No result was altered to force the expression to balance.",
+    "recalled_not_selected_interpretation": "diagnostic subset/attribution, not an additional expected-point bucket"
+  },
+  "metric_unit_rules": [
+    "Question-level rates use questions as denominator and are not mixed with point-level rates.",
+    "Expected answer-point coverage uses 39 expected points as denominator.",
+    "Supporting citation recall and citation precision use the 23 final emitted points denominator.",
+    "Claim identity resolution uses 198 claims as numerator and denominator.",
+    "Holdout and validation are not used in this artifact."
+  ],
+  "holdout_used": false,
+  "validation_used": false
+}

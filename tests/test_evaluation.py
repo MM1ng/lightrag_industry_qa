@@ -93,6 +93,81 @@ def test_evaluate_cases_keeps_metrics_attached_to_the_originating_case() -> None
     assert report.no_evidence_refusal_rate == 1.0
 
 
+def test_report_counts_non_refusal_answer_citations_and_routes() -> None:
+    """Citation limits and document routing use only completed answer cases."""
+    from industrial_rag.evaluation import GoldenCase, evaluate_cases
+
+    pump_expected = Citation("pump.pdf", 7, "pump-p7-c1")
+    desmi_expected = Citation("desmi.pdf", 3, "desmi-p3-c1")
+    cases = (
+        GoldenCase("pump", "泵的问题", True, (pump_expected,)),
+        GoldenCase("desmi", "DESMI 的问题", True, (desmi_expected,)),
+        GoldenCase("refuse", "火星问题", False, ()),
+    )
+
+    def query(question: str) -> tuple[QueryResult, float]:
+        if question == "火星问题":
+            return QueryResult(INSUFFICIENT_EVIDENCE_MESSAGE, (), "mix"), 0.3
+        if question == "泵的问题":
+            return (
+                QueryResult(
+                    "检查泵。",
+                    (pump_expected, Citation("pump.pdf", 8, "pump-p8-c1")),
+                    "mix",
+                ),
+                0.1,
+            )
+        return (
+            QueryResult(
+                "检查 DESMI。",
+                (desmi_expected, Citation("desmi.pdf", 4, "desmi-p4-c1")),
+                "mix",
+            ),
+            0.2,
+        )
+
+    report = evaluate_cases(cases, query)
+
+    assert report.average_citations_per_answer == 2.0
+    assert report.max_citations_per_answer == 2
+    assert report.document_route_accuracy == 1.0
+    assert report.cases[0].routed_document == "pump.pdf"
+    assert report.cases[1].routed_document == "desmi.pdf"
+    assert report.cases[2].routed_document is None
+    serialized = report.to_dict()
+    assert serialized["average_citations_per_answer"] == 2.0
+    assert serialized["max_citations_per_answer"] == 2
+    assert serialized["document_route_accuracy"] == 1.0
+    assert serialized["cases"][0]["routed_document"] == "pump.pdf"
+
+
+def test_document_route_accuracy_ignores_multi_document_golden_cases() -> None:
+    """Only cases expected to resolve to one document enter the route denominator."""
+    from industrial_rag.evaluation import GoldenCase, evaluate_cases
+
+    pump_expected = Citation("pump.pdf", 7, "pump-p7-c1")
+    desmi_expected = Citation("desmi.pdf", 3, "desmi-p3-c1")
+    cases = (
+        GoldenCase("single-good", "泵的问题", True, (pump_expected,)),
+        GoldenCase("single-mixed", "DESMI 的问题", True, (desmi_expected,)),
+        GoldenCase("multi", "对比问题", True, (pump_expected, desmi_expected)),
+    )
+
+    def query(question: str) -> tuple[QueryResult, float]:
+        if question == "泵的问题":
+            return QueryResult("检查泵。", (pump_expected,), "mix"), 0.1
+        if question == "DESMI 的问题":
+            return QueryResult("检查 DESMI。", (desmi_expected, pump_expected), "mix"), 0.2
+        return QueryResult("对比。", (pump_expected, desmi_expected), "mix"), 0.3
+
+    report = evaluate_cases(cases, query)
+
+    assert report.document_route_accuracy == 0.5
+    assert report.cases[0].routed_document == "pump.pdf"
+    assert report.cases[1].routed_document is None
+    assert report.cases[2].routed_document is None
+
+
 def test_evaluate_main_requires_explicit_real_flag() -> None:
     """The evaluator must never call a configured model by accident."""
     from scripts import evaluate

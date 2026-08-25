@@ -1,0 +1,16 @@
+{
+  "source_files": [
+    "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\parsed\\documents\\80bb03f00a854376a339767099da6013\\current\\child_chunks.jsonl",
+    "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\parsed\\documents\\ee3fff9976534edda393da71b73f587b\\current\\child_chunks.jsonl"
+  ],
+  "record_count": 453,
+  "unique_chunk_id_count": 383,
+  "duplicate_group_count": 9,
+  "duplicate_instance_count": 70,
+  "categories": {
+    "same_content_different_position": 9
+  },
+  "same_id_different_content_count": 0,
+  "cross_document_collision_count": 0,
+  "source_mutated": false
+}

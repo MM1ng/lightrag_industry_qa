@@ -1,0 +1,23 @@
+{
+  "schema_version": "phase10b3c-context-integrity-v1",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "generation_id": "g10b3c20260803",
+  "child_count": 453,
+  "unique_chunk_count": 453,
+  "duplicate_chunk_id_count": 0,
+  "parent_link_count": 453,
+  "valid_parent_link_count": 453,
+  "previous_link_count": 451,
+  "next_link_count": 451,
+  "table_link_count": 0,
+  "broken_link_count": 0,
+  "cross_document_link_count": 0,
+  "cross_generation_link_count": 0,
+  "self_link_count": 0,
+  "cycle_count": 0,
+  "missing_content_count": 0,
+  "source_sha_match": true,
+  "generation_match": true,
+  "parent_supported": true,
+  "table_supported": false
+}

@@ -1,0 +1,7 @@
+{
+  "count": 30,
+  "case_count": 30,
+  "question_count": 30,
+  "source": "question_level_substantive_audit",
+  "holdout_used": false
+}

@@ -1,0 +1,17 @@
+{
+  "audit_version": "phase10b3f-data-path-audit-v1",
+  "source": "saved_phase10b3a_candidate_results",
+  "holdout_used": false,
+  "golden_set_modified": false,
+  "trace_answer_plan_loss": "not observed in saved trace payload",
+  "pre_grounding_answer_loss": "evaluator_capture_and_trace_model_did_not_persist_it",
+  "admin_schema_loss": "grounding_audit_field_not_yet_defined",
+  "root_cause_layers": {
+    "raw_answer_not_persisted": true,
+    "answer_plan_generated_but_not_serialized": false,
+    "trace_db_payload_complete_admin_schema_dropped": false,
+    "admin_response_complete_evaluator_dropped": false,
+    "generation_itself_returned_refusal": "verified_for_controlled_refusal_case_only"
+  },
+  "controlled_case_count": 3
+}

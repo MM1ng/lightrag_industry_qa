@@ -1,0 +1,35 @@
+{
+  "question_id": "S001",
+  "query": "SUMMIT 2196 系列泵长期存放时，存放环境和泵轴转动频率有什么要求？",
+  "model": "qwen3-rerank",
+  "candidates": 20,
+  "latency": 0.422,
+  "checks": {
+    "http_success": true,
+    "result_count_20": true,
+    "indexes_in_range": true,
+    "unique_candidates": true,
+    "no_candidates_lost": true,
+    "no_pool_out": true,
+    "scores_finite": true,
+    "deterministic_order": true,
+    "request_id_present": true,
+    "no_fallback": true,
+    "text_unchanged": true
+  },
+  "passed": true,
+  "schema_summary": {
+    "http_status": 200,
+    "request_id": "7dc0c3af-34d5-9c70-a7f8-d9e3a6e46c4b",
+    "result_count": 20,
+    "result_index_field": "index",
+    "score_field": "relevance_score",
+    "usage_present": true,
+    "model_metadata_present": true,
+    "authorization_not_stored": true
+  },
+  "provider_cache_hit": true,
+  "reused_request_id": "7dc0c3af-34d5-9c70-a7f8-d9e3a6e46c4b",
+  "reused_response_hash": "c6c47abf21b81e84d345eca189d24375b2207f73d3eccb61a2843dee99311617",
+  "recorded_at": "2026-08-01T19:14:15+0800"
+}

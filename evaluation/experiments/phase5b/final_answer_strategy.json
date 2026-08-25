@@ -1,0 +1,11 @@
+{
+  "context_strategy": "current_rows",
+  "answer_strategy": "current",
+  "citation_mode": "current",
+  "citation_only_repair": false,
+  "claim_level_guard": false,
+  "replacement_approved": false,
+  "replacement_gates_passed": false,
+  "selection_reason": "GL3 not reached (GL1/GL2 gates); final candidate gl2 cannot enable claim-level guard",
+  "final_candidate": "gl2"
+}

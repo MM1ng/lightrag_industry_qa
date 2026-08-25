@@ -1,0 +1,56 @@
+[
+  {
+    "name": "service_query_instance_a",
+    "status_code": 200,
+    "latency_ms": 5179,
+    "status": "success",
+    "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+    "citation_count": 3,
+    "citation_trace": [
+      {
+        "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+        "chunk_id": "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1",
+        "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      },
+      {
+        "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+        "chunk_id": "cchunk-pymupdf-v1-护手册-847dedb676cd-000-847dedb676cd",
+        "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      },
+      {
+        "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+        "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      }
+    ],
+    "request_id_present": true,
+    "trace_id_present": true
+  },
+  {
+    "name": "admin_query_instance_b",
+    "status_code": 200,
+    "latency_ms": 6603,
+    "status": "success",
+    "generation_id": "a2d1c77ce08b414495e9d845cc42f799",
+    "citation_count": 3,
+    "citation_trace": [
+      {
+        "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+        "chunk_id": "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93",
+        "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      },
+      {
+        "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+        "chunk_id": "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      },
+      {
+        "document_id": "c67736aa7264e07dc5869d1f24b87b19",
+        "chunk_id": "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+        "generation_id": "a2d1c77ce08b414495e9d845cc42f799"
+      }
+    ],
+    "request_id_present": true,
+    "trace_id_present": true
+  }
+]

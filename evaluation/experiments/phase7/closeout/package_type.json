@@ -1,0 +1,29 @@
+{
+  "phase": "Phase 7 Closeout",
+  "created_at": "2026-08-02T20:22:52+08:00",
+  "git_commit": "5051647ee2e377e3ea94f70eca1c0eded832e42b",
+  "rc_version": "0.1.0-rc.1",
+  "artifact_type": "application_release_candidate",
+  "self_contained": false,
+  "external_state_required": true,
+  "database_included": false,
+  "qdrant_index_included": false,
+  "llm_cache_included": false,
+  "user_documents_included": false,
+  "frozen_index_included": false,
+  "required_external_components": [
+    "qdrant",
+    "application_database",
+    "model_api",
+    "environment_variables"
+  ],
+  "host_provided_items": [
+    "qdrant",
+    "application_database",
+    "environment_variables",
+    "model_api",
+    "frozen_knowledge_base_or_test_kb"
+  ],
+  "installation_mode": "local_conda_application_with_docker_qdrant",
+  "declaration": "The RC package is an application release candidate, not a fully self-contained offline installer. It depends on host-provided Qdrant, database, environment variables, model API, and a frozen knowledge base or test KB. FastAPI and Streamlit run locally under Conda/Uvicorn; Qdrant remains Docker-only infrastructure. No production database, Qdrant data directory, frozen index, LLM cache or user-uploaded source documents are included."
+}

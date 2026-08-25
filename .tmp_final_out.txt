@@ -1,0 +1,2 @@
+{'appBg': 'rgb(245, 245, 247)', 'shellMax': '760px', 'statusBg': 'rgb(255, 255, 255)', 'statusMax': '760px', 'btnJustify': 'flex-start', 'btnTextAlign': 'left', 'btnRadius': '10px', 'styleHasImportant': False}
+size 52850

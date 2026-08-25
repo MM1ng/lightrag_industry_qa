@@ -1,0 +1,27 @@
+{
+  "hard_passed": true,
+  "hard": {
+    "recall5_drop_leq_002": true,
+    "gold_page_drop_leq_002": true,
+    "gold_evidence_drop_leq_002": true,
+    "mrr_drop_leq_002": true,
+    "top1_doc_drop_leq_002": true,
+    "rerank_error_rate_0": true,
+    "candidate_preservation_1": true,
+    "no_pool_out": true,
+    "no_duplicates": true,
+    "no_lost": true,
+    "no_fallback": true
+  },
+  "value_passed": true,
+  "value": {
+    "recall5_plus_002": true,
+    "mrr_plus_002": true,
+    "gold_page_plus_002": true,
+    "gold_evidence_plus_002": true,
+    "ev_prec5_plus_002": true,
+    "failed_to_success_ge_2": true,
+    "net_improvement_ge_2": true
+  },
+  "stage2_allowed": true
+}

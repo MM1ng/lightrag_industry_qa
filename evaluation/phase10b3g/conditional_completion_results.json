@@ -1,0 +1,13 @@
+{
+  "policy_version": "phase10b3g-conditional-completion-v1",
+  "runtime_evaluation_run_id": "phase10b3g-final-52",
+  "parent_trigger_rate": {"numerator": 0, "denominator": 50, "value": 0.0},
+  "adjacent_trigger_rate": {"numerator": 9, "denominator": 50, "value": 0.18},
+  "accepted_completion_count": 10,
+  "completion_contribution_rate": {"numerator": 10, "denominator": 10, "value": 1.0},
+  "cross_document_rejected": true,
+  "cross_generation_rejected": true,
+  "negative_adjacent_disabled": true,
+  "max_completion": 2,
+  "holdout_used": false
+}

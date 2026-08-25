@@ -1,0 +1,54 @@
+{
+  "phase": "10B-3J-J1S",
+  "outcome": "failed",
+  "single_root_cause": "single-pass structured generation selected non-supporting Sources for 8 emitted Answer Points; deterministic Trace reconciliation confirms this is output quality, not Docker, Candidate, or trace-persistence failure",
+  "failure_buckets": {
+    "unsupported_or_wrong_citation_question_ids": [
+      "D001",
+      "D002",
+      "D011",
+      "S005",
+      "S006",
+      "S012",
+      "S015",
+      "S017"
+    ],
+    "no_emitted_answer_point_question_ids": [
+      "D005",
+      "D015",
+      "S007",
+      "S011",
+      "S017",
+      "S019",
+      "S020"
+    ],
+    "structured_fallback_question_ids": [
+      "D014"
+    ]
+  },
+  "failed_gates": [
+    "supporting_citation_recall",
+    "expected_answer_point_coverage",
+    "citation_precision",
+    "question_citation_accuracy",
+    "false_rejection",
+    "question_unsupported_not_higher_than_j0",
+    "claim_semantic_support",
+    "fabricated_citation"
+  ],
+  "rollback": {
+    "QA_STRUCTURED_CITATION_OUTPUT_ENABLED": false,
+    "fallback_baseline": "J0",
+    "candidate_activation": false,
+    "validation_run": false,
+    "holdout_read": false,
+    "phase_10c_allowed": false
+  },
+  "evidence": {
+    "development_questions": 36,
+    "reconciled_trace_records": 36,
+    "backend_generate_calls_per_request": 1,
+    "backend_second_query_called_count": 0,
+    "wrong_generation_count": 0
+  }
+}

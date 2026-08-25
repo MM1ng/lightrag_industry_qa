@@ -1,0 +1,58 @@
+{
+  "phase": "10B-3J-J1S",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "j1s0_passed": true,
+  "j1s0_evidence": {
+    "test": "tests/test_phase10b3j_structured_runtime.py",
+    "result": "4 passed"
+  },
+  "j1s1_cases": [
+    {
+      "question_id": "S001",
+      "http_status": 200,
+      "structured_citation_flag": true,
+      "json_mode_enabled": true,
+      "source_registry_present": true,
+      "source_registry_identity_resolved": true,
+      "candidate_generation_correct": true,
+      "structured_output_valid": true,
+      "backend_generate_call_count": 1,
+      "backend_second_query_called": false,
+      "active_pointer_changed": false
+    },
+    {
+      "question_id": "S004",
+      "http_status": 200,
+      "structured_citation_flag": true,
+      "json_mode_enabled": true,
+      "source_registry_present": true,
+      "source_registry_identity_resolved": true,
+      "candidate_generation_correct": true,
+      "structured_output_valid": true,
+      "backend_generate_call_count": 1,
+      "backend_second_query_called": false,
+      "active_pointer_changed": false
+    },
+    {
+      "question_id": "S011",
+      "http_status": 200,
+      "structured_citation_flag": true,
+      "json_mode_enabled": true,
+      "source_registry_present": true,
+      "source_registry_identity_resolved": true,
+      "candidate_generation_correct": true,
+      "structured_output_valid": true,
+      "backend_generate_call_count": 1,
+      "backend_second_query_called": false,
+      "active_pointer_changed": false
+    }
+  ],
+  "j1s2_passed": true,
+  "j1s2_cases": [
+    {"question_id": "D001", "category": "historical_overcitation", "http_status": 200, "citation_count": 1},
+    {"question_id": "S019", "category": "historical_only_wrong_citation", "http_status": 200, "status": "insufficient_evidence", "citation_count": 0},
+    {"question_id": "D013", "category": "historical_j1_correct_citation_deleted", "http_status": 200, "citation_count": 1}
+  ],
+  "validation_run": false,
+  "holdout_run": false
+}

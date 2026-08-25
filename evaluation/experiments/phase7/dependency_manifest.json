@@ -1,0 +1,39 @@
+{
+  "rc_version": "0.1.0-rc.1",
+  "python_version": "3.11.15",
+  "conda_env": "industrial-rag",
+  "declared_dependencies": {
+    "lightrag-hku": "1.5.4",
+    "openai": ">=1.97,<3",
+    "PyMuPDF": ">=1.24,<2",
+    "streamlit": ">=1.46,<2",
+    "httpx": ">=0.28,<1",
+    "fastapi": ">=0.115,<1",
+    "uvicorn": ">=0.30,<1",
+    "sqlalchemy": ">=2.0,<3",
+    "aiosqlite": ">=0.20,<1",
+    "alembic": ">=1.13,<2",
+    "qdrant-client": ">=1.18,<2",
+    "python-dotenv": ">=1.0,<2"
+  },
+  "installed_versions": {
+    "lightrag-hku": "1.5.4",
+    "openai": "2.46.0",
+    "PyMuPDF": "1.28.0",
+    "streamlit": "1.60.0",
+    "httpx": "0.28.1",
+    "fastapi": "0.140.0",
+    "uvicorn": "0.51.0",
+    "sqlalchemy": "2.0.51",
+    "aiosqlite": "0.22.1",
+    "alembic": "1.18.5",
+    "qdrant-client": "1.18.0",
+    "python-dotenv": "1.2.2"
+  },
+  "lock_hash_state": "snapshot-only (no lockfile change)",
+  "differences": {
+    "declared_but_not_installed": [],
+    "version_mismatch": []
+  },
+  "note": "Snapshot for RC 0.1.0-rc.1; no upgrade/downgrade performed; Qdrant client/server mismatch recorded as tech debt, not fixed."
+}

@@ -1,0 +1,229 @@
+{
+  "phase": "10B-3H",
+  "evaluation_run_id": "phase10b3h-final-52",
+  "code_commit": "4e6db77",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "candidate_generation_name": "g10b3c20260803",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "holdout_used": false,
+  "initial_retrieval": {
+    "chunk_recall_at_20": {
+      "numerator": 63,
+      "denominator": 72,
+      "value": 0.875
+    },
+    "mrr": {
+      "numerator": null,
+      "denominator": 50,
+      "value": 0.6994
+    },
+    "page_recall_at_20": {
+      "numerator": 50,
+      "denominator": 50,
+      "value": 1.0
+    }
+  },
+  "quality": {
+    "false_rejection_rate": {
+      "numerator": 8,
+      "denominator": 50,
+      "value": 0.16,
+      "included_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "excluded_statuses": [
+        "success",
+        "partial_answer",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "negative_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "value": 1.0,
+      "included_statuses": [
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "excluded_statuses": [
+        "success",
+        "partial_answer",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "question_level_unsupported_answer_rate": {
+      "numerator": 9,
+      "denominator": 42,
+      "value": 0.21428571428571427,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "question_level_citation_accuracy": {
+      "numerator": 33,
+      "denominator": 42,
+      "value": 0.7857142857142857,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "claim_citation_exact_mapping_rate": {
+      "numerator": 167,
+      "denominator": 168,
+      "value": 0.9940476190476191,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "emitted_answer_point_support_rate": {
+      "numerator": 167,
+      "denominator": 168,
+      "value": 0.9940476190476191,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "unsupported_emitted_answer_point_rate": {
+      "numerator": 1,
+      "denominator": 168,
+      "value": 0.005952380952380952,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "expected_answer_point_coverage": {
+      "numerator": 36,
+      "denominator": 72,
+      "value": 0.5,
+      "included_statuses": [
+        "success",
+        "partial_answer",
+        "insufficient_evidence"
+      ],
+      "excluded_statuses": [
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "evidence_panel_completeness": {
+      "numerator": 42,
+      "denominator": 42,
+      "value": 1.0,
+      "included_statuses": [
+        "success",
+        "partial_answer"
+      ],
+      "excluded_statuses": [
+        "insufficient_evidence",
+        "safety_blocked",
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "trace_completeness": {
+      "numerator": 52,
+      "denominator": 52,
+      "value": 1.0,
+      "included_statuses": [
+        "success",
+        "partial_answer",
+        "insufficient_evidence",
+        "safety_blocked"
+      ],
+      "excluded_statuses": [
+        "failed"
+      ],
+      "definition_version": "phase10b3d-metric-policy-v1"
+    }
+  },
+  "completion": {
+    "effective_evidence_recall_after_completion": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_evidence_selected_or_completed_coverage": {
+      "numerator": 64,
+      "denominator": 72,
+      "value": 0.8888888888888888
+    },
+    "expected_answer_point_selected_or_completed_coverage": {
+      "numerator": 52,
+      "denominator": 72,
+      "value": 0.7222222222222222
+    },
+    "parent_completion_trigger_rate": {
+      "numerator": 0,
+      "denominator": 50,
+      "value": 0.0
+    },
+    "adjacent_completion_trigger_rate": {
+      "numerator": 9,
+      "denominator": 50,
+      "value": 0.18
+    },
+    "completion_contribution_rate": {
+      "numerator": 10,
+      "denominator": 10,
+      "value": 1.0
+    },
+    "completion_evidence_precision": {
+      "numerator": 10,
+      "denominator": 10,
+      "value": 1.0
+    },
+    "completion_wrong_document_count": 0,
+    "completion_wrong_generation_count": 0,
+    "retrieval_trace_completeness": {
+      "numerator": 52,
+      "denominator": 52,
+      "value": 1.0
+    }
+  },
+  "gates": {
+    "final_metrics_valid": true,
+    "phase10b3h_approved": false,
+    "phase10b3a_approved": false,
+    "candidate_activated": false,
+    "phase10c_allowed": false,
+    "production_deployment_performed": false
+  }
+}

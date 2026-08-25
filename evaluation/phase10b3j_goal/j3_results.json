@@ -1,0 +1,6 @@
+{
+  "experiment_id": "J3",
+  "status": "not_run",
+  "reason": "J1 was rejected with Citation Precision as the primary blocker; the experiment-control rule terminates before J3.",
+  "enabled_flags": {"QA_COVERAGE_AWARE_SELECTION_ENABLED": false}
+}

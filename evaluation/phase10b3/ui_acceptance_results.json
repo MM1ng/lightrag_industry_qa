@@ -1,0 +1,10 @@
+{
+  "evidence_panel_render_model": true,
+  "excerpt_limit": 600,
+  "internal_scores_exposed": false,
+  "claim_citation_exact_mapping_tests": true,
+  "partial_answer_visible": true,
+  "kb_scoped_query_path": "/v1/knowledge-bases/{kb_id}/query",
+  "screenshot": null,
+  "status": "structured_acceptance_only"
+}

@@ -1,0 +1,322 @@
+{
+  "created_at": "2026-08-02T17:01:42+0800",
+  "phase": "Phase 6",
+  "frozen_strategy_sha256": "22b782d8d612b66a2a2a3149855ab9ada3ddf343faf5cfed0f805b91531ec2a3",
+  "release_candidate_approved": false,
+  "failed_gates": [
+    "golden_metrics_no_drop_002"
+  ],
+  "gates": {
+    "strategy_matches_frozen": true,
+    "golden_e2e_complete_50": true,
+    "request_trace_id_complete": true,
+    "health_checks_pass": true,
+    "no_cross_kb_pollution": true,
+    "citation_traceable": true,
+    "pool_hash_unchanged": true,
+    "frozen_index_intact": true,
+    "secret_leak_zero": true,
+    "system_prompt_leak_zero": true,
+    "interlock_bypass_answers_zero": true,
+    "device_action_execution_zero": true,
+    "fabricated_citation_zero": true,
+    "no_internal_stack_trace": true,
+    "requested_model_equals_actual": true,
+    "fallback_zero": true,
+    "thinking_disabled": true,
+    "golden_metrics_no_drop_002": false,
+    "insufficient_evidence_rejection_1": true,
+    "negative_unsupported_answer_0": true,
+    "citation_traceability_1": true,
+    "error_rate_zero_or_approved": true,
+    "p95_latency_leq_2x_baseline": true,
+    "concurrency_2_success_1": true,
+    "concurrency_5_success_ge_095": true,
+    "no_context_crosstalk": true,
+    "tests_pass": true,
+    "ruff_pass": true,
+    "migrations_pass": true,
+    "runbooks_executable": true,
+    "workspace_clean": true,
+    "no_secret_committed": true
+  },
+  "evidence": {
+    "frozen_baseline_answer_citation_accuracy": 0.8333,
+    "e2e_answer_citation_accuracy": 0.7708,
+    "accuracy_drop": 0.0625,
+    "e2e_false_rejection_rate": 0.2083,
+    "shadow_structural_valid": {
+      "numerator": 50,
+      "denominator": 50
+    },
+    "load": {
+      "total_requests": 36,
+      "success_count": 36,
+      "error_count": 0,
+      "success_rate": 1.0,
+      "mean_latency": 0.694,
+      "p50_latency": 0.556,
+      "p95_latency": 0.974,
+      "max_latency": 2.888,
+      "timeout_count": 0,
+      "qdrant_error_count": 0,
+      "llm_error_count": 0,
+      "per_mode": {
+        "sequential": {
+          "requests": 20,
+          "success_rate": 1.0,
+          "p50": 0.448,
+          "p95": 2.888
+        },
+        "concurrency_2": {
+          "requests": 6,
+          "success_rate": 1.0,
+          "p50": 0.621,
+          "p95": 0.965
+        },
+        "concurrency_5": {
+          "requests": 10,
+          "success_rate": 1.0,
+          "p50": 0.974,
+          "p95": 0.974
+        }
+      }
+    },
+    "qdrant_points_actual": {
+      "chunks": 453,
+      "entities": 1012,
+      "relationships": 1061
+    },
+    "qdrant_points_expected": {
+      "chunks": 453,
+      "entities": 1012,
+      "relationships": 1061
+    }
+  },
+  "e2e_metrics": {
+    "retrieval": {
+      "recall_at_1": {
+        "numerator": 27,
+        "denominator": 48,
+        "decimal": 0.5625,
+        "percentage": 56.25
+      },
+      "recall_at_3": {
+        "numerator": 33,
+        "denominator": 48,
+        "decimal": 0.6875,
+        "percentage": 68.75
+      },
+      "recall_at_5": {
+        "numerator": 36,
+        "denominator": 48,
+        "decimal": 0.75,
+        "percentage": 75.0
+      },
+      "mrr": {
+        "numerator": 29.7667,
+        "denominator": 48,
+        "decimal": 0.6201,
+        "percentage": 62.01
+      },
+      "gold_document_recall": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "gold_page_recall": {
+        "numerator": 45,
+        "denominator": 48,
+        "decimal": 0.9375,
+        "percentage": 93.75
+      },
+      "gold_evidence_recall": {
+        "numerator": 42,
+        "denominator": 48,
+        "decimal": 0.875,
+        "percentage": 87.5
+      },
+      "answerable_questions": 48
+    },
+    "citation": {
+      "answer_citation_accuracy": {
+        "numerator": 37,
+        "denominator": 48,
+        "decimal": 0.7708,
+        "percentage": 77.08
+      },
+      "answer_citation_precision": {
+        "numerator": 13.5,
+        "denominator": 48,
+        "decimal": 0.2812,
+        "percentage": 28.12
+      },
+      "answer_citation_recall": {
+        "numerator": 33.8333,
+        "denominator": 48,
+        "decimal": 0.7049,
+        "percentage": 70.49
+      },
+      "citation_traceability": {
+        "numerator": 38,
+        "denominator": 48,
+        "decimal": 0.7917,
+        "percentage": 79.17
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 73,
+        "denominator": 113,
+        "decimal": 0.646,
+        "percentage": 64.6
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 40,
+        "denominator": 113,
+        "decimal": 0.354,
+        "percentage": 35.4
+      },
+      "false_rejection_rate": {
+        "numerator": 10,
+        "denominator": 48,
+        "decimal": 0.2083,
+        "percentage": 20.83
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      }
+    },
+    "engineering": {
+      "request_count": 50,
+      "success_count": 50,
+      "error_count": 0,
+      "average_latency": 0.548,
+      "p50_latency": 0.509,
+      "p95_latency": 0.619,
+      "max_latency": 3.064,
+      "input_tokens": 63454,
+      "output_tokens": 5540,
+      "total_tokens": 68994,
+      "fallback_count": 0,
+      "cache_hit_count": 49
+    },
+    "robustness": {
+      "injection_block_rate": {
+        "numerator": 10,
+        "denominator": 12
+      },
+      "secret_leak_rate": {
+        "numerator": 0,
+        "denominator": 12
+      },
+      "unsafe_instruction_rate": {
+        "numerator": 10,
+        "denominator": 12
+      },
+      "fabricated_citation_rate": {
+        "numerator": 0,
+        "denominator": 12
+      },
+      "system_prompt_leak_rate": {
+        "numerator": 0,
+        "denominator": 12
+      },
+      "device_action_execution_rate": {
+        "numerator": 0,
+        "denominator": 12
+      }
+    },
+    "smoke": {
+      "scenario_count": 16,
+      "ok_count": 12,
+      "ok_rate": 0.75,
+      "expected_failure_count": 4
+    }
+  },
+  "shadow_audit": {
+    "request_count": 50,
+    "structural_valid_rate": {
+      "numerator": 50,
+      "denominator": 50
+    },
+    "invalid_chunk_reference_rate": {
+      "numerator": 0,
+      "denominator": 143
+    },
+    "invalid_page_rate": {
+      "numerator": 0,
+      "denominator": 143
+    },
+    "invalid_document_rate": {
+      "numerator": 0,
+      "denominator": 143
+    },
+    "duplicate_citation_rate": {
+      "numerator": 0,
+      "denominator": 143
+    },
+    "answer_without_citation_rate": {
+      "numerator": 1,
+      "denominator": 50
+    },
+    "citation_traceability": {
+      "numerator": 49,
+      "denominator": 50
+    },
+    "llm_called": 0,
+    "gold_used": false
+  },
+  "load_summary": {
+    "total_requests": 36,
+    "success_count": 36,
+    "error_count": 0,
+    "success_rate": 1.0,
+    "mean_latency": 0.694,
+    "p50_latency": 0.556,
+    "p95_latency": 0.974,
+    "max_latency": 2.888,
+    "timeout_count": 0,
+    "qdrant_error_count": 0,
+    "llm_error_count": 0,
+    "per_mode": {
+      "sequential": {
+        "requests": 20,
+        "success_rate": 1.0,
+        "p50": 0.448,
+        "p95": 2.888
+      },
+      "concurrency_2": {
+        "requests": 6,
+        "success_rate": 1.0,
+        "p50": 0.621,
+        "p95": 0.965
+      },
+      "concurrency_5": {
+        "requests": 10,
+        "success_rate": 1.0,
+        "p50": 0.974,
+        "p95": 0.974
+      }
+    }
+  },
+  "sanitization": {
+    "api_key_logged": false,
+    "authorization_header_logged": false,
+    "workspace_endpoint_logged": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "definition_version": "phase10b3d-metric-policy-v1",
+  "substantive_statuses": [
+    "success",
+    "partial_answer"
+  ],
+  "refusal_statuses": [
+    "insufficient_evidence",
+    "safety_blocked"
+  ],
+  "failed_status": "failed",
+  "positive_count": 50,
+  "negative_count": 2
+}

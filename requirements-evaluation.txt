@@ -1,0 +1,2 @@
+# Evaluation-only dependencies. Do not install this file for production runtime.
+ragas==0.3.9

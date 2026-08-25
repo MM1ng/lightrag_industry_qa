@@ -1,0 +1,8 @@
+{
+  "scanned_logs": [
+    ".run\\api.err.log",
+    ".run\\api.out.log"
+  ],
+  "secret_matches": 0,
+  "findings": []
+}

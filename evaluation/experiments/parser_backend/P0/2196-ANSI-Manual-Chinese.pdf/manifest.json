@@ -1,0 +1,29 @@
+{
+  "parser_requested": "pymupdf",
+  "parser_used": "pymupdf",
+  "fallback_used": false,
+  "fallback_reason": null,
+  "pdf_name": "2196-ANSI-Manual-Chinese.pdf",
+  "pdf_size": 1561387,
+  "pdf_sha256": "e0f80874dd923d03ea15584f4fe25046ba184675062d6d16e1decafa2a6c8700",
+  "pdf_pages": 55,
+  "pdf_encrypted": false,
+  "parse_seconds": 0.656,
+  "source_chunk_count": 53,
+  "block_count": 584,
+  "parent_count": 282,
+  "child_count": 285,
+  "chunker_strategy": "pymupdf-v1",
+  "chunker_version": "0.1.0",
+  "chunker_config": {
+    "parent_target_tokens": 1500,
+    "parent_max_tokens": 2200,
+    "child_target_tokens": 450,
+    "child_min_tokens": 120,
+    "child_max_tokens": 700,
+    "child_overlap_tokens": 80,
+    "merge_small_children": true
+  },
+  "git_commit": "ff6afec22aaea7311601580a0ec8c12c7b94927f",
+  "created_at": "2026-08-01T08:52:43+0800"
+}

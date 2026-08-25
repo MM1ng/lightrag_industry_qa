@@ -1,0 +1,17 @@
+{
+  "total_request_budget_seconds": 180.0,
+  "embedding_timeout_seconds": 60.0,
+  "retrieval_timeout_seconds": 120.0,
+  "llm_timeout_seconds": 150.0,
+  "request_timeout_seconds": 180.0,
+  "max_retries": 2,
+  "concurrency_limit": 5,
+  "qdrant_connect_timeout_seconds": 10.0,
+  "http_connection_pool_max": 20,
+  "rationale": {
+    "total_budget": "Hard ceiling for one QA request; sub-stages (embedding 60s, retrieval 120s, LLM 150s) cannot stack beyond 180s because the runtime query future is cancelled at the total budget.",
+    "llm_retries": "max_retries=2, no model fallback; retries are counted and audited, and a timeout never switches models.",
+    "concurrency": "Per-runtime asyncio lock serializes queries to one KB runtime; API-level concurrency is bounded by uvicorn and the runtime manager cache (max 8 runtimes)."
+  },
+  "source": "evaluation/experiments/phase6/config/runtime.json"
+}

@@ -1,0 +1,9 @@
+{
+  "experiment": "J1S",
+  "questions": 36,
+  "completed": 0,
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "validation_run": false,
+  "holdout_run": false
+}

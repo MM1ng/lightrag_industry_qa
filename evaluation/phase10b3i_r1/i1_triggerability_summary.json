@@ -1,0 +1,11 @@
+{
+  "record_count": 36,
+  "triggered": 0,
+  "trigger_rate": 0.0,
+  "rejection_reason_counts": {
+    "policy_dead_path": 36
+  },
+  "validation_run": false,
+  "holdout_used": false,
+  "h3_enabled": true
+}

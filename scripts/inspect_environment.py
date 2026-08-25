@@ -24,7 +24,7 @@ def main() -> int:
         "two_pdf_manuals": len(scan_pdf_files(PROJECT_ROOT / "data" / "manuals")) == 2,
         "beijing_endpoint": os.getenv("LLM_BASE_URL", DEFAULT_BAILIAN_BASE_URL).rstrip("/")
         == DEFAULT_BAILIAN_BASE_URL,
-        "llm_model": os.getenv("LLM_MODEL", "qwen3.7-plus") == "qwen3.7-plus",
+        "llm_model": bool(os.getenv("LLM_MODEL", "kimi-k2.6").strip()),
         "embedding_model": os.getenv("EMBEDDING_MODEL", "text-embedding-v4") == "text-embedding-v4",
         "embedding_dimension": os.getenv("EMBEDDING_DIM", "1024") == "1024",
     }

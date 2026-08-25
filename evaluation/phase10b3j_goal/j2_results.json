@@ -1,0 +1,6 @@
+{
+  "experiment_id": "J2",
+  "status": "not_run",
+  "reason": "J1 was rejected with Citation Precision as the primary blocker; the experiment-control rule terminates before J2.",
+  "enabled_flags": {"QA_GROUNDING_FALSE_NEGATIVE_RECOVERY_ENABLED": false}
+}

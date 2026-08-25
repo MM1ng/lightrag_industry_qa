@@ -1,0 +1,9 @@
+{
+  "case_count": 39,
+  "stage_counts": {
+    "selected_not_available_to_provider": 36,
+    "recalled_not_selected": 3
+  },
+  "point_count": 39,
+  "holdout_used": false
+}

@@ -1,0 +1,22 @@
+{
+  "parser_pipeline": "pymupdf_standard_adapter",
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "parent_expansion": "none",
+  "rerank_enabled": false,
+  "context_strategy": "current_rows",
+  "answer_model": "qwen-plus-2025-07-28",
+  "fallback_enabled": false,
+  "thinking_enabled": false,
+  "golden_set": "industrial_pump_golden_set_50.jsonl",
+  "candidate_pool_sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0",
+  "evidence_limit": 3,
+  "max_context_tokens": 6000,
+  "max_citations_per_sentence": 2,
+  "citation_repair_max_attempts": 1,
+  "grounded_answer_lite_enabled": false,
+  "inline_chunk_citation_enabled": false,
+  "citation_only_repair_enabled": false,
+  "claim_level_guard_enabled": false
+}

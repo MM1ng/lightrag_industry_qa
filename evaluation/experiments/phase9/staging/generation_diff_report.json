@@ -1,0 +1,137 @@
+{
+  "phase": "Phase 9-LS",
+  "created_at": "2026-08-02T22:39:08+0800",
+  "generations": [
+    {
+      "id": "32d053af8c9146b0a2f0587ee023942b",
+      "generation": "g827499e3e302a4df691ac6c1",
+      "status": "archived"
+    },
+    {
+      "id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+      "generation": "ge57223eac408f8eee965726b",
+      "status": "archived"
+    },
+    {
+      "id": "be4521cd65a34ae6ab54647bf52b70ed",
+      "generation": "g39d065242f537f29e339e375",
+      "status": "active"
+    }
+  ],
+  "operations": {
+    "delete": {
+      "candidate_generation_id": "32d053af8c9146b0a2f0587ee023942b",
+      "status": "promoted",
+      "chunk_stats": {
+        "added_chunks": 0,
+        "reused_chunks": 1,
+        "invalidated_chunks": 1
+      },
+      "entity_relation_delta": {
+        "active": {
+          "chunks": 1,
+          "entities": 2,
+          "relationships": 1
+        },
+        "candidate": {
+          "chunks": 0,
+          "entities": 0,
+          "relationships": 0
+        },
+        "delta": {
+          "chunks": -1,
+          "entities": -2,
+          "relationships": -1
+        }
+      },
+      "latencies": {
+        "parse_seconds": 0.0,
+        "embedding_seconds": 0.0,
+        "graph_seconds": 0.348,
+        "validation_seconds": 0.0,
+        "total_seconds": 1.657
+      }
+    },
+    "replace": {
+      "candidate_generation_id": "21ba94c476a44fe08dbf3553fe7e6ec6",
+      "status": "promoted",
+      "chunk_stats": {
+        "added_chunks": 1,
+        "reused_chunks": 1,
+        "invalidated_chunks": 1
+      },
+      "entity_relation_delta": {
+        "active": {
+          "chunks": 1,
+          "entities": 2,
+          "relationships": 1
+        },
+        "candidate": {
+          "chunks": 1,
+          "entities": 2,
+          "relationships": 1
+        },
+        "delta": {
+          "chunks": 0,
+          "entities": 0,
+          "relationships": 0
+        }
+      },
+      "latencies": {
+        "parse_seconds": 0.006,
+        "embedding_seconds": 3.901,
+        "graph_seconds": 0.184,
+        "validation_seconds": 0.0,
+        "total_seconds": 5.387
+      }
+    },
+    "add": {
+      "candidate_generation_id": "be4521cd65a34ae6ab54647bf52b70ed",
+      "status": "rolled_back",
+      "chunk_stats": {
+        "added_chunks": 1,
+        "reused_chunks": 0,
+        "invalidated_chunks": 0
+      },
+      "entity_relation_delta": {
+        "active": {
+          "chunks": 0,
+          "entities": 0,
+          "relationships": 0
+        },
+        "candidate": {
+          "chunks": 1,
+          "entities": 2,
+          "relationships": 1
+        },
+        "delta": {
+          "chunks": 1,
+          "entities": 2,
+          "relationships": 1
+        }
+      },
+      "latencies": {
+        "parse_seconds": 0.031,
+        "embedding_seconds": 4.872,
+        "graph_seconds": 0.0,
+        "validation_seconds": 0.0,
+        "total_seconds": 6.261
+      }
+    }
+  },
+  "verification": {
+    "validation_v1_passed": true,
+    "validation_v2_passed": true,
+    "validation_v3_passed": true,
+    "active_query_v1_has_marker": true,
+    "active_before_v2_promote_has_old": true,
+    "active_before_v2_promote_has_new": false,
+    "active_query_v2_has_new": true,
+    "active_query_v2_has_old": false,
+    "after_delete_refused": true,
+    "after_rollback_has_v1": true,
+    "after_rollback_has_v2": false,
+    "db_integrity": "ok"
+  },
+  "qdrant_frozen_collections_unchanged": true
+}

@@ -1,0 +1,19 @@
+{
+  "review_type": "multi_agent_machine_review",
+  "status": "machine_review_completed",
+  "input_packet_path": "evaluation/phase10b3j/manual_support_review_packet.jsonl",
+  "case_count": 15,
+  "reviewer_count": 2,
+  "adjudicated_count": 15,
+  "decision_counts": {
+    "machine_needs_human_review": 3,
+    "machine_supported": 12
+  },
+  "human_review_performed": false,
+  "human_approval_claimed": false,
+  "model_queries_made": false,
+  "candidate_activation_performed": false,
+  "validation_run": false,
+  "holdout_run": false,
+  "phase10c_allowed": false
+}

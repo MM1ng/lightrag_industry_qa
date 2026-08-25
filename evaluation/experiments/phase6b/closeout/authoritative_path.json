@@ -1,0 +1,17 @@
+{
+  "authoritative_release_path": "official_fastapi",
+  "harness_role": "historical_experiment_and_offline_diagnostics",
+  "harness_is_input_equivalent_to_fastapi": false,
+  "retrieval_metrics_equal_under_canonical_at12": true,
+  "final_context_equal_questions": 27,
+  "prompt_equal_questions": 1,
+  "evidence_policy_equal_questions": 27,
+  "official_path_required_for_future_release_gates": true,
+  "rules": [
+    "Harness is not an input-equivalent substitute for the official path",
+    "Harness may be used for offline diagnostics and deterministic metrics",
+    "Official answer quality and release gates must run through official FastAPI",
+    "Harness high scores must never override FastAPI regressions",
+    "Results from the two paths must never be mixed in the same baseline"
+  ]
+}

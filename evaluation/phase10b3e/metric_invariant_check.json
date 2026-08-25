@@ -1,0 +1,16 @@
+{
+  "definition_version": "phase10b3d-metric-policy-v1",
+  "checks": {
+    "positive_count": true,
+    "negative_count": true,
+    "total_count": true,
+    "positive_partition": true,
+    "negative_partition": true,
+    "substantive_answer_count": true,
+    "unsupported_denominator": true,
+    "citation_denominator": true,
+    "claim_mapping_denominator": true,
+    "no_failed_hidden": true
+  },
+  "final_metrics_valid": true
+}

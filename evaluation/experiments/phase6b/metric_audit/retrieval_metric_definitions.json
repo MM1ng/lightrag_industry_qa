@@ -1,0 +1,77 @@
+[
+  {
+    "canonical_name": "recall_at_1",
+    "source_file": "phase4 pool (H) / phase6 golden (A)",
+    "source_field": "child_chunk_id / retrieved_chunk_ids",
+    "candidate_universe": "H: frozen pool top-12 rows (duplicates allowed) | A: official retrieval first 12 unique ids",
+    "k": 1,
+    "dedup_rule": "H: none (rows) | A: identity-deduped by API",
+    "evidence_mapping_rule": "exact chunk_id in evidence_mapping_p0",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "recall_at_3",
+    "source_file": "phase4 pool (H) / phase6 golden (A)",
+    "source_field": "child_chunk_id / retrieved_chunk_ids",
+    "candidate_universe": "H: frozen pool top-12 rows (duplicates allowed) | A: official retrieval first 12 unique ids",
+    "k": 3,
+    "dedup_rule": "H: none (rows) | A: identity-deduped by API",
+    "evidence_mapping_rule": "exact chunk_id in evidence_mapping_p0",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "recall_at_5",
+    "source_file": "phase4 pool (H) / phase6 golden (A)",
+    "source_field": "child_chunk_id / retrieved_chunk_ids",
+    "candidate_universe": "H: frozen pool top-12 rows (duplicates allowed) | A: official retrieval first 12 unique ids",
+    "k": 5,
+    "dedup_rule": "H: none (rows) | A: identity-deduped by API",
+    "evidence_mapping_rule": "exact chunk_id in evidence_mapping_p0",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "recall_at_12",
+    "source_file": "phase4 pool (H) / phase6 golden (A)",
+    "source_field": "child_chunk_id / retrieved_chunk_ids",
+    "candidate_universe": "H: frozen pool top-12 rows (duplicates allowed) | A: official retrieval first 12 unique ids",
+    "k": 12,
+    "dedup_rule": "H: none (rows) | A: identity-deduped by API",
+    "evidence_mapping_rule": "exact chunk_id in evidence_mapping_p0",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "gold_document_recall_at_12",
+    "candidate_universe": "top-12 (both paths)",
+    "k": 12,
+    "dedup_rule": "unique chunk ids (sets)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "gold_page_recall_at_12",
+    "candidate_universe": "top-12 (both paths)",
+    "k": 12,
+    "dedup_rule": "unique chunk ids (sets)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  },
+  {
+    "canonical_name": "gold_evidence_recall_at_12",
+    "candidate_universe": "top-12 (both paths)",
+    "k": 12,
+    "dedup_rule": "unique chunk ids (sets)",
+    "denominator": 48,
+    "included_questions": "S/D/C (48)",
+    "excluded_questions": "N001/N002"
+  }
+]

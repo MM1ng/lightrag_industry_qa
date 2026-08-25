@@ -1,0 +1,20 @@
+{
+  "phase": "10B-3J",
+  "split": "development",
+  "question_count": 36,
+  "completed_count": 0,
+  "ordinary_query_failed_count": 36,
+  "http_status_counts": {
+    "409": 36
+  },
+  "error_code_counts": {
+    "generation_invalid_state": 36
+  },
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "candidate_generation_name": "g10b3c20260803",
+  "validation_run": false,
+  "holdout_run": false,
+  "candidate_activated": false,
+  "gate": "blocked",
+  "blocking_reason": "generation_invalid_state: fixed candidate generation unavailable in current staging runtime; no quality metrics were computed"
+}

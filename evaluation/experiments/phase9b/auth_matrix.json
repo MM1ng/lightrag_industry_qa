@@ -1,0 +1,44 @@
+[
+  {
+    "name": "admin_missing",
+    "status_code": 401,
+    "code": "UNAUTHORIZED",
+    "request_id_present": true,
+    "trace_id_present": true
+  },
+  {
+    "name": "admin_invalid",
+    "status_code": 401,
+    "code": "UNAUTHORIZED",
+    "request_id_present": true,
+    "trace_id_present": true
+  },
+  {
+    "name": "admin_service_forbidden",
+    "status_code": 403,
+    "code": "ADMIN_PERMISSION_REQUIRED",
+    "request_id_present": true,
+    "trace_id_present": true
+  },
+  {
+    "name": "admin_admin_allowed",
+    "status_code": 200,
+    "code": null,
+    "request_id_present": false,
+    "trace_id_present": false
+  },
+  {
+    "name": "ordinary_service_allowed",
+    "status_code": 200,
+    "code": null,
+    "request_id_present": false,
+    "trace_id_present": false
+  },
+  {
+    "name": "ordinary_admin_allowed",
+    "status_code": 200,
+    "code": null,
+    "request_id_present": false,
+    "trace_id_present": false
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "row_count": 64,
+  "development_validation_count": 52,
+  "historical_holdout_count": 12,
+  "groups": {
+    "split": {
+      "development": 36,
+      "validation": 16,
+      "holdout": 12
+    },
+    "question_type": {
+      "maintenance": 7,
+      "procedure": 19,
+      "multi_evidence": 10,
+      "parameter": 10,
+      "condition_limit": 9,
+      "troubleshooting": 2,
+      "safety": 5,
+      "component": 2
+    },
+    "failure_layer": {
+      "None": 45,
+      "Generation": 18,
+      "Citation": 1
+    },
+    "failure_category": {
+      "none": 45,
+      "unsupported_generation_claim": 18,
+      "wrong_page_citation": 1
+    }
+  },
+  "holdout_rerun": false
+}

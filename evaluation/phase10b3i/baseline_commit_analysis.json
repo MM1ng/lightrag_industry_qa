@@ -1,0 +1,22 @@
+{
+  "analysis_version": "phase10b3i-baseline-commit-analysis-v1",
+  "base_commit": "e795d8e",
+  "commits": [
+    {"commit": "cff9617", "phase": "10B-3C", "subject": "record final git head", "role": "provenance-only"},
+    {"commit": "f1cd855", "phase": "10B-3D", "subject": "enforce metric integrity and diagnose evidence gaps", "role": "metric-integrity baseline"},
+    {"commit": "7fe9e09", "phase": "10B-3G", "subject": "propagate conditional completion evidence", "role": "completion propagation experiment"},
+    {"commit": "3f7ede0", "phase": "10B-3G", "subject": "record final delivery commit", "role": "provenance-only"},
+    {"commit": "4e6db77", "phase": "10B-3H", "subject": "integrate support calibration and bounded recovery", "role": "support-calibration experiment"}
+  ],
+  "baseline_policy": {
+    "active_baseline_commit": "e795d8e",
+    "golden_set_modified": false,
+    "holdout_read": false,
+    "chunking_modified": false,
+    "embedding_modified": false,
+    "top_k_modified": false,
+    "rerank_modified": false,
+    "candidate_activation": false
+  },
+  "rollback_observation": "10B-3I flags are introduced as independently disabled controls; no prior experiment is silently selected as the active baseline."
+}

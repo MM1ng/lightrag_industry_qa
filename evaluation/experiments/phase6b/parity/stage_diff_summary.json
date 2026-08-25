@@ -1,0 +1,13 @@
+{
+  "question_count": 50,
+  "earliest_diff_stage_counts": {
+    "final_context": 23,
+    "context_rendering": 27
+  },
+  "context_fully_equal_count": 27,
+  "prompt_equal_count": 1,
+  "evidence_policy_equal_count": 27,
+  "raw_answer_equal_count": 12,
+  "citations_equal_count": 1,
+  "refusal_equal_count": 43
+}

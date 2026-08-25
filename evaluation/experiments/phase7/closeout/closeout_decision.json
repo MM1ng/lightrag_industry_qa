@@ -1,0 +1,43 @@
+{
+  "phase": "Phase 7 Closeout",
+  "created_at": "2026-08-02T20:22:52+08:00",
+  "git_commit": "5051647ee2e377e3ea94f70eca1c0eded832e42b",
+  "rc_version": "0.1.0-rc.1",
+  "checks": {
+    "canonical_metric_denominators_corrected": true,
+    "original_per_question_results_not_overwritten": true,
+    "acceptance_gates_repassed": true,
+    "final_pytest_results_explicit": true,
+    "ruff_passed": true,
+    "package_type_declared": true,
+    "confirmed_secret_count": 0,
+    "release_package_approved": true,
+    "deployment_performed": false
+  },
+  "final_test_results": {
+    "collected": 546,
+    "passed": 534,
+    "skipped": 12,
+    "failed": 0,
+    "duration_seconds": 20.61,
+    "skip_classification": {
+      "real_mineru_opt_in": 1,
+      "real_qdrant_e2e_opt_in": 2,
+      "real_qdrant_integration_opt_in": 9,
+      "all_external_opt_in": true
+    },
+    "ruff": "All checks passed!"
+  },
+  "phase8_allowed": true,
+  "phase8_allowed_conditions": {
+    "canonical_metric_denominators_corrected": true,
+    "original_results_preserved": true,
+    "acceptance_gates_repassed": true,
+    "final_pytest_results_explicit": true,
+    "ruff_passed": true,
+    "package_type_declared": true,
+    "confirmed_secret_count_zero": true,
+    "release_package_approved": true,
+    "deployment_performed_false": true
+  }
+}

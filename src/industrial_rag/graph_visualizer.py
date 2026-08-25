@@ -50,8 +50,12 @@ _PALETTE = (
 )
 
 
-def locate_graph_file(working_dir: Path | str) -> Path | None:
-    path = Path(working_dir) / GRAPHML_FILENAME
+def locate_graph_file(
+    working_dir: Path | str, *, workspace: str | None = None
+) -> Path | None:
+    """Locate the LightRAG GraphML inside an optional per-generation subdir."""
+    base = Path(working_dir)
+    path = base / workspace / GRAPHML_FILENAME if workspace else base / GRAPHML_FILENAME
     return path.resolve() if path.is_file() else None
 
 

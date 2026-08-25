@@ -1,0 +1,616 @@
+{
+  "source": "industrial_pump_golden_set_50.jsonl",
+  "sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf",
+  "total": 50,
+  "categories": {
+    "参数查询": 20,
+    "表格查询": 3,
+    "操作步骤": 9,
+    "故障诊断": 3,
+    "安全警告": 5,
+    "普通事实": 2,
+    "跨页问题": 6,
+    "证据不足": 2
+  },
+  "questions": [
+    {
+      "question_id": "S001",
+      "question": "SUMMIT 2196 系列泵长期存放时，存放环境和泵轴转动频率有什么要求？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        9
+      ]
+    },
+    {
+      "question_id": "S002",
+      "question": "SUMMIT 2196 系列泵的入口管路应如何选择和布置？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        10
+      ]
+    },
+    {
+      "question_id": "S003",
+      "question": "SUMMIT 2196 系列泵出口管路中的止回阀、隔离阀和异径接头应怎样布置？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        10
+      ]
+    },
+    {
+      "question_id": "S004",
+      "question": "SUMMIT 2196 系列泵联轴器平行和角度对正误差应控制在多少以内？高温工况还要注意什么？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        11
+      ]
+    },
+    {
+      "question_id": "S005",
+      "question": "SUMMIT 2196 系列泵启动后，填料函的正常滴漏速度应调整到多少？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        11
+      ]
+    },
+    {
+      "question_id": "S006",
+      "question": "SUMMIT 手册规定的最高轴承工作温度是多少？泵送液体温度超过多少时必须水冲注填料函？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        14
+      ]
+    },
+    {
+      "question_id": "S007",
+      "question": "SUMMIT 手册中，轴承温度不超过 150°F、150–200°F、超过 200°F 时分别应选什么 ISO 润滑油等级？",
+      "primary_category": "表格查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        14
+      ]
+    },
+    {
+      "question_id": "S008",
+      "question": "SUMMIT 2196 系列泵的润滑油多久更换一次？恶劣环境下如何处理？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        15
+      ]
+    },
+    {
+      "question_id": "S009",
+      "question": "SUMMIT 手册对润滑脂的适用温度、稠度和重新润滑周期有什么规定？",
+      "primary_category": "表格查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        16
+      ]
+    },
+    {
+      "question_id": "S010",
+      "question": "面对 SUMMIT 泵的吸入口时，泵的正确旋转方向是什么？反转有什么风险？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        16
+      ]
+    },
+    {
+      "question_id": "S011",
+      "question": "按 SUMMIT 手册，离心泵的标准启动步骤是什么？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "cross_page",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        17,
+        18
+      ]
+    },
+    {
+      "question_id": "S012",
+      "question": "SUMMIT 2196 系列泵的停机步骤是什么？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        18
+      ]
+    },
+    {
+      "question_id": "S013",
+      "question": "泵送温度最高 300°F 时，SUMMIT MTO/LTO 泵的叶轮间隙应设为多少？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        19
+      ]
+    },
+    {
+      "question_id": "S014",
+      "question": "用塞尺法设置 2196-R 型泵叶轮间隙时，最终塞尺厚度如何确定？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        20
+      ]
+    },
+    {
+      "question_id": "S015",
+      "question": "SUMMIT 手册中，泵不输送液体的常见原因和对应处理方法有哪些？",
+      "primary_category": "故障诊断",
+      "secondary_tags": [
+        "fault_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        23
+      ]
+    },
+    {
+      "question_id": "S016",
+      "question": "SUMMIT 手册中，轴承高温运行通常由什么原因造成，如何处理？",
+      "primary_category": "故障诊断",
+      "secondary_tags": [
+        "fault_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        24
+      ]
+    },
+    {
+      "question_id": "S017",
+      "question": "按 SUMMIT 手册，在尝试维修离心泵之前必须完成哪些安全步骤？",
+      "primary_category": "安全警告",
+      "secondary_tags": [
+        "cross_page",
+        "step_related",
+        "warning_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        23,
+        25
+      ]
+    },
+    {
+      "question_id": "S018",
+      "question": "SUMMIT 手册规定泵体和叶轮出现多深的凹槽、点蚀或磨损时应更换？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        27
+      ]
+    },
+    {
+      "question_id": "S019",
+      "question": "SUMMIT LTO 泵架的外轴承是什么布置方式，安装时还有哪些润滑相关要求？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        28
+      ]
+    },
+    {
+      "question_id": "S020",
+      "question": "SUMMIT 填料密封泵装填填料和水封环时，填料环、水封环及接头应怎样布置？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        29
+      ]
+    },
+    {
+      "question_id": "D001",
+      "question": "DESMI DNS 系列泵适用于哪些行业，其基本结构是什么？",
+      "primary_category": "普通事实",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        5
+      ]
+    },
+    {
+      "question_id": "D002",
+      "question": "DESMI 手册对运输、安装、操作、维护和检查人员的资格与培训有什么要求？",
+      "primary_category": "普通事实",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        6
+      ]
+    },
+    {
+      "question_id": "D003",
+      "question": "DESMI 手册中的“危险”“警告”“小心”分别代表什么风险等级和后果？",
+      "primary_category": "安全警告",
+      "secondary_tags": [
+        "parameter_related",
+        "table_related",
+        "warning_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        7
+      ]
+    },
+    {
+      "question_id": "D004",
+      "question": "DESMI DNS 泵的预期用途对干运行、最小流量、最大流量和吸入侧节流有什么限制？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        10
+      ]
+    },
+    {
+      "question_id": "D005",
+      "question": "DESMI 手册规定进行维护、检查或安装前，泵组必须处于什么状态？",
+      "primary_category": "安全警告",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        12
+      ]
+    },
+    {
+      "question_id": "D006",
+      "question": "DESMI DNS 泵在霜冻期停用时应如何防冻？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        12
+      ]
+    },
+    {
+      "question_id": "D007",
+      "question": "运输 DESMI 泵组时，吊运装置禁止固定在哪里，还应注意哪些事项？",
+      "primary_category": "安全警告",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        13
+      ]
+    },
+    {
+      "question_id": "D008",
+      "question": "DESMI 泵组存放环境和泵轴手动转动频率有什么要求？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        15
+      ]
+    },
+    {
+      "question_id": "D009",
+      "question": "DESMI DNS 系列泵的一般介质温度、最大密度和最大粘度范围是多少？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        17
+      ]
+    },
+    {
+      "question_id": "D010",
+      "question": "DESMI 手册给出的最小进水压力由哪些项组成？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        18
+      ]
+    },
+    {
+      "question_id": "D011",
+      "question": "DESMI 建议泵前吸入直管段长度为多少？DN100 泵对应多少毫米？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        21
+      ]
+    },
+    {
+      "question_id": "D012",
+      "question": "DESMI 手册对吸入侧弯管、T 型管、弯曲半径和管道截面变化有什么要求？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        22
+      ]
+    },
+    {
+      "question_id": "D013",
+      "question": "DESMI DNS 泵管路支撑和进口侧流速有什么要求？",
+      "primary_category": "参数查询",
+      "secondary_tags": [],
+      "expects_evidence": true,
+      "citation_pages": [
+        23
+      ]
+    },
+    {
+      "question_id": "D014",
+      "question": "DESMI 手册对出口流速、杂质监测、阀门关闭运行和 BEP 范围有哪些规定？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "parameter_related",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        24
+      ]
+    },
+    {
+      "question_id": "D015",
+      "question": "DESMI 手册中最大吸上高度 H 的计算公式是什么，安全裕度 Hs 建议多少？",
+      "primary_category": "参数查询",
+      "secondary_tags": [
+        "cross_page",
+        "parameter_related",
+        "warning_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        24,
+        25
+      ]
+    },
+    {
+      "question_id": "D016",
+      "question": "DESMI 泵和电机联轴器的对中偏差上限是多少，测量时如何布点？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        26
+      ]
+    },
+    {
+      "question_id": "D017",
+      "question": "DESMI 联轴器外圆直径为 360–410 mm 时，联轴器间隙 S 应是多少？",
+      "primary_category": "表格查询",
+      "secondary_tags": [
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        27
+      ]
+    },
+    {
+      "question_id": "D018",
+      "question": "DESMI 泵组调试或启动前应满足哪些前提条件？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        28
+      ]
+    },
+    {
+      "question_id": "D019",
+      "question": "DESMI DNS 泵的启动阀门操作顺序是什么？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "cross_page",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        31,
+        32
+      ]
+    },
+    {
+      "question_id": "D020",
+      "question": "DESMI DNS 泵正常停机和长期停机时分别应怎样操作？",
+      "primary_category": "操作步骤",
+      "secondary_tags": [
+        "cross_page",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        32,
+        33
+      ]
+    },
+    {
+      "question_id": "C001",
+      "question": "两份手册对泵的存放环境和泵轴定期转动频率分别有什么规定？",
+      "primary_category": "跨页问题",
+      "secondary_tags": [
+        "cross_page"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        9,
+        15
+      ]
+    },
+    {
+      "question_id": "C002",
+      "question": "SUMMIT 与 DESMI 手册对泵和电机联轴器对中精度的要求有什么不同？",
+      "primary_category": "跨页问题",
+      "secondary_tags": [
+        "cross_page"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        11,
+        26
+      ]
+    },
+    {
+      "question_id": "C003",
+      "question": "两份手册对离心泵干运行和启动前灌注有哪些共同要求？",
+      "primary_category": "跨页问题",
+      "secondary_tags": [
+        "cross_page",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        17,
+        28,
+        29
+      ]
+    },
+    {
+      "question_id": "C004",
+      "question": "比较两份手册的离心泵启动流程，阀门操作有哪些共同点和差异？",
+      "primary_category": "跨页问题",
+      "secondary_tags": [
+        "cross_page",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        17,
+        28,
+        29,
+        32
+      ]
+    },
+    {
+      "question_id": "C005",
+      "question": "SUMMIT 与 DESMI 手册的正常停机步骤和长期停机要求有什么差别？",
+      "primary_category": "跨页问题",
+      "secondary_tags": [
+        "cross_page",
+        "step_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        18,
+        32,
+        33
+      ]
+    },
+    {
+      "question_id": "C006",
+      "question": "两份手册对吸入管路布置分别提出了哪些关键数值和结构要求？",
+      "primary_category": "跨页问题",
+      "secondary_tags": [
+        "cross_page",
+        "parameter_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        10,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "question_id": "C007",
+      "question": "综合两份手册，维修或拆卸离心泵前必须采取哪些共同安全措施？",
+      "primary_category": "安全警告",
+      "secondary_tags": [
+        "cross_page",
+        "step_related",
+        "warning_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        12,
+        23,
+        25,
+        48,
+        49
+      ]
+    },
+    {
+      "question_id": "C008",
+      "question": "两份手册对“泵不输送液体或容量过低”的原因和排查方法有哪些共同点？",
+      "primary_category": "故障诊断",
+      "secondary_tags": [
+        "cross_page",
+        "fault_related"
+      ],
+      "expects_evidence": true,
+      "citation_pages": [
+        23,
+        37
+      ]
+    },
+    {
+      "question_id": "N001",
+      "question": "这两份泵手册中，Wi-Fi 配网和无线网络密码应该如何设置？",
+      "primary_category": "证据不足",
+      "secondary_tags": [],
+      "expects_evidence": false,
+      "citation_pages": []
+    },
+    {
+      "question_id": "N002",
+      "question": "两份手册指定必须购买哪个品牌、哪个型号的变频器？",
+      "primary_category": "证据不足",
+      "secondary_tags": [],
+      "expects_evidence": false,
+      "citation_pages": []
+    }
+  ],
+  "historical_discrepancy_note": "旧报告历史章节曾计 安全警告=4、跨页=7，因把 C007（两份手册维修安全措施）归入跨页问题；正式 canonical 分类将 C007 归入安全警告（primary），跨页作为 secondary tag，故正式计数为 安全警告=5、跨页=6。"
+}

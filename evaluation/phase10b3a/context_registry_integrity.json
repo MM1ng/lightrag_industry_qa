@@ -1,0 +1,23 @@
+{
+  "status": "blocked_incomplete_context_registry",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "generation": "g5162e7fb4208635103ff4ebb",
+  "generation_status": "active",
+  "context_registry_present": false,
+  "source_child_files": [
+    "evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\parsed\\documents\\80bb03f00a854376a339767099da6013\\current\\child_chunks.jsonl",
+    "evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\parsed\\documents\\ee3fff9976534edda393da71b73f587b\\current\\child_chunks.jsonl"
+  ],
+  "child_count": 453,
+  "parent_link_count": 453,
+  "previous_link_count": 0,
+  "next_link_count": 0,
+  "table_link_count": 0,
+  "broken_link_count": 453,
+  "cross_document_link_count": 0,
+  "cross_generation_link_count": 0,
+  "notes": [
+    "Active workspace contains child chunks only; parent records and relationship metadata are absent.",
+    "No non-destructive online backfill was performed because required registry relationships cannot be reconstructed safely."
+  ]
+}

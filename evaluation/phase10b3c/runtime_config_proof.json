@@ -1,0 +1,14 @@
+{
+  "environment": "local_staging",
+  "query_mode": "naive",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "normalization_enabled": true,
+  "grounding_enabled": true,
+  "llm_cache_enabled": false,
+  "rerank_enabled": false,
+  "answer_model": "qwen-plus-2025-07-28",
+  "embedding_model": "text-embedding-v4",
+  "fallback_enabled": false,
+  "source": "local_staging environment contract; secret values omitted"
+}

@@ -1,0 +1,18 @@
+{
+  "phase": "10B-3J-R1",
+  "quality_flags_all_disabled": true,
+  "questions": 36,
+  "status_distribution": {
+    "success": 2,
+    "partial_answer": 30,
+    "insufficient_evidence": 4
+  },
+  "trace_versions": {
+    "phase10b3j-runtime-lineage-v2": 36
+  },
+  "ordinary_response_internal_trace_leaks": false,
+  "non_expected_5xx": 0,
+  "generation_invalid_state": 0,
+  "active_pointer_changed": false,
+  "quality_metrics_comparison": "not computed; J0 is instrumentation certification only"
+}

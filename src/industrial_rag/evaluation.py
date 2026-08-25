@@ -43,6 +43,8 @@ class CaseResult:
     error_type: str | None
     first_relevant_rank: int | None = None
     refusal_passed: bool = False
+    routed_document: str | None = None
+    refused: bool = False
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -53,6 +55,7 @@ class CaseResult:
             "error_type": self.error_type,
             "first_relevant_rank": self.first_relevant_rank,
             "refusal_passed": self.refusal_passed,
+            "routed_document": self.routed_document,
         }
 
 
@@ -71,6 +74,9 @@ class EvaluationReport:
     success_rate: float
     latency_p50_ms: float | None
     latency_p95_ms: float | None
+    average_citations_per_answer: float | None = None
+    max_citations_per_answer: int | None = None
+    document_route_accuracy: float | None = None
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -85,6 +91,9 @@ class EvaluationReport:
             "success_rate": self.success_rate,
             "latency_p50_ms": self.latency_p50_ms,
             "latency_p95_ms": self.latency_p95_ms,
+            "average_citations_per_answer": self.average_citations_per_answer,
+            "max_citations_per_answer": self.max_citations_per_answer,
+            "document_route_accuracy": self.document_route_accuracy,
             "cases": [case.to_dict() for case in self.cases],
         }
 
@@ -160,6 +169,7 @@ def evaluate_cases(cases: tuple[GoldenCase, ...], query: QueryCallable) -> Evalu
             and result.answer == INSUFFICIENT_EVIDENCE_MESSAGE
             and not result.citations
         )
+        routed_document = _routed_document(result.citations)
         results.append(
             CaseResult(
                 case.case_id,
@@ -169,6 +179,8 @@ def evaluate_cases(cases: tuple[GoldenCase, ...], query: QueryCallable) -> Evalu
                 None,
                 first_relevant_rank,
                 refusal_passed,
+                routed_document,
+                result.answer == INSUFFICIENT_EVIDENCE_MESSAGE,
             )
         )
 
@@ -183,6 +195,14 @@ def _build_report(
     paired_cases = tuple(zip(cases, results, strict=True))
     evidence = tuple((case, result) for case, result in paired_cases if case.expects_evidence)
     no_evidence = tuple(result for case, result in paired_cases if not case.expects_evidence)
+    completed_answers = tuple(
+        result for result in results if result.completed and not result.refused
+    )
+    single_document_evidence = tuple(
+        (case, result)
+        for case, result in evidence
+        if len({citation.source_file for citation in case.expected_citations}) == 1
+    )
 
     return EvaluationReport(
         cases=results,
@@ -202,6 +222,15 @@ def _build_report(
         success_rate=_rate(sum(result.completed for result in results), len(results)) or 0.0,
         latency_p50_ms=_nearest_rank(completed_latencies_ms, 0.5),
         latency_p95_ms=_nearest_rank(completed_latencies_ms, 0.95),
+        average_citations_per_answer=_rate(
+            sum(len(result.citations) for result in completed_answers), len(completed_answers)
+        ),
+        max_citations_per_answer=(
+            max((len(result.citations) for result in completed_answers), default=None)
+            if completed_answers
+            else None
+        ),
+        document_route_accuracy=_document_route_accuracy(single_document_evidence),
     )
 
 
@@ -229,6 +258,17 @@ def _mean_reciprocal_rank(
     )
 
 
+def _document_route_accuracy(
+    single_document_evidence: tuple[tuple[GoldenCase, CaseResult], ...],
+) -> float | None:
+    correctly_routed = sum(
+        result.routed_document
+        == next(iter({citation.source_file for citation in case.expected_citations}))
+        for case, result in single_document_evidence
+    )
+    return _rate(correctly_routed, len(single_document_evidence))
+
+
 def _rate(numerator: float | int, denominator: int) -> float | None:
     if denominator == 0:
         return None
@@ -244,6 +284,15 @@ def _nearest_rank(values: list[float], percentile: float) -> float | None:
 
 def _identity(citation: Citation) -> CitationIdentity:
     return (citation.source_file, citation.page_number, citation.chunk_id)
+
+
+def _routed_document(citations: tuple[Citation, ...]) -> str | None:
+    """Return a source only when every returned citation belongs to it."""
+
+    source_files = {citation.source_file for citation in citations}
+    if len(source_files) != 1:
+        return None
+    return next(iter(source_files))
 
 
 def _parse_citation(value: object, line_number: int) -> Citation:

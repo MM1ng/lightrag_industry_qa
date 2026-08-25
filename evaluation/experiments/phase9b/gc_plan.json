@@ -1,0 +1,91 @@
+{
+  "plan_id": "a93e810ea9934b84a63d7918d6072aa0",
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "status": "planned",
+  "policy": {
+    "failed_retention_days": 0,
+    "archived_keep_count": 100,
+    "protected_generation_ids": [
+      "a2d1c77ce08b414495e9d845cc42f799",
+      "a55adad410e644ceb82de96022321633"
+    ],
+    "exact_name_only": true
+  },
+  "items": [
+    {
+      "generation_id": "2038b5d6676848bc956a880f1299e056",
+      "generation": "g7544db33040d90e94074ec01",
+      "status": "failed",
+      "workspace_path": "D:\\industrial_energy_agent_phase9b_staging\\runtime\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\g7544db33040d90e94074ec01\\workspace",
+      "collections": [
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g7544db33040d90e94074ec01_chunks",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g7544db33040d90e94074ec01_entities",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g7544db33040d90e94074ec01_relationships"
+      ],
+      "content_epoch": 0,
+      "qdrant_content_fingerprint": "2fcc929ece32378bc6ef2f4a19c04d09ac7a81f75c268e631ca7e8fb70c11804",
+      "reason": "expired_non_active_candidate"
+    },
+    {
+      "generation_id": "2cfc32daa46e455d929ec9d30cb1979a",
+      "generation": "gd3f263063fcdfacdf0b97def",
+      "status": "failed",
+      "workspace_path": "D:\\industrial_energy_agent_phase9b_staging\\runtime\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\gd3f263063fcdfacdf0b97def\\workspace",
+      "collections": [
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gd3f263063fcdfacdf0b97def_chunks",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gd3f263063fcdfacdf0b97def_entities",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gd3f263063fcdfacdf0b97def_relationships"
+      ],
+      "content_epoch": 0,
+      "qdrant_content_fingerprint": "80dee03732853c2cd740e5632c16fb2d5d08cc0be08949868603f0b9398d414e",
+      "reason": "expired_non_active_candidate"
+    },
+    {
+      "generation_id": "9435fc016ec347fbb8b14140227d5474",
+      "generation": "g6b607fc6cee76c59a2aa7556",
+      "status": "failed",
+      "workspace_path": "D:\\industrial_energy_agent_phase9b_staging\\runtime\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\g6b607fc6cee76c59a2aa7556\\workspace",
+      "collections": [
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g6b607fc6cee76c59a2aa7556_chunks",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g6b607fc6cee76c59a2aa7556_entities",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g6b607fc6cee76c59a2aa7556_relationships"
+      ],
+      "content_epoch": 0,
+      "qdrant_content_fingerprint": "d92e714522faf0120d5ed9f86cd81b872ede00b34019eeb986164952ac4cc5b0",
+      "reason": "expired_non_active_candidate"
+    },
+    {
+      "generation_id": "deeaa52495914104bb185a9e93ac5b14",
+      "generation": "gc92cf6e08684084b3270a271",
+      "status": "failed",
+      "workspace_path": "D:\\industrial_energy_agent_phase9b_staging\\runtime\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\gc92cf6e08684084b3270a271\\workspace",
+      "collections": [
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gc92cf6e08684084b3270a271_chunks",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gc92cf6e08684084b3270a271_entities",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gc92cf6e08684084b3270a271_relationships"
+      ],
+      "content_epoch": 0,
+      "qdrant_content_fingerprint": "e9c17164982c131c4c1756a3b8c1a3e17599a848c6d2cb73606d3ea8e1be4da8",
+      "reason": "expired_non_active_candidate"
+    },
+    {
+      "generation_id": "f514559e00e144b7a48316fa80de3705",
+      "generation": "gdc28c957041af8eeeaaa8ea0",
+      "status": "failed",
+      "workspace_path": "D:\\industrial_energy_agent_phase9b_staging\\runtime\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\gdc28c957041af8eeeaaa8ea0\\workspace",
+      "collections": [
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gdc28c957041af8eeeaaa8ea0_chunks",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gdc28c957041af8eeeaaa8ea0_entities",
+        "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_gdc28c957041af8eeeaaa8ea0_relationships"
+      ],
+      "content_epoch": 0,
+      "qdrant_content_fingerprint": "013f236431273e92312d0a3c4c10bd9596bdcbedaea4ef20df2bdd3e8003186a",
+      "reason": "expired_non_active_candidate"
+    }
+  ],
+  "manifest_hash": "ff38566de51bf2f334b9f542d24700c68b87ecc20dbb5934ae9095e25cb243ef",
+  "created_by": "admin:0a794bbf4880",
+  "approved_by": null,
+  "result": null,
+  "expires_at": "2026-08-03T02:10:02.056211Z"
+}

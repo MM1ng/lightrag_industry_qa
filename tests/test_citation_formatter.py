@@ -8,6 +8,8 @@ from industrial_rag.citation_formatter import (
     encode_chunk_header,
     encode_source_ref,
     format_citation,
+    is_provenance_only_fragment,
+    strip_provenance_metadata,
 )
 
 
@@ -60,3 +62,30 @@ def test_collect_citations_reads_parser_owned_header_from_chunk_content() -> Non
 def test_decode_source_ref_rejects_untrusted_or_invalid_pages(value: str) -> None:
     with pytest.raises(ValueError):
         decode_source_ref(value)
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "证据来源：",
+        "（证据来源：2196-ANSI-Manual-Chinese.pdf，第9页）",
+        "(依据来源: manual.pdf page=9 chunk=c1)",
+        "[[INDUSTRIAL_RAG_SOURCE file=manual.pdf page=9 chunk=c1]]",
+        "file=manual.pdf page=9 chunk=c1",
+    ],
+)
+def test_provenance_only_fragments_are_metadata(value: str) -> None:
+    assert is_provenance_only_fragment(value)
+
+
+def test_factual_sentence_with_page_reference_is_not_provenance_only() -> None:
+    value = "根据手册第11页，平行和角度对正误差应控制在0.005英寸以内。"
+
+    assert not is_provenance_only_fragment(value)
+    assert strip_provenance_metadata(value) == value
+
+
+def test_internal_source_marker_is_removed_without_removing_fact() -> None:
+    value = "泵轴至少每周旋转一次。[[INDUSTRIAL_RAG_SOURCE file=manual.pdf page=9 chunk=c1]]"
+
+    assert strip_provenance_metadata(value) == "泵轴至少每周旋转一次。"

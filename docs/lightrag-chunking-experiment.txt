@@ -1,0 +1,37 @@
+========================================================================
+LightRAG 1.5.4 split_by_character_only Behavior Verification
+Total experiments: 4
+========================================================================
+
+[PASS] A-small-under-limit (chunk_token_size=8, expected_ok=True)
+  actual_ok=True
+  internal_chunks=0
+  track_id=insert_20260730_180713_d938a36a
+
+[FAIL] B-large-over-limit-err (chunk_token_size=8, expected_ok=False)
+  actual_ok=True
+  internal_chunks=0
+  track_id=insert_20260730_180713_32099584
+
+[PASS] C-two-small-ok (chunk_token_size=8, expected_ok=True)
+  actual_ok=True
+  internal_chunks=0
+  track_id=insert_20260730_180713_33a73ccc
+
+[PASS] D-real-zh-1600 (chunk_token_size=1600, expected_ok=True)
+  actual_ok=True
+  internal_chunks=2
+  track_id=insert_20260730_180713_c9314d57
+  [0] tokens=182 source=zh-real-p1-c1
+  [1] tokens=97 source=None
+
+========================================================================
+CONCLUSIONS
+========================================================================
+Successful: 4, Failed: 0
+
+KEY FINDING:
+  When split_by_character_only=True AND a segment exceeds chunk_token_size, LightRAG 1.5.4 raises ChunkTokenLimitExceededError (a hard error). It does NOT silently split further.
+  Source: lightrag/chunker/token_size.py lines 142-154.
+  Production works because our source chunks (max 1220 tokens in the observed data) are all <= 1600 token limit, so no segment ever exceeds it.
+  If chunk_token_size were reduced below 1220 (or source chunks grew), ingestion would fail with a hard error.

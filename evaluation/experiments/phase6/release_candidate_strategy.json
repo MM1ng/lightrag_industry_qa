@@ -1,0 +1,18 @@
+{
+  "release_candidate_approved": false,
+  "parser_pipeline": "pymupdf_standard_adapter",
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "parent_expansion": "none",
+  "rerank_enabled": false,
+  "context_strategy": "current_rows",
+  "answer_strategy": "current",
+  "citation_shadow_audit_enabled": true,
+  "fallback_enabled": false,
+  "deployment_performed": false,
+  "selection_reason": "One or more Phase 6 production readiness gates failed",
+  "failed_gates": [
+    "golden_metrics_no_drop_002"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "environment_gate_passed": false,
+  "checks": {
+    "current_api_openapi": true,
+    "kb_scoped_query_route": true,
+    "admin_trace_route": true,
+    "service_trace_403": true,
+    "admin_trace_authentication": true,
+    "qdrant_available": true,
+    "database_available": true,
+    "kb_available": true,
+    "active_generation_available": true,
+    "context_registry_present": true,
+    "context_registry_runtime_integration_verified": false,
+    "registry_integrity_passed": false,
+    "ordinary_query_success": false,
+    "trace_read_after_query": false,
+    "evidence_response_available": false,
+    "streamlit_health": true,
+    "secret_scan_zero": null
+  },
+  "blocking_reasons": [
+    "registry duplicate_chunk_id_count=70 and self_link_count=2",
+    "ordinary query returned 502 because DashScope model quota is exhausted",
+    "no successful request_id means admin Trace 200 and EvidenceResponse cannot be verified"
+  ],
+  "old_8000_stopped": false
+}

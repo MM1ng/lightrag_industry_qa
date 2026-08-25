@@ -81,6 +81,8 @@ class LightRAGRuntime:
         question: str,
         *,
         mode: QueryMode = "mix",
+        top_k: int = 12,
+        chunk_top_k: int = 20,
         timeout: float = 180.0,
     ) -> tuple[QueryResult, float]:
         """Submit a query to the background loop and block for the result."""
@@ -88,7 +90,9 @@ class LightRAGRuntime:
         if self._closed or loop is None or loop.is_closed():
             raise RuntimeError("LightRAG runtime is closed or not running")
 
-        coro = self._query_async(question, mode=mode)
+        coro = self._query_async(
+            question, mode=mode, top_k=top_k, chunk_top_k=chunk_top_k
+        )
         future = asyncio.run_coroutine_threadsafe(coro, loop)
         start = time.perf_counter()
         try:
@@ -232,10 +236,21 @@ class LightRAGRuntime:
         # Signal success BEFORE entering run_forever.
         self._init_done.set()
 
-    async def _query_async(self, question: str, *, mode: QueryMode) -> QueryResult:
+    async def _query_async(
+        self,
+        question: str,
+        *,
+        mode: QueryMode,
+        top_k: int,
+        chunk_top_k: int,
+    ) -> QueryResult:
         """Execute a query under the serialization lock."""
         async with self._query_lock:  # type: ignore[union-attr]
-            return await self._svc.query(question, mode=mode)
+            if top_k == 12 and chunk_top_k == 20:
+                return await self._svc.query(question, mode=mode)
+            return await self._svc.query(
+                question, mode=mode, top_k=top_k, chunk_top_k=chunk_top_k
+            )
 
     async def _shutdown_service(self) -> None:
         """Close the LightRAG service gracefully."""

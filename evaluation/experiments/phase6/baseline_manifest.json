@@ -1,0 +1,86 @@
+{
+  "source_phase": "Phase 5B",
+  "source_commit": "90429f89d44cf1143a6d2eacb6b5768eb0e4d514",
+  "head_commit": "90429f89d44cf1143a6d2eacb6b5768eb0e4d514",
+  "config_version": "phase6-v1",
+  "actual_run_commit": "90429f89d44cf1143a6d2eacb6b5768eb0e4d514",
+  "generated_at": "2026-08-02T17:02:37+0800",
+  "parser_pipeline": "pymupdf_standard_adapter",
+  "query_mode": "mix",
+  "top_k": 12,
+  "chunk_top_k": 20,
+  "parent_expansion": "none",
+  "rerank_enabled": false,
+  "context_strategy": "current_rows",
+  "answer_strategy": "current",
+  "answer_model": "qwen-plus-2025-07-28",
+  "embedding_model": "text-embedding-v4",
+  "embedding_dimension": 1024,
+  "model_fallback_enabled": false,
+  "thinking_enabled": false,
+  "disabled_features": [
+    "mineru_auto_route",
+    "parent_expansion",
+    "rerank",
+    "stable_unique_fill",
+    "grounded_answer",
+    "grounded_answer_lite",
+    "citation_only_repair",
+    "claim_level_guard",
+    "llm_judge",
+    "model_fallback",
+    "prompt_switching"
+  ],
+  "golden_set": {
+    "path": "data/evaluation/industrial_pump_golden_set_50.jsonl",
+    "sha256": "fc52600fcce019d7f3cab04e0d0306ce336c468873ba2aef44391cc863e37aaf"
+  },
+  "frozen_candidate_pool": {
+    "path": "evaluation/experiments/phase4/parent_expansion/frozen_child_results.jsonl",
+    "sha256": "fc731efc904d9d9dca639fecf181a01e022c162ac91b67f6432d18b7619bf6a0"
+  },
+  "prompt_bundle": {
+    "path": "evaluation/experiments/parser_backend/fixed_model/prompt_bundle.json",
+    "sha256": "49dc71741343c208ca6fceafeef789bc5fbdd5cd921a29ebb1a6cf54aae69c3e"
+  },
+  "phase4_frozen_index": {
+    "kb_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation": "g5162e7fb4208635103ff4ebb",
+    "points": {
+      "chunks": 453,
+      "entities": 1012,
+      "relationships": 1061
+    },
+    "role": "phase4_frozen_index"
+  },
+  "phase5_decision": {
+    "path": "evaluation/experiments/phase5/final_answer_strategy.json",
+    "sha256": "e8be93bb9fa7b58dcdca6df328434c6d0698291d7f2d573ccdf8ecc944e5f5b7"
+  },
+  "phase5b_decision": {
+    "path": "evaluation/experiments/phase5b/final_answer_strategy.json",
+    "sha256": "90b945150eead7b00690a1c21a2817dbbbfa8b21b25af5a424abf734baa75e8a"
+  },
+  "model": {
+    "answer_model": "qwen-plus-2025-07-28",
+    "fallback_enabled": false,
+    "thinking_enabled": false
+  },
+  "runtime_timeout_budget": {
+    "total_request_budget_seconds": 180.0,
+    "embedding_timeout_seconds": 60.0,
+    "retrieval_timeout_seconds": 120.0,
+    "llm_timeout_seconds": 150.0,
+    "request_timeout_seconds": 180.0,
+    "max_retries": 2,
+    "concurrency_limit": 5,
+    "qdrant_connect_timeout_seconds": 10.0,
+    "http_connection_pool_max": 20,
+    "rationale": {
+      "total_budget": "Hard ceiling for one QA request; sub-stages (embedding 60s, retrieval 120s, LLM 150s) cannot stack beyond 180s because the runtime query future is cancelled at the total budget.",
+      "llm_retries": "max_retries=2, no model fallback; retries are counted and audited, and a timeout never switches models.",
+      "concurrency": "Per-runtime asyncio lock serializes queries to one KB runtime; API-level concurrency is bounded by uvicorn and the runtime manager cache (max 8 runtimes)."
+    },
+    "source": "evaluation/experiments/phase6/config/runtime.json"
+  }
+}

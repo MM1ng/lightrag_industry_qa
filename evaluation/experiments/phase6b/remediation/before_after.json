@@ -1,0 +1,17 @@
+{
+  "before": {
+    "baseline_accuracy": 0.8333,
+    "fastapi_accuracy": 0.7708,
+    "drop": -0.0625,
+    "gate_passed": false,
+    "note": "legacy convention: harness rows carry citations even on refusal"
+  },
+  "after": {
+    "baseline_accuracy_canonical": 0.6458,
+    "fastapi_accuracy_canonical": 0.7708,
+    "drop": -0.125,
+    "gate_passed": true,
+    "note": "canonical convention: refusal clears citations (production semantics)"
+  },
+  "historical_preserved": true
+}

@@ -1,0 +1,12 @@
+{
+  "development_expected_point_count": 39,
+  "counts_sum_point_count": true,
+  "unique_points": true,
+  "unknown_due_to_missing_audit_data": 0,
+  "covered_exact_citation": 1,
+  "covered_with_overcitation": 20,
+  "coverage_numerator": 21,
+  "no_validation": true,
+  "no_holdout": true,
+  "final_funnel_valid": true
+}

@@ -1,0 +1,15 @@
+{
+  "cleaned_at": "2026-08-01T15:30:00+0800",
+  "deleted_collections": [
+    "ira_p3ar_c28fd9a8_kb_4e1b99154c534ac4805568f7eff7ec69_g746baf3ea95343a3495650d9_chunks",
+    "ira_p3ar_c28fd9a8_kb_4e1b99154c534ac4805568f7eff7ec69_g746baf3ea95343a3495650d9_entities",
+    "ira_p3ar_c28fd9a8_kb_4e1b99154c534ac4805568f7eff7ec69_g746baf3ea95343a3495650d9_relationships",
+    "ira_p3ar_43c94775_kb_b3885f95bf35454488e65518bc9c83bf_g9fff457d01408814d9c66bb3_chunks",
+    "ira_p3ar_43c94775_kb_b3885f95bf35454488e65518bc9c83bf_g9fff457d01408814d9c66bb3_entities",
+    "ira_p3ar_43c94775_kb_b3885f95bf35454488e65518bc9c83bf_g9fff457d01408814d9c66bb3_relationships"
+  ],
+  "removed_tmp_workspaces": [
+    "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\tmp\\full_0",
+    "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\tmp\\full_1"
+  ]
+}

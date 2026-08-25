@@ -1,0 +1,59 @@
+{
+  "model_identity": {
+    "provider": "aliyun_model_studio",
+    "requested_model": "qwen3-rerank",
+    "model_id": "qwen3-rerank",
+    "model_identity_type": "official_mainline_model_id",
+    "dated_snapshot_available": false,
+    "fallback_enabled": false,
+    "region": "cn-beijing",
+    "endpoint_mode": "dashscope_standard_public",
+    "endpoint_hash": "ad48b64910a7e7f84023ad11b8a85c8cba78cd7940a222748202369b687dc25f",
+    "actual_model_version": null
+  },
+  "run_started_at": "2026-08-01T19:14:14+0800",
+  "run_finished_at": "2026-08-01T19:14:17+0800",
+  "code_commit": "b760f96e54fc2f678d1301808377dff0624657b8",
+  "experiment_config_hash": "a40ca3c8585d33c2e0bdc804ea0c85b62bb8f3738b30bd88173706604c0f14fd",
+  "provider_request_cache": {
+    "seeded_entries": 0,
+    "seeded_from": "reranked.jsonl",
+    "cache_hits": 51,
+    "cache_misses": 0,
+    "live_api_calls": 0,
+    "skipped_empty": 0,
+    "errors": 0
+  },
+  "r1": {
+    "questions_attempted": 50,
+    "answerable_questions": 48,
+    "negative_questions": 2,
+    "questions_succeeded": 50,
+    "questions_failed": 0,
+    "error_details": [],
+    "input_length_gate": "passed for all attempted questions",
+    "variable_size_contract": {
+      "candidate_k": 20,
+      "final_k": 12,
+      "effective_final_k_rule": "min(final_k, input_candidate_count)",
+      "per_question_counts": {
+        "default_answerable": 20,
+        "C007": 19,
+        "N001": 20,
+        "N002": 19
+      }
+    },
+    "completeness_passed": true,
+    "candidate_preservation_rate": 1.0,
+    "pool_out_count": 0,
+    "duplicate_count": 0,
+    "lost_count": 0,
+    "fallback_count": 0
+  },
+  "sanitization": {
+    "api_key_logged": false,
+    "authorization_header_logged": false,
+    "workspace_endpoint_logged": false,
+    "endpoint_stored_as_hash": true
+  }
+}

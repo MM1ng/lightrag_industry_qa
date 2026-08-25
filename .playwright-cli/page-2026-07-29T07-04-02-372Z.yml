@@ -1,0 +1,86 @@
+- generic [ref=e3]:
+  - banner [ref=e6]:
+    - generic [ref=e9]:
+      - button "Deploy" [ref=e20] [cursor=pointer]
+      - button "Main menu" [ref=e24] [cursor=pointer]
+  - generic [ref=e28]:
+    - paragraph [ref=e35]: "🔧 工业离心泵知识库 ｜ 模型: qwen3.7-plus ｜ 索引已就绪 ｜ 节点: 365 ｜ 边: 418"
+    - generic [ref=e37]:
+      - tablist [ref=e38]:
+        - tab [ref=e39] [cursor=pointer]:
+          - paragraph [ref=e41]: 智能问答
+        - tab [active] [selected] [ref=e43] [cursor=pointer]:
+          - paragraph [ref=e45]: 知识图谱
+      - tabpanel "知识图谱" [ref=e332]:
+        - generic [ref=e333]:
+          - paragraph [ref=e338]: 只读展示 LightRAG 已生成的 GraphML 子集，不调用百炼 API，不修改图谱。
+          - generic [ref=e340]:
+            - status [ref=e345]:
+              - paragraph [ref=e349]:
+                - text: 图谱文件：
+                - code [ref=e350]: graph_chunk_entity_relation.graphml
+            - button [ref=e355] [cursor=pointer]:
+              - paragraph [ref=e359]: 重新加载图谱
+          - generic [ref=e361]:
+            - generic [ref=e366]:
+              - paragraph [ref=e369]: 总节点数
+              - paragraph [ref=e372]: "365"
+            - generic [ref=e377]:
+              - paragraph [ref=e380]: 总边数
+              - paragraph [ref=e383]: "418"
+            - generic [ref=e388]:
+              - paragraph [ref=e391]: 有向图
+              - paragraph [ref=e394]: 否
+            - generic [ref=e399]:
+              - paragraph [ref=e402]: MultiGraph
+              - paragraph [ref=e405]: 否
+          - generic [ref=e407]:
+            - paragraph [ref=e411]: 展示模式
+            - radiogroup "展示模式" [ref=e412]:
+              - generic [ref=e413] [cursor=pointer]:
+                - radio "全局概览" [checked] [ref=e415]
+                - paragraph [ref=e421]: 全局概览
+              - generic [ref=e422] [cursor=pointer]:
+                - radio "实体相关子图" [ref=e424]
+                - paragraph [ref=e430]: 实体相关子图
+          - generic [ref=e433] [cursor=pointer]:
+            - checkbox "显示关系标签" [ref=e435]
+            - paragraph [ref=e439]: 显示关系标签
+          - generic [ref=e442] [cursor=pointer]:
+            - checkbox "显示全部节点名称" [ref=e444]
+            - paragraph [ref=e448]: 显示全部节点名称
+          - paragraph [ref=e453]: 默认仅显示 degree 最高的 15 个节点名称；悬停可查看全部信息。
+          - generic [ref=e455]:
+            - paragraph [ref=e459]: 节点数量限制
+            - group [ref=e461]:
+              - combobox "节点数量限制" [ref=e462]: "50"
+              - button "Open" [ref=e463] [cursor=pointer]
+          - paragraph [ref=e471]: 按节点 degree 从高到低选取，并保留选中节点之间的真实边。
+          - generic [ref=e473]:
+            - generic [ref=e478]:
+              - paragraph [ref=e481]: 当前展示节点数
+              - paragraph [ref=e484]: "50"
+            - generic [ref=e489]:
+              - paragraph [ref=e492]: 当前展示边数
+              - paragraph [ref=e495]: "107"
+          - paragraph [ref=e500]: 实体类型图例
+          - generic [ref=e502]:
+            - generic [ref=e504]:
+              - paragraph [ref=e509]: 设备
+              - paragraph [ref=e515]: 自然对象
+            - generic [ref=e518]:
+              - paragraph [ref=e523]: 概念
+              - paragraph [ref=e529]: 组织
+            - paragraph [ref=e537]: 内容
+            - paragraph [ref=e545]: 位置
+          - iframe [ref=e548]:
+            - generic [ref=f1e1]:
+              - generic:
+                - heading [level=1]
+              - generic:
+                - heading [level=1]
+          - group [ref=e551]:
+            - generic "keyboard_arrow_right 查看当前子图节点" [ref=e552] [cursor=pointer]:
+              - generic [ref=e553]:
+                - generic [ref=e554]: keyboard_arrow_right
+                - paragraph [ref=e558]: 查看当前子图节点

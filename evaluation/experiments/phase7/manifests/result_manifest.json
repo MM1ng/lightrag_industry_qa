@@ -1,0 +1,633 @@
+{
+  "created_at": "2026-08-02T19:26:46+0800",
+  "phase": "Phase 7",
+  "rc_version": "0.1.0-rc.1",
+  "git_commit": "7f5f39fa3459aa3dbdaa1a42a4439c7cede82c60",
+  "closeout_head_commit": "5051647ee2e377e3ea94f70eca1c0eded832e42b",
+  "closeout_created_at": "2026-08-02T20:22:52+08:00",
+  "package_sha256": "c6ea0531232e34c6a719dffcf99432147dedd27940596f5a09035554cd8efe59",
+  "release_package_approved": true,
+  "release_package_approved_at_closeout": true,
+  "canonical_metrics": {
+    "answerable_question_count": 18,
+    "negative_question_count": 2,
+    "answer_citation_accuracy": {
+      "numerator": 14,
+      "denominator": 18,
+      "decimal": 0.7778,
+      "percentage": 77.78
+    },
+    "answer_citation_precision": {
+      "numerator": 4.6667,
+      "denominator": 18,
+      "decimal": 0.2593,
+      "percentage": 25.93
+    },
+    "answer_citation_recall": {
+      "numerator": 12.3333,
+      "denominator": 18,
+      "decimal": 0.6852,
+      "percentage": 68.52
+    },
+    "gold_page_citation_rate": {
+      "numerator": 14,
+      "denominator": 18,
+      "decimal": 0.7778,
+      "percentage": 77.78
+    },
+    "gold_evidence_citation_rate": {
+      "numerator": 12,
+      "denominator": 18,
+      "decimal": 0.6667,
+      "percentage": 66.67
+    },
+    "false_rejection_rate": {
+      "numerator": 4,
+      "denominator": 18,
+      "decimal": 0.2222,
+      "percentage": 22.22
+    },
+    "answered_without_evidence_rate": {
+      "numerator": 0,
+      "denominator": 18,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "insufficient_evidence_rejection_rate": {
+      "numerator": 2,
+      "denominator": 2,
+      "decimal": 1.0,
+      "percentage": 100.0
+    },
+    "negative_unsupported_answer_rate": {
+      "numerator": 0,
+      "denominator": 2,
+      "decimal": 0.0,
+      "percentage": 0.0
+    },
+    "citation_traceability_emitted": {
+      "numerator": 14,
+      "denominator": 14,
+      "decimal": 1.0,
+      "percentage": 100.0
+    }
+  },
+  "final_test_results": {
+    "collected": 546,
+    "passed": 534,
+    "skipped": 12,
+    "failed": 0,
+    "duration_seconds": 20.61,
+    "skip_classification": {
+      "real_mineru_opt_in": 1,
+      "real_qdrant_e2e_opt_in": 2,
+      "real_qdrant_integration_opt_in": 9,
+      "all_external_opt_in": true
+    },
+    "ruff": "All checks passed!"
+  },
+  "package_type": {
+    "artifact_type": "application_release_candidate",
+    "self_contained": false,
+    "external_state_required": true,
+    "database_included": false,
+    "qdrant_index_included": false,
+    "llm_cache_included": false,
+    "user_documents_included": false,
+    "installation_mode": "local_conda_application_with_docker_qdrant"
+  },
+  "closeout_artifacts": {
+    "acceptance_metric_correction": "evaluation/experiments/phase7/closeout/acceptance_metric_correction.json",
+    "package_type_declaration": "evaluation/experiments/phase7/closeout/package_type.json",
+    "closeout_decision": "evaluation/experiments/phase7/closeout/closeout_decision.json"
+  },
+  "acceptance_gates": {
+    "rc_version": "0.1.0-rc.1",
+    "release_gates": {
+      "smoke_test_passed": true,
+      "golden_subset_complete_20": true,
+      "citation_traceable_emitted": true,
+      "n001_n002_refused": true,
+      "safety_questions_no_high_risk": true,
+      "fallback_zero": true,
+      "request_trace_id_complete": true,
+      "security_zero": true,
+      "http_success_rate": 1.0,
+      "error_rate": 0.0,
+      "p95_latency": 2.722
+    },
+    "passed": true
+  },
+  "rehearsal_summary": {
+    "rc_version": "0.1.0-rc.1",
+    "results": {
+      "cold_start": {
+        "scenario": "cold_start",
+        "started_at": 17004.6000062,
+        "total_seconds": 18.18,
+        "steps": [
+          {
+            "step": "unzip_and_relative_paths",
+            "status": "passed",
+            "detail": "extracted 96 files",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:25+0800"
+          },
+          {
+            "step": "checksum_verify",
+            "status": "passed",
+            "detail": "mismatches=[]",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:25+0800"
+          },
+          {
+            "step": "alembic_upgrade",
+            "status": "passed",
+            "detail": "INFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.\n",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T18:45:28+0800"
+          },
+          {
+            "step": "qdrant_ready",
+            "status": "passed",
+            "detail": "collections endpoint",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T18:45:33+0800"
+          },
+          {
+            "step": "api_health",
+            "status": "passed",
+            "detail": "uvicorn pid=29536",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:38+0800"
+          },
+          {
+            "step": "api_ready",
+            "status": "passed",
+            "detail": "{'status': 'ready', 'components': {'config': 'ok', 'db': 'ok', 'qdrant': 'n/a'}}",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:38+0800"
+          },
+          {
+            "step": "api_version",
+            "status": "passed",
+            "detail": "{\"app_version\": \"0.1.0-rc.1\", \"release_channel\": \"rc\", \"git_commit\": \"\", \"config_version\": \"phase6-v1\", \"strategy_version\": \"phase6b-v1\", \"build_time\": \"2026-08-02T18:45:38+0800\", \"parser_pipeline\": \"pymupdf_standard_adapter\", \"query_mode\": \"mix\", \"answer_model\": \"qwen-plus-2025-07-28\", \"embedding_model\": \"text-embedding-v4\"}",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:38+0800"
+          },
+          {
+            "step": "smoke_query_detail",
+            "status": "passed",
+            "detail": "http=200 citations=3",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:42+0800"
+          },
+          {
+            "step": "smoke_query_detail",
+            "status": "passed",
+            "detail": "http=200 citations=0",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:43+0800"
+          },
+          {
+            "step": "cold_start_smoke_queries",
+            "status": "passed",
+            "detail": "2 queries via official API",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:43+0800"
+          },
+          {
+            "step": "api_stopped",
+            "status": "passed",
+            "detail": "pid cleaned",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:45:43+0800"
+          }
+        ],
+        "passed": true
+      },
+      "warm_restart": {
+        "scenario": "warm_restart",
+        "steps": [
+          {
+            "step": "first_start",
+            "status": "passed",
+            "detail": "pid=28208",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:01+0800"
+          },
+          {
+            "step": "second_start",
+            "status": "passed",
+            "detail": "pid=7536",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:06+0800"
+          },
+          {
+            "step": "ready_after_restart",
+            "status": "passed",
+            "detail": "{'status': 'ready', 'components': {'config': 'ok', 'db': 'ok', 'qdrant': 'n/a'}}",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:06+0800"
+          },
+          {
+            "step": "health_after_restart",
+            "status": "passed",
+            "detail": "ok",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:06+0800"
+          }
+        ],
+        "passed": true
+      },
+      "graceful_shutdown": {
+        "scenario": "graceful_shutdown",
+        "steps": [
+          {
+            "step": "start_before_shutdown",
+            "status": "passed",
+            "detail": "pid=28788",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:11+0800"
+          },
+          {
+            "step": "stop_local_script",
+            "status": "passed",
+            "detail": "ui: no pid file\napi: stopped pid=28788\nstop_local done (Qdrant data untouched)\n",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T18:46:12+0800"
+          },
+          {
+            "step": "process_stopped",
+            "status": "passed",
+            "detail": "pid=28788 poll=4294967295",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:16+0800"
+          },
+          {
+            "step": "qdrant_collections_untouched",
+            "status": "passed",
+            "detail": "3->3",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:16+0800"
+          },
+          {
+            "step": "restart_after_shutdown",
+            "status": "passed",
+            "detail": "pid=24092",
+            "exit_code": null,
+            "timestamp": "2026-08-02T18:46:21+0800"
+          }
+        ],
+        "passed": true
+      },
+      "failure_recovery": {
+        "scenario": "failure_recovery",
+        "steps": [
+          {
+            "step": "missing_env_detected",
+            "status": "passed",
+            "detail": "gured: EMBEDDING_MODEL\nmissing: QDRANT_URL\nconfigured: QDRANT_COLLECTION_PREFIX\nmissing: DASHSCOPE_API_KEY\nRESULT=FAIL missing_or_invalid=MODEL_FALLBACK_ENABLED,LLM_MODEL,QDRANT_URL,DASHSCOPE_API_KEY\n",
+            "exit_code": 1,
+            "timestamp": "2026-08-02T19:19:14+0800"
+          },
+          {
+            "step": "api_refuses_when_qdrant_down",
+            "status": "passed",
+            "detail": "NABLED\nconfigured: LLM_MODEL\nconfigured: EMBEDDING_DIM\nconfigured: EMBEDDING_MODEL\nconfigured: QDRANT_URL\nconfigured: QDRANT_COLLECTION_PREFIX\nconfigured: DASHSCOPE_API_KEY\nRESULT=OK\nQDRANT_NOT_READY\n",
+            "exit_code": 1,
+            "timestamp": "2026-08-02T19:19:23+0800"
+          },
+          {
+            "step": "stale_pid_handled",
+            "status": "passed",
+            "detail": "ui: no pid file\napi: stale pid (not running)\nstop_local done (Qdrant data untouched)\n",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T19:19:28+0800"
+          },
+          {
+            "step": "fresh_db_migration_recovers",
+            "status": "passed",
+            "detail": "les\nINFO  [alembic.runtime.migration] Running upgrade d7e568c55ad8 -> 4f2c7d9a8b1e, add Qdrant vector backend generation metadata\nINFO  [alembic.runtime.migration] Running upgrade 4f2c7d9a8b1e -> 9e6f0a2c3b4d, add normalized vector index generations\n",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T19:19:30+0800"
+          },
+          {
+            "step": "fresh_db_api_starts",
+            "status": "passed",
+            "detail": "pid=20832",
+            "exit_code": null,
+            "timestamp": "2026-08-02T19:19:35+0800"
+          },
+          {
+            "step": "cleanup_after_recovery",
+            "status": "passed",
+            "detail": "ui: no pid file\napi: no pid file\nstop_local done (Qdrant data untouched)\n",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T19:19:36+0800"
+          }
+        ],
+        "passed": true
+      },
+      "backup_restore": {
+        "scenario": "backup_restore",
+        "steps": [
+          {
+            "step": "backup_created",
+            "status": "passed",
+            "detail": "db_sha=14bb75f2ad917ac7 collections=3",
+            "exit_code": null,
+            "timestamp": "2026-08-02T19:19:55+0800"
+          },
+          {
+            "step": "restore_db_migration",
+            "status": "passed",
+            "detail": "INFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.\n",
+            "exit_code": 0,
+            "timestamp": "2026-08-02T19:19:56+0800"
+          },
+          {
+            "step": "restored_api_ready",
+            "status": "passed",
+            "detail": "pid=5988",
+            "exit_code": null,
+            "timestamp": "2026-08-02T19:20:01+0800"
+          },
+          {
+            "step": "restored_query_and_citations",
+            "status": "passed",
+            "detail": "http=200 citations=3",
+            "exit_code": null,
+            "timestamp": "2026-08-02T19:20:06+0800"
+          },
+          {
+            "step": "collection_points_match",
+            "status": "passed",
+            "detail": "points=453",
+            "exit_code": null,
+            "timestamp": "2026-08-02T19:20:06+0800"
+          }
+        ],
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "security": {
+    "scanned_files": 96,
+    "findings": [
+      {
+        "file": "README.md",
+        "rule_id": "DASHSCOPE_KEY_ASSIGN",
+        "redacted": "DASHSC...百炼密钥",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5-grounded-answer-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc5260...7aaf",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5-grounded-answer-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc731e...f6a0",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5-grounded-answer-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "8fce46...2cea",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5-grounded-answer-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "a39582...2719",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5-grounded-answer-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "3a2fbe...9e8c",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5-grounded-answer-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "71e217...e76d",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5b-grounded-answer-lite-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "2ff697...82a5",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5b-grounded-answer-lite-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "2ff697...82a5",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5b-grounded-answer-lite-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc731e...f6a0",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-5b-grounded-answer-lite-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc5260...7aaf",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-6-production-readiness-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "90429f...d514",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-6-production-readiness-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "8fce46...2cea",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-6-production-readiness-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc731e...f6a0",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-6b-official-path-parity-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "56e555...484e",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-6b-official-path-parity-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc731e...f6a0",
+        "status": "review"
+      },
+      {
+        "file": "docs/phase-6b-official-path-parity-report.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "8fce46...2cea",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "90429f...d514",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "90429f...d514",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc5260...7aaf",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "fc731e...f6a0",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "49dc71...9c3e",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "8fce46...2cea",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "e8be93...f5b7",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/frozen_strategy.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "90b945...5e8a",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6/runbooks/qdrant-recovery.md",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "8fce46...2cea",
+        "status": "review"
+      },
+      {
+        "file": "evaluation/experiments/phase6b/closeout/closeout_decision.json",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "7f5f39...2c60",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/repositories/vector_index_generation_repository.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/cleanup_service.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/cleanup_service.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/handler_impls.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/handler_impls.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/handler_impls.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/index_service.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      },
+      {
+        "file": "src/industrial_rag/services/index_service.py",
+        "rule_id": "ALIYUN_SK",
+        "redacted": "Vector...tory",
+        "status": "review"
+      }
+    ],
+    "confirmed_secret_count": 0,
+    "passed": true
+  },
+  "artifact_hashes": {
+    "acceptance.py": "95e5a893b3aad8626362bb34daa3c8eb86493a91acc9ba9c0bdfb735c88e3adb",
+    "artifact_manifest.json": "87ca687d7944fb3fd7e114caf7400dbb5561698e828997d80ad2ae51299a72bf",
+    "build.py": "ebf18219a6e69906477922618281f21eb2385879db17103794703ebd406502f1",
+    "config.py": "33698034ca227f9eba23af42cb109286771c18f582ea4fa0efbfec2cfd951b59",
+    "config_manifest.json": "79f76bba89d479972adaf40b5e976e14bafbe43009fc73a1b653ffccc939e544",
+    "dependency_manifest.json": "8fb4b116095c4dbf47df50f1943b1e756335fbacdfdb9a0e3ddaf6cb62c3a4ee",
+    "metrics.py": "9ed486bd90d29f21fe94cfa635c063a4d0982822d0578a67a4bdfbd3d721e478",
+    "rehearsal.py": "7ee3ba39a42446c3c3717ef964879742e8c9b52c191c1148a54637eb3c11fad2",
+    "release_manifest.json": "d7eeee59f774c77b7b7d0cd0d70edc9f3eed5f40f90fcc07704f5e366286eb62",
+    "closeout\\acceptance_metric_correction.json": "7bba763af0b8d36267ab8c1efb5aefad755916015b226bd1c6a81da44ddfdaca",
+    "closeout\\package_type.json": "2ec8afa2892dd6772f182e320b2653996cedd6bc438a98ee75718468715fb9f6",
+    "closeout\\closeout_decision.json": "906e2f6947adee758a1890411c3549d0df500804813c9d2ab702702f5048c3dd",
+    "__init__.py": "138d495f0ead8b6c673466ed23bcf252f94412b66b053405a6672c04cd36dba4",
+    "acceptance\\golden_subset_results.jsonl": "655fef831e58fd7b4366c5171415da3226f6a261fc8d9c75bd081458afed776e",
+    "acceptance\\release_gates.json": "ac3654804a5125379b3e32d80a332f8a8d62c7c187a30f3750d13da7b4c48617",
+    "acceptance\\robustness_results.jsonl": "9ba373b64f741568f797a5256e5b67733ab3d9bf319001c2e9cf8042c89ee133",
+    "acceptance\\smoke_results.jsonl": "26024e03d928a24968de0dff14cc3dfa63607122d7c6ba10ab22dc90dac88633",
+    "manifests\\result_manifest.json": "7db58ff3fd3386658f93d537a44574b7a2efcbe172811e3effc35644164bd682",
+    "package\\checksum_manifest.json": "7e07e36b534dea0030792312a8fdd1ee22dedb3d2c16ce185cbee8d7d741a8f5",
+    "package\\exclude_manifest.json": "0f4d26ee526bed3875b65b0e43c00b2d915dd5e550443c1e66994a4c6a105a53",
+    "package\\include_manifest.json": "32ebe1a2e0a6183fb3551f36c62124e60958210fd8a2dae514948ba314530cea",
+    "rehearsal\\backup_restore.json": "c123e6a23f9041dce372b84c595242c928e07fa07b699ebb830ac46a4ce70adb",
+    "rehearsal\\cold_start.json": "7441b350e2566553ee1df792e1748cda25ccc2c1e413946d6387e6f3d9c5bd3f",
+    "rehearsal\\failure_recovery.json": "db68d8d633266d3411f09da5bf6b31a2431a7d9a61dcd68c381a85a88798d8d2",
+    "rehearsal\\graceful_shutdown.json": "55f9ad77a75f5ed0c0deb7f470f48719e46e287938b0289b0e1a5314bda61870",
+    "rehearsal\\summary.json": "7c754720d2ad83fd3a524680e16b61a64ec75693d7181145e88c4db0f4173a9c",
+    "rehearsal\\warm_restart.json": "5f4c323bd73467f262c4ab55fe36fc46b2908adcd860bc1bd1342b35c94bd2dd",
+    "security\\log_scan.json": "98f3bbd0877744bf760b97186f34a1a933aae3ea112c0fa43927995fce79d8fc",
+    "security\\package_scan.json": "5a6727a5da299eb15b53da4f0b65a31a1d4e044cff584cdb55d485cfa1df5874",
+    "security\\secret_scan.json": "60681677427073f12b5df953461865db90499068b6cb0bf91502c4be348604b4"
+  },
+  "deployment_performed": false,
+  "tag_created": false,
+  "tag_pushed": false,
+  "sanitization": {
+    "api_key_logged": false,
+    "authorization_header_logged": false,
+    "workspace_endpoint_logged": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "initial_frozen": {
+    "chunks": 453,
+    "entities": 1012,
+    "relationships": 1061
+  },
+  "active_after_gc": {
+    "chunks": 453,
+    "entities": 1012,
+    "relationships": 1061
+  },
+  "validated_candidate_after_gc": {
+    "chunks": 454,
+    "entities": 1019,
+    "relationships": 1065
+  }
+}

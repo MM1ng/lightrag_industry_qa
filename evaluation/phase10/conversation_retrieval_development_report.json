@@ -1,0 +1,971 @@
+{
+  "status": "READY",
+  "dataset": {
+    "case_count": 18,
+    "source_question_ids": [
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S007",
+      "S008",
+      "S009",
+      "S011",
+      "S012",
+      "S017",
+      "S020",
+      "D001",
+      "D004",
+      "D006",
+      "D008",
+      "D010",
+      "D011",
+      "D016"
+    ],
+    "category_distribution": {
+      "Pronoun Resolution": 5,
+      "Topic Continuation": 4,
+      "Property Inheritance": 5,
+      "Ellipsis": 4
+    },
+    "development_only_guard": true
+  },
+  "rewrite": {
+    "rewrite_accuracy": 1.0,
+    "failed_cases": [],
+    "ambiguous_cases": [],
+    "unnecessary_rewrite": 0.0
+  },
+  "before": {
+    "hit_recall_at_5": 0.6111111111111112,
+    "evidence_recall_at_5": 0.6111111111111112,
+    "mrr_at_5": 0.449074074074074,
+    "hit_recall_at_10": 0.7222222222222222,
+    "evidence_recall_at_10": 0.7222222222222222,
+    "mrr_at_10": 0.46318342151675485
+  },
+  "after": {
+    "hit_recall_at_5": 0.9444444444444444,
+    "evidence_recall_at_5": 0.9444444444444444,
+    "mrr_at_5": 0.7592592592592593,
+    "hit_recall_at_10": 1.0,
+    "evidence_recall_at_10": 1.0,
+    "mrr_at_10": 0.7662037037037037
+  },
+  "delta": {
+    "hit_recall_at_5": 0.33333333333333326,
+    "evidence_recall_at_5": 0.33333333333333326,
+    "mrr_at_5": 0.3101851851851853,
+    "hit_recall_at_10": 0.2777777777777778,
+    "evidence_recall_at_10": 0.2777777777777778,
+    "mrr_at_10": 0.3030202821869489
+  },
+  "improved_cases": [
+    "conv-s001",
+    "conv-s002",
+    "conv-s003",
+    "conv-s004",
+    "conv-s005",
+    "conv-s007",
+    "conv-s008",
+    "conv-s010",
+    "conv-s011",
+    "conv-d002"
+  ],
+  "unchanged_cases": [
+    "conv-s006",
+    "conv-s009",
+    "conv-d003",
+    "conv-d004",
+    "conv-d005"
+  ],
+  "regressed_cases": [
+    {
+      "case_id": "conv-d001",
+      "source_question_id": "D001",
+      "dependent_query": "它适用于哪些行业，其基本结构是什么？",
+      "rewritten_query": "DESMI DNS 系列泵适用于哪些行业，其基本结构是什么？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838"
+      ],
+      "before_ranks": {
+        "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838": 2
+      }
+    },
+    {
+      "case_id": "conv-d006",
+      "source_question_id": "D011",
+      "dependent_query": "它建议泵前吸入直管段长度为多少？DN100 泵对应多少毫米？",
+      "rewritten_query": "DESMI 泵建议泵前吸入直管段长度为多少？DN100 泵对应多少毫米？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf"
+      ],
+      "before_ranks": {
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf": 2
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf": 3
+      }
+    },
+    {
+      "case_id": "conv-d007",
+      "source_question_id": "D016",
+      "dependent_query": "它的对中偏差上限是多少，测量时如何布点？",
+      "rewritten_query": "DESMI 泵和电机联轴器的对中偏差上限是多少，测量时如何布点？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b"
+      ],
+      "before_ranks": {
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b": 2
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "conv-s001",
+      "source_question_id": "S001",
+      "category": "Pronoun Resolution",
+      "dependent_query": "它长期存放时，存放环境和泵轴转动频率有什么要求？",
+      "rewritten_query": "SUMMIT 2196 系列泵长期存放时，存放环境和泵轴转动频率有什么要求？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1"
+      ],
+      "before_query": "它长期存放时,存放环境和泵轴转动频率有什么要求?",
+      "after_query": "summit 2196 系列泵长期存放时,存放环境和泵轴转动频率有什么要求?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1": 7
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-5ce75c93c0a1-000-5ce75c93c0a1": 1
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.14285714285714285
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.8571428571428572
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s002",
+      "source_question_id": "S002",
+      "category": "Pronoun Resolution",
+      "dependent_query": "它的入口管路应如何选择和布置？",
+      "rewritten_query": "SUMMIT 2196 系列泵的入口管路应如何选择和布置？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93"
+      ],
+      "before_query": "它的入口管路应如何选择和布置?",
+      "after_query": "summit 2196 系列泵的入口管路应如何选择和布置?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93": 11
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93": 1
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s003",
+      "source_question_id": "S003",
+      "category": "Topic Continuation",
+      "dependent_query": "它的出口管路中的止回阀、隔离阀和异径接头应怎样布置？",
+      "rewritten_query": "SUMMIT 2196 系列泵的出口管路中的止回阀、隔离阀和异径接头应怎样布置？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93"
+      ],
+      "before_query": "它的出口管路中的止回阀、隔离阀和异径接头应怎样布置?",
+      "after_query": "summit 2196 系列泵的出口管路中的止回阀、隔离阀和异径接头应怎样布置?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93": 2
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-c99ee01e2d93-000-c99ee01e2d93": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.5
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s004",
+      "source_question_id": "S004",
+      "category": "Property Inheritance",
+      "dependent_query": "它的联轴器平行和角度对正误差应控制在多少以内？高温工况还要注意什么？",
+      "rewritten_query": "SUMMIT 2196 系列泵的联轴器平行和角度对正误差应控制在多少以内？高温工况还要注意什么？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc"
+      ],
+      "before_query": "它的联轴器平行和角度对正误差应控制在多少以内?高温工况还要注意什么?",
+      "after_query": "summit 2196 系列泵的联轴器平行和角度对正误差应控制在多少以内?高温工况还要注意什么?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc": 15
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-114bea8f37bc-000-114bea8f37bc": 1
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s005",
+      "source_question_id": "S007",
+      "category": "Property Inheritance",
+      "dependent_query": "它在不同温度下应选什么 ISO 润滑油等级？",
+      "rewritten_query": "SUMMIT 手册中的轴承在不同温度下应选什么 ISO 润滑油等级？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a"
+      ],
+      "before_query": "它在不同温度下应选什么 iso 润滑油等级?",
+      "after_query": "summit 手册中的轴承在不同温度下应选什么 iso 润滑油等级?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a": 3
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-8a9134f69b7a-000-8a9134f69b7a": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.3333333333333333,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.3333333333333333
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.6666666666666667,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.6666666666666667
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s006",
+      "source_question_id": "S008",
+      "category": "Ellipsis",
+      "dependent_query": "它的润滑油更换周期呢？",
+      "rewritten_query": "SUMMIT 2196 系列泵的润滑油更换周期呢？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-38cc6dafdf6c-000-38cc6dafdf6c"
+      ],
+      "before_query": "它的润滑油更换周期呢?",
+      "after_query": "summit 2196 系列泵的润滑油更换周期呢?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-38cc6dafdf6c-000-38cc6dafdf6c": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-38cc6dafdf6c-000-38cc6dafdf6c": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "improved": false,
+      "regressed": false,
+      "unchanged": true
+    },
+    {
+      "case_id": "conv-s007",
+      "source_question_id": "S009",
+      "category": "Ellipsis",
+      "dependent_query": "润滑脂适用温度呢？",
+      "rewritten_query": "SUMMIT 手册的润滑脂适用温度是多少？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f"
+      ],
+      "before_query": "润滑脂适用温度呢?",
+      "after_query": "summit 手册的润滑脂适用温度是多少?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f": 9
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f": 2
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.1111111111111111
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "delta": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.3888888888888889
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s008",
+      "source_question_id": "S011",
+      "category": "Topic Continuation",
+      "dependent_query": "它的标准启动步骤是什么？",
+      "rewritten_query": "SUMMIT 离心泵的标准启动步骤是什么？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2",
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124"
+      ],
+      "before_query": "它的标准启动步骤是什么?",
+      "after_query": "summit 离心泵的标准启动步骤是什么?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {},
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-d1faf220e6f2-000-d1faf220e6f2": 1,
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124": 4
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s009",
+      "source_question_id": "S012",
+      "category": "Ellipsis",
+      "dependent_query": "停机步骤呢？",
+      "rewritten_query": "SUMMIT 2196 系列泵的停机步骤是什么？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124"
+      ],
+      "before_query": "停机步骤呢?",
+      "after_query": "summit 2196 系列泵的停机步骤是什么?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-1693c615d124-000-1693c615d124": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "improved": false,
+      "regressed": false,
+      "unchanged": true
+    },
+    {
+      "case_id": "conv-s010",
+      "source_question_id": "S017",
+      "category": "Topic Continuation",
+      "dependent_query": "它维修前必须完成哪些安全步骤？",
+      "rewritten_query": "SUMMIT 离心泵维修前必须完成哪些安全步骤？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3",
+        "cchunk-pymupdf-v1-护手册-2328c2b8800f-000-2328c2b8800f"
+      ],
+      "before_query": "它维修前必须完成哪些安全步骤?",
+      "after_query": "summit 离心泵维修前必须完成哪些安全步骤?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {},
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-05fa62ad30d3-000-05fa62ad30d3": 3,
+        "cchunk-pymupdf-v1-护手册-2328c2b8800f-000-2328c2b8800f": 5
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.3333333333333333,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.3333333333333333
+      },
+      "delta": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.3333333333333333,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.3333333333333333
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-s011",
+      "source_question_id": "S020",
+      "category": "Property Inheritance",
+      "dependent_query": "它的填料环、水封环及接头应怎样布置？",
+      "rewritten_query": "SUMMIT 填料密封泵的填料环、水封环及接头应怎样布置？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-护手册-99d80f6fd8a0-000-99d80f6fd8a0"
+      ],
+      "before_query": "它的填料环、水封环及接头应怎样布置?",
+      "after_query": "summit 填料密封泵的填料环、水封环及接头应怎样布置?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {},
+      "after_ranks": {
+        "cchunk-pymupdf-v1-护手册-99d80f6fd8a0-000-99d80f6fd8a0": 8
+      },
+      "before": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "after": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.125
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.125
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-d001",
+      "source_question_id": "D001",
+      "category": "Pronoun Resolution",
+      "dependent_query": "它适用于哪些行业，其基本结构是什么？",
+      "rewritten_query": "DESMI DNS 系列泵适用于哪些行业，其基本结构是什么？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838"
+      ],
+      "before_query": "它适用于哪些行业,其基本结构是什么?",
+      "after_query": "desmi dns 系列泵适用于哪些行业,其基本结构是什么?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-体说明-56bb9fd3b838-000-56bb9fd3b838": 2
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": -0.5,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": -0.5
+      },
+      "improved": false,
+      "regressed": true,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-d002",
+      "source_question_id": "D004",
+      "category": "Property Inheritance",
+      "dependent_query": "它对干运行、最小流量、最大流量和吸入侧节流有什么限制？",
+      "rewritten_query": "DESMI DNS 泵对干运行、最小流量、最大流量和吸入侧节流有什么限制？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c"
+      ],
+      "before_query": "它对干运行、最小流量、最大流量和吸入侧节流有什么限制?",
+      "after_query": "desmi dns 泵对干运行、最小流量、最大流量和吸入侧节流有什么限制?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c": 4
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1--安全-21ccbc8db89c-000-21ccbc8db89c": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.25,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.25
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.75,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.75
+      },
+      "improved": true,
+      "regressed": false,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-d003",
+      "source_question_id": "D006",
+      "category": "Pronoun Resolution",
+      "dependent_query": "它在霜冻期停用时应如何防冻？",
+      "rewritten_query": "DESMI DNS 泵在霜冻期停用时应如何防冻？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c"
+      ],
+      "before_query": "它在霜冻期停用时应如何防冻?",
+      "after_query": "desmi dns 泵在霜冻期停用时应如何防冻?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1--安全-2d7994f5896c-000-2d7994f5896c": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "improved": false,
+      "regressed": false,
+      "unchanged": true
+    },
+    {
+      "case_id": "conv-d004",
+      "source_question_id": "D008",
+      "category": "Topic Continuation",
+      "dependent_query": "它的存放环境和泵轴手动转动频率有什么要求？",
+      "rewritten_query": "DESMI 泵组的存放环境和泵轴手动转动频率有什么要求？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-时存放-16847aea2304-000-16847aea2304"
+      ],
+      "before_query": "它的存放环境和泵轴手动转动频率有什么要求?",
+      "after_query": "desmi 泵组的存放环境和泵轴手动转动频率有什么要求?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-时存放-16847aea2304-000-16847aea2304": 2
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-时存放-16847aea2304-000-16847aea2304": 2
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "improved": false,
+      "regressed": false,
+      "unchanged": true
+    },
+    {
+      "case_id": "conv-d005",
+      "source_question_id": "D010",
+      "category": "Ellipsis",
+      "dependent_query": "最小进水压力呢？",
+      "rewritten_query": "DESMI 手册的最小进水压力是多少？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1-术规格-7318227c6dad-000-7318227c6dad"
+      ],
+      "before_query": "最小进水压力呢?",
+      "after_query": "desmi 手册的最小进水压力是多少?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1-术规格-7318227c6dad-000-7318227c6dad": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1-术规格-7318227c6dad-000-7318227c6dad": 1
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": 0.0
+      },
+      "improved": false,
+      "regressed": false,
+      "unchanged": true
+    },
+    {
+      "case_id": "conv-d006",
+      "source_question_id": "D011",
+      "category": "Property Inheritance",
+      "dependent_query": "它建议泵前吸入直管段长度为多少？DN100 泵对应多少毫米？",
+      "rewritten_query": "DESMI 泵建议泵前吸入直管段长度为多少？DN100 泵对应多少毫米？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf"
+      ],
+      "before_query": "它建议泵前吸入直管段长度为多少?dn100 泵对应多少毫米?",
+      "after_query": "desmi 泵建议泵前吸入直管段长度为多少?dn100 泵对应多少毫米?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf": 2
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1--安装-2f479eae20bf-000-2f479eae20bf": 3
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.3333333333333333,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.3333333333333333
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": -0.16666666666666669,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": -0.16666666666666669
+      },
+      "improved": false,
+      "regressed": true,
+      "unchanged": false
+    },
+    {
+      "case_id": "conv-d007",
+      "source_question_id": "D016",
+      "category": "Pronoun Resolution",
+      "dependent_query": "它的对中偏差上限是多少，测量时如何布点？",
+      "rewritten_query": "DESMI 泵和电机联轴器的对中偏差上限是多少，测量时如何布点？",
+      "gold_chunk_ids": [
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b"
+      ],
+      "before_query": "它的对中偏差最大是多少,测量时如何布点?",
+      "after_query": "desmi 泵和电机联轴器的对中偏差最大是多少,测量时如何布点?",
+      "rewrite_status": "rewritten",
+      "before_ranks": {
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b": 1
+      },
+      "after_ranks": {
+        "cchunk-pymupdf-v1--安装-f6f642d9c92b-000-f6f642d9c92b": 2
+      },
+      "before": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 1.0
+      },
+      "after": {
+        "hit_recall_at_5": 1.0,
+        "evidence_recall_at_5": 1.0,
+        "mrr_at_5": 0.5,
+        "hit_recall_at_10": 1.0,
+        "evidence_recall_at_10": 1.0,
+        "mrr_at_10": 0.5
+      },
+      "delta": {
+        "hit_recall_at_5": 0.0,
+        "evidence_recall_at_5": 0.0,
+        "mrr_at_5": -0.5,
+        "hit_recall_at_10": 0.0,
+        "evidence_recall_at_10": 0.0,
+        "mrr_at_10": -0.5
+      },
+      "improved": false,
+      "regressed": true,
+      "unchanged": false
+    }
+  ],
+  "fingerprint": {
+    "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+    "generation_id": "g5162e7fb4208635103ff4ebb",
+    "workspace": "D:\\industrial_energy_agent\\evaluation\\experiments\\phase4\\parent_expansion\\tmp\\phase4_index\\kb_data\\8fce4626859d44abb70a9ae5b0372cea\\qdrant\\generations\\g5162e7fb4208635103ff4ebb\\workspace",
+    "vector_backend": "qdrant",
+    "embedding_model": "text-embedding-v4",
+    "retrieval_config": {
+      "mode": "naive",
+      "top_k": 12,
+      "chunk_top_k": 20,
+      "enable_rerank": false
+    },
+    "sha256": "67ac1998df564d7215645e59d8f76eeb73b72a7b5ecde63482cc9fcb4ba519e9"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "rc_version": "0.1.0-rc.1",
+  "re_evaluation": {
+    "phase": "Phase 7 Closeout",
+    "created_at": "2026-08-02T20:22:52+08:00",
+    "git_commit": "5051647ee2e377e3ea94f70eca1c0eded832e42b",
+    "metric_correction_reference": "evaluation/experiments/phase7/closeout/acceptance_metric_correction.json",
+    "answerable_denominator": 18,
+    "negative_denominator": 2
+  },
+  "release_gates": {
+    "smoke_test_passed": true,
+    "golden_subset_complete_20": true,
+    "citation_traceable_emitted": true,
+    "n001_n002_refused": true,
+    "safety_questions_no_high_risk": true,
+    "fallback_zero": true,
+    "request_trace_id_complete": true,
+    "security_zero": true,
+    "http_success_rate": 1.0,
+    "error_rate": 0.0,
+    "p95_latency": 2.722,
+    "answerable_denominator_correct": true,
+    "negative_denominator_correct": true,
+    "n001_n002_excluded_from_answerable_denominator": true,
+    "n001_n002_excluded_from_false_rejection": true,
+    "answer_citation_accuracy_18": 0.7778,
+    "false_rejection_rate_18": 0.2222,
+    "insufficient_evidence_rejection_rate_2": 1.0,
+    "negative_unsupported_answer_rate_2": 0.0,
+    "citation_traceability_emitted_1_0": true,
+    "request_trace_id_complete_rate_1_0": true,
+    "fallback_zero": true,
+    "error_rate_zero": true
+  },
+  "passed": true,
+  "passed_basis": "All gates re-evaluated with canonical denominators (18 answerable / 2 negative). Historical 14/20=0.70 and 6/20=0.30 values are superseded, not deleted."
+}

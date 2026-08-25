@@ -1,0 +1,44 @@
+{
+  "phase": "10B-3J-J1S-R",
+  "historical_run_mutated": false,
+  "model_rerun_performed": false,
+  "fixes": [
+    {
+      "requirement": "Preflight and Development compare complete configuration SHA",
+      "implementation": "assert_preflight_config_sha requires one non-empty feature_flag_config_sha256 across all three preflight cases",
+      "test": "tests/test_phase10b3j_j1s_runner.py::test_future_preflight_rejects_different_feature_flag_configuration"
+    },
+    {
+      "requirement": "QA_GROUNDING_AUDIT_ENABLED is required",
+      "implementation": "j1s_environment sets QA_GROUNDING_AUDIT_ENABLED=true",
+      "test": "tests/test_phase10b3j_j1s_runner.py::test_j1s_environment_enables_only_structured_citation_output"
+    },
+    {
+      "requirement": "Admin Trace projection preserves J1S fields",
+      "implementation": "RetrievalTraceResponse declares all J1S audit fields as admin-only fields",
+      "test": "tests/test_phase10b3j_r1_runner.py::test_admin_trace_exposes_structured_citation_audit_fields"
+    },
+    {
+      "requirement": "Runner does not consume public embedded compatibility Trace",
+      "implementation": "reconciliation reads SQLite immutable record via response trace_id",
+      "test": "tests/test_phase10b3j_j1s_runner.py::test_trace_loader_uses_response_trace_id_to_read_the_persisted_record"
+    },
+    {
+      "requirement": "Trace version and audit-field completeness are independent",
+      "implementation": "validate_j1s_trace accepts retained legacy version only with complete J1S field contract",
+      "test": "tests/test_phase10b3j_j1s_runner.py::test_legacy_trace_version_is_accepted_only_with_complete_j1s_audit_fields"
+    },
+    {
+      "requirement": "Fallback is not classified as missing Trace",
+      "implementation": "linkage record retains structured fallback state independently from Trace linkage",
+      "test": "tests/test_phase10b3j_j1s_reconciliation.py::test_linkage_preserves_a_parseable_requirement_fallback_as_a_linked_record"
+    },
+    {
+      "requirement": "Development requires J1S-0/J1S-1/J1S-2",
+      "implementation": "assert_j1s_evaluation_order blocks absent J1S-2",
+      "test": "tests/test_phase10b3j_j1s_runner.py::test_development_is_rejected_when_j1s2_has_not_passed"
+    }
+  ],
+  "future_development_execution_allowed": false,
+  "reason": "J1S quality gate failed; governance changes are retained only for future approved experiments."
+}

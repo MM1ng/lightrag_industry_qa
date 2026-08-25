@@ -1,0 +1,10 @@
+{
+  "parameter": {"minimum": ["entity_match", "numeric_value", "unit_or_explicit_inheritance", "condition_and_equipment_match"]},
+  "procedure": {"minimum": ["ordered_steps", "no_key_step_missing", "precondition_and_warning_preserved"]},
+  "safety": {"minimum": ["safety_limit", "prohibition", "condition_or_consequence"]},
+  "troubleshooting": {"minimum": ["symptom_or_condition", "cause_or_check", "action_or_consequence"]},
+  "maintenance": {"minimum": ["maintenance_object", "interval_or_condition", "required_action"]},
+  "component": {"minimum": ["component_entity", "equipment_match"]},
+  "condition_limit": {"minimum": ["parameter", "limit_value", "unit", "applicable_condition"]},
+  "multi_evidence": {"minimum": ["all_answer_points_supported", "all_required_evidence_covered"]}
+}

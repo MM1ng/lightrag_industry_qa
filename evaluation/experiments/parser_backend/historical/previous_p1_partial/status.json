@@ -1,0 +1,5 @@
+{
+  "status": "Incomplete partial index",
+  "detail": "Old P1 (MinerU raw) LightRAG index interrupted at 2196 chunk 60/278 by DashScope free-quota 403; no 50-question results.",
+  "not_used_for_final_comparison": true
+}

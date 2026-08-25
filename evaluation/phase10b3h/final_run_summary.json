@@ -1,0 +1,17 @@
+{
+  "evaluation_run_id": "phase10b3h-final-52",
+  "record_count": 52,
+  "development_count": 36,
+  "validation_count": 16,
+  "dataset_sha256": "22ae671b6579fa04e270e913c648fe359c622ccbd93cfefeb76334f6668c9fa3",
+  "holdout_used": false,
+  "code_commit": "4e6db77",
+  "config": {
+    "mode": "naive",
+    "top_k": 12,
+    "chunk_top_k": 20,
+    "rerank": false,
+    "supplemental_top_k": 5,
+    "max_final_evidence": 5
+  }
+}

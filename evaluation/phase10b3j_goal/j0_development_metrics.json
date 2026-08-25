@@ -1,0 +1,347 @@
+{
+  "phase": "10B-3J-Goal",
+  "experiment": "J0",
+  "split": "development",
+  "metric_definition": {
+    "definition_version": "phase10b3d-metric-policy-v1",
+    "source_path": "evaluation/phase10b3d/metric_policy.json",
+    "source_sha256": "8850674f37430afece9088b53e9f1eaa874b831d341db04bc42e648b55bcd03d"
+  },
+  "input_evidence": {
+    "j0_results_path": "evaluation/phase10b3j_r1/j0_development_results.jsonl",
+    "j0_results_sha256": "9de46793cf441eb3c02306e16a50758e0acb763065b678c80f208fbc8ecddb32",
+    "r2_reference_path": "evaluation/phase10b3i_r2/i0_development_metrics.json",
+    "r2_reference_sha256": "01dea62ec1a9bc40bc940993359bdfa37d193dcbbe661cfe42bb77b950e35d7e",
+    "golden_set_read": false,
+    "development_golden_sidecar_read": true,
+    "j0_embedded_development_expectations_read": true,
+    "holdout_read": false,
+    "model_queries_made": false
+  },
+  "question_count": 36,
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "status_distribution": {
+    "insufficient_evidence": 4,
+    "partial_answer": 30,
+    "success": 2
+  },
+  "quality_metrics": {
+    "method": "J0 captured claims/citations/grounding audit plus immutable development evidence sidecar",
+    "sidecar_path": "evaluation/phase10b3c/golden_evidence_mapping_g10b3c20260803.json",
+    "sidecar_sha256": "2a8e708ea5c8ceef99ddd42731d77e67bfd9d1c803212ddd015c89aa6a1c2f25",
+    "sidecar_development_record_count": 39,
+    "j0_matrix_inputs": {
+      "grounding_removal_matrix_record_count": 36,
+      "coverage_predicate_matrix_record_count": 36,
+      "provider_lineage_matrix_record_count": 36,
+      "grounding_retained_matrix_matches_trace": false,
+      "grounding_retained_matrix_mismatch_question_ids": [
+        "S002",
+        "S003",
+        "S004",
+        "S005",
+        "S006",
+        "S007",
+        "S008",
+        "S009",
+        "S010",
+        "S011",
+        "S012",
+        "S013",
+        "S014",
+        "S015",
+        "S016",
+        "S017",
+        "S018",
+        "S019",
+        "S020",
+        "D001",
+        "D003",
+        "D004",
+        "D005",
+        "D006",
+        "D007",
+        "D008",
+        "D009",
+        "D010",
+        "D011",
+        "D012",
+        "D013",
+        "D014",
+        "D015",
+        "D016"
+      ],
+      "quality_metric_source_of_truth": "j0_development_results.trace.grounding_audit; matrix mismatch is preserved as an input-integrity limitation"
+    },
+    "metrics": {
+      "claim_evidence_identity_resolution_rate": {
+        "numerator": 182,
+        "denominator": 182,
+        "value": 1.0,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "supporting_citation_recall": {
+        "numerator": 26,
+        "denominator": 29,
+        "value": 0.896551724137931,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "citation_precision": {
+        "numerator": 11.333333333333336,
+        "denominator": 29,
+        "value": 0.3908045977011495,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "overcitation_rate": {
+        "numerator": 23,
+        "denominator": 29,
+        "value": 0.7931034482758621,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "claim_semantic_support": {
+        "numerator": 29,
+        "denominator": 29,
+        "value": 1.0,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "false_rejection_rate": {
+        "numerator": 4,
+        "denominator": 36,
+        "value": 0.1111111111111111,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "question_level_unsupported_answer_rate": {
+        "numerator": 5,
+        "denominator": 32,
+        "value": 0.15625,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "question_level_citation_accuracy": {
+        "numerator": 24,
+        "denominator": 32,
+        "value": 0.75,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      },
+      "expected_answer_point_coverage": {
+        "numerator": 26,
+        "denominator": 39,
+        "value": 0.6666666666666666,
+        "definition_version": "phase10b3d-metric-policy-v1"
+      }
+    },
+    "citation_trace_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    }
+  },
+  "quality_point_record_count": 39,
+  "runtime_certification_metrics": {
+    "completed_query_rate": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "substantive_response_rate": {
+      "numerator": 32,
+      "denominator": 36,
+      "value": 0.8888888888888888,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "refusal_rate": {
+      "numerator": 4,
+      "denominator": 36,
+      "value": 0.1111111111111111,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "failed_response_rate": {
+      "numerator": 0,
+      "denominator": 36,
+      "value": 0.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "trace_completeness": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "candidate_generation_correct_rate": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    },
+    "provider_lineage_complete_rate": {
+      "numerator": 36,
+      "denominator": 36,
+      "value": 1.0,
+      "definition_version": "phase10b3d-metric-policy-v1"
+    }
+  },
+  "r2_non_regression_gates": {
+    "comparison_scope": "same development split and phase10b3d metric definition; J0 is recomputed from captured J0 records plus the immutable development evidence sidecar",
+    "metric_definition_matches": true,
+    "development_question_count_matches": true,
+    "trace_completeness": {
+      "r2_reference_value": 1.0,
+      "j0_value": 1.0,
+      "delta": 0.0,
+      "non_regressed": true
+    },
+    "quality_metric_comparison": {
+      "claim_evidence_identity_resolution_rate": {
+        "r2_reference_value": 1.0,
+        "j0_value": 1.0,
+        "delta": 0.0,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "supporting_citation_recall": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": 0.896551724137931,
+        "delta": -0.016491754122938462,
+        "direction": "higher_is_better",
+        "non_regressed": false
+      },
+      "citation_precision": {
+        "r2_reference_value": 0.35507246376811585,
+        "j0_value": 0.3908045977011495,
+        "delta": 0.03573213393303365,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "overcitation_rate": {
+        "r2_reference_value": 0.8695652173913043,
+        "j0_value": 0.7931034482758621,
+        "delta": -0.07646176911544222,
+        "direction": "lower_is_better",
+        "non_regressed": true
+      },
+      "claim_semantic_support": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": 1.0,
+        "delta": 0.08695652173913049,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "false_rejection_rate": {
+        "r2_reference_value": 0.08333333333333333,
+        "j0_value": 0.1111111111111111,
+        "delta": 0.027777777777777776,
+        "direction": "lower_is_better",
+        "non_regressed": false
+      },
+      "question_level_unsupported_answer_rate": {
+        "r2_reference_value": 0.36363636363636365,
+        "j0_value": 0.15625,
+        "delta": -0.20738636363636365,
+        "direction": "lower_is_better",
+        "non_regressed": true
+      },
+      "question_level_citation_accuracy": {
+        "r2_reference_value": 0.9393939393939394,
+        "j0_value": 0.75,
+        "delta": -0.18939393939393945,
+        "direction": "higher_is_better",
+        "non_regressed": false
+      },
+      "expected_answer_point_coverage": {
+        "r2_reference_value": 0.5384615384615384,
+        "j0_value": 0.6666666666666666,
+        "delta": 0.1282051282051282,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      }
+    },
+    "required_gate_thresholds": {
+      "status_changes": 1,
+      "false_rejection_worsened_questions": 1,
+      "expected_coverage_delta_percentage_points": 12.82051282051282,
+      "supporting_citation_recall_delta_percentage_points": -1.6491754122938462,
+      "checks": {
+        "unexpected_5xx_zero": true,
+        "status_changes_at_most_3": true,
+        "false_rejection_worsened_questions_at_most_2": true,
+        "expected_coverage_decline_at_most_5_percentage_points": true,
+        "supporting_citation_recall_decline_at_most_5_percentage_points": true,
+        "ordinary_response_schema_unchanged": true,
+        "ordinary_response_has_no_internal_trace": true
+      }
+    },
+    "strict_diagnostic_comparison": {
+      "claim_evidence_identity_resolution_rate": {
+        "r2_reference_value": 1.0,
+        "j0_value": 1.0,
+        "delta": 0.0,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "supporting_citation_recall": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": 0.896551724137931,
+        "delta": -0.016491754122938462,
+        "direction": "higher_is_better",
+        "non_regressed": false
+      },
+      "citation_precision": {
+        "r2_reference_value": 0.35507246376811585,
+        "j0_value": 0.3908045977011495,
+        "delta": 0.03573213393303365,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "overcitation_rate": {
+        "r2_reference_value": 0.8695652173913043,
+        "j0_value": 0.7931034482758621,
+        "delta": -0.07646176911544222,
+        "direction": "lower_is_better",
+        "non_regressed": true
+      },
+      "claim_semantic_support": {
+        "r2_reference_value": 0.9130434782608695,
+        "j0_value": 1.0,
+        "delta": 0.08695652173913049,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      },
+      "false_rejection_rate": {
+        "r2_reference_value": 0.08333333333333333,
+        "j0_value": 0.1111111111111111,
+        "delta": 0.027777777777777776,
+        "direction": "lower_is_better",
+        "non_regressed": false
+      },
+      "question_level_unsupported_answer_rate": {
+        "r2_reference_value": 0.36363636363636365,
+        "j0_value": 0.15625,
+        "delta": -0.20738636363636365,
+        "direction": "lower_is_better",
+        "non_regressed": true
+      },
+      "question_level_citation_accuracy": {
+        "r2_reference_value": 0.9393939393939394,
+        "j0_value": 0.75,
+        "delta": -0.18939393939393945,
+        "direction": "higher_is_better",
+        "non_regressed": false
+      },
+      "expected_answer_point_coverage": {
+        "r2_reference_value": 0.5384615384615384,
+        "j0_value": 0.6666666666666666,
+        "delta": 0.1282051282051282,
+        "direction": "higher_is_better",
+        "non_regressed": true
+      }
+    },
+    "passed": true
+  },
+  "source_summary_consistent": true,
+  "certification_completed": true,
+  "validation_run": false,
+  "holdout_run": false,
+  "candidate_activation_performed": false,
+  "phase10c_allowed": false
+}

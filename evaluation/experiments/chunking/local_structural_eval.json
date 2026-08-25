@@ -1,0 +1,14 @@
+{
+  "source_chunks": 118,
+  "parents": 447,
+  "children": 453,
+  "strategy": "pymupdf-v1",
+  "config": {
+    "parent_target_tokens": 1500,
+    "parent_max_tokens": 2200,
+    "child_target_tokens": 450,
+    "child_min_tokens": 120,
+    "child_max_tokens": 700,
+    "child_overlap_tokens": 80
+  }
+}

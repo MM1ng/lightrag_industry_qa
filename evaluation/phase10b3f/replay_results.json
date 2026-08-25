@@ -1,0 +1,3717 @@
+{
+  "summary": {
+    "total_count": 52,
+    "replayable_false_rejection_count": 1,
+    "recovered_false_rejection_count": 1,
+    "replayable_count": 41,
+    "unsupported_emitted_point_count": 125,
+    "context_registry_sha_mismatch_count": 0,
+    "final_metrics_valid": true,
+    "eligible_for_phase10b3e": true
+  },
+  "rows": [
+    {
+      "question_id": "S001",
+      "split": "development",
+      "original_status": "success",
+      "replayable": true,
+      "replayed_status": "success",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 0,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，Summit 2196 系列泵长期存放时的要求如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "**存放环境**：应将泵存放在清洁、干燥的地方，并且不要取下管路接头盖（依据：file=2196-ANSI-Manual-Chinese.pdf page=9）。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "**泵轴转动频率**：至少每周用手旋转泵轴一次，以保持轴承上覆有保护油膜或油脂。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "如要长期存放，可向 Summit Pump, Inc. 购买专用护理产品（依据：file=2196-ANSI-Manual-Chinese.pdf page=9）。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "以上信息均来自手册第9页的“存放泵”部分。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "S002",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 5,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，SUMMIT 2196 系列泵的入口管路应按以下要求进行选择和布置：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 所有管路必须单独支撑，并与泵的入口法兰和出口法兰准确对正（证据页码：10）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "2. 不得用力将管路与泵法兰对正（证据页码：10）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "3. 最好在与泵法兰直接相连的接头处放置一小段软短管或波纹式短管（证据页码：10）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "4. 如果使用管路异径接头，应将其置于泵与止回阀之间（证据页码：10）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "以上信息均来自文件《2196-ANSI-Manual-Chinese.pdf》第10页。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S003",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，SUMMIT 2196 系列泵出口管路中的止回阀、隔离阀和异径接头的布置方式如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "出口管路应包含**隔离阀**和**止回阀**。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "**止回阀**应置于**泵和隔离阀之间**，以防止泵反向旋转。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "如果使用**管路异径接头**，应将其置于**泵与止回阀之间**。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "（依据来源：file=2196-ANSI-Manual-Chinese.pdf page=10）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S004",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，SUMMIT 2196 系列泵联轴器的平行和角度对正误差应控制在 **0.005 英寸内**。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "对于高温工况，还需要在工作温度下进行对正检查。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "（证据来源：文件 `2196-ANSI-Manual-Chinese.pdf`，页码 11）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S005",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 5,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，SUMMIT 2196 系列泵启动后，填料函的正常滴漏速度应调整到每分钟 40-65 滴。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "证据来源：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=17 chunk=cchunk-pymupdf-v1-a94c7167b5a3f6ed-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "“检查填料函的滴漏情况，必要时进行调整，达到每分钟滴漏 40-65 滴的速度。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=11 chunk=cchunk-pymupdf-v1-3b58bc1e45428865-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P7",
+          "content": "“在启动时调节压盖螺栓的螺母，达到每分钟滴漏 40-65 滴。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S006",
+      "split": "development",
+      "original_status": "insufficient_evidence",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": true,
+      "unsupported_emitted_point_count": 2,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "最大轴承工作温度为 175°F（证据来源：file=2196-ANSI-Manual-Chinese.pdf page=14）。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "如果泵送液体温度超过 250°F，则必须用水冲注填料函（证据来源：file=2196-ANSI-Manual-Chinese.pdf page=14）。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "答案依据充分，可靠。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S007",
+      "split": "development",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "S008",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册《2196-ANSI-Manual-Chinese.pdf》中的内容，SUMMIT 2196 系列泵的润滑油更换方法及恶劣环境下的处理如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "**润滑油更换步骤：**",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "1. 取下注油孔塞 (113A)。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "2. 将一个适当的容器放置在轴承架排放塞 (408A) 下方以接收润滑油。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "3. 取下轴承架排放塞 (408A)，让润滑油完全排出。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "4. 检查排出的润滑油中是否含有过多污染物或水分。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "5. 重新装上轴承架排放塞 (408A)。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "6. 根据表4选择适用的润滑油，并加注至观察窗 (319) 的中间位置。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "7. 重新装上注油孔塞 (113A)。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "**注意事项：**",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P11",
+          "content": "轴承架润滑油加注不足或过度均会造成损坏，必须确保油位位于观察窗中间位置。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "推荐使用的润滑油包括：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P13",
+          "content": "美孚：合成 624、525、626、627",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P14",
+          "content": "飞利浦：Magnus 32、46、68、100",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "合成 Syndustrial 油雾 100",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P16",
+          "content": "**恶劣环境下的处理：**",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P17",
+          "content": "正常情况下，每运行2000小时或三个月（以先到为准）更换一次润滑油。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P18",
+          "content": "如果泵处于“极端恶劣的大气环境中”，应**更频繁地更换润滑油**。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P19",
+          "content": "以上信息来源于手册第15页“更换润滑油”部分。",
+          "evidence_ids": [
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "S009",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 4,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，对润滑脂的适用温度、稠度和重新润滑周期的规定如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **适用温度**：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "对于泵送物质温度为 -60°F 至 350°F 的情况，可以使用润滑脂润滑。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "对于温度超过 350°F 的情况，不建议使用润滑脂。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "（证据来源：file=2196-ANSI-Manual-Chinese.pdf page=16）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "2. **稠度要求**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "应使用稠度为 NLGI 2 号的润滑脂。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "（证据来源：file=2196-ANSI-Manual-Chinese.pdf page=16）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P9",
+          "content": "3. **重新润滑周期**：",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "每三个月用润滑脂对轴承进行一次重新润滑。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "（证据来源：file=2196-ANSI-Manual-Chinese.pdf page=16）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P12",
+          "content": "以上信息均来自提供的手册内容，未补充任何外部知识。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S010",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "面对泵的吸入口时，正确的泵旋转方向为逆时针方向。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "泵以反向旋转的方式工作会使叶轮移位，从而导致严重损坏叶轮和/或泵体。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=16 chunk=cchunk-pymupdf-v1-e538966686c111ea-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S011",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据 SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796 型离心泵手册，标准启动步骤如下：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 用手旋转泵，确保旋转部件能够自由转动。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "2. 确保入口阀打开。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "3. 将出口阀半关闭。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "4. 解除对泵驱动器电源的锁定。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "5. 电机一旦达到工作速度，就慢慢打开出口阀。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "6. 检查填料函的滴漏情况，必要时进行调整，达到每分钟滴漏 40–65 滴的速度。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "以上内容依据手册文件 2196-ANSI-Manual-Chinese.pdf 第17页内容。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S012",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "Summit 2196 系列泵的停机步骤如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 逐渐关上出口阀并关闭电机电源。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "2. 切断泵驱动器的电源。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "依据来源：[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=18 chunk=cchunk-pymupdf-v1-2db1a56a7e45ceb2-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S013",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册中的表6“叶轮间隙”，当泵送温度最高为300° F (149° C) 时，SUMMIT MTO/LTO型泵的叶轮间隙应设为 **.012 (.30)**。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=19 chunk=cchunk-pymupdf-v1-7e3e80ba8c62809f-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S014",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "使用塞尺法设置 2196-R 型泵叶轮间隙时，最终塞尺厚度的确定方法如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "在将顶举螺栓 (370D) 均匀地转动，使叶轮与填料函盖 (184) 相接触后，测量轴承架 (228) 与轴承座 (134) 之间的间隙。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "然后将该测量值**降低 0.060”**，由此得到轴承架 (228) 与轴承座 (134) 之间的最终塞尺厚度。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "依据来源：[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=20 chunk=cchunk-pymupdf-v1-17f4771c4c817a77-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S015",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796型手册（文件2196-ANSI-Manual-Chinese.pdf，第23页，表7），泵不输送液体的常见原因及对应处理方法如下：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 原因：泵没有灌注",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "处理方法：重新灌注泵",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "2. 原因：旋转方向不正确",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "处理方法：调换电机接线",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "3. 原因：叶轮卡塞",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "处理方法：反向冲洗泵",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "4. 原因：入口管路堵塞",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "处理方法：去除异物",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "以上信息来源于手册中“表7”所列内容。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "S016",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 5,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据SUMMIT PUMP 2196 / 2196-LF / 2196-R / 2796型工业离心泵手册（文件：2196-ANSI-Manual-Chinese.pdf），轴承高温运行通常由以下原因造成，处理方法如下：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **没有对正**",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "处理方法：重新对正驱动联轴器。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "（证据来源：page=24，表7）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "2. **润滑油位低或润滑油不足**",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "处理方法：检查油位和/或润滑脂。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "（证据来源：page=24，表7）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P8",
+          "content": "3. **液体比规定的重量重**",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "处理方法：检查液体的比重。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "（证据来源：page=24，表7）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P11",
+          "content": "此外，手册还指出滚珠轴承对过度润滑和润滑不足均十分敏感，这两种情况都会损害轴承性能，并可能导致过热。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "建议使用温度计监控轴承温度，因为过热会缩短轴承寿命。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P13",
+          "content": "（证据来源：page=14）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P14",
+          "content": "所有答案点均来自手册内容，未补充外部信息。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S017",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据 SUMMIT PUMP 手册，在尝试对泵进行维修之前，必须完成以下安全步骤：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 执行停机程序。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "2. 切断电源。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "3. 使泵冷却。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "4. 关闭入口阀和出口阀。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "5. 排空泵。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "（依据文件：2196-ANSI-Manual-Chinese.pdf，页码：23）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S018",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，Summit 手册规定：",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "如果泵体的凹槽和点蚀超过 **1/8” 深**，则应更换泵体。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "如果叶轮的凹槽超过 **1/16”** 或者磨损超过 **1/32”**，则应更换叶轮。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=27 chunk=cchunk-pymupdf-v1-9525f7a38d48e416-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "S019",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 8,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据提供的手册内容，关于SUMMIT LTO泵架的外轴承布置方式及安装时的润滑相关要求如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **外轴承布置方式**：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "轴承应以“背对背”的顺序正确安装。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=28 chunk=cchunk-pymupdf-v1-f13e5d0f9df649e2-000]] 中明确指出：“确保轴承以正确的顺序、背对背安装。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "2. **LTO型号在安装时的润滑相关要求**：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "如果采用润滑油润滑，应没有密封件或挡油环。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "证据来源：同上文件页28，两次提到：“如果采用润滑油润滑，应没有密封件或挡油环。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P10",
+          "content": "在轴承座内侧和外侧均需涂上一层薄薄的润滑剂。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "证据来源：页28步骤10：“在轴承座 (134) 内侧涂上一层薄薄的润滑剂。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P13",
+          "content": "证据来源：页29步骤13：“在轴承座 (134) 的外侧涂上一层薄薄的润滑剂……”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P14",
+          "content": "对于LTO型号，在安装过程中还需：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P15",
+          "content": "安装轴承盖 (109C) 和螺栓 (370G)。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P16",
+          "content": "证据来源：页28，“在 LTO 和 XLO 型号上，安装轴承盖 (109C) 和螺栓 (370G)。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P17",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P18",
+          "content": "综上，SUMMIT LTO泵架的外轴承为背对背布置；安装时若使用润滑油润滑，则不得安装密封件或挡油环，并需在轴承座内外侧涂抹润滑剂。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P19",
+          "content": "手册中未检索到其他针对LTO泵架外轴承的特定润滑要求。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "S020",
+      "split": "development",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "D001",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 3,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "DESMI DNS系列泵适用于以下行业：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "水处理",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "工艺流程",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "制药行业",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "石油化工",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "食品工业",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "造纸工业",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "冶金工业",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "一般工业",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "污水处理",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "其基本结构如下：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P12",
+          "content": "本水泵是一台卧式离心泵。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P13",
+          "content": "配备不锈钢泵轴、机械轴封和闭式叶轮。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P14",
+          "content": "泵轴通过柔性联轴器与电机轴联接。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "吸入口和排出口采用铸造法兰，符合欧盟法兰标准。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P16",
+          "content": "以上信息来源于手册 t1739cn.pdf 第5页内容。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D002",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "success",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 0,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，对运输、安装、操作、维护和检查人员的资格与培训要求如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 所有相关人员必须具备从事运输、安装、操作、维护和检查本手册中机械产品的资格（证据来源：t1739cn.pdf, page=6, chunk=cchunk-pymupdf-v1-3de8aa9caa68e922-000）。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "2. 操作人员可以委托制造商/供应商进行培训，且水泵（泵组）的培训必须在技术专家的监督下进行（证据来源：t1739cn.pdf, page=6, chunk=cchunk-pymupdf-v1-64e302610f23e9ce-000）。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "综上，手册明确要求所有相关操作人员必须具备相应资格，并建议在制造商或技术专家指导下接受培训。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D003",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 2,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "“危险”表示具有高风险的危险，不避免会导致死亡或重伤事故。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "“警告”表示中等风险的危险，不避免可能导致死亡或重伤事故。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "“小心”表示低风险的危险，不避免可能导致产品或系统损坏事故。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "以上信息来源于文件 t1739cn.pdf 第7页。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D004",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 5,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI DNS泵的预期用途对干运行、最小流量、最大流量和吸入侧节流的限制如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **干运行限制**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "决不允许在没有待处理液体的状态下运行水泵。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "（证据来源：t1739cn.pdf, page=10）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "2. **最小流量限制**：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "必须遵守产品资料中规定的最小流量要求，以防止过热、轴承损坏等。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "（证据来源：t1739cn.pdf, page=10）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P8",
+          "content": "3. **最大流量限制**：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "必须遵守产品资料中规定的最大流量要求，以防止过热、机械密封损坏、气蚀损坏、轴承损坏等。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "（证据来源：t1739cn.pdf, page=10）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P11",
+          "content": "4. **吸入侧节流限制**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "不允许限制水泵吸入侧的流量，以防止气蚀损坏。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P13",
+          "content": "（证据来源：t1739cn.pdf, page=10）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P14",
+          "content": "以上所有限制均需严格遵守，否则可能导致设备损坏、人员伤害，并使保修及损害赔偿权利失效。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "（证据来源：t1739cn.pdf, page=10）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D005",
+      "split": "development",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "D006",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI DNS泵在霜冻期停用时的防冻措施如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "在霜冻期不运行的水泵必须进行排水，以避免霜冻造成损坏。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "具体操作为拆卸底部管塞（3），排空水泵。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "或者，也可以在正常水泵配置中使用防冻液。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "证据来源：[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=12 chunk=cchunk-pymupdf-v1-7227e2460f83a192-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D007",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "success",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 0,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "运输 DESMI 泵组时，应按照以下要求检查运输损坏、固定泵组并布置吊带：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **检查运输损坏**：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "转移货物时，应检查每个包装是否有损坏（证据来源：t1739cn.pdf page=13）。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "一旦在运输途中造成损坏，应评估具体损坏情况，做好记录，并第一时间以书面形式将损坏情况通知代斯米或供应商（视情况而定）以及保险商（证据来源：t1739cn.pdf page=13）。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "2. **固定泵组**：",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "装运前，必须将水泵牢固地固定在托盘等结构上，以防止移动或损坏（证据来源：t1739cn.pdf page=13）。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "3. **布置吊带**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "始终在规定位置运输水泵（泵组），不得将悬挂装置固定在泵轴自由端或电机吊环上（证据来源：t1739cn.pdf page=13）。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "使用适当且经允许的吊运配件，例如自紧式吊夹（证据来源：t1739cn.pdf page=13）。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "吊带不允许抵住锋利边缘和角落，以防损坏（证据来源：t1739cn.pdf page=13）。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "以上措施均依据手册内容执行，确保运输安全并避免对设备造成损害。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D008",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI泵组的存放环境和泵轴手动转动频率要求如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "存放环境要求：将水泵（泵组）存放在一个干燥、受保护的室内环境中，空气湿度尽量稳定。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "确保存放地点干净，没有虫害。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "如果是室外存放，必须用防水材料盖住包装或无包装的水泵（泵组）和配件。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "同时，存放时应清理并封盖水泵的开口和接口，以防潮湿、污染或损坏导致泄漏或损坏。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "泵轴手动转动频率：每个月手动转动一次泵轴。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "以上信息来源于《t1739cn.pdf》第15页“3.3. 存放/保存”部分。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D009",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 4,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI DNS 系列泵的一般介质温度、最大密度和最大粘度范围如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "**介质温度范围**：未在检索到的内容中明确说明具体数值。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "仅提示“环境温度低于0度时，避免水泵冻结”以及环境温度大于40度或海拔高于1000 m时需注意电机冷却问题（来源：t1739cn.pdf, page 17）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "**最大密度**：2500 kg/m³（来源：t1739cn.pdf, page 17）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "**最大粘度**：500 cSt（来源：t1739cn.pdf, page 17）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "**结论**：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P7",
+          "content": "一般介质温度范围在提供的证据中无明确数据；最大密度为2500 kg/m³；最大粘度为500 cSt。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D010",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 2,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据 DESMI 手册，最小进水压力由以下项组成：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "NPSHreq（必需汽蚀余量）",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "吸入管工作摩擦力（即进水口管道损耗 Hf）",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "液体蒸汽压力",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "液体表面压力",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "加上 0.5 m 的安全裕量",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "计算公式为：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P8",
+          "content": "**最小进水压力 = NPSHreq + 吸入管工作摩擦力 + 液体蒸汽压力 – 液体表面压力 + 0.5 m**",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "依据来源：[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=18 chunk=cchunk-pymupdf-v1-7ed93679bb25416b-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D011",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 3,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI 建议水泵前的吸入管长度“X”大约是管道直径的3至5倍。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "对于一台 DN100 水泵，相当于 300 mm 至 500 mm。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "证据来源：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=21 chunk=cchunk-pymupdf-v1-c252bcbee91ab8cc-000]]：“代斯米建议，水泵前的吸入管长度‘X’大约是管道直径的3至5倍。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "对于一台DN100水泵，相当于”",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D012",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 2,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据 DESMI 手册 t1739cn.pdf 的内容，对吸入侧弯管、T 型管、弯曲半径和管道截面变化的要求如下：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **避免设置 90 度弯管、T 型管或其他可能阻碍水泵吸入侧水流的部件**（证据来源：page=22 chunk=cchunk-pymupdf-v1-379fd6889fc7fe67-000）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "2. **避免曲率半径小于标称管径的 1.5 倍**（即弯曲半径应至少为管道标称直径的 1.5 倍）（证据来源：page=22 chunk=cchunk-pymupdf-v1-b5a8f25cefe47aef-000）。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "3. **避免管道系统横截面突然变化**（证据来源：page=22 chunk=cchunk-pymupdf-v1-b5a8f25cefe47aef-000）。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "以上要求旨在确保吸入侧水流顺畅，防止气蚀损坏和振动，延长检修间隔。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D013",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 3,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI DNS泵的管路支撑和进口侧流速要求如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **进口侧流速要求**：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "进口侧管道内流速应满足：**v < 3 m/s**。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "注：在分流至多台并联水泵的歧管中，流速应更低，即 **v < 1.5 m/s**。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "（来源：t1739cn.pdf, page=23）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "2. **管路支撑要求**：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P7",
+          "content": "管道必须有**独立的支撑**，不得将任何作用力传递到水泵上，否则可能导致机械密封和轴承损坏。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "管道支撑的设计应考虑所有可能的工况，包括冷态/热态、空管/满管、无压/承压状态下的受力情况。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "（来源：t1739cn.pdf, page=23）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P10",
+          "content": "以上信息均来自提供的手册证据，未发现与“DNS泵”相关的特殊说明，因此适用通用设计建议。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D014",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 10,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据提供的 DESMI 工业离心泵手册内容，对出口流速、杂质监测、阀门关闭运行和 BEP 范围的规定如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **出口流速**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "手册中规定：“• 出口侧 v < 6 m/s” —— 即出口侧流速应小于 6 m/s。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "（来源：t1739cn.pdf, page=24）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "2. **杂质监测**：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "手册中提及“避免杂质”，但未进一步说明具体的杂质监测方法或设备要求。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "因此，仅可确认应避免杂质进入系统，但无关于监测措施的具体规定。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "（来源：t1739cn.pdf, page=24）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P9",
+          "content": "3. **阀门关闭运行**：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "手册明确规定：“水泵不允许在阀门关闭的条件下运行，因为这会导致泵内温度上升/形成蒸汽，从而损坏水泵。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P12",
+          "content": "若水泵有特殊设计允许短时关闭运行，则必须通过连接旁路或向出水管排放的方式，确保泵内最小液体流量，且最低流速至少达到短期运行最大流速的30%。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P13",
+          "content": "此外，多处警告：“不允许在截断装置关闭的情况下长时间运行水泵。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P14",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P15",
+          "content": "（来源：t1739cn.pdf, page=24 和 page=44）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P16",
+          "content": "4. **BEP（最佳效率点）范围**：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P17",
+          "content": "手册中未检索到关于 BEP（Best Efficiency Point）或其运行范围（如允许偏离BEP的百分比）的任何规定。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P18",
+          "content": "因此，无法提供基于该手册的BEP范围信息。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P19",
+          "content": "结论：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P20",
+          "content": "出口流速应小于 6 m/s；",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P21",
+          "content": "应避免杂质，但无具体监测要求；",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P22",
+          "content": "不允许在阀门关闭条件下运行，除非有特殊设计并确保最小流量；",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P23",
+          "content": "手册中未检索到充分依据，无法可靠回答该问题（关于BEP范围）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D015",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "最大吸上高度 H 的计算公式为：",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "H = Hb - NPSHr - Hf - Hv - Hs",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "其中：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "Hb = 测压计显示的液体压头 (m) = Pb×10.2/SG (m)",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "Pb = 大气压力 (bar)",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "NPSHr = 必需汽蚀余量 (m)（从水泵的NPSHr曲线上读取数值）",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "Hf = 进水口管道损耗 (m)",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "Hv = 实际液体的蒸汽压力 (m)",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "Hs = 安全裕度",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P10",
+          "content": "手册中未检索到充分依据，无法可靠回答安全裕度 Hs 建议值。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        }
+      ]
+    },
+    {
+      "question_id": "D016",
+      "split": "development",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 3,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI泵和电机联轴器的对中偏差最大为0.1 mm。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "测量时应在圆周方向每隔90°测一次。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "证据来源：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=26 chunk=cchunk-pymupdf-v1-1f4215593f0cb976-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "“2. 调整电机轴与泵轴的对中，用塞尺检查高低偏差值，偏差值≤0.1 mm。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "检测时应在圆周方向每隔90°测一次。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D017",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 3,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，当 DESMI 联轴器外圆直径为 360–410 mm 时，联轴器之间的间隙 S 应为 **5 mm**。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "该信息来源于证据文件 t1739cn.pdf 第 27 页的表格：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "> 联轴器外圆直径 D (mm)：360-410",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "> 联轴器之间的间隙 S (mm)：5",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "来源：[[INDUSTRIAL_RAG_SOURCE file=t1739cn.pdf page=27 chunk=cchunk-pymupdf-v1-3d4bbec2e5edecfe-000]]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D018",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 1,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，DESMI 泵组在调试或启动前应满足以下前提条件：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "泵组已正确连接到电源，而且配备了所有保护装置。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "水泵已充注待处理液体。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "水泵已完成排气。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "已检查旋转方向。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "所有必要的辅助接口都已完成连接并处于正常工作状态。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "如果可以重新润滑，则在启动水泵之前，按电机手册对电机轴承进行润滑！",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "所有水泵轴承都已经润滑（无需用户再润滑任何水泵轴承）。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "水泵（泵组）长时间停机后，必须开展水泵（泵组）恢复运行所需的相关工作。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "以上信息来源于文件 t1739cn.pdf 第28页的“6.1. 调试/启动的前提条件”部分。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "D019",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "D020",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "C001",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 7,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "关于泵的存放环境和泵轴定期转动频率的规定，根据检索到的手册内容（t1739cn.pdf），总结如下：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. 存放环境规定（来源：t1739cn.pdf 第15页）：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "应将水泵（泵组）存放在干燥、受保护的室内环境中，空气湿度尽量稳定。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "存放地点应保持干净，无虫害。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "若在室外存放，必须使用防水材料覆盖包装或裸露的水泵（泵组）及配件。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "水泵的开口和接口应清理并封盖，防止潮湿、污染或损坏。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "2. 泵轴定期转动频率规定（来源：t1739cn.pdf 第15页和第31页）：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P8",
+          "content": "在存放期间，建议每月手动转动一次泵轴（来源：第15页）。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "另外，在水泵不运行时，为避免轴封和轴承因长期静置损坏，应每月至少转动2–3次泵轴（来源：第31页）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P10",
+          "content": "若水泵内充满液体，也可短时间启动作为替代措施。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "综上，手册中对泵轴转动频率存在两种表述：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "一种为“每月一次”用于一般存放情况（第15页）；",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P13",
+          "content": "另一种为“每月至少2–3次”用于防止轴封和轴承损坏的情况（第31页）。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P14",
+          "content": "因此，具体频率应根据水泵是否充满液体及存放条件确定，优先考虑更频繁的维护要求。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "所有信息均来自文件 t1739cn.pdf 的第15页和第31页。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P16",
+          "content": "未提及其他手册的内容。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "C002",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "C003",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 14,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "两份手册对离心泵干运行和启动前灌注的共同要求如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **严禁干运行**：",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "两份手册均明确禁止在未注液的情况下运行泵组。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》指出：“启动离心泵之前，务必在入口管路和泵体中充入液体以灌注该泵。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "”（page=17）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P6",
+          "content": "《t1739cn.pdf》强调：“严禁在未注液的情况下运行泵组。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P7",
+          "content": "”并警告干运行可能导致高温、死亡或重伤事故。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "（page=28）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P9",
+          "content": "2. **启动前必须灌注（充液）**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "两份手册都要求在启动前将泵和吸入管路充满液体。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》规定：“启动离心泵之前，务必在入口管路和泵体中充入液体以灌注该泵。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "”（page=17）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P13",
+          "content": "《t1739cn.pdf》要求：“水泵已充注待处理液体。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P14",
+          "content": "水泵已完成排气。",
+          "evidence_ids": [
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "”作为启动前提条件之一。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P16",
+          "content": "（page=28）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P17",
+          "content": "3. **灌注目的包括冷却密封部件**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P18",
+          "content": "两份手册均提及灌注液体有助于保护轴封。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P19",
+          "content": "《t1739cn.pdf》说明：“这些液体也作为轴封的冷却液。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P20",
+          "content": "为了保护轴封，水泵不允许干运行。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P21",
+          "content": "”（page=30）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P22",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》虽未直接说明冷却作用，但通过要求灌注和防止干运行间接支持此目的。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P23",
+          "content": "4. **存在严重安全风险**：",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P24",
+          "content": "两份手册都将干运行与严重安全事故关联。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P25",
+          "content": "《t1739cn.pdf》多次使用“危险”和“小心”警示，指出干运行可能导致爆炸、高温液体泄漏、死亡或重伤。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P26",
+          "content": "（pages=28, 30）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P27",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》虽未使用相同措辞，但通过强制灌注要求体现对安全操作的重视。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P28",
+          "content": "（page=17）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P29",
+          "content": "综上，两份手册共同要求：**启动前必须完成灌注，严禁干运行，且灌注是保障设备和人员安全的关键步骤**。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P30",
+          "content": "所有结论均基于提供的手册内容，未添加外部信息。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "C004",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "C005",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "C006",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "C007",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 7,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据提供的两份手册内容，维修或拆卸离心泵前必须采取的共同安全措施包括：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **切断电源并防止意外启动**",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "一份手册明确指出：“切断泵组的电源并采取措施，防止其意外启动。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "”（证据来源：t1739cn.pdf, page=49）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "另一份手册要求：“装配或拆卸联轴器罩前，先将电机断电，切断电机控制器/启动器，并在启动器上挂上警示牌，指出其断开连接。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "”（证据来源：2196-ANSI-Manual-Chinese.pdf, page=53）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P7",
+          "content": "→ 两者均强调必须断电，并采取隔离措施以防止意外启动。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "2. **排空液体和降压**",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P9",
+          "content": "一份手册说明：“清空水泵的液体后再将其从管道系统拆下”，并在排水步骤中提到“将水泵底部的管塞（3）拆下，清除液体”（t1739cn.pdf, page=49）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P10",
+          "content": "同一手册还指出：“通过开启下游消耗装置降低管道中的压力。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "”（t1739cn.pdf, page=49）",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P12",
+          "content": "→ 表明必须对系统进行泄压和排液。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P13",
+          "content": "综上，维修或拆卸离心泵前必须采取的共同安全措施为：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P14",
+          "content": "切断电源并锁定/挂牌防止意外启动；",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "降低管道系统压力；",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P16",
+          "content": "排空泵内残留液体。",
+          "evidence_ids": [
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P17",
+          "content": "以上措施均有手册依据支持。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P18",
+          "content": "其他未提及的操作（如是否需要佩戴个人防护装备、是否需检测环境等）因手册中未明确共同要求，不作补充推断。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "C008",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 8,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "两份手册对“泵不输送液体或容量过低”的原因和排查方法的共同点如下：",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "1. **吸入管路泄漏/空气渗入**：",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》中指出：“空气渗入入口管路”是导致低流量、低扬程的原因，解决方法为“更换垫片”。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "《t1739cn.pdf》中列出“吸入管路泄漏”为可能原因，解决方法为“找到泄漏点，修复故障”。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P5",
+          "content": "→ 两者均将吸入管路存在泄漏或空气进入作为原因之一，并强调需修复泄漏。",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "2. **叶轮卡塞**：",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P7",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》提到“叶轮卡塞”会导致泵不泵送液体，解决方法为“反向冲洗泵”。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P8",
+          "content": "《t1739cn.pdf》虽未直接使用“叶轮卡塞”一词，但“水泵阻塞”被列为原因，处理方式为“清洗水泵”，可涵盖叶轮部位堵塞情况。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P9",
+          "content": "→ 两者均涉及泵内部阻塞问题，且建议通过清洗或冲洗方式排除。",
+          "evidence_ids": [
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P10",
+          "content": "3. **旋转方向错误**：",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P11",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》明确指出“旋转方向不正确”会导致泵不泵送液体或低流量，解决方法为“调换电机接线”。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P12",
+          "content": "《t1739cn.pdf》列出“转动方向错误”为原因，解决方法为“从泵轴端看将转动方向改为顺时针方向（箭头方向）”。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P13",
+          "content": "→ 两者均识别旋转方向错误为根本原因之一，并提供调整电机接线或确认转向的方法。",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P14",
+          "content": "4. **入口问题导致灌注不足**：",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P15",
+          "content": "《2196-ANSI-Manual-Chinese.pdf》指出“泵没有灌注”是泵不泵送液体的原因，需“重新灌注泵”。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P16",
+          "content": "《t1739cn.pdf》虽未明确提“未灌注”，但“水泵没有容量或容量过低”与吸入问题相关，结合“吸入管路泄漏”可能导致无法建立有效吸力。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P17",
+          "content": "→ 两者间接共同关注泵启动前未能正确建立吸入条件的问题。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P18",
+          "content": "综上，两份手册在以下方面有明确共同点：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P19",
+          "content": "旋转方向错误",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P20",
+          "content": "吸入管路泄漏/空气进入",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P21",
+          "content": "泵内部阻塞（包括叶轮卡塞）",
+          "evidence_ids": [
+            "E1",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P22",
+          "content": "对应的处理措施均包括检查管路密封性、调整电机接线、清洗或冲洗泵体",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P23",
+          "content": "来源依据：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P24",
+          "content": "[file=2196-ANSI-Manual-Chinese.pdf page=23]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P25",
+          "content": "[file=t1739cn.pdf page=37]",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "N001",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "N002",
+      "split": "validation",
+      "original_status": "insufficient_evidence",
+      "replayable": false,
+      "replayed_status": "insufficient_evidence",
+      "reason": "generation_returned_refusal",
+      "recovered": false
+    },
+    {
+      "question_id": "A001",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 2,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P2",
+          "content": "最大轴承工作温度为 175°F。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P3",
+          "content": "如果液体温度超过 250°F，则必须用水冲注填料函。",
+          "evidence_ids": [
+            "E1"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P4",
+          "content": "以上信息来源于文件 `2196-ANSI-Manual-Chinese.pdf` 第14页。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    },
+    {
+      "question_id": "A002",
+      "split": "validation",
+      "original_status": "partial_answer",
+      "replayable": true,
+      "replayed_status": "partial_answer",
+      "reason": "deterministic replay of captured pre-grounding answer",
+      "recovered": false,
+      "unsupported_emitted_point_count": 3,
+      "answer_points": [
+        {
+          "point_id": "P1",
+          "content": "根据手册内容，SUMMIT 轴承架添加或排出润滑油时，油位应保持在观察窗的中间位置。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P2",
+          "content": "证据来源：",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P3",
+          "content": "[[INDUSTRIAL_RAG_SOURCE file=2196-ANSI-Manual-Chinese.pdf page=15 chunk=cchunk-pymupdf-v1-7192fa1959afa851-000]] 中明确指出：“通过观察窗检查油位。",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        },
+        {
+          "point_id": "P4",
+          "content": "如果油位不在观察窗的中间位置，添加或排出一些润滑油。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P5",
+          "content": "” 以及 “将适用润滑油加注至观察窗的中间位置。",
+          "evidence_ids": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "support_status": "supported"
+        },
+        {
+          "point_id": "P6",
+          "content": "”",
+          "evidence_ids": [],
+          "support_status": "unsupported"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "cleaned_at": "2026-08-01T13:30:00+0800",
+  "old_partial_p1": {
+    "tmp_workspace": "D:\\industrial_energy_agent\\evaluation\\experiments\\parser_backend\\tmp\\run_1",
+    "kb_id": "027e9eb3c8834e84bb961a490f29b171",
+    "generation": "g1cea29d3a7b89d9e2413bc20"
+  },
+  "collections_checked": "qdrant had 0 collections before cleanup",
+  "tmp_workspace_removed": true
+}

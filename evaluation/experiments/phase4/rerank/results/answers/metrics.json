@@ -1,0 +1,235 @@
+{
+  "baseline": {
+    "citation": {
+      "answerable_questions": 48,
+      "citation_accuracy": 0.8333,
+      "citation_precision": 0.3299,
+      "citation_recall": 0.7212,
+      "citation_traceability": 1.0,
+      "unsupported_citation_rate": 0.6838,
+      "unsupported_citation_rows": 8,
+      "false_rejection_rate": 0.3125,
+      "insufficient_evidence_rejection_rate": 1.0,
+      "unsupported_answer_rate": 0.0,
+      "negative_questions": 2,
+      "negative_refusals": 2
+    },
+    "engineering": {
+      "llm_calls": 49,
+      "answer_latency_mean": 0.0,
+      "answer_latency_p50": 0.0,
+      "answer_latency_p95": 0.0,
+      "total_latency_p50": 0.0,
+      "total_latency_p95": 0.0,
+      "rerank_latency_mean": 0.0,
+      "rerank_latency_p50": 0.0,
+      "rerank_latency_p95": 0.0,
+      "input_tokens": 43250,
+      "output_tokens": 4196,
+      "total_tokens": 47446,
+      "cache_hits": 49,
+      "cache_misses": 0,
+      "errors": 0
+    },
+    "categories": {
+      "参数查询": {
+        "questions": 20,
+        "citation_accuracy": 0.9,
+        "citation_recall": 0.9,
+        "false_rejection_rate": 0.15
+      },
+      "表格查询": {
+        "questions": 3,
+        "citation_accuracy": 1.0,
+        "citation_recall": 1.0,
+        "false_rejection_rate": 0.3333
+      },
+      "操作步骤": {
+        "questions": 9,
+        "citation_accuracy": 0.7778,
+        "citation_recall": 0.6111,
+        "false_rejection_rate": 0.3333
+      },
+      "故障诊断": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "citation_recall": 0.6667,
+        "false_rejection_rate": 0.0
+      },
+      "安全警告": {
+        "questions": 5,
+        "citation_accuracy": 1.0,
+        "citation_recall": 0.74,
+        "false_rejection_rate": 0.2
+      },
+      "普通事实": {
+        "questions": 2,
+        "citation_accuracy": 0.5,
+        "citation_recall": 0.5,
+        "false_rejection_rate": 0.5
+      },
+      "跨页问题": {
+        "questions": 6,
+        "citation_accuracy": 0.6667,
+        "citation_recall": 0.2361,
+        "false_rejection_rate": 1.0
+      },
+      "_all_categories": [
+        "参数查询",
+        "安全警告",
+        "操作步骤",
+        "故障诊断",
+        "普通事实",
+        "表格查询",
+        "跨页问题"
+      ]
+    }
+  },
+  "reranked": {
+    "citation": {
+      "answerable_questions": 48,
+      "citation_accuracy": 0.8958,
+      "citation_precision": 0.3368,
+      "citation_recall": 0.7899,
+      "citation_traceability": 1.0,
+      "unsupported_citation_rate": 0.6691,
+      "unsupported_citation_rows": 5,
+      "false_rejection_rate": 0.2917,
+      "insufficient_evidence_rejection_rate": 1.0,
+      "unsupported_answer_rate": 0.0,
+      "negative_questions": 2,
+      "negative_refusals": 2
+    },
+    "engineering": {
+      "llm_calls": 49,
+      "answer_latency_mean": 0.0,
+      "answer_latency_p50": 0.0,
+      "answer_latency_p95": 0.0,
+      "total_latency_p50": 0.0,
+      "total_latency_p95": 0.016,
+      "rerank_latency_mean": 0.004,
+      "rerank_latency_p50": 0.0,
+      "rerank_latency_p95": 0.016,
+      "input_tokens": 45037,
+      "output_tokens": 3771,
+      "total_tokens": 48808,
+      "cache_hits": 49,
+      "cache_misses": 0,
+      "errors": 0
+    },
+    "categories": {
+      "参数查询": {
+        "questions": 20,
+        "citation_accuracy": 0.9,
+        "citation_recall": 0.9,
+        "false_rejection_rate": 0.15
+      },
+      "表格查询": {
+        "questions": 3,
+        "citation_accuracy": 1.0,
+        "citation_recall": 1.0,
+        "false_rejection_rate": 0.3333
+      },
+      "操作步骤": {
+        "questions": 9,
+        "citation_accuracy": 1.0,
+        "citation_recall": 0.8333,
+        "false_rejection_rate": 0.1111
+      },
+      "故障诊断": {
+        "questions": 3,
+        "citation_accuracy": 1.0,
+        "citation_recall": 1.0,
+        "false_rejection_rate": 0.3333
+      },
+      "安全警告": {
+        "questions": 5,
+        "citation_accuracy": 0.8,
+        "citation_recall": 0.7,
+        "false_rejection_rate": 0.2
+      },
+      "普通事实": {
+        "questions": 2,
+        "citation_accuracy": 0.5,
+        "citation_recall": 0.5,
+        "false_rejection_rate": 0.5
+      },
+      "跨页问题": {
+        "questions": 6,
+        "citation_accuracy": 0.8333,
+        "citation_recall": 0.3194,
+        "false_rejection_rate": 1.0
+      },
+      "_all_categories": [
+        "参数查询",
+        "安全警告",
+        "操作步骤",
+        "故障诊断",
+        "普通事实",
+        "表格查询",
+        "跨页问题"
+      ]
+    }
+  },
+  "bootstrap": {
+    "citation_accuracy": {
+      "n": 48,
+      "mean_diff": 0.0625,
+      "ci95": [
+        -0.0208,
+        0.1458
+      ],
+      "crosses_zero": true
+    },
+    "citation_recall": {
+      "n": 48,
+      "mean_diff": 0.0896,
+      "ci95": [
+        0.0167,
+        0.1729
+      ],
+      "crosses_zero": false
+    }
+  },
+  "llm_summary": {
+    "call_count": 98,
+    "input_tokens": 88287,
+    "output_tokens": 7967,
+    "total_tokens": 96254,
+    "retry_count": 0,
+    "cache_hits": 98,
+    "cache_misses": 0,
+    "model_mismatches": 0,
+    "errors": 0
+  },
+  "decision": {
+    "evaluation_completed": true,
+    "rerank_enabled": false,
+    "replacement_approved": false,
+    "replacement_gates_passed": false,
+    "rerank_model": "qwen3-rerank",
+    "selection_reason": "qwen3-rerank did not pass Phase 4D replacement gates",
+    "hard": {
+      "citation_accuracy_drop_leq_002": true,
+      "citation_traceability_1": true,
+      "unsupported_citation_rate_0": false,
+      "unsupported_answer_rate_0": true,
+      "rejection_not_down": true,
+      "false_rejection_worsening_leq_005": true,
+      "gold_page_drop_leq_002": true,
+      "parameter_citation_accuracy_drop_leq_005": true,
+      "safety_not_regressed": false,
+      "candidate_preservation_1": true,
+      "rerank_error_rate_0": true,
+      "p95_latency_leq_2x_baseline": false
+    },
+    "value": {
+      "recall5_plus_002": true,
+      "mrr_plus_002": true,
+      "gold_evidence_plus_002": true,
+      "citation_accuracy_plus_002": true,
+      "citation_recall_plus_002": true,
+      "false_rejection_down_005": false
+    }
+  }
+}

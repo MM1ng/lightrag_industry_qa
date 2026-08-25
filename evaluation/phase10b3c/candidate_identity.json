@@ -1,0 +1,10 @@
+{
+  "knowledge_base_id": "8fce4626859d44abb70a9ae5b0372cea",
+  "candidate_generation_id": "5bca792c08fcf2f7b08cbaed09b6d525",
+  "candidate_generation_name": "g10b3c20260803",
+  "candidate_workspace": "runtime/phase10b3c/kb_data/8fce4626859d44abb70a9ae5b0372cea/g10b3c20260803/workspace",
+  "candidate_backend": "qdrant",
+  "candidate_qdrant_collection": "ira_p3ar_4ac7a596_kb_8fce4626859d44abb70a9ae5b0372cea_g10b3c20260803_chunks",
+  "candidate_status": "ready",
+  "active": false
+}

@@ -1,0 +1,250 @@
+{
+  "S003": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "S007": {
+    "category": "表格查询",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "证据中未提供轴承温度与ISO润滑油等级之间的对应关系表，缺少选择ISO等级的具体依据。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "S011": {
+    "category": "操作步骤",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "S012": {
+    "category": "操作步骤",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "S015": {
+    "category": "故障诊断",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "S016": {
+    "category": "故障诊断",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "证据中未提及轴承高温运行的具体原因及处理方法，仅说明滚珠轴承对过度润滑和润滑不足敏感，并建议使用温度计监控轴承温度，以及提供了轴承温度与泵送液体温度之间的关系表。但未说明高温运行的故障原因和应对措施。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "S017": {
+    "category": "安全警告",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "S019": {
+    "category": "参数查询",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未提及SUMMIT LTO泵架的外轴承布置方式，也未明确说明LTO型号在安装时除通用润滑要求外是否有特定的润滑相关要求。证据中仅提到LTO型号在安装轴承盖和螺栓时的步骤（chunk_id：cchunk-pymupdf-v1-护手册-e112e31e2351-000-e112e31e2351），以及润滑脂润滑的一般程序（chunk_id：cchunk-pymupdf-v1-护手册-e39749fc478f-000-e39749fc478f），但未描述轴承布置方式或LTO特有的润滑安装要求。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "S020": {
+    "category": "操作步骤",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未包含关于填料环、水封环及接头在装填时的具体布置方式或安装顺序的说明。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "D002": {
+    "category": "普通事实",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未包含关于运输、安装、操作、维护和检查人员的资格与培训的具体要求。虽然提到了维修人员需熟悉泵送液体类型及安全措施（chunk_id：cchunk-pymupdf-v1-修计划-06f08fda97cc-000-06f08fda97cc），但未说明人员资格和培训的详细要求。",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D003": {
+    "category": "安全警告",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D004": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D005": {
+    "category": "安全警告",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D006": {
+    "category": "操作步骤",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D008": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未提及DESMI泵组存放环境的具体要求，也未说明泵轴手动转动的频率。虽然有提到长期关机期间应定期启动水泵（每月一次到每三个月一次），但并未明确是否需要手动转动泵轴（chunk_id：cchunk-pymupdf-v1-和关闭-0cdb66a95926-000-0cdb66a95926, document_name：t1739cn.pdf, page：35）。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "D009": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D011": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D012": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D013": {
+    "category": "参数查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D014": {
+    "category": "参数查询",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未包含关于出口流速、杂质监测、阀门关闭运行和 BEP 范围的具体规定。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "D016": {
+    "category": "操作步骤",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未包含DESMI泵和电机联轴器的对中偏差上限值以及测量时的布点方法。相关章节可能位于未提供的文档部分。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "D017": {
+    "category": "表格查询",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D018": {
+    "category": "操作步骤",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "D020": {
+    "category": "操作步骤",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "C001": {
+    "category": "跨页问题",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中未提及泵的存放环境要求和泵轴定期转动频率的相关规定。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "C002": {
+    "category": "跨页问题",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中仅包含SUMMIT泵的安装、操作及维护手册内容，未提及DESMI手册或其对泵和电机联轴器对中精度的要求，因此无法进行对比。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "C005": {
+    "category": "跨页问题",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据中仅包含DESMI手册关于长期关机期间的部分要求（如关闭吸入管路截断装置、排空水泵等），但缺乏SUMMIT手册的正常停机步骤和长期停机要求，也缺少DESMI手册的正常停机步骤。因此无法进行系统性对比。",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "C006": {
+    "category": "跨页问题",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "提供的证据仅包含一份手册（t1739cn.pdf）中关于吸入管路布置的部分内容，提到了流态改变元件和最小直管段长度X，但未给出具体数值和结构要求的详细信息，且未提供第二份手册的内容作为对比。因此无法回答两份手册的分别要求。",
+    "repair_attempted": false,
+    "llm_called": true
+  },
+  "C008": {
+    "category": "故障诊断",
+    "ga0_refused": false,
+    "ga1_refused": true,
+    "refusal_reason": "grounded_answer_invalid_after_repair",
+    "repair_attempted": true,
+    "llm_called": true
+  },
+  "N001": {
+    "category": "证据不足",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "evidence_policy_rejected",
+    "repair_attempted": false,
+    "llm_called": false
+  },
+  "N002": {
+    "category": "证据不足",
+    "ga0_refused": true,
+    "ga1_refused": true,
+    "refusal_reason": "证据中未提及必须购买的品牌或型号的变频器，仅提到安装变频器时使用共模滤波器以降低轴承电流，但无具体品牌和型号要求。",
+    "repair_attempted": false,
+    "llm_called": true
+  }
+}

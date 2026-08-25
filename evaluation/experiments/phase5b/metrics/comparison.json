@@ -1,0 +1,1017 @@
+{
+  "gl0": {
+    "citation_metrics": {
+      "answer_citation_accuracy": {
+        "numerator": 40,
+        "denominator": 48,
+        "decimal": 0.8333,
+        "percentage": 83.33
+      },
+      "answer_citation_precision": {
+        "numerator": 15.8333,
+        "denominator": 48,
+        "decimal": 0.3299,
+        "percentage": 32.99
+      },
+      "answer_citation_recall": {
+        "numerator": 34.6167,
+        "denominator": 48,
+        "decimal": 0.7212,
+        "percentage": 72.12
+      },
+      "gold_page_citation_rate": {
+        "numerator": 40,
+        "denominator": 48,
+        "decimal": 0.8333,
+        "percentage": 83.33
+      },
+      "gold_evidence_citation_rate": {
+        "numerator": 37,
+        "denominator": 48,
+        "decimal": 0.7708,
+        "percentage": 77.08
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 43,
+        "denominator": 136,
+        "decimal": 0.3162,
+        "percentage": 31.62
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 93,
+        "denominator": 136,
+        "decimal": 0.6838,
+        "percentage": 68.38
+      },
+      "emitted_citation_traceability": {
+        "numerator": 48,
+        "denominator": 48,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "false_rejection_rate": {
+        "numerator": 15,
+        "denominator": 48,
+        "decimal": 0.3125,
+        "percentage": 31.25
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "universe": {
+        "answerable_questions": 48,
+        "negative_questions": 2
+      }
+    },
+    "marker_metrics": {
+      "marker_parse_valid_rate": {
+        "numerator": 0,
+        "denominator": 0,
+        "decimal": null,
+        "percentage": null
+      },
+      "invalid_chunk_marker_rate": {
+        "numerator": 0,
+        "denominator": 0,
+        "decimal": null,
+        "percentage": null
+      },
+      "key_claim_citation_coverage": {
+        "numerator": 0,
+        "denominator": 173,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "parameter_claim_citation_coverage": {
+        "numerator": 0,
+        "denominator": 39,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "procedure_claim_citation_coverage": {
+        "numerator": 0,
+        "denominator": 80,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "safety_claim_citation_coverage": {
+        "numerator": 0,
+        "denominator": 24,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "troubleshooting_claim_citation_coverage": {
+        "numerator": 0,
+        "denominator": 38,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "uncited_safety_claim_count": 24,
+      "safety_claim_count": 24
+    },
+    "engineering": {
+      "llm_calls": 49,
+      "repair_calls": 0,
+      "input_tokens": 43250,
+      "output_tokens": 4196,
+      "repair_tokens": 0,
+      "total_tokens": 47446,
+      "answer_latency_mean": 1.776,
+      "total_latency_p50": 1.484,
+      "total_latency_p95": 4.109,
+      "errors": 0,
+      "fallback_count": 0,
+      "cache_hits": 49
+    },
+    "categories": {
+      "参数查询": {
+        "questions": 20,
+        "citation_accuracy": 0.85,
+        "refusals": 3,
+        "false_rejection_rate": 0.15,
+        "question_ids": [
+          "D004",
+          "D008",
+          "D009",
+          "D010",
+          "D011",
+          "D012",
+          "D013",
+          "D014",
+          "D015",
+          "S001",
+          "S002",
+          "S003",
+          "S004",
+          "S005",
+          "S006",
+          "S008",
+          "S010",
+          "S013",
+          "S018",
+          "S019"
+        ]
+      },
+      "安全警告": {
+        "questions": 5,
+        "citation_accuracy": 0.8,
+        "refusals": 1,
+        "false_rejection_rate": 0.2,
+        "question_ids": [
+          "C007",
+          "D003",
+          "D005",
+          "D007",
+          "S017"
+        ]
+      },
+      "操作步骤": {
+        "questions": 9,
+        "citation_accuracy": 0.5556,
+        "refusals": 3,
+        "false_rejection_rate": 0.3333,
+        "question_ids": [
+          "D006",
+          "D016",
+          "D018",
+          "D019",
+          "D020",
+          "S011",
+          "S012",
+          "S014",
+          "S020"
+        ]
+      },
+      "故障诊断": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "C008",
+          "S015",
+          "S016"
+        ]
+      },
+      "普通事实": {
+        "questions": 2,
+        "citation_accuracy": 0.5,
+        "refusals": 1,
+        "false_rejection_rate": 0.5,
+        "question_ids": [
+          "D001",
+          "D002"
+        ]
+      },
+      "表格查询": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "refusals": 1,
+        "false_rejection_rate": 0.3333,
+        "question_ids": [
+          "D017",
+          "S007",
+          "S009"
+        ]
+      },
+      "证据不足": {
+        "questions": 2,
+        "citation_accuracy": 0.0,
+        "refusals": 2,
+        "false_rejection_rate": 1.0,
+        "question_ids": [
+          "N001",
+          "N002"
+        ]
+      },
+      "跨页问题": {
+        "questions": 6,
+        "citation_accuracy": 0.0,
+        "refusals": 6,
+        "false_rejection_rate": 1.0,
+        "question_ids": [
+          "C001",
+          "C002",
+          "C003",
+          "C004",
+          "C005",
+          "C006"
+        ]
+      }
+    },
+    "safety": {
+      "safety_questions": 5,
+      "citation_accuracy": 0.8,
+      "wrong_citation_questions": 0,
+      "refusals": 1,
+      "bypass_suggestions": 0,
+      "question_ids": [
+        "S017",
+        "D003",
+        "D005",
+        "D007",
+        "C007"
+      ]
+    },
+    "reuse_verification": {
+      "reused": true,
+      "live_rerun_questions": []
+    }
+  },
+  "gl1": {
+    "citation_metrics": {
+      "answer_citation_accuracy": {
+        "numerator": 34,
+        "denominator": 48,
+        "decimal": 0.7083,
+        "percentage": 70.83
+      },
+      "answer_citation_precision": {
+        "numerator": 30.6667,
+        "denominator": 48,
+        "decimal": 0.6389,
+        "percentage": 63.89
+      },
+      "answer_citation_recall": {
+        "numerator": 31.0,
+        "denominator": 48,
+        "decimal": 0.6458,
+        "percentage": 64.58
+      },
+      "gold_page_citation_rate": {
+        "numerator": 34,
+        "denominator": 48,
+        "decimal": 0.7083,
+        "percentage": 70.83
+      },
+      "gold_evidence_citation_rate": {
+        "numerator": 32,
+        "denominator": 48,
+        "decimal": 0.6667,
+        "percentage": 66.67
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 36,
+        "denominator": 56,
+        "decimal": 0.6429,
+        "percentage": 64.29
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 20,
+        "denominator": 56,
+        "decimal": 0.3571,
+        "percentage": 35.71
+      },
+      "emitted_citation_traceability": {
+        "numerator": 40,
+        "denominator": 40,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "false_rejection_rate": {
+        "numerator": 8,
+        "denominator": 48,
+        "decimal": 0.1667,
+        "percentage": 16.67
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "universe": {
+        "answerable_questions": 48,
+        "negative_questions": 2
+      }
+    },
+    "marker_metrics": {
+      "marker_parse_valid_rate": {
+        "numerator": 126,
+        "denominator": 126,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "invalid_chunk_marker_rate": {
+        "numerator": 0,
+        "denominator": 126,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "key_claim_citation_coverage": {
+        "numerator": 115,
+        "denominator": 138,
+        "decimal": 0.8333,
+        "percentage": 83.33
+      },
+      "parameter_claim_citation_coverage": {
+        "numerator": 32,
+        "denominator": 33,
+        "decimal": 0.9697,
+        "percentage": 96.97
+      },
+      "procedure_claim_citation_coverage": {
+        "numerator": 62,
+        "denominator": 76,
+        "decimal": 0.8158,
+        "percentage": 81.58
+      },
+      "safety_claim_citation_coverage": {
+        "numerator": 23,
+        "denominator": 28,
+        "decimal": 0.8214,
+        "percentage": 82.14
+      },
+      "troubleshooting_claim_citation_coverage": {
+        "numerator": 26,
+        "denominator": 36,
+        "decimal": 0.7222,
+        "percentage": 72.22
+      },
+      "uncited_safety_claim_count": 5,
+      "safety_claim_count": 28
+    },
+    "engineering": {
+      "llm_calls": 49,
+      "repair_calls": 0,
+      "input_tokens": 70792,
+      "output_tokens": 4351,
+      "repair_tokens": 0,
+      "total_tokens": 75143,
+      "answer_latency_mean": 1.96,
+      "total_latency_p50": 1.968,
+      "total_latency_p95": 3.891,
+      "errors": 0,
+      "fallback_count": 0,
+      "cache_hits": 49
+    },
+    "categories": {
+      "参数查询": {
+        "questions": 20,
+        "citation_accuracy": 0.9,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "D004",
+          "D008",
+          "D009",
+          "D010",
+          "D011",
+          "D012",
+          "D013",
+          "D014",
+          "D015",
+          "S001",
+          "S002",
+          "S003",
+          "S004",
+          "S005",
+          "S006",
+          "S008",
+          "S010",
+          "S013",
+          "S018",
+          "S019"
+        ]
+      },
+      "安全警告": {
+        "questions": 5,
+        "citation_accuracy": 0.8,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "C007",
+          "D003",
+          "D005",
+          "D007",
+          "S017"
+        ]
+      },
+      "操作步骤": {
+        "questions": 9,
+        "citation_accuracy": 0.6667,
+        "refusals": 2,
+        "false_rejection_rate": 0.2222,
+        "question_ids": [
+          "D006",
+          "D016",
+          "D018",
+          "D019",
+          "D020",
+          "S011",
+          "S012",
+          "S014",
+          "S020"
+        ]
+      },
+      "故障诊断": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "C008",
+          "S015",
+          "S016"
+        ]
+      },
+      "普通事实": {
+        "questions": 2,
+        "citation_accuracy": 0.5,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "D001",
+          "D002"
+        ]
+      },
+      "表格查询": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "refusals": 1,
+        "false_rejection_rate": 0.3333,
+        "question_ids": [
+          "D017",
+          "S007",
+          "S009"
+        ]
+      },
+      "证据不足": {
+        "questions": 2,
+        "citation_accuracy": 0.0,
+        "refusals": 2,
+        "false_rejection_rate": 1.0,
+        "question_ids": [
+          "N001",
+          "N002"
+        ]
+      },
+      "跨页问题": {
+        "questions": 6,
+        "citation_accuracy": 0.1667,
+        "refusals": 5,
+        "false_rejection_rate": 0.8333,
+        "question_ids": [
+          "C001",
+          "C002",
+          "C003",
+          "C004",
+          "C005",
+          "C006"
+        ]
+      }
+    },
+    "safety": {
+      "safety_questions": 5,
+      "citation_accuracy": 0.8,
+      "wrong_citation_questions": 1,
+      "refusals": 0,
+      "bypass_suggestions": 0,
+      "question_ids": [
+        "S017",
+        "D003",
+        "D005",
+        "D007",
+        "C007"
+      ]
+    }
+  },
+  "gl2": {
+    "citation_metrics": {
+      "answer_citation_accuracy": {
+        "numerator": 34,
+        "denominator": 48,
+        "decimal": 0.7083,
+        "percentage": 70.83
+      },
+      "answer_citation_precision": {
+        "numerator": 30.5,
+        "denominator": 48,
+        "decimal": 0.6354,
+        "percentage": 63.54
+      },
+      "answer_citation_recall": {
+        "numerator": 31.0,
+        "denominator": 48,
+        "decimal": 0.6458,
+        "percentage": 64.58
+      },
+      "gold_page_citation_rate": {
+        "numerator": 34,
+        "denominator": 48,
+        "decimal": 0.7083,
+        "percentage": 70.83
+      },
+      "gold_evidence_citation_rate": {
+        "numerator": 32,
+        "denominator": 48,
+        "decimal": 0.6667,
+        "percentage": 66.67
+      },
+      "gold_citation_reference_rate": {
+        "numerator": 36,
+        "denominator": 58,
+        "decimal": 0.6207,
+        "percentage": 62.07
+      },
+      "non_gold_citation_reference_rate": {
+        "numerator": 22,
+        "denominator": 58,
+        "decimal": 0.3793,
+        "percentage": 37.93
+      },
+      "emitted_citation_traceability": {
+        "numerator": 40,
+        "denominator": 40,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "answered_without_evidence_rate": {
+        "numerator": 0,
+        "denominator": 48,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "false_rejection_rate": {
+        "numerator": 8,
+        "denominator": 48,
+        "decimal": 0.1667,
+        "percentage": 16.67
+      },
+      "insufficient_evidence_rejection_rate": {
+        "numerator": 2,
+        "denominator": 2,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "negative_unsupported_answer_rate": {
+        "numerator": 0,
+        "denominator": 2,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "universe": {
+        "answerable_questions": 48,
+        "negative_questions": 2
+      }
+    },
+    "marker_metrics": {
+      "marker_parse_valid_rate": {
+        "numerator": 126,
+        "denominator": 126,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "invalid_chunk_marker_rate": {
+        "numerator": 0,
+        "denominator": 126,
+        "decimal": 0.0,
+        "percentage": 0.0
+      },
+      "key_claim_citation_coverage": {
+        "numerator": 132,
+        "denominator": 138,
+        "decimal": 0.9565,
+        "percentage": 95.65
+      },
+      "parameter_claim_citation_coverage": {
+        "numerator": 33,
+        "denominator": 33,
+        "decimal": 1.0,
+        "percentage": 100.0
+      },
+      "procedure_claim_citation_coverage": {
+        "numerator": 72,
+        "denominator": 76,
+        "decimal": 0.9474,
+        "percentage": 94.74
+      },
+      "safety_claim_citation_coverage": {
+        "numerator": 26,
+        "denominator": 28,
+        "decimal": 0.9286,
+        "percentage": 92.86
+      },
+      "troubleshooting_claim_citation_coverage": {
+        "numerator": 33,
+        "denominator": 36,
+        "decimal": 0.9167,
+        "percentage": 91.67
+      },
+      "uncited_safety_claim_count": 2,
+      "safety_claim_count": 28
+    },
+    "repair_metrics": {
+      "repair_trigger_rate": {
+        "numerator": 14,
+        "denominator": 50,
+        "decimal": 0.28,
+        "percentage": 28.0
+      },
+      "repair_success_rate": {
+        "numerator": 13,
+        "denominator": 14,
+        "decimal": 0.9286,
+        "percentage": 92.86
+      },
+      "repair_triggered_questions": [
+        "C004",
+        "C008",
+        "D003",
+        "D005",
+        "D006",
+        "D013",
+        "D014",
+        "D018",
+        "D019",
+        "D020",
+        "S011",
+        "S012",
+        "S015",
+        "S017"
+      ]
+    },
+    "engineering": {
+      "llm_calls": 49,
+      "repair_calls": 14,
+      "input_tokens": 70792,
+      "output_tokens": 4351,
+      "repair_tokens": 27132,
+      "total_tokens": 102275,
+      "answer_latency_mean": 1.96,
+      "total_latency_p50": 2.078,
+      "total_latency_p95": 9.405999999999999,
+      "errors": 0,
+      "fallback_count": 0,
+      "cache_hits": 49
+    },
+    "categories": {
+      "参数查询": {
+        "questions": 20,
+        "citation_accuracy": 0.9,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "D004",
+          "D008",
+          "D009",
+          "D010",
+          "D011",
+          "D012",
+          "D013",
+          "D014",
+          "D015",
+          "S001",
+          "S002",
+          "S003",
+          "S004",
+          "S005",
+          "S006",
+          "S008",
+          "S010",
+          "S013",
+          "S018",
+          "S019"
+        ]
+      },
+      "安全警告": {
+        "questions": 5,
+        "citation_accuracy": 0.8,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "C007",
+          "D003",
+          "D005",
+          "D007",
+          "S017"
+        ]
+      },
+      "操作步骤": {
+        "questions": 9,
+        "citation_accuracy": 0.6667,
+        "refusals": 2,
+        "false_rejection_rate": 0.2222,
+        "question_ids": [
+          "D006",
+          "D016",
+          "D018",
+          "D019",
+          "D020",
+          "S011",
+          "S012",
+          "S014",
+          "S020"
+        ]
+      },
+      "故障诊断": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "C008",
+          "S015",
+          "S016"
+        ]
+      },
+      "普通事实": {
+        "questions": 2,
+        "citation_accuracy": 0.5,
+        "refusals": 0,
+        "false_rejection_rate": 0.0,
+        "question_ids": [
+          "D001",
+          "D002"
+        ]
+      },
+      "表格查询": {
+        "questions": 3,
+        "citation_accuracy": 0.6667,
+        "refusals": 1,
+        "false_rejection_rate": 0.3333,
+        "question_ids": [
+          "D017",
+          "S007",
+          "S009"
+        ]
+      },
+      "证据不足": {
+        "questions": 2,
+        "citation_accuracy": 0.0,
+        "refusals": 2,
+        "false_rejection_rate": 1.0,
+        "question_ids": [
+          "N001",
+          "N002"
+        ]
+      },
+      "跨页问题": {
+        "questions": 6,
+        "citation_accuracy": 0.1667,
+        "refusals": 5,
+        "false_rejection_rate": 0.8333,
+        "question_ids": [
+          "C001",
+          "C002",
+          "C003",
+          "C004",
+          "C005",
+          "C006"
+        ]
+      }
+    },
+    "safety": {
+      "safety_questions": 5,
+      "citation_accuracy": 0.8,
+      "wrong_citation_questions": 1,
+      "refusals": 0,
+      "bypass_suggestions": 0,
+      "question_ids": [
+        "S017",
+        "D003",
+        "D005",
+        "D007",
+        "C007"
+      ]
+    }
+  },
+  "gl3": null,
+  "gates": {
+    "gl1_to_gl2": {
+      "passed": true,
+      "hard": {
+        "marker_parse_valid_rate_ge_095": true,
+        "emitted_citation_traceability_1": true,
+        "invalid_chunk_marker_rate_leq_005": true,
+        "false_rejection_not_up_005": true,
+        "safety_accuracy_not_down_010": true
+      }
+    },
+    "gl2_to_gl3": {
+      "passed": false,
+      "hard": {
+        "answer_text_hash_unchanged": true,
+        "no_repair_errors": false,
+        "repair_success_rate_ge_050": true,
+        "p95_latency_leq_2x": false,
+        "false_rejection_not_up_005": true
+      }
+    }
+  },
+  "bootstrap": {
+    "gl0_vs_gl1": {
+      "answer_citation_accuracy": {
+        "n": 48,
+        "mean_diff": -0.125,
+        "ci95": [
+          -0.2292,
+          -0.0417
+        ],
+        "crosses_zero": false
+      },
+      "answer_citation_recall": {
+        "n": 48,
+        "mean_diff": -0.0753,
+        "ci95": [
+          -0.1476,
+          -0.0215
+        ],
+        "crosses_zero": false
+      },
+      "gold_evidence_citation_rate": {
+        "n": 48,
+        "mean_diff": -0.1042,
+        "ci95": [
+          -0.1875,
+          -0.0208
+        ],
+        "crosses_zero": false
+      },
+      "false_rejection_rate": {
+        "n": 48,
+        "mean_diff": -0.1458,
+        "ci95": [
+          -0.25,
+          -0.0417
+        ],
+        "crosses_zero": false
+      },
+      "safety_claim_citation_coverage": {
+        "n": 48,
+        "mean_diff": 0.2865,
+        "ci95": [
+          0.1667,
+          0.4115
+        ],
+        "crosses_zero": false
+      },
+      "key_claim_citation_coverage": {
+        "n": 48,
+        "mean_diff": 0.8128,
+        "ci95": [
+          0.701,
+          0.9057
+        ],
+        "crosses_zero": false
+      }
+    },
+    "gl0_vs_gl2": {
+      "answer_citation_accuracy": {
+        "n": 48,
+        "mean_diff": -0.125,
+        "ci95": [
+          -0.2292,
+          -0.0417
+        ],
+        "crosses_zero": false
+      },
+      "answer_citation_recall": {
+        "n": 48,
+        "mean_diff": -0.0753,
+        "ci95": [
+          -0.1476,
+          -0.0215
+        ],
+        "crosses_zero": false
+      },
+      "gold_evidence_citation_rate": {
+        "n": 48,
+        "mean_diff": -0.1042,
+        "ci95": [
+          -0.1875,
+          -0.0208
+        ],
+        "crosses_zero": false
+      },
+      "false_rejection_rate": {
+        "n": 48,
+        "mean_diff": -0.1458,
+        "ci95": [
+          -0.25,
+          -0.0417
+        ],
+        "crosses_zero": false
+      },
+      "safety_claim_citation_coverage": {
+        "n": 48,
+        "mean_diff": 0.2865,
+        "ci95": [
+          0.1667,
+          0.4115
+        ],
+        "crosses_zero": false
+      },
+      "key_claim_citation_coverage": {
+        "n": 48,
+        "mean_diff": 0.8128,
+        "ci95": [
+          0.701,
+          0.9057
+        ],
+        "crosses_zero": false
+      }
+    },
+    "gl0_vs_gl3": null
+  },
+  "final_candidate": "gl2",
+  "replacement": {
+    "hard_passed": false,
+    "hard": {
+      "emitted_citation_traceability_1": true,
+      "invalid_chunk_marker_rate_0": true,
+      "negative_unsupported_answer_rate_0": true,
+      "insufficient_evidence_rejection_rate_1": true,
+      "answered_without_evidence_rate_0": true,
+      "safety_claim_citation_coverage_1": false,
+      "uncited_safety_claim_count_0": false,
+      "safety_accuracy_not_below_gl0": true,
+      "parameter_accuracy_drop_leq_002": true,
+      "false_rejection_worsening_leq_005": true,
+      "requested_equals_actual": true,
+      "fallback_0": true,
+      "p95_latency_leq_2x_gl0": false,
+      "repair_text_unchanged": true
+    },
+    "value_passed": true,
+    "value": {
+      "answer_citation_accuracy_plus_002": false,
+      "answer_citation_recall_plus_002": false,
+      "gold_evidence_plus_002": false,
+      "non_gold_down_010": true,
+      "key_claim_coverage_plus_010": true,
+      "uncited_key_claim_reduction_20pct": true,
+      "safety_error_reduction_ge_1": false
+    },
+    "replacement_approved": false,
+    "replacement_gates_passed": false,
+    "selection_reason": "GL3 not reached (GL1/GL2 gates); final candidate gl2 cannot enable claim-level guard"
+  }
+}
